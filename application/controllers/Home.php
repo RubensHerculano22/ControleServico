@@ -19,4 +19,12 @@ class Home extends CI_Controller{
         $this->load->view("template/content", $this->data);
     }
 
+    public function lista()
+    {
+        $this->data["breadcrumb"] = (object)array("titulo" => "Lista de Produtos/Serviços", "before" => (object)array("nome" => "Nome da Pagina Anterior", "link" => "Home"), "current" => "Nome da pagina atual");;
+
+        $this->data["content"] = $this->load->view("home/lista", $this->data, true);
+        $this->load->view("template/content", $this->data);
+    }
+
 }

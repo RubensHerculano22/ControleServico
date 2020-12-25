@@ -1,6 +1,6 @@
 <div class="container-fluid">
     <div class="row">
-        <div class="co-md-12 col-sm-12 col-xs-12">
+        <div class="col-md-12 col-sm-12 col-xs-12">
             <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
                 <ol class="carousel-indicators">
                 <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
@@ -38,8 +38,232 @@
             <div class="row">
                 <div class="col-md-12 col-sm-12 co-xs-12">
                     <h3 class="text-title">Com Altas Avaliações</h3>
+                </div> 
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div id="avaliacao" class="carousel slide" data-ride="carousel">
+                        <ol class="carousel-indicators">
+                            <li data-target="#avaliacao" data-slide-to="0" class="active"></li>
+                            <li data-target="#avaliacao" data-slide-to="1"></li>
+                            <li data-target="#avaliacao" data-slide-to="2"></li>
+                        </ol>
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <div class="row">
+                                    <div class="col-md-4 col-sm-12 col-xs-12">
+                                        <div class="card h-100">
+                                            <div class="card-header">
+                                                <h3 class="card-title">Primeiro nome da pessoa - Nome do Serviço</h3>
+                                            </div>
+                                            <div class="card-body">
+                                                <i class="fas fa-star" style="color: Gold"></i>
+                                                <i class="fas fa-star-half-alt" style="color: Gold"></i>
+                                                <i class="far fa-star" style="color: Gold"></i>
+                                                <i class="far fa-star" style="color: Gold"></i>
+                                                <i class="far fa-star" style="color: Gold"></i> <small class="text-muted">(Media de Avaliação)</small>
+                                                <br/>
+                                                <p class="text-justify">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                                            </div>
+                                            <div class="card-footer">
+                                                <h3 class="card-title">Avaliação mais recente</h3>
+                                                <br/>
+                                                <p class="text-justify">Nome da pessoa que fez a avaliação - Uma avaliação.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-sm-12 col-xs-12">
+                                        <div class="card h-100">
+                                            <div class="card-header">
+                                                <h3 class="card-title">Primeiro nome da pessoa - Nome do Serviço</h3>
+                                            </div>
+                                            <div class="card-body">
+                                                <i class="fas fa-star" style="color: Gold"></i>
+                                                <i class="fas fa-star" style="color: Gold"></i>
+                                                <i class="fas fa-star" style="color: Gold"></i>
+                                                <i class="fas fa-star" style="color: Gold"></i>
+                                                <i class="fas fa-star" style="color: Gold"></i>  <small class="text-muted">(Media de Avaliação)</small>
+                                                <br/>
+                                                <p class="text-justify">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+                                            </div>
+                                            <div class="card-footer">
+                                                <h3 class="card-title">Avaliação mais recente</h3>
+                                                <br/>
+                                                <p class="text-justify">Nome da pessoa que fez a avaliação - Uma avaliação.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-sm-12 col-xs-12">
+                                        <div class="card h-100">
+                                            <div class="card-header">
+                                                <h3 class="card-title">Primeiro nome da pessoa - Nome do Serviço</h3>
+                                            </div>
+                                            <div class="card-body">
+                                                <i class="fas fa-star" style="color: Gold"></i>
+                                                <i class="fas fa-star" style="color: Gold"></i>
+                                                <i class="fas fa-star-half-alt" style="color: Gold"></i>
+                                                <i class="far fa-star" style="color: Gold"></i>
+                                                <i class="far fa-star" style="color: Gold"></i> <small class="text-muted">(Media de Avaliação)</small>
+                                                <br/>
+                                                <p class="text-justify">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                                            </div>
+                                            <div class="card-footer">
+                                                <h3 class="card-title">Avaliação mais recente</h3>
+                                                <br/>
+                                                <p class="text-justify">Nome da pessoa que fez a avaliação - Uma avaliação.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="carousel-item">
+                                <div class="row">
+                                    <div class="col-md-4 col-sm-12 col-xs-12">
+                                        <div class="card h-100">
+                                            <div class="card-header">
+                                                <h3 class="card-title">Primeiro nome da pessoa - Nome do Serviço</h3>
+                                            </div>
+                                            <div class="card-body">
+                                                <i class="fas fa-star" style="color: Gold"></i>
+                                                <i class="fas fa-star-half-alt" style="color: Gold"></i>
+                                                <i class="far fa-star" style="color: Gold"></i>
+                                                <i class="far fa-star" style="color: Gold"></i>
+                                                <i class="far fa-star" style="color: Gold"></i> <small class="text-muted">(Media de Avaliação)</small>
+                                                <br/>
+                                                <p class="text-justify">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                                            </div>
+                                            <div class="card-footer">
+                                                <h3 class="card-title">Avaliação mais recente</h3>
+                                                <br/>
+                                                <p class="text-justify">Nome da pessoa que fez a avaliação - Uma avaliação.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-sm-12 col-xs-12">
+                                        <div class="card h-100">
+                                            <div class="card-header">
+                                                <h3 class="card-title">Primeiro nome da pessoa - Nome do Serviço</h3>
+                                            </div>
+                                            <div class="card-body">
+                                                <i class="fas fa-star" style="color: Gold"></i>
+                                                <i class="fas fa-star" style="color: Gold"></i>
+                                                <i class="fas fa-star" style="color: Gold"></i>
+                                                <i class="fas fa-star" style="color: Gold"></i>
+                                                <i class="fas fa-star" style="color: Gold"></i>  <small class="text-muted">(Media de Avaliação)</small>
+                                                <br/>
+                                                <p class="text-justify">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+                                            </div>
+                                            <div class="card-footer">
+                                                <h3 class="card-title">Avaliação mais recente</h3>
+                                                <br/>
+                                                <p class="text-justify">Nome da pessoa que fez a avaliação - Uma avaliação.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-sm-12 col-xs-12">
+                                        <div class="card h-100">
+                                            <div class="card-header">
+                                                <h3 class="card-title">Primeiro nome da pessoa - Nome do Serviço</h3>
+                                            </div>
+                                            <div class="card-body">
+                                                <i class="fas fa-star" style="color: Gold"></i>
+                                                <i class="fas fa-star" style="color: Gold"></i>
+                                                <i class="fas fa-star-half-alt" style="color: Gold"></i>
+                                                <i class="far fa-star" style="color: Gold"></i>
+                                                <i class="far fa-star" style="color: Gold"></i> <small class="text-muted">(Media de Avaliação)</small>
+                                                <br/>
+                                                <p class="text-justify">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                                            </div>
+                                            <div class="card-footer">
+                                                <h3 class="card-title">Avaliação mais recente</h3>
+                                                <br/>
+                                                <p class="text-justify">Nome da pessoa que fez a avaliação - Uma avaliação.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="carousel-item">
+                                <div class="row">
+                                    <div class="col-md-4 col-sm-12 col-xs-12">
+                                        <div class="card h-100">
+                                            <div class="card-header">
+                                                <h3 class="card-title">Primeiro nome da pessoa - Nome do Serviço</h3>
+                                            </div>
+                                            <div class="card-body">
+                                                <i class="fas fa-star" style="color: Gold"></i>
+                                                <i class="fas fa-star-half-alt" style="color: Gold"></i>
+                                                <i class="far fa-star" style="color: Gold"></i>
+                                                <i class="far fa-star" style="color: Gold"></i>
+                                                <i class="far fa-star" style="color: Gold"></i> <small class="text-muted">(Media de Avaliação)</small>
+                                                <br/>
+                                                <p class="text-justify">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                                            </div>
+                                            <div class="card-footer">
+                                                <h3 class="card-title">Avaliação mais recente</h3>
+                                                <br/>
+                                                <p class="text-justify">Nome da pessoa que fez a avaliação - Uma avaliação.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-sm-12 col-xs-12">
+                                        <div class="card h-100">
+                                            <div class="card-header">
+                                                <h3 class="card-title">Primeiro nome da pessoa - Nome do Serviço</h3>
+                                            </div>
+                                            <div class="card-body">
+                                                <i class="fas fa-star" style="color: Gold"></i>
+                                                <i class="fas fa-star" style="color: Gold"></i>
+                                                <i class="fas fa-star" style="color: Gold"></i>
+                                                <i class="fas fa-star" style="color: Gold"></i>
+                                                <i class="fas fa-star" style="color: Gold"></i>  <small class="text-muted">(Media de Avaliação)</small>
+                                                <br/>
+                                                <p class="text-justify">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+                                            </div>
+                                            <div class="card-footer">
+                                                <h3 class="card-title">Avaliação mais recente</h3>
+                                                <br/>
+                                                <p class="text-justify">Nome da pessoa que fez a avaliação - Uma avaliação.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-sm-12 col-xs-12">
+                                        <div class="card h-100">
+                                            <div class="card-header">
+                                                <h3 class="card-title">Primeiro nome da pessoa - Nome do Serviço</h3>
+                                            </div>
+                                            <div class="card-body">
+                                                <i class="fas fa-star" style="color: Gold"></i>
+                                                <i class="fas fa-star" style="color: Gold"></i>
+                                                <i class="fas fa-star-half-alt" style="color: Gold"></i>
+                                                <i class="far fa-star" style="color: Gold"></i>
+                                                <i class="far fa-star" style="color: Gold"></i> <small class="text-muted">(Media de Avaliação)</small>
+                                                <br/>
+                                                <p class="text-justify">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                                            </div>
+                                            <div class="card-footer">
+                                                <h3 class="card-title">Avaliação mais recente</h3>
+                                                <br/>
+                                                <p class="text-justify">Nome da pessoa que fez a avaliação - Uma avaliação.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <a class="carousel-control-prev" href="#avaliacao" role="button" data-slide="prev">
+                            <span class="carousel-control-custom-icon" aria-hidden="true">
+                                <i class="fas fa-chevron-left"></i>
+                            </span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                        <a class="carousel-control-next" href="#avaliacao" role="button" data-slide="next">
+                            <span class="carousel-control-custom-icon" aria-hidden="true">
+                                <i class="fas fa-chevron-right"></i>
+                            </span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </div>
                 </div>
-                <div class="col-md-4 col-sm-12 col-xs-12">
+                <!-- <div class="col-md-4 col-sm-12 col-xs-12">
                     <div class="card h-100">
                         <div class="card-header">
                             <h3 class="card-title">Primeiro nome da pessoa - Nome do Serviço</h3>
@@ -101,7 +325,7 @@
                             <p class="text-justify">Nome da pessoa que fez a avaliação - Uma avaliação.</p>
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
     </div>
@@ -131,6 +355,3 @@
         </div>
     </div>
 </div>
-<footer class="main-footer">
-    <strong>Copyright &copy; 2020 <a href="https://adminlte.io">Nome do Site</a>.</strong> Todos os direitos reservados.
-</footer>
