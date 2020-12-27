@@ -24,6 +24,8 @@
 <script src="<?= base_url("assets/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js") ?>"></script>
 <!-- Summernote -->
 <script src="<?= base_url("assets/plugins/summernote/summernote-bs4.min.js") ?>"></script>
+<!-- Ekko lightbox -->
+<script src="<?= base_url("assets/plugins/ekko-lightbox/ekko-lightbox.min.js") ?>"></script>
 <!-- overlayScrollbars -->
 <script src="<?= base_url("assets/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js") ?>"></script>
 <!-- AdminLTE App -->

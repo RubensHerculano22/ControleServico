@@ -21,9 +21,21 @@ class Home extends CI_Controller{
 
     public function lista()
     {
-        $this->data["breadcrumb"] = (object)array("titulo" => "Lista de Produtos/Serviços", "before" => (object)array("nome" => "Nome da Pagina Anterior", "link" => "Home"), "current" => "Nome da pagina atual");;
+        $this->data["breadcrumb"] = (object)array("titulo" => "Lista de Produtos/Serviços", "before" => array((object) array("nome" => "Nome da Pagina Anterior", "link" => "Home")), "current" => "Nome da pagina atual");;
 
         $this->data["content"] = $this->load->view("home/lista", $this->data, true);
+        $this->load->view("template/content", $this->data);
+    }
+
+    public function detalhes()
+    {
+        $this->data["breadcrumb"] = (object)array("titulo" => "Detalhes de Produtos/Serviços", "before" => array((object)array("nome" => "Home", "link" => "Home"), (object)array("nome" => "Categoria dele", "link" => "Home/lista")), "current" => "Nome do produto");;
+
+        // $data["javascript"] = [
+        //     base_url("assets/js/home/detalhes.js")
+        // ];
+
+        $this->data["content"] = $this->load->view("home/detalhes", $this->data, true);
         $this->load->view("template/content", $this->data);
     }
 

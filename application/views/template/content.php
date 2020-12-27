@@ -19,8 +19,10 @@
                         </div>
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="<?= base_url($breadcrumb->before->link) ?>"><?= $breadcrumb->before->nome ?></a></li>
-                            <li class="breadcrumb-item active"><?= $breadcrumb->current ?></li>
+                                <?php foreach($breadcrumb->before as $item): ?>
+                                    <li class="breadcrumb-item"><a href="<?= base_url($item->link) ?>"><?= $item->nome ?></a></li>
+                                <?php endforeach; ?>
+                                <li class="breadcrumb-item active"><?= $breadcrumb->current ?></li>
                             </ol>
                         </div>
                     </div>
@@ -38,7 +40,11 @@
         <strong>Copyright &copy; 2020 <a href="https://adminlte.io">Nome do Site</a>.</strong> Todos os direitos reservados.
     </footer>
     <?= $footer ?>
-    <?= isset($js) ? $js : "" ?>
+    <?php if(isset($javascript) && !empty($javascript)): ?>
+        <?php foreach($javascript as $js): ?>
+            <script src="<?= $js . "?v=" . time() ?>"></script>
+        <?php endforeach; ?>
+    <?php endif; ?>
 </body>
 
 </html>
