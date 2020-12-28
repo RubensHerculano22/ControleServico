@@ -12,10 +12,10 @@
                                 <div class="row">
                                     <div class="col-md-8 col-sm-12">
                                         <div class="col-12">
-                                            <img src="https://www.animeunited.com.br/wp-content/uploads/2020/05/Os-10-personagens-mais-populares-de-Konosuba.jpg" class="product-image" alt="Product Image" >
+                                            <img src="https://www.animesxis.com.br/wp-content/uploads/2020/02/KonoSuba-Game-Smartphone.jpg" class="product-image" alt="Product Image" >
                                         </div>
                                         <div class="col-12 product-image-thumbs">
-                                            <div class="product-image-thumb active"><img src="https://www.animeunited.com.br/wp-content/uploads/2020/05/Os-10-personagens-mais-populares-de-Konosuba.jpg"  alt="Product Image"></div>
+                                            <div class="product-image-thumb active"><img src="https://www.animesxis.com.br/wp-content/uploads/2020/02/KonoSuba-Game-Smartphone.jpg"  alt="Product Image"></div>
                                             <div class="product-image-thumb" ><img src="https://multiversos.com.br/wp-content/uploads/2016/05/Imagem-01.jpg" alt="Product Image"></div>
                                             <div class="product-image-thumb" ><img src="https://i2.wp.com/anmtv.com.br/wp-content/uploads/konosuba-1.png?resize=800%2C400&ssl=1" alt="Product Image"></div>
                                             <div class="product-image-thumb" ><img src="https://trecobox.com.br/wp-content/uploads/2018/11/konosuba-light-novel-ganhara-rpg-para-playstation-4-e-ps-vita-01.jpg" alt="Product Image"></div>
@@ -74,23 +74,23 @@
                                     <div class="col-md-12 col-sm-12 col-xs-12">
                                         <h6>Cartão de Credito</h6>
                                         <div class="row">
-                                            <div class="col-md-2 col-sm-12 col-xs-12">
+                                            <div class="col-md-2 col-sm-4">
                                                 <img class="img-fluid mb-2" src="https://latinoscassinos.com/wp-content/uploads/2019/01/62.png" style="max-width: 150px; max-height: 40px;" />
                                                 <span class="text-muted">12x</span>
                                             </div>
-                                            <div class="col-md-2 col-sm-12 col-xs-12">
+                                            <div class="col-md-2 col-sm-4">
                                                 <img class="img-fluid mb-2" src="https://i.pinimg.com/originals/dd/65/f3/dd65f3c6a80e7bb059d3f2630399826b.jpg" style="max-width: 150px; max-height: 40px;" />
                                                 <span class="text-muted">12x</span>
                                             </div>
-                                            <div class="col-md-2 col-sm-12 col-xs-12">
+                                            <div class="col-md-2 col-sm-4">
                                                 <img class="img-fluid mb-2" src="https://logospng.org/download/cartao-elo/logo-cartao-elo-colorido-fundo-preto-256.png" style="max-width: 150px; max-height: 40px;" />
                                                 <span class="text-muted">12x</span>
                                             </div>
-                                            <div class="col-md-2 col-sm-12 col-xs-12">
+                                            <div class="col-md-2 col-sm-4">
                                                 <img class="img-fluid mb-2" src="https://i2.wp.com/goldlinebrow.com/wp-content/uploads/2018/02/American-Express-icon.png?ssl=1" style="max-width: 150px; max-height: 40px;" />
                                                 <span class="text-muted">12x</span>
                                             </div>
-                                            <div class="col-md-2 col-sm-12 col-xs-12">
+                                            <div class="col-md-2 col-sm-4">
                                                 <img class="img-fluid mb-2" src="https://logospng.org/download/hipercard/logo-hipercard-256.png" style="max-width: 150px; max-height: 40px;" />
                                                 <span class="text-muted">12x</span>
                                             </div>
@@ -99,23 +99,23 @@
                                     <div class="col-md-12 col-sm-12 col-xs-12">
                                         <h6 class="">Cartão de Debito</h6>
                                         <div class="row">
-                                            <div class="col-md-2 col-sm-12 col-xs-12">
+                                            <div class="col-md-2 col-sm-4">
                                                 <img class="img-fluid mb-2" src="https://latinoscassinos.com/wp-content/uploads/2019/01/62.png" style="max-width: 150px; max-height: 40px;" />
                                                 <span class="text-muted">a vista</span>
                                             </div>
-                                            <div class="col-md-2 col-sm-12 col-xs-12">
+                                            <div class="col-md-2 col-sm-4">
                                                 <img class="img-fluid mb-2" src="https://i.pinimg.com/originals/dd/65/f3/dd65f3c6a80e7bb059d3f2630399826b.jpg" style="max-width: 150px; max-height: 40px;" />
                                                 <span class="text-muted">a vista</span>
                                             </div>
-                                            <div class="col-md-2 col-sm-12 col-xs-12">
+                                            <div class="col-md-2 col-sm-4">
                                                 <img class="img-fluid mb-2" src="https://logospng.org/download/cartao-elo/logo-cartao-elo-colorido-fundo-preto-256.png" style="max-width: 150px; max-height: 40px;" />
                                                 <span class="text-muted">a vista</span>
                                             </div>
-                                            <div class="col-md-2 col-sm-12 col-xs-12">
+                                            <div class="col-md-2 col-sm-4">
                                                 <img class="img-fluid mb-2" src="https://i2.wp.com/goldlinebrow.com/wp-content/uploads/2018/02/American-Express-icon.png?ssl=1" style="max-width: 150px; max-height: 40px;" />
                                                 <span class="text-muted">a vista</span>
                                             </div>
-                                            <div class="col-md-2 col-sm-12 col-xs-12">
+                                            <div class="col-md-2 col-sm-4">
                                                 <img class="img-fluid mb-2" src="https://logospng.org/download/hipercard/logo-hipercard-256.png" style="max-width: 150px; max-height: 40px;" />
                                                 <span class="text-muted">a vista</span>
                                             </div>
@@ -124,48 +124,52 @@
                                     <div class="col-md-12 col-sm-12 col-xs-12">
                                         <h6 class="">Transferência</h6>
                                         <div class="row">
-                                            <div class="col-md-2 col-sm-12 col-xs-12">
+                                            <div class="col-lg-2 col-md-3 col-sm-4">
                                                 <img class="img-fluid mb-2" src="https://logospng.org/download/itau/logo-itau-256.png" style="max-width: 150px; max-height: 40px;" />
                                                 <span class="text-muted">Itau</span>
                                             </div>
-                                            <div class="col-md-2 col-sm-12 col-xs-12">
+                                            <div class="col-lg-2 col-md-3 col-sm-4">
                                                 <img class="img-fluid mb-2" src="https://logospng.org/download/nubank/logo-nu-nubank-roxo-icon-256.png" style="max-width: 150px; max-height: 40px;" />
                                                 <span class="text-muted">Nubank</span>
                                             </div>
-                                            <div class="col-md-2 col-sm-12 col-xs-12">
+                                            <div class="col-lg-2 col-md-3 col-sm-4">
                                                 <img class="img-fluid mb-2" src="https://logospng.org/download/santander/logo-santander-icon-256.png" style="max-width: 150px; max-height: 40px;" />
                                                 <span class="text-muted">Santander</span>
                                             </div>
-                                            <div class="col-md-2 col-sm-12 col-xs-12">
+                                            <div class="col-lg-2 col-md-3 col-sm-4">
                                                 <img class="img-fluid mb-2" src="https://banco.bradesco/favicon.ico" style="max-width: 150px; max-height: 40px;" />
                                                 <span class="text-muted">Bradesco</span>
                                             </div>
-                                            <div class="col-md-2 col-sm-12 col-xs-12">
+                                            <div class="col-lg-2 col-md-3 col-sm-4">
                                                 <img class="img-fluid mb-2" src="https://logospng.org/download/caixa-economica-federal/logo-caixa-economica-federal-256.png" style="max-width: 150px; max-height: 40px;" />
                                                 <span class="text-muted">Caixa</span>
                                             </div>
-                                            <div class="col-md-2 col-sm-12 col-xs-12">
-                                                <img class="img-fluid mb-2" src="https://logospng.org/download/banco-do-brasil/logo-banco-do-brasil-icon-256.png" style="max-width: 150px; max-height: 40px;" />
-                                                <span class="text-muted">Banco do Brasil</span>
-                                            </div>
-                                            <div class="col-md-2 col-sm-12 col-xs-12">
+                                            <div class="col-lg-2 col-md-3 col-sm-4">
                                                 <img class="img-fluid mb-2" src="https://logospng.org/download/mercado-pago/logo-mercado-pago-icone-256.png" style="max-width: 150px; max-height: 40px;" />
                                                 <span class="text-muted">Mercado pago</span>
                                             </div>
-                                            <div class="col-md-2 col-sm-12 col-xs-12">
+                                            <div class="col-lg-2 col-md-3 col-sm-4">
                                                 <img class="img-fluid mb-2" src="https://logospng.org/download/picpay/logo-picpay-256.png" style="max-width: 150px; max-height: 40px;" />
                                                 <span class="text-muted">PicPay</span>
                                             </div>
-                                            <div class="col-md-2 col-sm-12 col-xs-12">
+                                            <div class="col-lg-2 col-md-3 col-sm-4">
                                                 <img class="img-fluid mb-2" src="https://cdn.iconscout.com/icon/free/png-256/paypal-5-226456.png" style="max-width: 150px; max-height: 40px;" />
                                                 <span class="text-muted">PayPal</span>
+                                            </div>
+                                            <div class="col-lg-3  col-md-3 col-sm-4">
+                                                <img class="img-fluid mb-2" src="https://logospng.org/download/banco-do-brasil/logo-banco-do-brasil-icon-256.png" style="max-width: 150px; max-height: 40px;" />
+                                                <span class="text-muted">Banco do Brasil</span>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-md-12 col-sm-12 col-xs-12">
                                         <h6>Outros Meios</h6>
-                                        <img class="img-fluid mb-2" src="https://www.autoimportsweb.com.br/wp-content/uploads/2019/02/ico_boleto.svg" style="max-width: 150px; max-height: 40px;" />
-                                        <span class="text-muted">Boleto</span>
+                                        <div class="row">
+                                            <div class="col-md-2 col-sm-4">
+                                                <img class="img-fluid mb-2" src="https://www.autoimportsweb.com.br/wp-content/uploads/2019/02/ico_boleto.svg" style="max-width: 150px; max-height: 40px;" />
+                                                <span class="text-muted">Boleto</span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -177,7 +181,6 @@
                                 <h3 class="card-title">Descrição</h3>
                                 <div class="card-tools">
                                     <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                        <!-- <i class="fas fa-minus"></i> -->
                                         <i class="fas fa-minus"></i>
                                     </button>
                                 </div>
@@ -265,15 +268,15 @@
                             </div>
                             <div class="card-body">
                                 <div class="row text-center">
-                                    <div class="col-md-3 col-sm-12 col-xs-12 text-right">
-                                        <h1 class="">4.5</h1>
+                                    <div class="col-md-4 col-sm-3 col-xs-12 text-right">
+                                        <h1>4.5</h1>
                                         <i class="fas fa-star fa-1x" style="color: Gold"></i>
                                         <i class="fas fa-star fa-1x" style="color: Gold"></i>
                                         <i class="fas fa-star fa-1x" style="color: Gold"></i>
                                         <i class="fas fa-star fa-1x" style="color: Gold"></i>
                                         <i class="fas fa-star-half-alt fa-1x" style="color: Gold"></i>
                                     </div>
-                                    <div class="col-md-6 col-sm-12 col-xs-12">
+                                    <div class="col-md-6 col-sm-9 col-xs-12">
                                         <table class="table table-borderless table-sm">
                                             <tr>
                                                 <td width="26%">5 Estrelas</td>
@@ -341,14 +344,14 @@
                                 <div class="row">
                                     <div class="col-md-12 col-sm-12 col-xs-12">
                                         <div class="row">
-                                            <div class="col-5 col-sm-3">
+                                            <div class="col-lg-2 col-md-3 col-sm-3 col">
                                                 <div class="nav flex-column nav-tabs h-100" id="vert-tabs-tab" role="tablist" aria-orientation="vertical">
                                                     <a class="nav-link active" id="vert-tabs-todos-tab" data-toggle="pill" href="#vert-tabs-todos" role="tab" aria-controls="vert-tabs-todos" aria-selected="true">Todos</a>
                                                     <a class="nav-link" id="vert-tabs-positivos-tab" data-toggle="pill" href="#vert-tabs-positivos" role="tab" aria-controls="vert-tabs-positivos" aria-selected="false">Positivas</a>
                                                     <a class="nav-link" id="vert-tabs-negativos-tab" data-toggle="pill" href="#vert-tabs-negativos" role="tab" aria-controls="vert-tabs-negativos" aria-selected="false">Negativas</a>
                                                 </div>
                                             </div>
-                                            <div class="col-7 col-sm-9">
+                                            <div class="col-lg-10 col-md-9 col-sm-9 col">
                                                 <div class="tab-content" id="vert-tabs-tabContent">
                                                     <div class="tab-pane text-left fade show active" id="vert-tabs-todos" role="tabpanel" aria-labelledby="vert-tabs-todos-tab">
                                                         <div class="pb-4">
