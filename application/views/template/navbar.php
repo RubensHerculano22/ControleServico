@@ -23,4 +23,33 @@
         </div>
       </div>
     </form>
+    <ul class="navbar-nav ml-auto">
+      <a href="#" class='nav-link dropdown'>Criar conta</a>
+      <li class="nav-item dropdown user-menu">
+        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
+          <!-- <img src="https://www.microlins.com.br/galeria/repositorio/images/noticias/como-posicionar-melhor-seu-perfil-no-linkedin/02-Como-posicionar-melhor-seu-perfil-do-Linkedin.png" class="user-image img-circle elevation-2" alt="User Image"> -->
+          <span class="d-none d-md-inline">Alexander Pierce</span>
+        </a>
+        <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+          <li class="bg-warning">
+            <!-- <img src="https://www.microlins.com.br/galeria/repositorio/images/noticias/como-posicionar-melhor-seu-perfil-no-linkedin/02-Como-posicionar-melhor-seu-perfil-do-Linkedin.png" class="img-circle elevation-2" alt="User Image"> -->
+            <div class="row">
+              <div class="col-md-12 col-sm-12 col-xs-12 p-4">
+                <p>
+                  Alexander Pierce - Web Developer
+                  <small>Member since Nov. 2012</small>
+                </p>
+              </div>
+            </div>
+          </li>
+          <li class="user-body">
+            <button type="button" class="btn btn-default btn-flat btn-block">Minhas Informações</button>
+            <button type="button" class="btn btn-default btn-flat btn-block">Meus Serviços</button>
+            <button type="button" class="btn btn-default btn-flat btn-block">Lista de favoritos</button>
+            <button type="button" class="btn btn-default btn-flat btn-block">Serviços contratos</button>
+            <button type="button" class="btn btn-default btn-flat btn-block">Sair</button>
+          </li>
+        </ul>
+      </li>
+    </ul>
 </nav>
