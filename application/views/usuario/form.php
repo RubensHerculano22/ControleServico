@@ -5,7 +5,7 @@
                 <div class="card-header">
                     <h3 class="card-title">Formulário de Cadastro de Novos Usuarios</h3>
                 </div>
-                <form role="form">
+                <form id="submit" role="form">
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-6 col-sm-6 col-xs-12">
@@ -29,7 +29,7 @@
                             <div class="col-md-3 col-sm-3 col-xs-12">
                                 <div class="form-group">
                                     <label for="data_nascimento">Data de Nascimento</label>
-                                    <input type="text" class="form-control" name="data_nascimento" id="data_nascimento" placeholder="Exemplo: 01/01/2004">
+                                    <input type="text" class="form-control" name="data_nascimento" id="data_nascimento" placeholder="Exemplo: 01/01/2004" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask>
                                 </div>
                             </div>
                             <div class="col-md-3 col-sm-3 col-xs-12">
@@ -93,12 +93,9 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                            <label class="form-check-label" for="exampleCheck1">Check me out</label>
-                        </div>
                     </div>
-                    <div class="card-footer">
+                    <input type="hidden" name="id_usuario" id="id_usuario" value="" />
+                    <div class="card-footer text-right">
                         <button type="submit" class="btn btn-primary">Salvar</button>
                     </div>
                 </form>

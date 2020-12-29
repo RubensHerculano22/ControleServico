@@ -24,7 +24,7 @@
       </div>
     </form>
     <ul class="navbar-nav ml-auto">
-      <a href="#" class='nav-link dropdown'>Criar conta</a>
+      <a href="<?= base_url("Usuario") ?>" class='nav-link dropdown'>Criar conta</a>
       <li class="nav-item dropdown user-menu">
         <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
           <!-- <img src="https://www.microlins.com.br/galeria/repositorio/images/noticias/como-posicionar-melhor-seu-perfil-no-linkedin/02-Como-posicionar-melhor-seu-perfil-do-Linkedin.png" class="user-image img-circle elevation-2" alt="User Image"> -->

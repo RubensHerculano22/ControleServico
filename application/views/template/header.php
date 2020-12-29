@@ -1,6 +1,6 @@
 <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>AdminLTE 3 | Dashboard</title>
+  <title>Nome do Site</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -20,5 +20,9 @@
   <link rel="stylesheet" href="<?= base_url("assets/plugins/overlayScrollbars/css/OverlayScrollbars.min.css") ?>">
   <!-- Daterange picker -->
   <link rel="stylesheet" href="<?= base_url("assets/plugins/daterangepicker/daterangepicker.css") ?>">
+  <!-- sweetAlert2 -->
+  <link rel="stylesheet" href="<?= base_url("assets/plugins/sweetalert2/sweetalert2.min.css") ?>">
+  <!-- toastr -->
+  <link rel="stylesheet" href="<?= base_url("assets/plugins/toastr/toastr.min.css") ?>">
   <!-- summernote -->
   <link rel="stylesheet" href="<?= base_url("assets/plugins/summernote/summernote-bs4.min.css") ?>">
