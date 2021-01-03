@@ -20,9 +20,9 @@
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
                                 <?php foreach($breadcrumb->before as $item): ?>
-                                    <li class="breadcrumb-item"><a href="<?= base_url($item->link) ?>"><?= $item->nome ?></a></li>
+                                    <li class="breadcrumb-item"><a href="<?= base_url($item->link) ?>" style="color: #17a2b8 "><?= $item->nome ?></a></li>
                                 <?php endforeach; ?>
-                                <li class="breadcrumb-item active"><?= $breadcrumb->current ?></li>
+                                <li class="breadcrumb-item" style="color: #083c44"><?= $breadcrumb->current ?></li>
                             </ol>
                         </div>
                     </div>

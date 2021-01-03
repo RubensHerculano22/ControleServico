@@ -63,21 +63,6 @@ function somente_numeros($string)
     return preg_replace("#[^0-9]#", "", $string);
 }
 
-function icon_status($status)
-{
-    switch($status)
-    {
-        case 0:
-            return "<span class='glyphicon glyphicon-remove-sign' style='color:red' title='Inativo'></span>";
-            break;
-        case 1:
-            return "<span class='glyphicon glyphicon-ok-sign' style='color:green' title='Ativo'></span>";
-            break;        
-        case 2:
-            return "<span class='glyphicon glyphicon-lock' style='color:orange' title='Bloqueado'></span>";
-            break;
-    }
-}
 
 function meses($mes)
 {
@@ -125,6 +110,57 @@ function mb_str_pad( $input, $pad_length, $pad_string = ' ', $pad_type = STR_PAD
     $string = $input; //Substitua pela string que desejas converter
     $string = strtr($string, $conversao); //Irá exibir "Abracao"
     return str_pad($string, $pad_length, $pad_string, $pad_type);
+}
+
+function formata_data_info($data)
+{
+    $info = explode("/", $data);
+    $mes = troca_mes($info[1]);
+    
+    return $mes.".".$info[2];
+}
+
+function troca_mes($mes)
+{
+    switch($mes)
+    {
+        case 1:
+            return 'Jan';
+        break;
+        case 2:
+            return 'Fev';
+        break;
+        case 3:
+            return 'Mar';
+        break;
+        case 4:
+            return 'Abril';
+        break;
+        case 5:
+            return 'Maio';
+        break;
+        case 6:
+            return 'Jun';
+        break;
+        case 7:
+            return 'Jul';
+        break;
+        case 8:
+            return 'Ago';
+        break;
+        case 9:
+            return 'Set';
+        break;
+        case 10:
+            return 'Out';
+        break;
+        case 11:
+            return 'Nov';
+        break;
+        case 12:
+            return 'Dez';
+        break;
+    }
 }
 
 /* End of file formatacao_helper.php */

@@ -1,0 +1,108 @@
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+class Home_model extends CI_Model{
+    
+    function __construct() 
+    {
+        parent::__construct();
+        $this->dados = $this->session->userdata("dados" . APPNAME);
+    }
+
+    //Faz a função que ele lista apenas a categoria se necessário.
+    public function get_cards($categoria, $subcategoria)
+    {
+        $rst = array();
+        if($subcategoria)
+        {
+            $query = $this->db->get_where("Categoria", "nome = '$subcategoria'")->row();
+
+            $rst = $this->db->get_where("Servico", "ativo = 1 AND id_categoria = $query->id")->result();
+
+            foreach($rst as $item)
+            {
+                $this->db->select("usu.nome, usu.sobrenome");
+                $this->db->join("Usuario usu", "usu.id = usuSer.id_usuario");
+                $item->usuario = $this->db->get_where("UsuarioServico usuSer", "usuSer.id_servico = '$item->id'")->row();
+
+                $this->db->group_by("id", "desc");
+                $item->feedback = $this->db->get_where("Feedback", "id_servico = '$item->id'")->row();
+            }
+        }
+
+        return $rst;
+    }
+
+    public function get_subcategoria($categoria, $subcategoria = null)
+    {
+        $query = $this->db->get_where("Categoria", "nome = '$categoria'")->row();
+
+        if($subcategoria != null)
+            $this->db->where("nome != '$subcategoria'");
+        $rst = $this->db->get_where("Categoria", "id_pai = '$query->id'")->result();
+
+        return $rst;
+    }
+
+    public function get_servico_info($id)
+    {
+        $query = $this->db->get_where("Servico", "id = '$id'")->row();
+
+        $query->usuario_servico = $this->db->get_where("UsuarioServico", "id_servico = '$query->id'")->row();
+        $query->favoritos = $this->db->get_where("Favoritos", "id_servico = '$query->id'")->row();
+        $query->pagamento = $this->db->get_where("PagamentoServico", "id_servico = '$query->id'")->result();
+
+        $this->db->order_by("principal", "desc");
+        $query->imagens = $this->db->get_where("Imagens", "id_servico = '$query->id' and ativo = 1")->result();
+        $query->perguntas = $this->db->get_where("Perguntas", "id_servico = '$query->id'")->result();
+
+        return $query;
+    }
+
+    public function perguntar()
+    {
+        $data = (object)$this->input->post();
+        $rst = (object)array("rst" => false, "msg" => "", "pergunta" => "");
+
+        if($this->verifica_seguranca($data->pergunta))
+        {
+            $rst->msg = "Palavra utilizada para o acesso é proibida!";
+
+            return $rst;
+        }
+
+        $this->db->set("pergunta", $data->pergunta);
+        $this->db->set("data_inclusao", "date('now')", false);
+        $this->db->set("id_servico", $data->id_servico);
+        $this->db->set("id_usuario", $this->dados->usuario_id);
+        $this->db->set("id_usuario_servico", $data->id_usuario);
+
+        if($this->db->insert("Perguntas"))
+        {
+            $rst->rst = true;
+            $rst->msg = "Pergunta registrada com sucesso, quando houver uma resposta, você será notificado!";
+        }
+        else
+        {
+            $rst->msg = "Erro ao registrar a pergunta, tente novamente mais tarde.";
+        }
+
+        return $rst;
+    }
+
+
+
+    private function verifica_seguranca($dado)
+    {
+        $palavras = palavra_proibidas();
+        foreach($palavras as $item)
+        {
+            $pattern = '/' . $item . '/';
+
+            if(preg_match($pattern, strtolower($dado)) > 0)
+                return true;
+        }
+
+        return false;
+    }
+}

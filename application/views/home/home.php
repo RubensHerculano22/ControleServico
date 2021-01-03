@@ -41,7 +41,7 @@
                 </div> 
                 <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12 pb-4">
                     <div class="card h-100">
-                        <div class="card-header">
+                        <div class="card-header bg-info">
                             <h3 class="card-title">Primeiro nome da pessoa - Nome do Serviço</h3>
                         </div>
                         <div class="card-body">
@@ -53,7 +53,7 @@
                             <br/>
                             <p class="text-justify">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
                         </div>
-                        <div class="card-footer">
+                        <div class="card-footer disabled">
                             <h3 class="card-title">Avaliação mais recente</h3>
                             <br/>
                             <p class="text-justify">Nome da pessoa que fez a avaliação - Uma avaliação.</p>
@@ -62,7 +62,7 @@
                 </div>
                 <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12 pb-4">
                     <div class="card h-100">
-                        <div class="card-header">
+                        <div class="card-header bg-info">
                             <h3 class="card-title">Primeiro nome da pessoa - Nome do Serviço</h3>
                         </div>
                         <div class="card-body">
@@ -83,7 +83,7 @@
                 </div>
                 <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12 pb-4">
                     <div class="card h-100">
-                        <div class="card-header">
+                        <div class="card-header bg-info">
                             <h3 class="card-title">Primeiro nome da pessoa - Nome do Serviço</h3>
                         </div>
                         <div class="card-body">
@@ -104,7 +104,7 @@
                 </div>
                 <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12 pb-4">
                     <div class="card h-100">
-                        <div class="card-header">
+                        <div class="card-header bg-info">
                             <h3 class="card-title">Primeiro nome da pessoa - Nome do Serviço</h3>
                         </div>
                         <div class="card-body">
@@ -125,7 +125,7 @@
                 </div>
                 <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12 pb-4">
                     <div class="card h-100">
-                        <div class="card-header">
+                        <div class="card-header bg-info">
                             <h3 class="card-title">Primeiro nome da pessoa - Nome do Serviço</h3>
                         </div>
                         <div class="card-body">
@@ -146,7 +146,7 @@
                 </div>
                 <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12 pb-4">
                     <div class="card h-100">
-                        <div class="card-header">
+                        <div class="card-header bg-info">
                             <h3 class="card-title">Primeiro nome da pessoa - Nome do Serviço</h3>
                         </div>
                         <div class="card-body">
