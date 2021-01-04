@@ -32,8 +32,13 @@
                                                 <i class="fas fa-star-half-alt fa-1x" style="color: Gold"></i>
                                             </div>
                                             <div class="col-md-6 col-sm-12 col-xs-12 text-right">
-                                                <i class="fas fa-heart" style="color: Red"></i>
-                                                <!-- <i class="far fa-heart"></i> -->
+                                                <span id="fav<?= $info->id ?>">
+                                                    <?php if(!empty($info->favorito) && $info->favorito->ativo == 1): ?>
+                                                        <i class="fas fa-heart float-right" onclick="favoritos('<?= $info->id ?>', 'preenchido')" data-tipo="preenchido" style="color: red" id="item<?= $info->id ?>"></i>
+                                                    <?php else: ?>
+                                                        <i class="far fa-heart float-right" onclick="favoritos('<?= $info->id ?>', 'vazio')" data-tipo="vazio" style="color: grey" id="item<?= $info->id ?>"></i>
+                                                    <?php endif; ?>
+                                                </span>
                                             </div>
                                         </div>
                                         <hr>
@@ -49,10 +54,10 @@
                                         </div> -->
 
                                         <div class="mt-4">
-                                            <a href="" class="btn btn-warning btn-block btn-lg">
+                                            <button type="button" id="contratar" class="btn btn-warning btn-block btn-lg" data-toggle="modal" data-target="#modal-default">
                                                 <i class="fas fa-handshake"></i>
                                                 Contratar
-                                            </a>
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -492,6 +497,58 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-default">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Contratação</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="submit">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6 col-sm-3 col-xs-12">
+                            <div class="form-group">
+                                <label for="nome">Data para o Serviço</label>
+                                <input type="text" class="form-control data" name="data_servico" id="data_servico" placeholder="Data para o serviço" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask autofocus>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <div class="form-group">
+                                <label for="nome">Hora para o Serviço</label>
+                                <input type="text" class="form-control data" name="hora_servico" id="hora_servico" placeholder="Hora para o serviço">
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="form-group">
+                                <label for="nome">Descrição</label>
+                                <textarea class="form-control" name="descricao" rows="3" placeholder="Descrição sobre o Serviço a ser solicitado"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="endereco_cadastrado">
+                                <label class="form-check-label" for="exampleCheck1">Usar endereço cadastrado</label>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="form-group">
+                                <label for="nome">Data para o Serviço</label>
+                                <input type="text" class="form-control" name="endereco" id="endereco" placeholder="Endereço">
+                            </div>     
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="submit" class="btn btn-primary">Salvar</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>

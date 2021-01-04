@@ -3,7 +3,7 @@
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 pb-4">
             <button type="button" class="btn btn-outline-info btn-lg float-right">Cadastrar um Serviço</button>
         </div>
-        <div class="col-xl-2 col-lg-3 col-md-12 col-sm-12 col-xs-12">
+        <!-- <div class="col-xl-2 col-lg-3 col-md-12 col-sm-12 col-xs-12">
             <div class="row">
                 <div class="col-xl-12 col-lg-12 col-md-6 col-sm-6 col-xs-12">
                     <div id="accordion1">
@@ -68,8 +68,9 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="col-xl-10 col-lg-9 col-md-12 col-sm-12 col-xs-12">
+        </div> -->
+        <!-- <div class="col-xl-10 col-lg-9 col-md-12 col-sm-12 col-xs-12"> -->
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <div class="container-fluid">
                 <div class="row">
                     <?php foreach($cards as $item): ?>
@@ -84,6 +85,14 @@
                                     <i class="far fa-star" style="color: Gold"></i>
                                     <i class="far fa-star" style="color: Gold"></i>
                                     <i class="far fa-star" style="color: Gold"></i> <small class="text-muted">(Media de Avaliação)</small>
+
+                                    <span id="fav<?= $item->id ?>">
+                                        <?php if(!empty($item->favorito) && $item->favorito->ativo == 1): ?>
+                                            <i class="fas fa-heart float-right" onclick="favoritos('<?= $item->id ?>', 'preenchido')" data-tipo="preenchido" style="color: red" id="item<?= $item->id ?>"></i>
+                                        <?php else: ?>
+                                            <i class="far fa-heart float-right" onclick="favoritos('<?= $item->id ?>', 'vazio')" data-tipo="vazio" style="color: grey" id="item<?= $item->id ?>"></i>
+                                        <?php endif; ?>
+                                    </span>
                                     <br/>
                                     <p class="text-justify"><?= $item->descricao_curta ?></p>
                                 </div>

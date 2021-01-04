@@ -33,6 +33,13 @@
         );
     }
 
+    function get_estados_id($id)
+    {
+        $estado = get_estados();
+        
+        return $estado[$id-1];
+    }
+
     function palavra_proibidas()
     {
         return array(

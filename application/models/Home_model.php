@@ -27,6 +27,11 @@ class Home_model extends CI_Model{
 
                 $this->db->group_by("id", "desc");
                 $item->feedback = $this->db->get_where("Feedback", "id_servico = '$item->id'")->row();
+
+                if(!empty($this->dados))
+                    $item->favorito = $this->db->get_where("Favoritos", "id_servico = '$item->id' AND id_usuario = '".$this->dados->usuario_id."'")->row();
+                else
+                    $item->favorito = array();
             }
         }
 
@@ -48,9 +53,13 @@ class Home_model extends CI_Model{
     {
         $query = $this->db->get_where("Servico", "id = '$id'")->row();
 
-        $query->usuario_servico = $this->db->get_where("UsuarioServico", "id_servico = '$query->id'")->row();
-        $query->favoritos = $this->db->get_where("Favoritos", "id_servico = '$query->id'")->row();
+        $query->usuario_servico = $this->db->get_where("UsuarioServico", "id_servico = '$query->id'")->row();   
         $query->pagamento = $this->db->get_where("PagamentoServico", "id_servico = '$query->id'")->result();
+
+        if(!empty($this->dados))
+            $query->favorito = $this->db->get_where("Favoritos", "id_servico = '$query->id' AND id_usuario = '".$this->dados->usuario_id."'")->row();
+        else
+            $query->favorito = array();
 
         $this->db->order_by("principal", "desc");
         $query->imagens = $this->db->get_where("Imagens", "id_servico = '$query->id' and ativo = 1")->result();
@@ -90,7 +99,77 @@ class Home_model extends CI_Model{
         return $rst;
     }
 
+    public function favoritar()
+    {
+        $data = (object)$this->input->post();
+        $rst = (object)array("rst" => 0);
+        
+        if($data->tipo == "preenchido")
+        {
+            $this->db->set("ativo", 0);
 
+            $this->db->where("id_servico = '$data->id_servico' AND '".$this->dados->usuario_id."'");
+            if($this->db->update("Favoritos"))
+                $rst->rst = 2;
+            else
+                $rst->rst = 0;
+        }
+        else if($data->tipo == "vazio")
+        {
+            $query = $this->db->get_where("Favoritos", "id_servico = '$data->id_servico' AND id_usuario = '".$this->dados->usuario_id."'")->row();
+
+            if($query)
+            {
+                $this->db->set("ativo", 1);
+
+                $this->db->where("id = '$query->id'");
+                if($this->db->update("Favoritos"))
+                    $rst->rst = 1;
+                else
+                    $rst->rst = 0;
+            }
+            else
+            {
+                $this->db->set("data_inclusao", "date('now')", false);
+                $this->db->set("data_inclusao", "date('now')", false);
+                $this->db->set("ativo", 1);
+                $this->db->set("id_servico", $data->id_servico);
+                $this->db->set("id_usuario", $this->dados->usuario_id);
+
+                if($this->db->insert("Favoritos"))
+                    $rst->rst = 1;
+                else
+                    $rst->rst = 0;
+            }
+        }
+
+        return $rst;
+    }
+
+    public function contrata_servico()
+    {
+        $data = (object)$this->input->post();
+        $rst = (object)array("rst" => false, "msg" => "");
+
+        if(!isset($data->endereco))
+        {
+            $this->db->select("endereco, bairro, cidade, estado");
+            $query = $this->db->get_where("Usuario", "id = ".$this->dados->usuario_id)->row();
+
+            $estado = get_estados_id($query->estado);
+
+            $data->endereco = $query->endereco.", ".$query->bairro." - ".$query->cidade.", ".$estado->nome."";
+        }
+
+        echo '<pre>';
+        print_r($data);
+        echo '</pre>';
+        exit;
+
+        $this->db->set("");
+
+        return $rst;
+    }
 
     private function verifica_seguranca($dado)
     {
