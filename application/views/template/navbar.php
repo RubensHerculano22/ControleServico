@@ -9,7 +9,7 @@
       </li>
       <?php foreach($categorias[0]["filho"] as $item): ?>
         <li class="nav-item dropdown user-menu">
-          <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
+          <a href="#" class="nav-link dropdown-toggle">
             <?= $item["nome"] ?>
           </a>
           <ul class="dropdown-menu">
