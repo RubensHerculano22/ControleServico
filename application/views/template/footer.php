@@ -125,13 +125,5 @@
           });
         }
     }
-    $(document).ready(function(){
-
-      $(".favoritos").on("click", function(e){
-          e.preventDefault();
-          
-      });
-
-    });
 
 </script>
