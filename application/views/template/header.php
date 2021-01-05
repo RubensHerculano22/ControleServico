@@ -33,4 +33,18 @@
   <style>
   /* Pode colocar o css aqui, quando for para todas as paginas, caso seja para uma so eu vou criar depois a função para isso. */
   
+  .dropdown:hover .dropdown-menu {
+      display: block;
+      position: absolute;
+      transform: translate3d(5px, 28px, 0px); /* distancia entre menu e btn */
+      top: 0px;
+      left: 0px;
+      will-change: transform; 
+  }
+
+  .dropdown {
+      display: inline-block; 
+      list-style: none; 
+  }
+
   </style>
