@@ -76,8 +76,8 @@
                     <?php foreach($cards as $item): ?>
                         <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-xs-12 pb-4">
                             <div class="card h-100">
-                                <div class="card-header bg-info">
-                                    <h3 class="card-title"><?= $item->usuario->nome ?> - <?= $item->nome ?></h3>
+                                <div class="card-header" style="background-color: #e36802">
+                                    <h3 class="card-title text-white"><?= $item->usuario->nome ?> - <?= $item->nome ?></h3>
                                 </div>
                                 <div class="card-body">
                                     <i class="fas fa-star" style="color: Gold"></i>

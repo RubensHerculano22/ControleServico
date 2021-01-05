@@ -5,8 +5,8 @@
                 <div class="row">
                     <div class="col-md-12 col-sm-12 col-xs-12">
                         <div class="card">
-                            <div class="card-header bg-info">
-                                <h3 class="card-title">Informações</h3>
+                            <div class="card-header" style="background-color: #e36802">
+                                <h3 class="card-title text-white">Informações</h3>
                             </div>
                             <div class="card-body">
                                 <div class="row">
@@ -66,11 +66,11 @@
                     </div>
                     <div class="col-md-12 col-sm-12 col-xs-12">
                         <div class="card">
-                            <div class="card-header bg-info">
-                                <h3 class="card-title">Meios de Pagamento</h3>
+                            <div class="card-header" style="background-color: #e36802">
+                                <h3 class="card-title text-white">Meios de Pagamento</h3>
                                 <div class="card-tools">
                                     <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                        <i class="fas fa-minus"></i>
+                                        <i class="fas fa-minus text-white"></i>
                                     </button>
                                 </div>
                             </div>
@@ -230,11 +230,11 @@
                     </div>
                     <div class="col-md-12 col-sm-12 col-xs-12">
                         <div class="card">
-                            <div class="card-header bg-info">
-                                <h3 class="card-title">Descrição</h3>
+                            <div class="card-header" style="background-color: #e36802">
+                                <h3 class="card-title text-white">Descrição</h3>
                                 <div class="card-tools">
                                     <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                        <i class="fas fa-minus"></i>
+                                        <i class="fas fa-minus text-white"></i>
                                     </button>
                                 </div>
                             </div>
@@ -268,11 +268,11 @@
                     </div>
                     <div class="col-md-12 col-sm-12 col-xs-12">
                         <div class="card">
-                            <div class="card-header bg-info">
-                                <h3 class="card-title">Duvidas</h3>
+                            <div class="card-header" style="background-color: #e36802">
+                                <h3 class="card-title text-white">Duvidas</h3>
                                 <div class="card-tools">
                                     <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                        <i class="fas fa-minus"></i>
+                                        <i class="fas fa-minus text-white"></i>
                                     </button>
                                 </div>
                             </div>
@@ -283,7 +283,7 @@
                                         <div class="input-group">
                                             <input type="text" class="form-control" id="pergunta" placeholder="Digite aqui!">
                                             <span class="input-group-append">
-                                                <button type="button" id="perguntar" class="btn bg-orange">Perguntar!</button>
+                                                <button type="button" id="perguntar" class="btn btn-warning">Perguntar!</button>
                                             </span>
                                         </div>
                                     </div>
@@ -318,11 +318,11 @@
                     </div>
                     <div class="col-md-12 col-sm-12 col-xs-12">
                         <div class="card">
-                            <div class="card-header bg-info">
-                                <h3 class="card-title">Opiniões sobre o serviço</h3>
+                            <div class="card-header" style="background-color: #e36802">
+                                <h3 class="card-title text-white">Opiniões sobre o serviço</h3>
                                 <div class="card-tools">
                                     <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                        <i class="fas fa-minus"></i>
+                                        <i class="fas fa-minus text-white"></i>
                                     </button>
                                 </div>
                             </div>
@@ -406,9 +406,9 @@
                                         <div class="row">
                                             <div class="col-lg-2 col-md-3 col-sm-3 col">
                                                 <div class="nav flex-column nav-tabs h-100" id="vert-tabs-tab" role="tablist" aria-orientation="vertical">
-                                                    <a class="nav-link active" id="vert-tabs-todos-tab" style="color: #17a2b8" data-toggle="pill" href="#vert-tabs-todos" role="tab" aria-controls="vert-tabs-todos" aria-selected="true">Todos</a>
-                                                    <a class="nav-link" id="vert-tabs-positivos-tab" style="color: #17a2b8" data-toggle="pill" href="#vert-tabs-positivos" role="tab" aria-controls="vert-tabs-positivos" aria-selected="false">Positivas</a>
-                                                    <a class="nav-link" id="vert-tabs-negativos-tab" style="color: #17a2b8" data-toggle="pill" href="#vert-tabs-negativos" role="tab" aria-controls="vert-tabs-negativos" aria-selected="false">Negativas</a>
+                                                    <a class="nav-link active" id="vert-tabs-todos-tab" style="color: #e36802" data-toggle="pill" href="#vert-tabs-todos" role="tab" aria-controls="vert-tabs-todos" aria-selected="true">Todos</a>
+                                                    <a class="nav-link" id="vert-tabs-positivos-tab" style="color: #e36802" data-toggle="pill" href="#vert-tabs-positivos" role="tab" aria-controls="vert-tabs-positivos" aria-selected="false">Positivas</a>
+                                                    <a class="nav-link" id="vert-tabs-negativos-tab" style="color: #e36802" data-toggle="pill" href="#vert-tabs-negativos" role="tab" aria-controls="vert-tabs-negativos" aria-selected="false">Negativas</a>
                                                 </div>
                                             </div>
                                             <div class="col-lg-10 col-md-9 col-sm-9 col">
@@ -539,7 +539,7 @@
                         </div>
                         <div class="col-md-12 col-sm-12 col-xs-12">
                             <div class="form-group">
-                                <label for="nome">Endereço</label>
+                                <label for="nome">Endereço</label><small>(Sem o número residencial)</small>
                                 <input type="text" class="form-control" name="endereco" id="endereco" placeholder="Endereço">
                             </div>     
                         </div>
