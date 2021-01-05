@@ -45,13 +45,15 @@
 
                                         <div class="mt-4">
                                             <h2 class="mb-0">
-                                            <?= $info->valor ? $info->valor : "A Combinar" ?>
+                                            <?= $info->valor ? "R$: ".$info->valor.",00" : "A Combinar" ?>
                                             </h2>
                                         </div>
 
-                                        <!-- <div class="mt-2">
-                                            <h6><b>Quantidade:</b> 4</h6>
-                                        </div> -->
+                                        <?php if($info->quantidade_disponivel): ?>
+                                        <div class="mt-2">
+                                            <h6><b>Quantidade:</b> <?= $info->quantidade_disponivel ?></h6>
+                                        </div>
+                                        <?php endif; ?>
 
                                         <div class="mt-4">
                                             <button type="button" id="contratar" class="btn btn-warning btn-block btn-lg" data-toggle="modal" data-target="#modal_contratacao">
@@ -306,7 +308,7 @@
                                                 </ul>
                                                 <?php endforeach; ?>
                                             <?php else: ?>
-                                                <div class="callout callout-info mensagem_pergunta">
+                                                <div class="callout callout-warning mensagem_pergunta">
                                                     <p>Este Serviço ainda não possui perguntas. Seja o primeiro a realizar.</p>
                                                 </div>
                                             <?php endif; ?>

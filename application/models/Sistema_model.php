@@ -35,44 +35,63 @@ class Sistema_model extends CI_Model{
 
     public function inseri_servico()
     {
-        // $this->db->set("nome", "Bartenders");
-        // $this->db->set("ativo", 1);
-        // $this->db->set("descricao", "Uma descrição muito interessante para uma bartenders");
-        // $this->db->set("data_inclusao", "date('now')", false);
-        // $this->db->set("id_tipo_servico", 1);
-        // $this->db->set("id_categoria", 1);
-        // $this->db->insert("Servico");
+        $descricao = "<p>materiais para diferentes temas</p>
+                    <ul>
+                        <li>Ben 10</li>
+                        <li>Tinker bell</li>
+                        <li>Moana</li>
+                        <li>Frozen</li>
+                        <li>Galinha Pintadinha</li>
+                        <li>Peixonauta</li>
+                    </ul>
+                    <br/>
+                    <p>E muitos outros.</p>";
 
-        $this->db->set("id_tipo_pagamento", 1);
-        $this->db->set("id_servico", 2);
-        $this->db->insert("PagamentoServico");
+        $this->db->set("nome", "Materiais para festar de crianaças");
+        $this->db->set("ativo", 1);
+        $this->db->set("descricao_curta", "Materiais perfeitos para festa de crianças entre 0 a 5 anos, materiais para varios temas.");
+        $this->db->set("descricao", $descricao);
+        $this->db->set("data_inclusao", "date('now')", false);
+        $this->db->set("id_tipo_servico", 2);
+        $this->db->set("valor", "150,00");
+        $this->db->set("quantidade_disponivel", 7);
+        $this->db->set("id_categoria", 11);
+        $this->db->insert("Servico");
 
-        $this->db->set("id_tipo_pagamento", 20);
-        $this->db->set("id_servico", 2);
-        $this->db->insert("PagamentoServico");
-        
-        $this->db->set("id_tipo_pagamento", 17);
-        $this->db->set("id_servico", 2);
-        $this->db->insert("PagamentoServico");
-
-        $this->db->set("id_tipo_pagamento", 16);
-        $this->db->set("id_servico", 2);
-        $this->db->insert("PagamentoServico");
-
-        $this->db->set("id_tipo_pagamento", 8);
-        $this->db->set("id_servico", 2);
-        $this->db->insert("PagamentoServico");
-
-        $this->db->set("id_tipo_pagamento", 3);
-        $this->db->set("id_servico", 2);
-        $this->db->insert("PagamentoServico");
+        $this->db->set("id_servico", 6);
+        $this->db->set("id_usuario", 2);
+        $this->db->insert("UsuarioServico");
 
         $this->db->set("id_tipo_pagamento", 9);
-        $this->db->set("id_servico", 2);
+        $this->db->set("id_servico", 6);
+        $this->db->insert("PagamentoServico");
+
+        $this->db->set("id_tipo_pagamento", 17);
+        $this->db->set("id_servico", 6);
+        $this->db->insert("PagamentoServico");
+        
+        $this->db->set("id_tipo_pagamento", 8);
+        $this->db->set("id_servico", 6);
+        $this->db->insert("PagamentoServico");
+
+        $this->db->set("id_tipo_pagamento", 12);
+        $this->db->set("id_servico", 6);
+        $this->db->insert("PagamentoServico");
+
+        $this->db->set("id_tipo_pagamento", 2);
+        $this->db->set("id_servico", 6);
+        $this->db->insert("PagamentoServico");
+
+        $this->db->set("id_tipo_pagamento", 4);
+        $this->db->set("id_servico", 6);
         $this->db->insert("PagamentoServico");
 
         $this->db->set("id_tipo_pagamento", 13);
-        $this->db->set("id_servico", 2);
+        $this->db->set("id_servico", 6);
+        $this->db->insert("PagamentoServico");
+
+        $this->db->set("id_tipo_pagamento", 20);
+        $this->db->set("id_servico", 6);
         $this->db->insert("PagamentoServico");
     }
 
