@@ -8,10 +8,10 @@
                 </ol>
                 <div class="carousel-inner">
                     <div class="carousel-item active">
-                        <img class="d-block w-100" src="<?= base_url("assets/img/banner_bem_vindo.jpeg") ?>" alt="First slide" style="max-height: 750px;">
+                        <img class="d-block w-100" src="<?= base_url("assets/img/Banner.png") ?>" alt="First slide" style="max-height: 750px;">
                     </div>
                     <div class="carousel-item">
-                        <img class="d-block w-100" src="https://i2.wp.com/www.nerdtrip.com.br/wp-content/uploads/2020/03/KONOSUBA.png?fit=1280%2C720&ssl=1" alt="Second slide" style="max-height: 750px;">
+                        <img class="d-block w-100" src="<?= base_url("assets/img/Banner2.png") ?>" alt="Second slide" style="max-height: 750px;">
                     </div>
                 </div>
                 <a class="carousel-control-prev" href="#bannerhome" role="button" data-slide="prev">
