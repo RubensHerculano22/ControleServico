@@ -65,6 +65,8 @@ class Home_model extends CI_Model{
         $query->imagens = $this->db->get_where("Imagens", "id_servico = '$query->id' and ativo = 1")->result();
         $query->perguntas = $this->db->get_where("Perguntas", "id_servico = '$query->id'")->result();
 
+        
+
         return $query;
     }
 
@@ -146,6 +148,16 @@ class Home_model extends CI_Model{
         return $rst;
     }
 
+    public function get_servico_favorito()
+    {
+        $query = $this->db->get_where("Favoritos", "id_usuario = ".$this->dados->usuario_id." AND ativo = 1")->result();
+
+        echo '<pre>';
+        print_r($query);
+        echo '</pre>';
+        exit;
+    }
+
     public function contrata_servico()
     {
         $data = (object)$this->input->post();
@@ -161,12 +173,22 @@ class Home_model extends CI_Model{
             $data->endereco = $query->endereco.", ".$query->bairro." - ".$query->cidade.", ".$estado->nome."";
         }
 
-        echo '<pre>';
-        print_r($data);
-        echo '</pre>';
-        exit;
+        $this->db->set("id_servico", $data->id_servico);
+        $this->db->set("id_solicitante", $this->dados->usuario_id);
+        $this->db->set("data_servico", formatar($data->data_servico, "dt2bd"));
+        $this->db->set("hora_servico", $data->hora_servico);
+        $this->db->set("descricao", $data->descricao);
+        $this->db->set("endereco", $data->endereco);
 
-        $this->db->set("");
+        if($this->db->insert("ContrataServico"))
+        {
+            $rst->rst = true;
+            $rst->msg = "Solicitação de serviço enviado para o Prestador";
+        }
+        else
+        {
+            $rst->msg = "Erro ao solicitar o serviço, tente novamente mais tarde.";
+        }
 
         return $rst;
     }

@@ -1,8 +1,8 @@
-<nav class="main-header navbar navbar-expand navbar-orange navbar-light">
+<nav class="main-header navbar navbar-expand navbar-info navbar-dark">
     <!-- Left navbar links -->
     <ul class="navbar-nav">
       <li class="d-none d-sm-inline-block">
-        <span class="h3 brand-text">NexToYou</span>
+        <span class="h3 brand-text" style="color: #fff1e6">NextoYou</span>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
         <a href="<?= base_url("") ?>" class="nav-link">Home</a>
@@ -43,7 +43,7 @@
           <span class="d-none d-md-inline"><?= $dados->nome." ".$dados->sobrenome ?></span>
         </a>
         <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-          <li class="bg-info">
+          <li class="bg-orange">
             <div class="text-center pt-3">
               <img src="https://www.microlins.com.br/galeria/repositorio/images/noticias/como-posicionar-melhor-seu-perfil-no-linkedin/02-Como-posicionar-melhor-seu-perfil-do-Linkedin.png" class="img-circle elevation-2" alt="User Image" style="max-width: 75px;">
             </div>

@@ -90,46 +90,64 @@ $(document).ready(function(){
 
     $("#submit").submit(function(e){
         e.preventDefault();
-        console.log("veio");
-        var data = $(this).serialize();
-        data = new FormData($("#submit").get(0));
+        if(LOGGED == 0)
+        {
+            Swal.fire({
+                title: 'Aviso',
+                text: "Para realizar a contratação de um serviço é necessário estar autentificado. Deseja ir para a pagina de Autentificação?",
+                icon: 'info',
+                showCancelButton: true,
+                confirmButtonText: `Sim`,
+                cancelButtonText: `Não`,
+                }).then((result) => {
+                if (result.isConfirmed)
+                {
+                    window.location.href = BASE_URL+"Usuario/login";
+                }
+                    
+            })
+        }
+        else
+        {
+            var data = $(this).serialize();
+            data = new FormData($("#submit").get(0));
+    
+            $.ajax({
+                type: "post",
+                url: BASE_URL+"Home/contrata_servico",
+                cache: false,
+                contentType: false,
+                processData: false,
+                dataType: "json",
+                data: data,
+                success: function(data)
+                {
+                    console.log(data);
+                    if(data.rst === true)
+                    {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Sucesso',
+                            text: 'Pedido de contratação enviado para o Prestador, você será notificado quando houver retorno'
+                        });
+                        $("#modal_contratacao").modal("hide");
+                    }
+                    else if(data.rst === false)
+                    {
+                        showNotification("warning", "Erro ao pedir contratação ", data.msg, "toast-top-center");
+                    }
+                }
+            });
+        }
+    });
 
-        $.ajax({
-            type: "post",
-            url: BASE_URL+"Home/contrata_servico",
-            cache: false,
-            contentType: false,
-            processData: false,
-            dataType: "json",
-            data: data,
-            success: function(data)
-            {
-                if(data.rst === 1)
-                {
-                    window.location.href = BASE_URL+"Home";
-                }
-                else if(data.rst === 2)
-                {
-                    Swal.fire({
-                        title: 'Erro',
-                        text: data.msg,
-                        icon: 'info',
-                        confirmButtonText: `Ok`,
-                        }).then((result) => {
-                        if (result.isConfirmed)
-                            window.location.href = BASE_URL+"Usuario/login";
-                    })
-                }
-                else if(data.rst === 0)
-                {
-                    showNotification("warning", "Erro ao cadastrar", data.msg, "toast-top-center");
-                }
-                else if(data.rst === 4)
-                {
-                    showNotification("success", "Sucesso", data.msg, "toast-top-center");
-                }
-            }
-        });
+    $("#modal_contratacao").on('hidden.bs.modal', function (e) {
+        $("#data_servico").val("");
+        $("#hora_servico").val("");
+        $("#descricao").val("");
+        $("#endereco_cadastrado")[0].checked = false;
+        $("#endereco").val("");
+        $("#endereco").attr("disabled", false);
     });
 
 });
