@@ -29,3 +29,8 @@
   <link rel="stylesheet" href="<?= base_url("assets/plugins/toastr/toastr.min.css") ?>">
   <!-- summernote -->
   <link rel="stylesheet" href="<?= base_url("assets/plugins/summernote/summernote-bs4.min.css") ?>">
+
+  <style>
+  /* Pode colocar o css aqui, quando for para todas as paginas, caso seja para uma so eu vou criar depois a função para isso. */
+  
+  </style>
