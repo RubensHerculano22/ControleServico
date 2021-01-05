@@ -64,8 +64,8 @@ class Home_model extends CI_Model{
         $this->db->order_by("principal", "desc");
         $query->imagens = $this->db->get_where("Imagens", "id_servico = '$query->id' and ativo = 1")->result();
         $query->perguntas = $this->db->get_where("Perguntas", "id_servico = '$query->id'")->result();
-
-        
+        $query->subcategoria = $this->db->get_where("Categoria", "id = $query->id_categoria")->row();
+        $query->categoria = $this->db->get_where("Categoria", "id = ".$query->subcategoria->id_pai)->row();
 
         return $query;
     }

@@ -52,8 +52,7 @@ class Home extends CI_Controller{
     {
         $this->data["info"] = $this->m_home->get_servico_info($id);
 
-        $this->data["breadcrumb"] = (object)array("titulo" => "Detalhes de Produtos/Serviços", "before" => array((object)array("nome" => "Home", "link" => "Home"), (object)array("nome" => "Categoria dele", "link" => "Home/lista")), "current" => "Nome do produto");;
-
+        $this->data["breadcrumb"] = (object)array("titulo" => "Detalhes de Produtos/Serviços", "before" => array((object)array("nome" => "Home", "link" => "Home"), (object)array("nome" => "".$this->data["info"]->subcategoria->nome, "link" => "Home/lista/".$this->data["info"]->categoria->nome."/".$this->data["info"]->subcategoria->nome)), "current" => "".$this->data["info"]->nome);
         $this->data["javascript"] = [
             base_url("assets/js/home/detalhes.js")
         ];
