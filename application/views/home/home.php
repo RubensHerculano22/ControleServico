@@ -184,9 +184,9 @@
                 sistema, e o melhor de tudo: Tudo bem perto de Você!</p>
                 <div class="row pb-5 pt-5">
                     <div class="col-md-4 col-sm-12 co-xs-12 text-center">
-                        <img class="img-fluid mb-2 rounded-circle" style="max-width: 150px; max-height: 150px;" src="<?= base_url("assets/img/seg.png") ?>" />
-                        <h5 class="title">Segurança em primeiro lugar</h5>
-                        <p class="text-muted">Tudo para deixar o nosso cliente o mais satisfeito possível</p>
+                        <img class="img-fluid mb-2 rounded-circle" style="max-width: 100px; max-height: 100px;" src="<?= base_url("assets/img/social.png") ?>" />
+                        <h5 class="title">Comunicação direto com o prestador</h5>
+                        <p class="text-muted">Tenha a possibilidade de conversar diretamente com os prestadores e tirar todas as suas dúvidas!</p> 
                     </div>
                     <div class="col-md-4 col-sm-12 co-xs-12 text-center">
                         <img class="img-fluid mb-2 rounded-circle" style="max-width: 100px; max-height: 100px;" src="<?= base_url("assets/img/lista_check.png") ?>" />
