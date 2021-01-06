@@ -14,10 +14,10 @@
             <div class="content-header">
                 <div class="container-fluid">
                     <div class="row">
-                        <div class="col-sm-6">
+                        <!-- <div class="col-sm-6">
                             <h1 class="m-0"><?= $breadcrumb->titulo ?></h1>
-                        </div>
-                        <div class="col-sm-6">
+                        </div> -->
+                        <div class="col-sm-12">
                             <ol class="breadcrumb float-sm-right">
                                 <?php foreach($breadcrumb->before as $item): ?>
                                     <li class="breadcrumb-item"><a href="<?= base_url($item->link) ?>" style="color: #17a2b8 "><?= $item->nome ?></a></li>

@@ -1,14 +1,16 @@
 <nav class="main-header navbar navbar-expand navbar-info navbar-dark">
     <!-- Left navbar links -->
     <ul class="navbar-nav">
+      <a href="<?= base_url("") ?>">
+      <li class="d-none d-sm-inline-block">
+        <img src="<?= base_url("assets/img/logo_transparent.png") ?>" style="max-width: 35px; max-height: 35px;"/>
+      </li>
       <li class="d-none d-sm-inline-block">
         <span class="h3 brand-text" style="color: #fff1e6">NextoYou</span>
       </li>
-      <li class="nav-item d-none d-sm-inline-block">
-        <a href="<?= base_url("") ?>" class="nav-link">Home</a>
-      </li>
+      </a>
       <?php foreach($categorias[0]["filho"] as $item): ?>
-        <li class="nav-item dropdown user-menu">
+        <li class="nav-item dropdown itens-menu user-menu">
           <a href="#" class="nav-link dropdown-toggle">
             <?= $item["nome"] ?>
           </a>
