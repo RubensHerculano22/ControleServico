@@ -21,9 +21,8 @@ class Home_model extends CI_Model{
 
             foreach($rst as $item)
             {
-                $this->db->select("usu.nome, usu.sobrenome");
-                $this->db->join("Usuario usu", "usu.id = usuSer.id_usuario");
-                $item->usuario = $this->db->get_where("UsuarioServico usuSer", "usuSer.id_servico = '$item->id'")->row();
+                $this->db->select("nome, sobrenome");
+                $item->usuario = $this->db->get_where("Usuario", "id = '$item->id_usuario'")->row();
 
                 $this->db->group_by("id", "desc");
                 $item->feedback = $this->db->get_where("Feedback", "id_servico = '$item->id'")->row();
