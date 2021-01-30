@@ -16,7 +16,7 @@
           </a>
           <ul class="dropdown-menu">
             <?php foreach($item["filho"] as $value): ?>
-              <li><a class="dropdown-item" href="<?= base_url("Home/lista/").$item["nome"]."/".$value->nome ?>"><?= $value->nome ?></a></li>
+              <li><a class="dropdown-item" href="<?= base_url("Servico/lista/").$item["nome"]."/".$value->nome ?>"><?= $value->nome ?></a></li>
             <?php endforeach; ?>
           </ul>
         </li>

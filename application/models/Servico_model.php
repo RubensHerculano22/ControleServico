@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Home_model extends CI_Model{
+class Servico_model extends CI_Model{
     
     function __construct() 
     {
@@ -10,7 +10,7 @@ class Home_model extends CI_Model{
     }
 
     //Faz a função que ele lista apenas a categoria se necessário.
-    public function get_cards($categoria, $subcategoria)
+    public function servico_categoria($categoria, $subcategoria)
     {
         $rst = array();
         if($subcategoria)
@@ -48,9 +48,9 @@ class Home_model extends CI_Model{
         return $rst;
     }
 
-    public function get_servico_info($id)
+    public function get_info_servico($id_servico)
     {
-        $query = $this->db->get_where("Servico", "id = '$id'")->row();
+        $query = $this->db->get_where("Servico", "id = '$id_servico'")->row();
 
         $query->pagamento = $this->db->get_where("PagamentoServico", "id_servico = '$query->id'")->result();
 
@@ -68,7 +68,7 @@ class Home_model extends CI_Model{
         return $query;
     }
 
-    public function perguntar()
+    public function cadastrar_pergunta()
     {
         $data = (object)$this->input->post();
         $rst = (object)array("rst" => false, "msg" => "", "pergunta" => "");
@@ -99,7 +99,7 @@ class Home_model extends CI_Model{
         return $rst;
     }
 
-    public function favoritar()
+    public function favorita_servico()
     {
         $data = (object)$this->input->post();
         $rst = (object)array("rst" => 0);
@@ -146,14 +146,11 @@ class Home_model extends CI_Model{
         return $rst;
     }
 
-    public function get_servico_favorito()
+    public function datas_disponiveis()
     {
-        $query = $this->db->get_where("Favoritos", "id_usuario = ".$this->dados->usuario_id." AND ativo = 1")->result();
+        $periodo = array();
 
-        echo '<pre>';
-        print_r($query);
-        echo '</pre>';
-        exit;
+        return $periodo;
     }
 
     public function contrata_servico()

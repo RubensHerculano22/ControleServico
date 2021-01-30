@@ -101,7 +101,7 @@
                                     <br/>
                                     <p class="text-justify"><?= $item->feedback ? $item->feedback : "Esse Serviço ainda não possui avaliação" ?></p>
                                     <!--Nome da pessoa que fez a avaliação - Uma avaliação.-->
-                                    <a href="<?= base_url("Home/detalhes/$item->nome/$item->id") ?>" class="btn btn-block btn-outline-primary">Ver Mais</a>
+                                    <a href="<?= base_url("Servico/detalhes/$item->nome/$item->id") ?>" class="btn btn-block btn-outline-primary">Ver Mais</a>
                                 </div>
                             </div>
                         </div>
@@ -118,7 +118,7 @@
                     <div class="row">
                         <?php foreach($lista_categoria as $item): ?>
                             <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
-                                <a class="nav-link" href="<?= base_url("Home/lista/$categoria/$item->nome") ?>"><?= $item->nome ?></a>
+                                <a class="nav-link" href="<?= base_url("Servico/lista/$categoria/$item->nome") ?>"><?= $item->nome ?></a>
                             </div>
                         <?php endforeach; ?>
                     </div>

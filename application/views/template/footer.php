@@ -98,7 +98,7 @@
           var data = {"id_servico": id, "tipo": tipo};
           $.ajax({
               type: "post",
-              url: BASE_URL+"Home/favoritar/",
+              url: BASE_URL+"Servico/favorita_servico/",
               dataType: "json",
               data:  data,
               success: function(data)

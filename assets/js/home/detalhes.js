@@ -36,7 +36,7 @@ $(document).ready(function(){
             {
                 $.ajax({
                     type: "post",
-                    url: BASE_URL+"Home/perguntar/",
+                    url: BASE_URL+"Servico/cadastrar_pergunta/",
                     dataType: "json",
                     data:  data,
                     success: function(data)
@@ -88,6 +88,24 @@ $(document).ready(function(){
         }
     });
 
+    $("#modal_contratacao").on("show.bs.modal", function(){
+
+        var id = $("#id_servico").val();
+        $.ajax({
+            type: "post",
+            url: BASE_URL+"Servico/datas_disponiveis/"+id,
+            cache: false,
+            contentType: false,
+            processData: false,
+            dataType: "json",
+            data: data,
+            success: function(data)
+            {
+                //montar função para colocar as datas que serão utilizadas.
+            }
+        });
+    })
+
     $("#submit").submit(function(e){
         e.preventDefault();
         if(LOGGED == 0)
@@ -114,7 +132,7 @@ $(document).ready(function(){
     
             $.ajax({
                 type: "post",
-                url: BASE_URL+"Home/contrata_servico",
+                url: BASE_URL+"Servico/contrata_servico",
                 cache: false,
                 contentType: false,
                 processData: false,

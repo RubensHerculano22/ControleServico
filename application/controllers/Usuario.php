@@ -12,7 +12,7 @@ class Usuario extends CI_Controller{
         $this->data["dados"] = $this->dados;
         $this->local = $this->session->userdata("local");
         $this->data["local"] = $this->local;
-        $this->data["categorias"] = $this->m_sistema->get_categorias();
+        $this->data["categorias"] = $this->m_sistema->listar_categorias();
 
         $this->load->model("Usuario_model", "m_usuario");
 
@@ -28,7 +28,7 @@ class Usuario extends CI_Controller{
         $this->data["breadcrumb"] = (object)array("titulo" => $titulo, "before" => array((object)array("nome" => "Home", "link" => "Home")), "current" => $titulo);
 
         $this->data["estados"] = get_estados();
-        $this->data["usuario"] = $this->m_usuario->get_usuario($id);
+        $this->data["usuario"] = $this->m_usuario->info_usuario($id);
 
         $this->data["javascript"] = [
             base_url("assets/js/usuario/form.js")
@@ -64,9 +64,9 @@ class Usuario extends CI_Controller{
         }
     }
 
-    public function cadastra()
+    public function salva_usuario()
     {
-        $rst = $this->m_usuario->geren_usuario();
+        $rst = $this->m_usuario->salva_usuario();
         echo json_encode($rst, JSON_UNESCAPED_UNICODE);
     }
 

@@ -46,7 +46,7 @@ $(document).ready(function(){
         {
             $.ajax({
                 type: "post",
-                url: BASE_URL+"Usuario/cadastra",
+                url: BASE_URL+"Usuario/salva_usuario",
                 cache: false,
                 contentType: false,
                 processData: false,
@@ -56,7 +56,7 @@ $(document).ready(function(){
                 {
                     if(data.rst === 1)
                     {
-                        window.location.href = BASE_URL+"Home";
+                        window.location.href = BASE_URL+"Servico";
                     }
                     else if(data.rst === 2)
                     {

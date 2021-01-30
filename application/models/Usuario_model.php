@@ -19,7 +19,7 @@ class Usuario_model extends CI_Model{
         "usuario_id" => 0,
     );
 
-    public function get_usuario($id)
+    public function info_usuario($id)
     {
         $query = $this->db->get_where("Usuario", "id = $id")->row();
 
@@ -66,7 +66,7 @@ class Usuario_model extends CI_Model{
         return $loginData;
     }
 
-    public function geren_usuario()
+    public function salva_usuario()
     {
         $data = (object)$this->input->post();
         $rst = (object)array("rst" => 0, "msg" => "");

@@ -3,7 +3,7 @@
         <div class="col-md-auto">
             <div class="card card-outline card-info">
                 <div class="card-header text-center">
-                    <a href="<?= base_url("Home") ?>" class="h1" onMouseOver="this.style.color='#17a2b8'" onMouseOut="this.style.color='#212529'">NexToYou</a>
+                    <a href="<?= base_url("Servico") ?>" class="h1" onMouseOver="this.style.color='#17a2b8'" onMouseOut="this.style.color='#212529'">NexToYou</a>
                 </div>
                 <div class="card-body">
                     <p class="login-box-msg">Autentifique-se para melhorar sua navegação &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
