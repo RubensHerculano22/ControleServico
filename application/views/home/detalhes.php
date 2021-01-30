@@ -491,7 +491,7 @@
                                         <i class="fas fa-star fa-1x" style="color: Gold"></i>
                                         <i class="fas fa-star-half-alt fa-1x" style="color: Gold"></i> -->
                                         <input type="hidden" value="<?=$info->id ?>" name="id_servico" id="id_servico"/>
-                                        <input type="hidden" value="<?= $info->usuario_servico->id_usuario ?>" id="id_usuario" />
+                                        <input type="hidden" value="<?= $info->id_usuario ?>" id="id_usuario" />
                                     </div>
                                 </div>
                             </div>

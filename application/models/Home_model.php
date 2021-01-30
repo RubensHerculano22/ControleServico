@@ -52,7 +52,6 @@ class Home_model extends CI_Model{
     {
         $query = $this->db->get_where("Servico", "id = '$id'")->row();
 
-        $query->usuario_servico = $this->db->get_where("UsuarioServico", "id_servico = '$query->id'")->row();   
         $query->pagamento = $this->db->get_where("PagamentoServico", "id_servico = '$query->id'")->result();
 
         if(!empty($this->dados))
