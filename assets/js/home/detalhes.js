@@ -98,7 +98,7 @@ $(document).ready(function(){
             contentType: false,
             processData: false,
             dataType: "json",
-            data: data,
+            // data: data,
             success: function(data)
             {
                 //montar função para colocar as datas que serão utilizadas.
