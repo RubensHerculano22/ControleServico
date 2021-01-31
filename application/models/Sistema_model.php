@@ -35,6 +35,23 @@ class Sistema_model extends CI_Model{
 
     public function inseri_servico()
     {
+        // $descricao = "<p>O Bartender renomado do bairro para dar um pingo de animação em seus eventos!</p>
+        // <p>Tipos: </p>
+        // <ul> 
+        //     <li>Eventos;</li>
+        //     <li>Aniversários;</li>
+        //     <li>Debutantes;</li>
+        //     <li>Formaturas.</li>
+        //     <br/>
+        // </ul>
+        //     <p>Contrate-nos</p>
+        //     <br/>";
+        
+        // $this->db->set("descricao", $descricao);
+
+        // $this->db->where("id", 4);
+        // $this->db->update("Servico");
+
         $descricao = "<p>No ramo há 10 anos, trabalho com fotos de qualidade, books ou quadros inclusos</p>
         <p>Presto serviços para: </p>
         <ul> 
