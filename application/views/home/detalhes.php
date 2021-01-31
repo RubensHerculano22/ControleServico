@@ -227,7 +227,7 @@
                                         <h6>Outros Meios</h6>
                                         <div class="row">
                                             <?php foreach($info->pagamento as $item): ?>
-                                                <?php if($item->id_tipo_pagamento == 20): ?>
+                                                <?php if($item->id_tipo_pagamento == 11): ?>
                                                     <div class="col-md-2 col-sm-4">
                                                         <img class="img-fluid mb-2" src="https://www.autoimportsweb.com.br/wp-content/uploads/2019/02/ico_boleto.svg" style="max-width: 150px; max-height: 40px;" />
                                                         <span class="text-muted">Boleto</span>

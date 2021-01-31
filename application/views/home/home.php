@@ -38,7 +38,7 @@
                 <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12 pb-4">
                     <div class="card h-100">
                         <div class="card-header bg-info">
-                            <h3 class="card-title">Primeiro nome da pessoa - Nome do Serviço</h3>
+                            <h3 class="card-title">Lie - Materiais para festar de crianças</h3>
                         </div>
                         <div class="card-body">
                             <i class="fas fa-star" style="color: Gold"></i>
@@ -49,19 +49,20 @@
 
                             <i class="fas fa-heart float-right favoritos" style="color: Red"></i>
                             <br/>
-                            <p class="text-justify">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                            <p class="text-justify">Materiais perfeitos para festa de crianças entre 0 a 5 anos, materiais para varios temas.</p>
                         </div>
                         <div class="card-footer disabled">
                             <h3 class="card-title">Avaliação mais recente</h3>
                             <br/>
-                            <p class="text-justify">Nome da pessoa que fez a avaliação - Uma avaliação.</p>
+                            <p class="text-justify">Esse Serviço ainda não possui avaliação.</p>
+                            <a href="<?= base_url("Servico/detalhes/Materiais para festar de crianças/6") ?>" class="btn btn-block btn-outline-primary">Ver Mais</a>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12 pb-4">
                     <div class="card h-100">
                         <div class="card-header bg-info">
-                            <h3 class="card-title">Primeiro nome da pessoa - Nome do Serviço</h3>
+                            <h3 class="card-title">Rubens - Salão de Festas - Debutante</h3>
                         </div>
                         <div class="card-body">
                             <i class="fas fa-star" style="color: Gold"></i>
@@ -72,12 +73,13 @@
 
                             <i class="far fa-heart float-right favoritos" style="color: grey"></i>
                             <br/>
-                            <p class="text-justify">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+                            <p class="text-justify">Salão de Festas para as garotas que estão completando seus 15 anos.</p>
                         </div>
                         <div class="card-footer">
                             <h3 class="card-title">Avaliação mais recente</h3>
                             <br/>
-                            <p class="text-justify">Nome da pessoa que fez a avaliação - Uma avaliação.</p>
+                            <p class="text-justify">Esse Serviço ainda não possui avaliação.</p>
+                            <a href="<?= base_url("Servico/detalhes/Salão de Festas - Debutante/11") ?>" class="btn btn-block btn-outline-primary">Ver Mais</a>
                         </div>
                     </div>
                 </div>
@@ -95,12 +97,13 @@
 
                             <i class="far fa-heart float-right favoritos" style="color: grey"></i>
                             <br/>
-                            <p class="text-justify">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                            <p class="text-justify">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
                         </div>
                         <div class="card-footer">
                             <h3 class="card-title">Avaliação mais recente</h3>
                             <br/>
-                            <p class="text-justify">Nome da pessoa que fez a avaliação - Uma avaliação.</p>
+                            <p class="text-justify">Esse Serviço ainda não possui avaliação.</p>
+                            <a href="<?= base_url("Servico/detalhes/Materiais para festar de crianças/6") ?>" class="btn btn-block btn-outline-primary">Ver Mais</a>
                         </div>
                     </div>
                 </div>
@@ -123,7 +126,8 @@
                         <div class="card-footer">
                             <h3 class="card-title">Avaliação mais recente</h3>
                             <br/>
-                            <p class="text-justify">Nome da pessoa que fez a avaliação - Uma avaliação.</p>
+                            <p class="text-justify">Esse Serviço ainda não possui avaliação.</p>
+                            <a href="<?= base_url("Servico/detalhes/Materiais para festar de crianças/6") ?>" class="btn btn-block btn-outline-primary">Ver Mais</a>
                         </div>
                     </div>
                 </div>
@@ -141,12 +145,13 @@
 
                             <i class="fas fa-heart float-right favoritos" style="color: Red"></i>
                             <br/>
-                            <p class="text-justify">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+                            <p class="text-justify">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
                         </div>
                         <div class="card-footer">
                             <h3 class="card-title">Avaliação mais recente</h3>
                             <br/>
-                            <p class="text-justify">Nome da pessoa que fez a avaliação - Uma avaliação.</p>
+                            <p class="text-justify">Esse Serviço ainda não possui avaliação.</p>
+                            <a href="<?= base_url("Servico/detalhes/Materiais para festar de crianças/6") ?>" class="btn btn-block btn-outline-primary">Ver Mais</a>
                         </div>
                     </div>
                 </div>
@@ -169,7 +174,8 @@
                         <div class="card-footer">
                             <h3 class="card-title">Avaliação mais recente</h3>
                             <br/>
-                            <p class="text-justify">Nome da pessoa que fez a avaliação - Uma avaliação.</p>
+                            <p class="text-justify">Esse Serviço ainda não possui avaliação.</p>
+                            <a href="<?= base_url("Servico/detalhes/Materiais para festar de crianças/6") ?>" class="btn btn-block btn-outline-primary">Ver Mais</a>
                         </div>
                     </div>
                 </div>
