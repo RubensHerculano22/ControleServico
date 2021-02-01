@@ -9,6 +9,12 @@ class Sistema_model extends CI_Model{
             
     }
 
+    /**
+     * Lista de todas as categorias, sendo criado indexes com base em seu id pai.
+     * @access public
+     * @param  string   $dado   Texto a ser verificado.
+     * @return object;
+    */
     public function listar_categorias()
     {
         $categoria = $this->db->get_where("Categoria", "id_pai = 0")->result();
