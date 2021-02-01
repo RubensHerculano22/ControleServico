@@ -6,6 +6,7 @@ $(document).ready(function(){
     });
     $('[data-mask]').inputmask();
 
+    //Cadastra uma pergunta.
     $("#perguntar").on("click", function(e){
         e.preventDefault();
 
@@ -76,6 +77,7 @@ $(document).ready(function(){
         }
     });
 
+    //realiza a ativação e desativação do campo de endereço
     $("#endereco_cadastrado").on("click", function(){
         checked = $("#endereco_cadastrado")[0].checked;
         if(checked == true)

@@ -40,7 +40,7 @@ class Servico extends CI_Controller{
 
         $this->data["categoria"] = $categoria;
         $this->data["subcategoria"] = $subcategoria;
-        $this->data["cards"] = $this->m_servico->servico_categoria($categoria, $subcategoria);
+        $this->data["cards"] = $this->m_servico->servico_categoria($subcategoria);
         $this->data["lista_categoria"] = $this->m_servico->get_subcategoria($categoria, $subcategoria);
 
         $this->data["breadcrumb"] = (object)array("titulo" => "Lista de Produtos/Serviços", "before" => array((object) array("nome" => "Home", "link" => "Servico"), (object)array("nome" => "$categoria", "link" => "Servico/lista/$categoria/$subcategoria")), "current" => "$subcategoria");

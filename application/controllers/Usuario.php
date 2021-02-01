@@ -75,6 +75,7 @@ class Usuario extends CI_Controller{
         $rst = $this->m_usuario->autentifica();
         if($rst->logged)
         {
+            //Salva na sessão os dados do usuario logado
             $this->session->set_userdata(array("is_logged" => true, "dados" . APPNAME => $rst));
             $rst->local = $this->session->userdata("local");
         }

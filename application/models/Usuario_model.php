@@ -19,6 +19,12 @@ class Usuario_model extends CI_Model{
         "usuario_id" => 0,
     );
 
+    /**
+     * Consulta todas as informações do usuario.
+     * @access public
+     * @param  int   $id   identificador do Usuario.
+     * @return object;
+    */
     public function info_usuario($id)
     {
         $query = $this->db->get_where("Usuario", "id = $id")->row();
@@ -26,6 +32,11 @@ class Usuario_model extends CI_Model{
         return $query;
     }
 
+    /**
+     * Realiza a autentificação no sistema.
+     * @access public
+     * @return object;
+    */
     public function autentifica()
     {
         $data = (object)$this->input->post();
@@ -46,6 +57,7 @@ class Usuario_model extends CI_Model{
             return $loginData;
         }
 
+        //Realiza a consulta a partir dos dados digitados pelo usuario.
         $query = $this->db->get_where("Usuario", "email = '$data->email' AND senha = '".md5($data->senha)."'")->row();
 
         if(!$query)
@@ -66,11 +78,17 @@ class Usuario_model extends CI_Model{
         return $loginData;
     }
 
+    /**
+     * Realiza o cadastro de usuario no sistema.
+     * @access public
+     * @return object;
+    */
     public function salva_usuario()
     {
         $data = (object)$this->input->post();
         $rst = (object)array("rst" => 0, "msg" => "");
 
+        //verifica se possui um usuario para ser editado e verifica se o email já não está sendo utilizado quando for realizar o cadastro.
         if(!empty($data->id_usuario) || $this->verifica_email(strtolower($data->email)))
         {
             $this->db->set("nome", $data->nome);
@@ -85,9 +103,11 @@ class Usuario_model extends CI_Model{
             $this->db->set("cidade", $data->cidade);
             $this->db->set("estado", $data->estado);
             $this->db->set("email", strtolower($data->email));
+            //Verifica se a senha também será alterada.
             if($data->senha)
                 $this->db->set("senha", md5($data->senha));
 
+            //Verifica se será uma edição ou inserção
             if(isset($data->id_usuario) && $data->id_usuario)
             {
                 $this->db->where("id", $data->id_usuario);
@@ -124,8 +144,13 @@ class Usuario_model extends CI_Model{
 
         return $rst;
     }
-
-    public function verifica_email($email)
+/**
+     * Realiza a verificação se o email já está cadastrado no sistema.
+     * @access private
+     * @param  string   $email   email do usuario.
+     * @return boolean;
+    */
+    private function verifica_email($email)
     {
         $query = $this->db->get_where("Usuario", "email = '$email'")->row();
 
@@ -139,6 +164,12 @@ class Usuario_model extends CI_Model{
         }
     }
 
+    /**
+     * Realiza a verificação no texto, para maior segurança.
+     * @access private
+     * @param  string   $dado   Texto a ser verificado.
+     * @return boolean;
+    */
     private function verifica_seguranca($dado)
     {
         $palavras = palavra_proibidas();
