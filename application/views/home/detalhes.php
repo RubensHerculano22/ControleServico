@@ -15,7 +15,7 @@
                                             <?php if($info->imagens): ?>
                                                 <img src="<?= $info->imagens[0]->img ?>" class="product-image" alt="Product Image" >    
                                             <?php else: ?>
-                                                <img src="https://www.animesxis.com.br/wp-content/uploads/2020/02/KonoSuba-Game-Smartphone.jpg" class="product-image" alt="Product Image" >
+                                                <img src="https://levecrock.com.br/wp-content/uploads/2020/05/Produto-sem-Imagem-por-Enquanto.jpg" class="product-image" alt="Product Image" style="max-width:500px;">
                                             <?php endif; ?>
                                         </div>
                                         <div class="col-12 product-image-thumbs">
@@ -24,10 +24,7 @@
                                                     <div class="product-image-thumb <?= $key == 0 ? "active" : "" ?>"><img src="<?= $item->img ?>"  alt="Product Image"></div>        
                                                 <?php endforeach; ?>
                                             <?php else: ?>
-                                                <div class="product-image-thumb active"><img src="https://www.animesxis.com.br/wp-content/uploads/2020/02/KonoSuba-Game-Smartphone.jpg"  alt="Product Image"></div>
-                                                <div class="product-image-thumb" ><img src="https://multiversos.com.br/wp-content/uploads/2016/05/Imagem-01.jpg" alt="Product Image"></div>
-                                                <div class="product-image-thumb" ><img src="https://i2.wp.com/anmtv.com.br/wp-content/uploads/konosuba-1.png?resize=800%2C400&ssl=1" alt="Product Image"></div>
-                                                <div class="product-image-thumb" ><img src="https://trecobox.com.br/wp-content/uploads/2018/11/konosuba-light-novel-ganhara-rpg-para-playstation-4-e-ps-vita-01.jpg" alt="Product Image"></div>
+                                                <div class="product-image-thumb active"><img src="https://levecrock.com.br/wp-content/uploads/2020/05/Produto-sem-Imagem-por-Enquanto.jpg"  alt="Product Image"></div>
                                             <?php endif; ?>
                                         </div>
                                     </div>

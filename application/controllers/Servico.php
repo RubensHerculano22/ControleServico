@@ -43,7 +43,7 @@ class Servico extends CI_Controller{
         $this->data["cards"] = $this->m_servico->servico_categoria($categoria, $subcategoria);
         $this->data["lista_categoria"] = $this->m_servico->get_subcategoria($categoria, $subcategoria);
 
-        $this->data["breadcrumb"] = (object)array("titulo" => "Lista de Produtos/Serviços", "before" => array((object) array("nome" => "Home", "link" => "Home"), (object)array("nome" => "$categoria", "link" => "Home/lista/$categoria/$subcategoria")), "current" => "$subcategoria");
+        $this->data["breadcrumb"] = (object)array("titulo" => "Lista de Produtos/Serviços", "before" => array((object) array("nome" => "Home", "link" => "Servico"), (object)array("nome" => "$categoria", "link" => "Servico/lista/$categoria/$subcategoria")), "current" => "$subcategoria");
 
         $this->data["content"] = $this->load->view("home/lista", $this->data, true);
         $this->load->view("template/content", $this->data);
@@ -53,7 +53,7 @@ class Servico extends CI_Controller{
     {
         $this->data["info"] = $this->m_servico->get_info_servico($id_servico);
 
-        $this->data["breadcrumb"] = (object)array("titulo" => "Detalhes de Produtos/Serviços", "before" => array((object)array("nome" => "Home", "link" => "Home"), (object)array("nome" => "".$this->data["info"]->subcategoria->nome, "link" => "Home/lista/".$this->data["info"]->categoria->nome."/".$this->data["info"]->subcategoria->nome)), "current" => "".$this->data["info"]->nome);
+        $this->data["breadcrumb"] = (object)array("titulo" => "Detalhes de Produtos/Serviços", "before" => array((object)array("nome" => "Home", "link" => "Servico"), (object)array("nome" => "".$this->data["info"]->subcategoria->nome, "link" => "Servico/lista/".$this->data["info"]->categoria->nome."/".$this->data["info"]->subcategoria->nome)), "current" => "".$this->data["info"]->nome);
         $this->data["javascript"] = [
             base_url("assets/js/home/detalhes.js")
         ];

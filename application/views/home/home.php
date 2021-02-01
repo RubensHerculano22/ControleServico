@@ -86,7 +86,7 @@
                 <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12 pb-4">
                     <div class="card h-100">
                         <div class="card-header bg-info">
-                            <h3 class="card-title">Primeiro nome da pessoa - Nome do Serviço</h3>
+                            <h3 class="card-title">Rubens - Bartenders Profissional</h3>
                         </div>
                         <div class="card-body">
                             <i class="fas fa-star" style="color: Gold"></i>
@@ -97,20 +97,20 @@
 
                             <i class="far fa-heart float-right favoritos" style="color: grey"></i>
                             <br/>
-                            <p class="text-justify">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                            <p class="text-justify">Bartenders profissional para festas, eventos, casamentos.</p>
                         </div>
                         <div class="card-footer">
                             <h3 class="card-title">Avaliação mais recente</h3>
                             <br/>
                             <p class="text-justify">Esse Serviço ainda não possui avaliação.</p>
-                            <a href="<?= base_url("Servico/detalhes/Materiais para festar de crianças/6") ?>" class="btn btn-block btn-outline-primary">Ver Mais</a>
+                            <a href="<?= base_url("Servico/detalhes/Bartenders Profissional/4") ?>" class="btn btn-block btn-outline-primary">Ver Mais</a>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12 pb-4">
                     <div class="card h-100">
                         <div class="card-header bg-info">
-                            <h3 class="card-title">Primeiro nome da pessoa - Nome do Serviço</h3>
+                            <h3 class="card-title">Lie - Fotógrafa</h3>
                         </div>
                         <div class="card-body">
                             <i class="fas fa-star" style="color: Gold"></i>
@@ -121,20 +121,20 @@
 
                             <i class="fas fa-heart float-right favoritos" style="color: Red"></i>
                             <br/>
-                            <p class="text-justify">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                            <p class="text-justify">Registre os melhores momentos da sua vida, contrate-nos!.</p>
                         </div>
                         <div class="card-footer">
                             <h3 class="card-title">Avaliação mais recente</h3>
                             <br/>
                             <p class="text-justify">Esse Serviço ainda não possui avaliação.</p>
-                            <a href="<?= base_url("Servico/detalhes/Materiais para festar de crianças/6") ?>" class="btn btn-block btn-outline-primary">Ver Mais</a>
+                            <a href="<?= base_url("Servico/detalhes/Fotógrafa/17") ?>" class="btn btn-block btn-outline-primary">Ver Mais</a>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12 pb-4">
                     <div class="card h-100">
                         <div class="card-header bg-info">
-                            <h3 class="card-title">Primeiro nome da pessoa - Nome do Serviço</h3>
+                            <h3 class="card-title">Lie - Boleira - Bolos de Qualidade</h3>
                         </div>
                         <div class="card-body">
                             <i class="fas fa-star" style="color: Gold"></i>
@@ -145,20 +145,20 @@
 
                             <i class="fas fa-heart float-right favoritos" style="color: Red"></i>
                             <br/>
-                            <p class="text-justify">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                            <p class="text-justify">Bolos de diversos sabores e tamanhos, para todos os gostos!.</p>
                         </div>
                         <div class="card-footer">
                             <h3 class="card-title">Avaliação mais recente</h3>
                             <br/>
                             <p class="text-justify">Esse Serviço ainda não possui avaliação.</p>
-                            <a href="<?= base_url("Servico/detalhes/Materiais para festar de crianças/6") ?>" class="btn btn-block btn-outline-primary">Ver Mais</a>
+                            <a href="<?= base_url("Servico/detalhes/Boleira - Bolos de Qualidade/15") ?>" class="btn btn-block btn-outline-primary">Ver Mais</a>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12 pb-4">
                     <div class="card h-100">
                         <div class="card-header bg-info">
-                            <h3 class="card-title">Primeiro nome da pessoa - Nome do Serviço</h3>
+                            <h3 class="card-title">Rubens - Assessor de Eventos - Formaturas</h3>
                         </div>
                         <div class="card-body">
                             <i class="fas fa-star" style="color: Gold"></i>
@@ -169,13 +169,13 @@
 
                             <i class="far fa-heart float-right favoritos" style="color: grey"></i>
                             <br/>
-                            <p class="text-justify">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                            <p class="text-justify">Equipe dedicada para auxiliar na organização da Formatura dos seus alunos. Contrate-nos!.</p>
                         </div>
                         <div class="card-footer">
                             <h3 class="card-title">Avaliação mais recente</h3>
                             <br/>
                             <p class="text-justify">Esse Serviço ainda não possui avaliação.</p>
-                            <a href="<?= base_url("Servico/detalhes/Materiais para festar de crianças/6") ?>" class="btn btn-block btn-outline-primary">Ver Mais</a>
+                            <a href="<?= base_url("Servico/detalhes/Assessor de Eventos - Formaturas/16") ?>" class="btn btn-block btn-outline-primary">Ver Mais</a>
                         </div>
                     </div>
                 </div>
