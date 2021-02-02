@@ -56,7 +56,15 @@ $(document).ready(function(){
                 {
                     if(data.rst === 1)
                     {
-                        window.location.href = BASE_URL+"Servico";
+                        Swal.fire({
+                            title: 'Sucesso',
+                            text: data.msg,
+                            icon: 'success',
+                            confirmButtonText: `Ok`,
+                            }).then((result) => {
+                            if (result.isConfirmed)
+                                window.location.href = BASE_URL+"Usuario/login";
+                        })
                     }
                     else if(data.rst === 2)
                     {

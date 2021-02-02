@@ -81,7 +81,6 @@
             "where",
             "when",
             "values",
-            "use",
             "varchar"
         );
     }

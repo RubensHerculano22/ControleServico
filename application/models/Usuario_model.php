@@ -89,14 +89,29 @@ class Usuario_model extends CI_Model{
         $rst = (object)array("rst" => 0, "msg" => "");
 
         //verifica se possui um usuario para ser editado e verifica se o email já não está sendo utilizado quando for realizar o cadastro.
+
+        if($this->verifica_seguranca($data->senha))
+        {
+            $rst->msg = "Palavra utilizada na senha é proibida!";
+            return $rst;
+        }
+
+        if($this->verifica_seguranca($data->email))
+        {
+            $rst->msg = "Palavra utilizada no email é proibida!";
+            return $rst;
+        }
+
         if(!empty($data->id_usuario) || $this->verifica_email(strtolower($data->email)))
         {
             $this->db->set("nome", $data->nome);
             $this->db->set("sobrenome", $data->sobrenome);
             $this->db->set("cpf", somente_numeros($data->cpf));
             $this->db->set("data_nascimento", formatar($data->data_nascimento, "dt2bd"));
-            $this->db->set("telefone", somente_numeros($data->telefone));
-            $this->db->set("celular", somente_numeros($data->celular));
+            if($data->telefone)
+                $this->db->set("telefone", somente_numeros($data->telefone));
+            if($data->celular)
+                $this->db->set("celular", somente_numeros($data->celular));
             $this->db->set("endereco", $data->endereco);
             $this->db->set("numero", somente_numeros($data->numero));
             $this->db->set("bairro", $data->bairro);
@@ -128,7 +143,7 @@ class Usuario_model extends CI_Model{
                 if($this->db->insert("Usuario"))
                 {
                     $rst->rst = 1;
-                    $rst->msg = "Cadastro realizado com sucesso, por favor verifique seu email para confirmar a conta.";
+                    $rst->msg = "Cadastro realizado com sucesso";
                 }
                 else
                 {
