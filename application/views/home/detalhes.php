@@ -554,7 +554,7 @@
                         </div>
                     </div>
                 </div>
-                <input type="hidden" name="id_servico" id="id_servico" value="<?= $item->id ?>" />
+                <input type="hidden" name="id_servico" id="id_servico" value="<?= $info->id ?>" />
                 <div class="modal-footer justify-content-between">
                     <button type="submit" class="btn btn-primary">Salvar</button>
                 </div>
