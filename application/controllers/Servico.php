@@ -62,6 +62,17 @@ class Servico extends CI_Controller{
         $this->load->view("template/content", $this->data);
     }
 
+    public function cadastrar_produto()
+    {
+        $this->data["breadcrumb"] = (object)array("titulo" => "Cadastro de Produtos/Serviços", "before" => array((object)array("nome" => "Home", "link" => "Servico")), "current" => "Cadastrando novo Serviço");
+        $this->data["javascript"] = [
+            base_url("assets/js/produto/formulario.js")
+        ];
+
+        $this->data["content"] = $this->load->view("produto/formulario", $this->data, true);
+        $this->load->view("template/content", $this->data);
+    }
+
     public function cadastrar_pergunta()
     {
         $rst = $this->m_servico->cadastrar_pergunta();

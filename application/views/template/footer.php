@@ -24,6 +24,11 @@
 <script src="<?= base_url("assets/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js") ?>"></script>
 <!-- Summernote -->
 <script src="<?= base_url("assets/plugins/summernote/summernote-bs4.min.js") ?>"></script>
+<!-- CodeMirror -->
+<script src="<?= base_url("assets/plugins/codemirror/codemirror.js")?>"></script>
+<script src="<?= base_url("assets/plugins/codemirror/mode/css/css.js")?>"></script>
+<script src="<?= base_url("assets/plugins/codemirror/mode/xml/xml.js")?>"></script>
+<script src="<?= base_url("assets/plugins/codemirror/mode/htmlmixed/htmlmixed.js")?>"></script>
 <!-- Ekko lightbox -->
 <script src="<?= base_url("assets/plugins/ekko-lightbox/ekko-lightbox.min.js") ?>"></script>
 <!-- overlayScrollbars -->
@@ -36,6 +41,12 @@
 <script src="<?= base_url("assets/plugins/inputmask/jquery.inputmask.min.js") ?>"></script>
 <!-- Select2 -->
 <script src="<?= base_url("assets/plugins/select2/js/select2.full.min.js") ?>"></script>
+<!-- Bootstrap Switch -->
+<script src="<?= base_url("assets/plugins/bootstrap-switch/js/bootstrap-switch.min.js")?>"></script>
+<!-- BS-Stepper -->
+<script src="<?= base_url("assets/plugins/bs-stepper/js/bs-stepper.min.js") ?>"></script>
+<!-- dropzonejs -->
+<script src="<?= base_url("assets/plugins/dropzone/min/dropzone.min.js") ?>"></script>
 <!-- AdminLTE App -->
 <script src="<?= base_url("assets/plugins/dist/js/adminlte.js") ?>"></script>
 <!-- AdminLTE for demo purposes -->
@@ -46,6 +57,10 @@
 <script type="text/javascript">
     var BASE_URL = "<?= base_url() ?>";
     var LOGGED = "<?= isset($dados) && $dados->logged == true ? 1 : 0 ?>";
+
+    $(document).ready(function(){
+        $(".select2").select2();
+    });
 
     function showNotification(colorName, title, text, positionClass) {
       if (colorName === null || colorName === '') { colorName = 'info'; }
