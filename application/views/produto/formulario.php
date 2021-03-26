@@ -81,20 +81,47 @@
                                         </div>
                                     </div>
                                     <div class="col-md-3 col-sm-3 col-xs-12">
-                                        <div class="form-group">
+                                        <div class="form-group tipo_servico">
                                             <label for="valor">Tipo de Serviço</label>
                                             <div class="form-check">
-                                                <input class="form-check-input" type="radio" name="tipo" checked="">
+                                                <input class="form-check-input" value="1" type="radio" name="tipo">
                                                 <label class="form-check-label">Prestação de Serviço</label>
                                             </div>
                                             <div class="form-check">
-                                                <input class="form-check-input" type="radio" name="tipo">
+                                                <input class="form-check-input" value="2" type="radio" name="tipo">
                                                 <label class="form-check-label">Aluguel de Equipamento</label>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-12 col-sm-12 col-xs-12 hide">
-                                        sad
+                                    <div class="col-md-12 col-sm-12 col-xs-12 d-none" id="aluguel_equipamentos">
+                                        <div class="row">
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <div class="form-group">
+                                                    <label for="quantidade">Quantidade Disponivel</label>
+                                                    <input type="text" class="form-control" name="quantidade" id="quantidade" placeholder="Quantidade">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <div class="form-group">
+                                                    <label for="caucao">Caução</label>
+                                                    <input type="text" class="form-control" name="caucao" id="caucao" placeholder="Caução">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 col-sm-12 col-xs-12">
+                                        <div class="form-group">
+                                            <label>Formas de Pagamento</label>
+                                            <select class="form-control select2bs4" multiple="multiple" name="pagamento" data-placeholder="Select a State" style="width: 100%;">
+                                                <option>Alabama</option>
+                                                <option>Alaska</option>
+                                                <option>California</option>
+                                                <option>Delaware</option>
+                                                <option>Tennessee</option>
+                                                <option>Texas</option>
+                                                <option>Washington</option>
+                                            </select>
+                                        </div>
                                     </div>
                                     <div class="col-md-12 col-sm-12 col-xs-12">
                                         <label for="valor">Descrição Completa do serviço <small>(Serviço que possuem maior descrição com muito recursos visuais costumam ter maior contratação)</small></label>
@@ -103,7 +130,7 @@
                                         </textarea>
                                     </div>
                                 </div>
-                                <button class="btn btn-primary" onclick="nextForm()">Next</button>
+                                <button class="btn btn-primary" onclick="nextForm()">Proximo</button>
                             </div>
                             <div id="horarios-part" class="content" role="tabpanel" aria-labelledby="horarios-part-trigger">
                                 <div class="form-group">

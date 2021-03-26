@@ -35,8 +35,6 @@
   <!-- CodeMirror -->
   <link rel="stylesheet" href="<?= base_url("assets/plugins/codemirror/codemirror.css")?>">
   <link rel="stylesheet" href="<?= base_url("assets/plugins/codemirror/theme/monokai.css")?>">
-  <!-- SimpleMDE -->
-  <link rel="stylesheet" href="<?= base_url("assets/plugins/simplemde/simplemde.min.css") ?>">
   <!-- dropzonejs -->
   <link rel="stylesheet" href="<?= base_url("assets/plugins/dropzone/min/dropzone.min.css") ?>">
   <!-- BS Stepper -->
