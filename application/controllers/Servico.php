@@ -66,7 +66,8 @@ class Servico extends CI_Controller{
     {
         $this->data["breadcrumb"] = (object)array("titulo" => "Cadastro de Produtos/Serviços", "before" => array((object)array("nome" => "Home", "link" => "Servico")), "current" => "Cadastrando novo Serviço");
         $this->data["javascript"] = [
-            base_url("assets/js/produto/formulario.js")
+            base_url("assets/js/produto/formulario.js"),
+            base_url("assets/js/produto/plugins.js")
         ];
 
         $this->data["content"] = $this->load->view("produto/formulario", $this->data, true);

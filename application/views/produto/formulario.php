@@ -130,39 +130,103 @@
                                         </textarea>
                                     </div>
                                 </div>
-                                <button class="btn btn-primary" onclick="nextForm()">Proximo</button>
+                                <button class="btn btn-info" onclick="nextForm()">Proximo</button>
                             </div>
                             <div id="horarios-part" class="content" role="tabpanel" aria-labelledby="horarios-part-trigger">
-                                <div class="form-group">
-                                    <label for="exampleInputFile">File input</label>
-                                    <div class="input-group">
-                                        <div class="custom-file">
-                                            <input type="file" class="custom-file-input" id="exampleInputFile">
-                                            <label class="custom-file-label" for="exampleInputFile">Choose file</label>
-                                        </div>
-                                        <div class="input-group-append">
-                                            <span class="input-group-text">Upload</span>
+                                <h3>Personalização de Horario</h3>
+                                <div class="row">
+                                    <div class="col-md-12 col-sm-12 col-xs-12">
+                                        <div class="form-group">
+                                            <label>Dia da Semana</label>
+                                            <select class="form-control select2bs4" name="dia da semana" data-placeholder="Select a State" style="width: 100%;">
+                                                <option value="1">Domingo</option>
+                                                <option value="2">Segunda-Feira</option>
+                                                <option value="3">Terça-Feira</option>
+                                                <option value="4">Quarta-Feira</option>
+                                                <option value="5">Quinta-Feira</option>
+                                                <option value="6">Sexta-Feira</option>
+                                                <option value="7">Sabado</option>
+                                            </select>
                                         </div>
                                     </div>
+                                    <div class="col-md-3 col-sm-3 col-xs-12">
+                                        <div class="form-group">
+                                            <label for="valor">Inicio do Funcionamento</label>
+                                            <input type="text" class="form-control" name="data_inicio" id="data_inicio" placeholder="Inicio do Funcionamento">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-3 col-xs-12">
+                                        <div class="form-group">
+                                            <label for="valor">Final do Funcionamento</label>
+                                            <input type="text" class="form-control" name="data_fim" id="data_fim" placeholder="Final do Funcionamento">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 co-sm-4 col-xs-12">
+                                        <br/>
+                                        <button class="btn btn-info">Adicionar Horario</button>
+                                    </div>
+                                    <div class="col-md-12 col-sm-12 col-xs-12">
+                                        <h4>Lista de Horario</h4>
+                                        <ol class="list-group list-group-numbered">
+                                            <li class="list-group-item">asasdasd</li>
+                                            <li class="list-group-item">ads</li>
+                                            <li class="list-group-item">dsadsadsads</li>
+                                        </ol>
+                                    </div>
+                                    <div class="col-md-12 col-sm-12 col-xs-12 mt-4">
+                                        <button class="btn btn-info" onclick="previousForm()">Anterior</button>
+                                        <button class="btn btn-info" onclick="nextForm()">Proximo</button>
+                                    </div>
                                 </div>
-                                <button class="btn btn-primary" onclick="previousForm()">Previous</button>
-                                <button class="btn btn-primary" onclick="nextForm()">Next</button>
                             </div>
                             <div id="imagem-part" class="content" role="tabpanel" aria-labelledby="imagem-part-trigger">
-                                <div class="form-group">
-                                    <label for="exampleInputFile">File input</label>
-                                    <div class="input-group">
-                                        <div class="custom-file">
-                                            <input type="file" class="custom-file-input" id="exampleInputFile">
-                                            <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+                                <div class="row">
+                                    <div class="col-md-12 col-sm-12 col-xs-12">
+                                        <div id="actions" class="row">
+                                            <div class="col-lg-12">
+                                                <div class="btn-group">
+                                                    <span class="btn btn-info fileinput-button">
+                                                        <i class="fas fa-plus"></i>
+                                                        <span>Adicionar Imagem</span>
+                                                    </span>
+                                                    <button type="reset" class="btn btn-warning cancel">
+                                                        <i class="fas fa-times-circle"></i>
+                                                        <span>Cancelar todas as Imagens</span>
+                                                    </button>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="input-group-append">
-                                            <span class="input-group-text">Upload</span>
+                                        <div class="table table-striped files" id="previews">
+                                            <div id="template" class="row mt-2">
+                                                <div class="col-auto">
+                                                    <span class="preview"><img src="data:," alt="" data-dz-thumbnail /></span>
+                                                </div>
+                                                <div class="col d-flex align-items-center">
+                                                    <p class="mb-0">
+                                                        <span class="lead" data-dz-name></span>
+                                                        (<span data-dz-size></span>)
+                                                    </p>
+                                                    <strong class="error text-danger" data-dz-errormessage></strong>
+                                                </div>
+                                                <div class="col-4 d-flex align-items-center">
+                                                    <div class="progress progress-striped active w-100" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                                                        <div class="progress-bar progress-bar-success" style="width:0%;" data-dz-uploadprogress></div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-auto d-flex align-items-center">
+                                                    <div class="btn-group">
+                                                        <button data-dz-remove class="btn btn-danger delete">
+                                                            <i class="fas fa-trash"></i>
+                                                            <span>Delete</span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <button class="btn btn-primary" onclick="previousForm()">Previous</button>
-                                <button type="submit" class="btn btn-primary">Submit</button>
+                                <button class="btn btn-info" onclick="previousForm()">Anterior</button>
+                                <button type="submit" class="btn btn-info">Salvar</button>
                             </div>
                         </div>
                     </div>
