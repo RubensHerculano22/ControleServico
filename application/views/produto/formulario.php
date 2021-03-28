@@ -109,6 +109,7 @@
                                             </div>
                                         </div>
                                     </div>
+                                    Liberar para o pessoal definir em quantas vezes.
                                     <div class="col-md-12 col-sm-12 col-xs-12">
                                         <div class="form-group">
                                             <label>Formas de Pagamento</label>
