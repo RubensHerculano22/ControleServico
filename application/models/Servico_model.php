@@ -246,6 +246,31 @@ class Servico_model extends CI_Model{
         return $rst;
     }
 
+    public function get_categorias_principais()
+    {
+        $query = $this->db->get_where("Categoria", "id_pai = 0")->result();
+
+        return $query;
+    }
+
+    public function get_subcategorias()
+    {
+        $lista_categoria = array();
+        $data = (object)$this->input->post();
+        
+        $query = $this->db->get_where("Categoria", "id_pai = '$data->categoria'")->result();
+
+        foreach($query as $item)
+        {
+            $lista = (object)array("id" => $item->id, "nome" => $item->nome, "filhos");
+            $lista->filhos = $this->db->get_where("Categoria", "id_pai = '$item->id'")->result();
+
+            $lista_categoria[] = $lista;
+        }
+
+        return $lista_categoria;
+    }
+
     /**
      * Realiza a verificação no texto, para maior segurança.
      * @access private

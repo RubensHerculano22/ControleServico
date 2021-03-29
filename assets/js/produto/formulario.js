@@ -7,4 +7,12 @@ $(document).ready(function(){
         else
             $("#aluguel_equipamentos").addClass("d-none");
     });
+
+    $("#categoria_principal").on("change", function(){
+        var valor = $("#categoria_principal").val();
+        
+        $.post(BASE_URL+"servico/get_subcategorias", {categoria: valor}, function(result){
+            console.log(result)
+        });
+    });
 });

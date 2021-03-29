@@ -46,22 +46,21 @@
                                             <textarea class="form-control" rows="2" name="descricao_curta" placeholder="Descrição Curta (Atrativa)"></textarea>
                                         </div>
                                     </div>
-                                    <div class="col-md-3 col-sm-3 col-xs-12">
+                                    <div class="col-md-2 col-sm-2 col-xs-12">
                                         <div class="form-group">
                                             <label>Categoria Principal</label>
-                                            <select class="custom-select" name="categoria_principal">
-                                                <option>option 1</option>
-                                                <option>option 2</option>
-                                                <option>option 3</option>
-                                                <option>option 4</option>
-                                                <option>option 5</option>
+                                            <select class="custom-select" name="categoria_principal" id="categoria_principal">
+                                                <option disabled selected>Selecione uma opção</option>
+                                                <?php foreach($categoria as $item): ?>
+                                                    <option value="<?= $item->id ?>"><?= $item->nome ?></option>
+                                                <?php endforeach; ?>
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-md-3 col-sm-3 col-xs-12">
+                                    <div class="col-md-4 col-sm-4 col-xs-12">
                                         <div class="form-group">
-                                            <label>Categoria Principal</label>
-                                            <select class="custom-select" name="categoria_principal">
+                                            <label>Categoria Especifica</label>
+                                            <select class="form-control select2bs4" name="categoria_especifica" id="categoria_especifica">
                                                 <optgroup label="Swedish Cars">
                                                     <option>option 1</option>
                                                     <option>option 2</option>

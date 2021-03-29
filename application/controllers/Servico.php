@@ -64,6 +64,8 @@ class Servico extends CI_Controller{
 
     public function cadastrar_produto()
     {
+        $this->data["categoria"] = $this->m_servico->get_categorias_principais();
+
         $this->data["breadcrumb"] = (object)array("titulo" => "Cadastro de Produtos/Serviços", "before" => array((object)array("nome" => "Home", "link" => "Servico")), "current" => "Cadastrando novo Serviço");
         $this->data["javascript"] = [
             base_url("assets/js/produto/formulario.js"),
@@ -94,6 +96,12 @@ class Servico extends CI_Controller{
     public function contrata_servico()
     {
         $rst = $this->m_servico->contrata_servico();
+        echo json_encode($rst, JSON_UNESCAPED_UNICODE);
+    }
+
+    public function get_subcategorias()
+    {
+        $rst = $this->m_servico->get_subcategorias();
         echo json_encode($rst, JSON_UNESCAPED_UNICODE);
     }
 
