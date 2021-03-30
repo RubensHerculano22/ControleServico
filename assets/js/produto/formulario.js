@@ -76,3 +76,66 @@ $(document).ready(function(){
         <option>option 5</option>
     </optgroup>
  */
+
+
+    /**
+     * como vem o post: Request.Form["search"];
+     * $("#cmb_pasta_destino").select2({
+            ajax: {
+                url: "/processo/pasta_lista",
+                method: "POST",
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return {
+                        search: params.term, // search term
+                    };
+                },
+                processResults: function (data) {
+                    return {
+                        results: data
+                    };
+                },
+                cache: true
+            },
+            placeholder: 'Digite o nome da pasta',
+            escapeMarkup: function (markup) { return markup; },
+            minimumInputLength: 3,
+            templateResult: formatRepo,
+            templateSelection: formatRepoSelection,
+            language: "pt-BR"
+        });
+
+        Retorna da função 
+
+         var str = new
+        {
+            id = pasta.RowId,
+            text = caminho + " / " + pasta.titulo
+
+        };
+
+        em list.
+
+     * function formatRepo(repo) {
+        if (repo.loading) {
+            return repo.text;
+        }
+        console.log(repo);
+        var $container = $(
+            "<div class='select2-result-repository clearfix'>" +
+            "<div class='select2-result-repository__meta'>" +
+            "<div class='select2-result-repository__title'>" + repo.text + "</div>" +
+            "</div>" +
+            "</div>"
+        );
+
+        return $container;
+    }
+
+    function formatRepoSelection(repo) {
+        return repo.full_name || repo.text;
+    }
+     * 
+     * 
+     */
