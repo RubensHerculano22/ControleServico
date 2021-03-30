@@ -65,6 +65,7 @@ class Servico extends CI_Controller{
     public function cadastrar_produto()
     {
         $this->data["categoria"] = $this->m_servico->get_categorias_principais();
+        $this->data["pagamento"] = $this->m_servico->get_pagamento();
 
         $this->data["breadcrumb"] = (object)array("titulo" => "Cadastro de Produtos/Serviços", "before" => array((object)array("nome" => "Home", "link" => "Servico")), "current" => "Cadastrando novo Serviço");
         $this->data["javascript"] = [

@@ -7,6 +7,19 @@ $(document).ready(function(){
         theme: 'bootstrap4'
     });
 
+    $(".preco").inputmask('decimal', {
+        'alias': 'numeric',
+        'groupSeparator': ',',
+        'autoGroup': true,
+        'digits': 2,
+        'radixPoint': ".",
+        'digitsOptional': false,
+        'allowMinus': false,
+        'prefix': 'R$ ',
+    });
+
+    $('[data-mask]').inputmask();
+
     // BS-Stepper Init
     document.addEventListener('DOMContentLoaded', function () {
         window.stepper = new Stepper(document.querySelector('.bs-stepper'))

@@ -271,6 +271,18 @@ class Servico_model extends CI_Model{
         return $lista_categoria;
     }
 
+    public function get_pagamento()
+    {
+        $result = $this->db->query('SELECT DISTINCT forma_pagamento FROM TipoPagamento')->result();
+
+        foreach($result as $item)
+        {
+            $item->tipos = $this->db->get_where("TipoPagamento", "forma_pagamento = '$item->forma_pagamento'")->result();
+        }
+
+        return $result;
+    }
+
     /**
      * Realiza a verificação no texto, para maior segurança.
      * @access private

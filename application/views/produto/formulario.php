@@ -16,16 +16,23 @@
                                 </button>
                             </div>
                             <div class="line"></div>
+                            <div class="step" data-target="#descricao-part">
+                                <button type="button" class="step-trigger" role="tab" aria-controls="horarios-part" id="descricao-part-trigger">
+                                    <span class="bs-stepper-circle">2</span>
+                                    <span class="bs-stepper-label">Descrição Completa</span>
+                                </button>
+                            </div>
+                            <div class="line"></div>
                             <div class="step" data-target="#horarios-part">
                                 <button type="button" class="step-trigger" role="tab" aria-controls="horarios-part" id="horarios-part-trigger">
-                                    <span class="bs-stepper-circle">2</span>
+                                    <span class="bs-stepper-circle">3</span>
                                     <span class="bs-stepper-label">Horarios</span>
                                 </button>
                             </div>
                             <div class="line"></div>
                             <div class="step" data-target="#imagem-part">
                                 <button type="button" class="step-trigger" role="tab" aria-controls="imagem-part" id="imagem-part-trigger">
-                                    <span class="bs-stepper-circle">3</span>
+                                    <span class="bs-stepper-circle">4</span>
                                     <span class="bs-stepper-label">Imagem</span>
                                 </button>
                             </div>
@@ -60,23 +67,15 @@
                                     <div class="col-md-4 col-sm-4 col-xs-12">
                                         <div class="form-group">
                                             <label>Categoria Especifica</label>
-                                            <select class="form-control select2bs4" name="categoria_especifica" id="categoria_especifica">
-                                                <optgroup label="Swedish Cars">
-                                                    <option>option 1</option>
-                                                    <option>option 2</option>
-                                                </optgroup>
-                                                <optgroup label="Swedish Cars">
-                                                    <option>option 3</option>
-                                                    <option>option 4</option>
-                                                    <option>option 5</option>
-                                                </optgroup>
+                                            <select class="custom-select" name="categoria_especifica" id="categoria_especifica">
+                                                
                                             </select>
                                         </div>
                                     </div>
                                     <div class="col-md-3 col-sm-3 col-xs-12">
                                         <div class="form-group">
-                                            <label for="valor">Valor (Colocar mask de valor)</label>
-                                            <input type="text" class="form-control" name="valor" id="valor" placeholder="Valor">
+                                            <label for="valor">Valor</label>
+                                            <input type="text" class="form-control preco" name="valor" id="valor" placeholder="Valor">
                                         </div>
                                     </div>
                                     <div class="col-md-3 col-sm-3 col-xs-12">
@@ -103,34 +102,85 @@
                                             <div class="col-md-6 col-sm-6 col-xs-12">
                                                 <div class="form-group">
                                                     <label for="caucao">Caução</label>
-                                                    <input type="text" class="form-control" name="caucao" id="caucao" placeholder="Caução">
+                                                    <input type="text" class="form-control preco" name="caucao" id="caucao" placeholder="Caução">
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    Liberar para o pessoal definir em quantas vezes.
-                                    <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <div class="col-md-3 col-sm-3 col-xs-12">
                                         <div class="form-group">
                                             <label>Formas de Pagamento</label>
-                                            <select class="form-control select2bs4" multiple="multiple" name="pagamento" data-placeholder="Select a State" style="width: 100%;">
-                                                <option>Alabama</option>
-                                                <option>Alaska</option>
-                                                <option>California</option>
-                                                <option>Delaware</option>
-                                                <option>Tennessee</option>
-                                                <option>Texas</option>
-                                                <option>Washington</option>
+                                            <select class="form-control select2bs4" name="pagamento" id="pagamento" data-placeholder="Formas de Pagamento" style="width: 100%;">
+                                                <?php foreach($pagamento as $item): ?>
+                                                    <optgroup label="<?= $item->forma_pagamento ?>">
+                                                        <?php foreach($item->tipos as $value): ?>
+                                                            <option value="<?= $value->id ?>"><?= $value->nome ?></option>
+                                                        <?php endforeach; ?>
+                                                    </optgroup>
+                                                <?php endforeach; ?>
                                             </select>
                                         </div>
                                     </div>
+                                    <div class="col-md-3 col-sm-3 col-xs-12">
+                                        <div class="form-group">
+                                            <label>Quantidade de Vezes que realiza</label>
+                                            <select class="form-control select2bs4" name="vezes" id="vezes" data-placeholder="Quantidade de Vezes" style="width: 100%;">
+                                                <option value="1">À vista</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                <option value="5">5</option>
+                                                <option value="6">6</option>
+                                                <option value="7">7</option>
+                                                <option value="8">8</option>
+                                                <option value="9">9</option>
+                                                <option value="10">10</option>
+                                                <option value="11">11</option>
+                                                <option value="12">12</option>
+                                            </select>
+                                        </div>               
+                                    </div>
+                                    <div class="col-md-2 col-sm-2 col-xs-12">
+                                        <div class="form-group tipo_servico">
+                                            <label for="valor">Tipo</label>
+                                            <div class="form-check">
+                                                <input class="form-check-input" value="1" type="radio" id="juros1" name="juros">
+                                                <label class="form-check-label">Com Juros</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" value="2" type="radio" id="juros2" name="juros">
+                                                <label class="form-check-label">Sem Juros</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 co-sm-2 col-xs-12">
+                                        <br/>
+                                        <button class="btn btn-info" id="adicionar_meio_pagamento">Adicionar Meio de Pagamento</button>
+                                    </div>
+                                    <div class="col-md-12 col-sm-12 col-xs-12 d-none" id="lista_pag">
+                                        <h4>Lista de Forma de Pagamento</h4>
+                                        <ol class="list-group list-group-numbered" id="lista_pagamento">
+                                            
+                                        </ol>
+                                    </div>
+                                    <div class="col-md-12 col-sm-12 col-xs-12 mt-4">
+                                        <button class="btn btn-info" onclick="nextForm()">Proximo</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="descricao-part" class="content" role="tabpanel" aria-labelledby="descricao-part-trigger">
+                                <div class="row">
                                     <div class="col-md-12 col-sm-12 col-xs-12">
                                         <label for="valor">Descrição Completa do serviço <small>(Serviço que possuem maior descrição com muito recursos visuais costumam ter maior contratação)</small></label>
                                         <textarea id="summernote">
                                             Place <em>some</em> <u>text</u> <strong>here</strong>
                                         </textarea>
                                     </div>
+                                    <div class="col-md-12 col-sm-12 col-xs-12 mt-4">
+                                        <button class="btn btn-info" onclick="previousForm()">Anterior</button>
+                                        <button class="btn btn-info" onclick="nextForm()">Proximo</button>
+                                    </div>
                                 </div>
-                                <button class="btn btn-info" onclick="nextForm()">Proximo</button>
                             </div>
                             <div id="horarios-part" class="content" role="tabpanel" aria-labelledby="horarios-part-trigger">
                                 <h3>Personalização de Horario</h3>
@@ -138,7 +188,7 @@
                                     <div class="col-md-12 col-sm-12 col-xs-12">
                                         <div class="form-group">
                                             <label>Dia da Semana</label>
-                                            <select class="form-control select2bs4" name="dia da semana" data-placeholder="Select a State" style="width: 100%;">
+                                            <select class="form-control select2bs4" name="dia_semana" id="dia_semana" data-placeholder="Dia da Semana" style="width: 100%;">
                                                 <option value="1">Domingo</option>
                                                 <option value="2">Segunda-Feira</option>
                                                 <option value="3">Terça-Feira</option>
@@ -152,25 +202,22 @@
                                     <div class="col-md-3 col-sm-3 col-xs-12">
                                         <div class="form-group">
                                             <label for="valor">Inicio do Funcionamento</label>
-                                            <input type="text" class="form-control" name="data_inicio" id="data_inicio" placeholder="Inicio do Funcionamento">
+                                            <input type="text" class="form-control" name="horario_inicio" id="horario_inicio" placeholder="Inicio do Funcionamento" data-inputmask='"mask": "99:99"' data-mask>
                                         </div>
                                     </div>
                                     <div class="col-md-3 col-sm-3 col-xs-12">
                                         <div class="form-group">
                                             <label for="valor">Final do Funcionamento</label>
-                                            <input type="text" class="form-control" name="data_fim" id="data_fim" placeholder="Final do Funcionamento">
+                                            <input type="text" class="form-control" name="horario_fim" id="horario_fim" placeholder="Final do Funcionamento" data-inputmask='"mask": "99:99"' data-mask>
                                         </div>
                                     </div>
                                     <div class="col-md-4 co-sm-4 col-xs-12">
                                         <br/>
-                                        <button class="btn btn-info">Adicionar Horario</button>
+                                        <button class="btn btn-info" id="adicionar_horario">Adicionar Horario</button>
                                     </div>
-                                    <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <div class="col-md-12 col-sm-12 col-xs-12 d-none" id="lista_de_horario">
                                         <h4>Lista de Horario</h4>
-                                        <ol class="list-group list-group-numbered">
-                                            <li class="list-group-item">asasdasd</li>
-                                            <li class="list-group-item">ads</li>
-                                            <li class="list-group-item">dsadsadsads</li>
+                                        <ol class="list-group list-group-numbered" id="lista_horario">
                                         </ol>
                                     </div>
                                     <div class="col-md-12 col-sm-12 col-xs-12 mt-4">
