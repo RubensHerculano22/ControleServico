@@ -1,3 +1,5 @@
+var cont = 0;
+
 $(document).ready(function(){
 
     $(".tipo_servico").on("change", function(){
@@ -47,8 +49,9 @@ $(document).ready(function(){
         else if(juros2.checked == true)
             juro = "Sem Juros";
 
-        var html = '<li class="list-group-item">'+ pagamento + " - " + vezes + " " + juro + '</li>';
+        var html = '<li class="list-group-item" id="li_meio_'+cont+'">'+ pagamento + " - " + vezes + " " + juro + '<span class="float-right"><button class="btn btn-danger" type="button" onclick="exclui_meio_pagamento(\'li_meio_'+cont+'\')"><i class="fas fa-times"></i></button></span></li>';
         $("#lista_pagamento").append(html);
+        cont++;
     })
 
     $("#adicionar_horario").on("click", function(e){
@@ -60,11 +63,78 @@ $(document).ready(function(){
         var dia_semana = document.getElementById("dia_semana")[id_dia_semana - 1].innerText;
         var horario_inicio = $("#horario_inicio").val();
         var horario_fim = $("#horario_fim").val();
-
-        var html = '<li class="list-group-item">'+ dia_semana + " / " + horario_inicio + " - " + horario_fim + '</li>';
+        
+        var html = '<li class="list-group-item" id="li_horario_'+cont+'">'+ dia_semana + " / " + horario_inicio + " - " + horario_fim + '<span class="float-right"><button class="btn btn-danger" type="button" onclick="exclui_horario(\'li_horario_'+cont+'\')"><i class="fas fa-times"></i></button></span></li>';
         $("#lista_horario").append(html);
+        cont++;
     });
+
+    $("#submit").submit(function(e){
+        e.preventDefault();
+        var data = $(this).serialize();
+        files = myDropzone.files;
+        
+        var erro = "";
+        for(i=0;i<files.length;i++)
+        {
+            tipo = files[i].name.split(".").pop().toLowerCase();
+            if(jQuery.inArray(tipo, ['gif','png','jpg','jpeg']) == -1)
+            {
+                if(erro != "")
+                    erro += ", ";
+                
+                erro += files[i].name + "";
+            }
+        }
+
+        if(erro)
+        {
+            showNotification("error", "Erro nas imagens cadastradas", "Tipo do arquivo não permitido. Por favor troque os seguintes arquivos: "+ erro, "toast-top-center", "15000");
+        }
+        else
+        {
+            myDropzone.enqueueFiles(myDropzone.getFilesWithStatus(Dropzone.ADDED));
+            data = new FormData($("#submit").get(0));
+            setTimeout(() => { 
+
+                $.ajax({
+                    type: "post",
+                    url: BASE_URL+"Servico/cadastro_servico",
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    dataType: "json",
+                    data: data,
+                    success: function(data)
+                    {
+                        if(data.rst === true)
+                        {
+                            Swal.fire({
+                                title: 'Sucesso',
+                                text: data.msg,
+                                icon: 'success',
+                                confirmButtonText: `Ok`,
+                                }).then((result) => {
+                                if (result.isConfirmed)
+                                    window.location.href = BASE_URL+"Produto/jogo/"+data.id_jogo;
+                            })
+                        }
+                        else if(data.rst === false)
+                        {
+                            showNotification("warning", "Erro", data.msg, "toast-top-center", "15000");
+                        }
+                    }
+                });
+
+            }, 2000);
+        }
+    })
 });
+
+function exclui_meio_pagamento(id){$("#"+id).remove()}
+
+function exclui_horario(id){$("#"+id).remove()}
+
 /**
  * <optgroup label="Swedish Cars">
         <option>option 1</option>

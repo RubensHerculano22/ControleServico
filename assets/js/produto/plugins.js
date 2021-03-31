@@ -35,7 +35,7 @@ $(document).ready(function(){
     previewNode.parentNode.removeChild(previewNode);
 
     myDropzone = new Dropzone(document.body, { // Make the whole body a dropzone
-        url: BASE_URL+"Produto/set_files", // Set the url
+        url: BASE_URL+"Servico/set_files", // Set the url
         thumbnailWidth: 80,
         thumbnailHeight: 80,
         parallelUploads: 20,

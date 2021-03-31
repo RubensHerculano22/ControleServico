@@ -283,6 +283,19 @@ class Servico_model extends CI_Model{
         return $result;
     }
 
+    public function cadastro_servico()
+    {
+        $rst = (object)array("rst" => true, "msg" => "");
+        $data = (object)$this->input->post();
+
+        echo '<pre>';
+        print_r($data);
+        echo '</pre>';
+        exit;
+
+        return $rst;
+    }
+
     /**
      * Realiza a verificação no texto, para maior segurança.
      * @access private

@@ -106,4 +106,35 @@ class Servico extends CI_Controller{
         echo json_encode($rst, JSON_UNESCAPED_UNICODE);
     }
 
+    public function cadastro_servico()
+    {
+        $rst = $this->m_servico->cadastro_servico();
+        echo json_encode($rst, JSON_UNESCAPED_UNICODE);
+    }
+
+    public function set_files()
+    {
+
+        move_uploaded_file($_FILES["file"]["tmp_name"], APPPATH."..\assets\uploads"."\\".$_FILES["file"]["name"]);
+
+        $path = APPPATH."..\assets\uploads"."\\".$_FILES["file"]["name"];
+
+        $arquivo = array(
+            "name" => $_FILES["file"]["name"],
+            "type" => $_FILES["file"]["type"],
+            "path" => $path,
+            "tmp_name" => $_FILES["file"]["tmp_name"],
+            "size" => $_FILES["file"]["size"],
+            "erro" => $_FILES["file"]["error"]
+        );
+
+        $files = $this->session->userdata("files". APPNAME);
+        
+        if(!$files)
+            $files = array();
+
+        $files[] = $arquivo;
+        $this->session->set_userdata(array("files". APPNAME => $files));
+    }
+
 }
