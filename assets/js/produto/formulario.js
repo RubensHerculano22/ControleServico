@@ -13,6 +13,8 @@ $(document).ready(function(){
     $("#categoria_principal").on("change", function(){
         var valor = $("#categoria_principal").val();
         
+        $(".categoria_especifica").removeClass("d-none");
+
         $.post(BASE_URL+"servico/get_subcategorias", {categoria: valor}, function(result){
             $(".optremove").remove();
             var html = "";
@@ -57,16 +59,21 @@ $(document).ready(function(){
     $("#adicionar_horario").on("click", function(e){
         e.preventDefault();
 
-        $("#lista_de_horario").removeClass("d-none");
-
         var id_dia_semana = $("#dia_semana").val();
         var dia_semana = document.getElementById("dia_semana")[id_dia_semana - 1].innerText;
         var horario_inicio = $("#horario_inicio").val();
         var horario_fim = $("#horario_fim").val();
-        
-        var html = '<li class="list-group-item" id="li_horario_'+cont+'">'+ dia_semana + " / " + horario_inicio + " - " + horario_fim + '<span class="float-right"><button class="btn btn-danger" type="button" onclick="exclui_horario(\'li_horario_'+cont+'\')"><i class="fas fa-times"></i></button></span></li>';
-        $("#lista_horario").append(html);
-        cont++;
+
+        if(horario_inicio != "" && horario_fim != "")
+        {
+            $("#lista_de_horario").removeClass("d-none");
+
+            var html = '<li class="list-group-item" id="li_horario_'+cont+'">'+ dia_semana + " / " + horario_inicio + " - " + horario_fim + '<span class="float-right"><button class="btn btn-danger" type="button" onclick="exclui_horario(\'li_horario_'+cont+'\')"><i class="fas fa-times"></i></button></span></li>';
+            $("#lista_horario").append(html);
+            cont++;
+        }
+        else
+            showNotification("error", "Erro ao tentar adicionar o horario na lista", "Um horario não foi inserido.", "toast-top-center", "15000");
     });
 
     $("#submit").submit(function(e){

@@ -65,7 +65,7 @@
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="col-md-4 col-sm-4 col-xs-12">
+                                        <div class="col-md-4 col-sm-4 col-xs-12 categoria_especifica d-none">
                                             <div class="form-group">
                                                 <label>Categoria Especifica</label>
                                                 <select class="custom-select" name="categoria_especifica" id="categoria_especifica">
@@ -164,6 +164,7 @@
                                                 
                                             </ol>
                                         </div>
+                                        <input type="hidden" value="" id="lista_pagamento_input" name="lista_tipo_pagamento"/>
                                         <div class="col-md-12 col-sm-12 col-xs-12 mt-4">
                                             <button type="button" class="btn btn-info" onclick="nextForm()">Proximo</button>
                                         </div>

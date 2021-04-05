@@ -293,7 +293,58 @@ class Servico_model extends CI_Model{
         echo '</pre>';
         exit;
 
+        $this->db->set("nome", $data->nome);
+        $this->db->set("descricao_curta", $data->descricao_curta);
+        $this->db->set("descricao", $data->descricao_completa);
+        $this->db->set("data_inclusao", "NOW()", false);
+        $this->db->set("data_atualizacao", "NOW()", false);
+        $this->db->set("id_tipo_servico", $data->tipo);
+        $this->db->set("id_categoria", $data->categoria_especifica);
+        $this->db->set("valor", str_replace(".", ",", explode(" ", $data->valor)[1]));
+        if($data->tipo == 2)
+        {
+            $this->db->set("quantidade_disponivel", $data->quantidade);
+            $this->db->set("caucao", $data->caucao);
+        }
+        $this->db->set("id_usuario", $this->dados->usuario_id);
+
+        if($this->db->insert("Servico"))
+        {
+            $id = $this->db->insert_id();
+
+            $this->set_img($id);
+
+            
+        }
+
         return $rst;
+    }
+
+    public function set_img ($id)
+    {
+        $files = $this->session->userdata("files".APPNAME);
+      
+        if($files)
+        {
+            $this->session->set_userdata("files".APPNAME, "");
+            $query = $this->db->get_where("Imagens", "id_servico = $id AND principal = 1")->row();
+            for($count = 0; $count < count($files); $count++)
+            {
+                if($count == 0 && empty($query))
+                    $this->db->set("principal", 1);
+                
+                $this->db->set("id_servico", $id);
+                $this->db->set("ativo", 1);
+                $this->db->set("nome", $files[$count]["name"]);
+                $this->db->set("tipo_imagem", $files[$count]["type"]);
+                $this->db->set("data_insercao", "NOW()", false);
+                $this->db->set("img", base64_encode(file_get_contents($files[$count]["path"])));
+
+                $this->db->insert("Imagens");
+            }
+
+            limpa_uploads();
+        }
     }
 
     /**

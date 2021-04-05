@@ -163,5 +163,16 @@ function troca_mes($mes)
     }
 }
 
+function limpa_uploads ()
+{
+    $files = glob('./assets/uploads/*'); // get all file names
+    foreach ($files as $file) { // iterate files
+        if (is_file($file)) 
+        {
+            unlink($file); // delete file 
+        }
+    }
+}
+
 /* End of file formatacao_helper.php */
 /* Location: ./application/helpers/formatacao_helper.php */
