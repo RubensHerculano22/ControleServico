@@ -3,7 +3,7 @@ var cont = 0;
 $(document).ready(function(){
 
     $(".tipo_servico").on("change", function(){
-        var valor = $("input[name=tipo]")[1];
+        var valor = $("input[name=tipo_servico]")[1];
         if(valor.checked == true)
             $("#aluguel_equipamentos").removeClass("d-none");
         else
@@ -40,18 +40,24 @@ $(document).ready(function(){
         var id_pagamento = $("#pagamento").val();
         var pagamento = document.getElementById("pagamento")[id_pagamento - 1].innerText;
 
-        var vezes = $("#vezes").val();
-        vezes = (vezes != "1") ? vezes + "x" : "À vista";
+        var vezes_ini = $("#vezes").val();
+        vezes = (vezes_ini != "1") ? vezes_ini + "x" : "À vista";
         
         var juros1 = document.getElementById("juros1");
         var juros2 = document.getElementById("juros2");
         var juro = "";
         if(juros1.checked == true)
+        {
             juro = "Com Juros";
+            juros = 1;
+        }
         else if(juros2.checked == true)
+        {
             juro = "Sem Juros";
+            juros = 0;
+        }
 
-        var html = '<li class="list-group-item" id="li_meio_'+cont+'">'+ pagamento + " - " + vezes + " " + juro + '<span class="float-right"><button class="btn btn-danger" type="button" onclick="exclui_meio_pagamento(\'li_meio_'+cont+'\')"><i class="fas fa-times"></i></button></span></li>';
+        var html = '<li class="list-group-item list_group_pagamento" id="li_meio_'+cont+'" data-id="'+id_pagamento+'/'+vezes_ini+'/'+juros+'">'+ pagamento + " - " + vezes + " " + juro + '<span class="float-right"><button class="btn btn-danger" type="button" onclick="exclui_meio_pagamento(\'li_meio_'+cont+'\')"><i class="fas fa-times"></i></button></span></li>';
         $("#lista_pagamento").append(html);
         cont++;
     })
@@ -68,7 +74,7 @@ $(document).ready(function(){
         {
             $("#lista_de_horario").removeClass("d-none");
 
-            var html = '<li class="list-group-item" id="li_horario_'+cont+'">'+ dia_semana + " / " + horario_inicio + " - " + horario_fim + '<span class="float-right"><button class="btn btn-danger" type="button" onclick="exclui_horario(\'li_horario_'+cont+'\')"><i class="fas fa-times"></i></button></span></li>';
+            var html = '<li class="list-group-item list_group_horario" id="li_horario_'+cont+'" data-id="'+id_dia_semana+'/'+horario_inicio+'/'+horario_fim+'">'+ dia_semana + " / " + horario_inicio + " - " + horario_fim + '<span class="float-right"><button class="btn btn-danger" type="button" onclick="exclui_horario(\'li_horario_'+cont+'\')"><i class="fas fa-times"></i></button></span></li>';
             $("#lista_horario").append(html);
             cont++;
         }
@@ -94,6 +100,21 @@ $(document).ready(function(){
             }
         }
 
+        lista_pagamento = [];
+        $('.list_group_pagamento').each(function () {
+            lista_pagamento.push($(this).data('id'));
+        });
+        
+        $("#lista_pagamento_input").val(lista_pagamento.toString());
+
+
+        lista_horario = [];
+        $('.list_group_horario').each(function () {
+            lista_horario.push($(this).data('id'));
+        });
+
+        $("#lista_horario_input").val(lista_horario.toString());
+
         if(erro)
         {
             showNotification("error", "Erro nas imagens cadastradas", "Tipo do arquivo não permitido. Por favor troque os seguintes arquivos: "+ erro, "toast-top-center", "15000");
@@ -118,12 +139,13 @@ $(document).ready(function(){
                         {
                             Swal.fire({
                                 title: 'Sucesso',
-                                text: data.msg,
+                                text: "Serviço inserido com sucesso",
                                 icon: 'success',
                                 confirmButtonText: `Ok`,
                                 }).then((result) => {
                                 if (result.isConfirmed)
-                                    window.location.href = BASE_URL+"Produto/jogo/"+data.id_jogo;
+                                    window.location.reload();
+                                    // window.location.href = BASE_URL+"Servico/jogo/"+data.id_jogo;
                             })
                         }
                         else if(data.rst === false)

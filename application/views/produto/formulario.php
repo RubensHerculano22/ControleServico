@@ -83,31 +83,31 @@
                                             <div class="form-group tipo_servico">
                                                 <label for="valor">Tipo de Serviço</label>
                                                 <div class="form-check">
-                                                    <input class="form-check-input" value="1" type="radio" name="tipo">
+                                                    <input class="form-check-input" value="1" type="radio" name="tipo_servico">
                                                     <label class="form-check-label">Prestação de Serviço</label>
                                                 </div>
                                                 <div class="form-check">
-                                                    <input class="form-check-input" value="2" type="radio" name="tipo">
+                                                    <input class="form-check-input" value="2" type="radio" name="tipo_servico">
                                                     <label class="form-check-label">Aluguel de Equipamento</label>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-12 col-sm-12 col-xs-12 d-none" id="aluguel_equipamentos">
-                                            <div class="row">
-                                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                                    <div class="form-group">
-                                                        <label for="quantidade">Quantidade Disponivel</label>
-                                                        <input type="text" class="form-control" name="quantidade" id="quantidade" placeholder="Quantidade">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                                    <div class="form-group">
-                                                        <label for="caucao">Caução</label>
-                                                        <input type="text" class="form-control preco" name="caucao" id="caucao" placeholder="Caução">
-                                                    </div>
-                                                </div>
+                                    </div>
+                                    <div class="row d-none" id="aluguel_equipamentos">
+                                        <div class="col-md-3 col-sm-3 col-xs-12">
+                                            <div class="form-group">
+                                                <label for="quantidade">Quantidade Disponivel</label>
+                                                <input type="number" class="form-control" name="quantidade" id="quantidade" placeholder="Quantidade">
                                             </div>
                                         </div>
+                                        <div class="col-md-3 col-sm-3 col-xs-12">
+                                            <div class="form-group">
+                                                <label for="caucao">Caução</label>
+                                                <input type="text" class="form-control preco" name="caucao" id="caucao" placeholder="Caução">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
                                         <div class="col-md-3 col-sm-3 col-xs-12">
                                             <div class="form-group">
                                                 <label>Formas de Pagamento</label>
@@ -222,6 +222,7 @@
                                             <ol class="list-group list-group-numbered" id="lista_horario">
                                             </ol>
                                         </div>
+                                        <input type="hidden" value="" id="lista_horario_input" name="lista_tipo_horario"/>
                                         <div class="col-md-12 col-sm-12 col-xs-12 mt-4">
                                             <button type="button" class="btn btn-info" onclick="previousForm()">Anterior</button>
                                             <button type="button" class="btn btn-info" onclick="nextForm()">Proximo</button>

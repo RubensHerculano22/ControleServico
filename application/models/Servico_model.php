@@ -288,20 +288,15 @@ class Servico_model extends CI_Model{
         $rst = (object)array("rst" => true, "msg" => "");
         $data = (object)$this->input->post();
 
-        echo '<pre>';
-        print_r($data);
-        echo '</pre>';
-        exit;
-
         $this->db->set("nome", $data->nome);
         $this->db->set("descricao_curta", $data->descricao_curta);
         $this->db->set("descricao", $data->descricao_completa);
         $this->db->set("data_inclusao", "NOW()", false);
         $this->db->set("data_atualizacao", "NOW()", false);
-        $this->db->set("id_tipo_servico", $data->tipo);
+        $this->db->set("id_tipo_servico", $data->tipo_servico);
         $this->db->set("id_categoria", $data->categoria_especifica);
         $this->db->set("valor", str_replace(".", ",", explode(" ", $data->valor)[1]));
-        if($data->tipo == 2)
+        if($data->tipo_servico == 2)
         {
             $this->db->set("quantidade_disponivel", $data->quantidade);
             $this->db->set("caucao", $data->caucao);
@@ -314,7 +309,22 @@ class Servico_model extends CI_Model{
 
             $this->set_img($id);
 
-            
+            if($data->lista_tipo_pagamento)
+            {
+                $this->set_pagamento($id);
+            }
+
+            if($data->lista_tipo_horario)
+            {
+                $this->set_horario($id);
+            }
+
+            $rst->rst = true;
+        }
+        else
+        {
+            $rst->rst = false;
+            $rst->msg = "Erro ao inserir o Serviço";
         }
 
         return $rst;
@@ -345,6 +355,55 @@ class Servico_model extends CI_Model{
 
             limpa_uploads();
         }
+    }
+
+    private function set_pagamento($id)
+    {
+        $data = (object)$this->input->post();
+        
+        $lista_ini = explode(",", $data->lista_tipo_pagamento);
+
+        $lista_c = array();
+
+        foreach($lista_ini as $value)
+        {
+            $lista_c = explode("/", $value);
+
+            if($lista_c)
+            {
+                $this->db->set("id_tipo_pagamento", $lista_c[0]);
+                $this->db->set("vezes", $lista_c[1]);
+                $this->db->set("juros", $lista_c[2]);
+                $this->db->set("id_servico", $id);
+
+                $this->db->insert("PagamentoServico");
+            }
+        }
+        //colocar um log
+    }
+
+    private function set_horario($id)
+    {
+        $data = (object)$this->input->post();
+        
+        $lista_ini = explode(",", $data->lista_tipo_horario);
+        
+        $lista_c = array();
+
+        foreach($lista_ini as $value)
+        {
+            $lista_c = explode("/", $value);
+            
+            if($lista_c)
+            {
+                $this->db->set("dia_semana", $lista_c[0]);
+                $this->db->set("texto", $lista_c[1]." às ".$lista_c[2]);
+                $this->db->set("id_servico", $id);
+
+                $this->db->insert("Horario");
+            }
+        }
+        //colocar um log
     }
 
     /**
