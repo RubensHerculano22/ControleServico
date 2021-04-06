@@ -5,9 +5,11 @@
     <?= $header ?>
 </head>
 
-<body class="layout-fixed">
-
+<body class="hold-transition sidebar-mini layout-fixed">
+    <div class="wrapper">
     <?= $navbar ?>
+
+    <?= $sidebar ?>
 
     <div class="content-wrapper">
         <?php if(isset($breadcrumb) AND $breadcrumb): ?>
@@ -35,6 +37,7 @@
             <?= $content ?>
         </section>
         <!-- /.content -->
+        </div>
     </div>
     <footer class="main-footer">
         <strong>Copyright &copy; 2020 a 2021 <a href="<?= base_url("") ?>">NextoYou</a>.</strong> Todos os direitos reservados.

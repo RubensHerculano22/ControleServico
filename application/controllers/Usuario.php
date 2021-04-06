@@ -18,6 +18,7 @@ class Usuario extends CI_Controller{
 
         $this->data["header"] = $this->load->view("template/header", $this->data, true);
         $this->data["navbar"] = $this->load->view("template/navbar", $this->data, true);
+        $this->data["sidebar"] = $this->load->view("template/sidebar", $this->data, true);
         $this->data["footer"] = $this->load->view("template/footer", $this->data, true);
         //Não esquecer de fazer o termo para utilizar o endereço e os dados dos clientes.
     }

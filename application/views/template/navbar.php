@@ -1,6 +1,9 @@
-<nav class="main-header navbar navbar-expand navbar-info navbar-dark">
+<nav class="main-header navbar navbar-expand navbar-dark navbar-cyan">
     <!-- Left navbar links -->
-    <ul class="navbar-nav ml-auto">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+      </li>
       <a href="<?= base_url("") ?>">
       <li class="d-none d-sm-inline-block">
         <img src="<?= base_url("assets/img/logo_transparent.png") ?>" style="max-width: 35px; max-height: 35px;"/>
