@@ -92,6 +92,13 @@ class Servico_model extends CI_Model{
         //Consulta a categoria do serviço.
         $query->categoria = $this->db->get_where("Categoria", "id = ".$query->subcategoria->id_pai)->row();
 
+        //Consulta os horarios
+        $query->horario = $this->db->get_where("HorarioServico", "id_servico = '$query->id'")->result();
+        foreach($query->horario as $item)
+        {
+            $item->dia_semana = $this->db->get_where("Horario", "id = $item->dia_semana")->row();
+        }
+
         //Consulta todas as imagens cadastradas no serviço.
         $this->db->order_by("principal", "desc");
         $query->imagens = $this->db->get_where("Imagens", "id_servico = '$query->id' and ativo = 1")->result();
@@ -292,15 +299,15 @@ class Servico_model extends CI_Model{
         $this->db->set("descricao_curta", $data->descricao_curta);
         $this->db->set("descricao", $data->descricao_completa);
         $this->db->set("ativo", 1);
-        $this->db->set("data_inclusao", date("d-m-Y h:i:s"));
-        $this->db->set("data_atualizacao", date("d-m-Y h:i:s"));
+        $this->db->set("data_inclusao", date("Y-m-d h:i:s"));
+        $this->db->set("data_atualizacao", date("Y-m-d h:i:s"));
         $this->db->set("id_tipo_servico", $data->tipo_servico);
         $this->db->set("id_categoria", $data->categoria_especifica);
         $this->db->set("valor", str_replace(".", ",", explode(" ", $data->valor)[1]));
         if($data->tipo_servico == 2)
         {
             $this->db->set("quantidade_disponivel", $data->quantidade);
-            $this->db->set("caucao", $data->caucao);
+            $this->db->set("caucao", str_replace(".", ",", explode(" ", $data->caucao)[1]));
         }
         $this->db->set("id_usuario", $this->dados->usuario_id);
 
@@ -343,7 +350,9 @@ class Servico_model extends CI_Model{
             {
                 if($count == 0 && empty($query))
                     $this->db->set("principal", 1);
-                
+                else
+                    $this->db->set("principal", 0);
+
                 $this->db->set("id_servico", $id);
                 $this->db->set("ativo", 1);
                 $this->db->set("nome", $files[$count]["name"]);
@@ -401,7 +410,7 @@ class Servico_model extends CI_Model{
                 $this->db->set("texto", $lista_c[1]." às ".$lista_c[2]);
                 $this->db->set("id_servico", $id);
 
-                $this->db->insert("Horario");
+                $this->db->insert("HorarioServico");
             }
         }
         //colocar um log

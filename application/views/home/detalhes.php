@@ -13,7 +13,7 @@
                                     <div class="col-md-8 col-sm-12">
                                         <div class="col-12">
                                             <?php if($info->imagens): ?>
-                                                <img src="<?= $info->imagens[0]->img ?>" class="product-image" alt="Product Image" >    
+                                                <img src="data:<?= $info->imagens[0]->tipo_imagem ?>;base64,<?= $info->imagens[0]->img ?>" class="product-image" alt="Product Image" style="max-height: 500px;">    
                                             <?php else: ?>
                                                 <img src="https://levecrock.com.br/wp-content/uploads/2020/05/Produto-sem-Imagem-por-Enquanto.jpg" class="product-image" alt="Product Image" style="max-width:500px;">
                                             <?php endif; ?>
@@ -21,7 +21,7 @@
                                         <div class="col-12 product-image-thumbs">
                                             <?php if($info->imagens): ?>
                                                 <?php foreach($info->imagens as $key => $item): ?>
-                                                    <div class="product-image-thumb <?= $key == 0 ? "active" : "" ?>"><img src="<?= $item->img ?>"  alt="Product Image"></div>        
+                                                    <div class="product-image-thumb <?= $key == 0 ? "active" : "" ?>"><img src="data:<?= $item->tipo_imagem ?>;base64,<?= $item->img ?>"  alt="Product Image"></div>        
                                                 <?php endforeach; ?>
                                             <?php else: ?>
                                                 <div class="product-image-thumb active"><img src="https://levecrock.com.br/wp-content/uploads/2020/05/Produto-sem-Imagem-por-Enquanto.jpg"  alt="Product Image"></div>
@@ -61,12 +61,32 @@
                                             <h6><b>Quantidade:</b> <?= $info->quantidade_disponivel ?></h6>
                                         </div>
                                         <?php endif; ?>
+                                        <?php if($info->caucao): ?>
+                                        <div class="mt-2">
+                                            <h5><b>Caução:</b> <?= "R$: ".$info->caucao ?></h5>
+                                        </div>
+                                        <?php endif; ?>
 
                                         <div class="mt-4">
                                             <button type="button" id="contratar" class="btn btn-warning btn-block btn-lg" data-toggle="modal" data-target="#modal_contratacao">
                                                 <i class="fas fa-handshake"></i>
                                                 Contratar
                                             </button>
+                                        </div>
+                                        <div class="mt-4">
+                                            <h6><b>Horários de Funcionamento:</b></h6>
+                                            <div class="table-responsive">
+                                                <table class="table">
+                                                    <tbody>
+                                                        <?php foreach($info->horario as $item): ?>
+                                                        <tr>
+                                                            <th><?= $item->dia_semana->titulo ?></th>
+                                                            <td><?= $item->texto ?></td>
+                                                        </tr>
+                                                        <?php endforeach; ?>
+                                                    </tbody>
+                                                </table>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -90,33 +110,33 @@
                                         <div class="row">
                                             <?php foreach($info->pagamento as $item): ?>
                                                 <?php if($item->id_tipo_pagamento == 1): ?>
-                                                    <div class="col-md-2 col-sm-4">
+                                                    <div class="col-md-3 col-sm-4">
                                                         <img class="img-fluid mb-2" src="https://latinoscassinos.com/wp-content/uploads/2019/01/62.png" style="max-width: 150px; max-height: 40px;" />
-                                                        <span class="text-muted"><?= $item->vezes."x".($item->juros == 1 ? " Com Juros" : " Sem Juros") ?></span>
+                                                        <span class="text-muted"><?= ($item->vezes != 1 ? $item->vezes."x" : "à vista").($item->juros == 1 ? " com juros" : " sem juros") ?></span>
                                                     </div>        
                                                 <?php endif; ?>
                                                 <?php if($item->id_tipo_pagamento == 2): ?>
-                                                    <div class="col-md-2 col-sm-4">
+                                                    <div class="col-md-3 col-sm-4">
                                                         <img class="img-fluid mb-2" src="https://i.pinimg.com/originals/dd/65/f3/dd65f3c6a80e7bb059d3f2630399826b.jpg" style="max-width: 150px; max-height: 40px;" />
-                                                        <span class="text-muted">12x</span>
+                                                        <span class="text-muted"><?= ($item->vezes != 1 ? $item->vezes."x" : "à vista").($item->juros == 1 ? " com juros" : " sem juros") ?></span>
                                                     </div> 
                                                 <?php endif; ?>
                                                 <?php if($item->id_tipo_pagamento == 3): ?>
-                                                    <div class="col-md-2 col-sm-4">
+                                                    <div class="col-md-3 col-sm-4">
                                                         <img class="img-fluid mb-2" src="https://logospng.org/download/cartao-elo/logo-cartao-elo-colorido-fundo-preto-256.png" style="max-width: 150px; max-height: 40px;" />
-                                                        <span class="text-muted">12x</span>
+                                                        <span class="text-muted"><?= ($item->vezes != 1 ? $item->vezes."x" : "à vista").($item->juros == 1 ? " com juros" : " sem juros") ?></span>
                                                     </div>     
                                                 <?php endif; ?>
                                                 <?php if($item->id_tipo_pagamento == 4): ?>
-                                                    <div class="col-md-2 col-sm-4">
+                                                    <div class="col-md-3 col-sm-4">
                                                         <img class="img-fluid mb-2" src="https://i2.wp.com/goldlinebrow.com/wp-content/uploads/2018/02/American-Express-icon.png?ssl=1" style="max-width: 150px; max-height: 40px;" />
-                                                        <span class="text-muted">12x</span>
+                                                        <span class="text-muted"><?= ($item->vezes != 1 ? $item->vezes."x" : "à vista").($item->juros == 1 ? " com juros" : " sem juros") ?></span>
                                                     </div>
                                                 <?php endif; ?>
                                                 <?php if($item->id_tipo_pagamento == 5): ?>
-                                                    <div class="col-md-2 col-sm-4">
+                                                    <div class="col-md-3 col-sm-4">
                                                         <img class="img-fluid mb-2" src="https://logospng.org/download/hipercard/logo-hipercard-256.png" style="max-width: 150px; max-height: 40px;" />
-                                                        <span class="text-muted">12x</span>
+                                                        <span class="text-muted"><?= ($item->vezes != 1 ? $item->vezes."x" : "à vista").($item->juros == 1 ? " com juros" : " sem juros") ?></span>
                                                     </div>    
                                                 <?php endif; ?>
                                             <?php endforeach; ?>
@@ -127,33 +147,33 @@
                                         <div class="row">
                                             <?php foreach($info->pagamento as $item): ?>
                                                 <?php if($item->id_tipo_pagamento == 6): ?>
-                                                    <div class="col-md-2 col-sm-4">
+                                                    <div class="col-md-3 col-sm-4">
                                                         <img class="img-fluid mb-2" src="https://latinoscassinos.com/wp-content/uploads/2019/01/62.png" style="max-width: 150px; max-height: 40px;" />
-                                                        <span class="text-muted">a vista</span>
+                                                        <span class="text-muted"><?= ($item->vezes != 1 ? $item->vezes."x" : "à vista").($item->juros == 1 ? " com juros" : " sem juros") ?></span>
                                                     </div>
                                                 <?php endif; ?>
                                                 <?php if($item->id_tipo_pagamento == 7): ?>
-                                                    <div class="col-md-2 col-sm-4">
+                                                    <div class="col-md-3 col-sm-4">
                                                         <img class="img-fluid mb-2" src="https://i.pinimg.com/originals/dd/65/f3/dd65f3c6a80e7bb059d3f2630399826b.jpg" style="max-width: 150px; max-height: 40px;" />
-                                                        <span class="text-muted">a vista</span>
+                                                        <span class="text-muted"><?= ($item->vezes != 1 ? $item->vezes."x" : "à vista").($item->juros == 1 ? " com juros" : " sem juros") ?></span>
                                                     </div>
                                                 <?php endif; ?>
                                                 <?php if($item->id_tipo_pagamento == 8): ?>
-                                                    <div class="col-md-2 col-sm-4">
+                                                    <div class="col-md-3 col-sm-4">
                                                         <img class="img-fluid mb-2" src="https://logospng.org/download/cartao-elo/logo-cartao-elo-colorido-fundo-preto-256.png" style="max-width: 150px; max-height: 40px;" />
-                                                        <span class="text-muted">a vista</span>
+                                                        <span class="text-muted"><?= ($item->vezes != 1 ? $item->vezes."x" : "à vista").($item->juros == 1 ? " com juros" : " sem juros") ?></span>
                                                     </div>
                                                 <?php endif; ?>
                                                 <?php if($item->id_tipo_pagamento == 9): ?>
-                                                    <div class="col-md-2 col-sm-4">
+                                                    <div class="col-md-3 col-sm-4">
                                                         <img class="img-fluid mb-2" src="https://i2.wp.com/goldlinebrow.com/wp-content/uploads/2018/02/American-Express-icon.png?ssl=1" style="max-width: 150px; max-height: 40px;" />
-                                                        <span class="text-muted">a vista</span>
+                                                        <span class="text-muted"><?= ($item->vezes != 1 ? $item->vezes."x" : "à vista").($item->juros == 1 ? " com juros" : " sem juros") ?></span>
                                                     </div>
                                                 <?php endif; ?>
                                                 <?php if($item->id_tipo_pagamento == 10): ?>
-                                                    <div class="col-md-2 col-sm-4">
+                                                    <div class="col-md-3 col-sm-4">
                                                         <img class="img-fluid mb-2" src="https://logospng.org/download/hipercard/logo-hipercard-256.png" style="max-width: 150px; max-height: 40px;" />
-                                                        <span class="text-muted">a vista</span>
+                                                        <span class="text-muted"><?= ($item->vezes != 1 ? $item->vezes."x" : "à vista").($item->juros == 1 ? " com juros" : " sem juros") ?></span>
                                                     </div>
                                                 <?php endif; ?>
                                             <?php endforeach; ?>
@@ -164,57 +184,57 @@
                                         <div class="row">
                                             <?php foreach($info->pagamento as $item): ?>
                                                 <?php if($item->id_tipo_pagamento == 11): ?>
-                                                    <div class="col-lg-2 col-md-3 col-sm-4">
+                                                    <div class="col-lg-3 col-md-3 col-sm-4">
                                                         <img class="img-fluid mb-2" src="https://logospng.org/download/itau/logo-itau-256.png" style="max-width: 150px; max-height: 40px;" />
-                                                        <span class="text-muted">Itau</span>
+                                                        <span class="text-muted">Itau <?= ($item->vezes != 1 ? $item->vezes."x" : "à vista").($item->juros == 1 ? " com juros" : " sem juros") ?></span>
                                                     </div>
                                                 <?php endif; ?>
                                                 <?php if($item->id_tipo_pagamento == 12): ?>
-                                                    <div class="col-lg-2 col-md-3 col-sm-4">
+                                                    <div class="col-lg-3 col-md-3 col-sm-4">
                                                         <img class="img-fluid mb-2" src="https://logospng.org/download/nubank/logo-nu-nubank-roxo-icon-256.png" style="max-width: 150px; max-height: 40px;" />
-                                                        <span class="text-muted">Nubank</span>
+                                                        <span class="text-muted">Nubank <?= ($item->vezes != 1 ? $item->vezes."x" : "à vista").($item->juros == 1 ? " com juros" : " sem juros") ?></span>
                                                     </div>
                                                 <?php endif; ?>
                                                 <?php if($item->id_tipo_pagamento == 13): ?>
-                                                    <div class="col-lg-2 col-md-3 col-sm-4">
+                                                    <div class="col-lg-3 col-md-3 col-sm-4">
                                                         <img class="img-fluid mb-2" src="https://logospng.org/download/santander/logo-santander-icon-256.png" style="max-width: 150px; max-height: 40px;" />
-                                                        <span class="text-muted">Santander</span>
+                                                        <span class="text-muted">Santander <?= ($item->vezes != 1 ? $item->vezes."x" : "à vista").($item->juros == 1 ? " com juros" : " sem juros") ?></span>
                                                     </div>
                                                 <?php endif; ?>
                                                 <?php if($item->id_tipo_pagamento == 14): ?>
-                                                    <div class="col-lg-2 col-md-3 col-sm-4">
+                                                    <div class="col-lg-3 col-md-3 col-sm-4">
                                                         <img class="img-fluid mb-2" src="https://banco.bradesco/favicon.ico" style="max-width: 150px; max-height: 40px;" />
-                                                        <span class="text-muted">Bradesco</span>
+                                                        <span class="text-muted">Bradesco <?= ($item->vezes != 1 ? $item->vezes."x" : "à vista").($item->juros == 1 ? " com juros" : " sem juros") ?></span>
                                                     </div>
                                                 <?php endif; ?>
                                                 <?php if($item->id_tipo_pagamento == 15): ?>
-                                                    <div class="col-lg-2 col-md-3 col-sm-4">
+                                                    <div class="col-lg-3 col-md-3 col-sm-4">
                                                         <img class="img-fluid mb-2" src="https://logospng.org/download/caixa-economica-federal/logo-caixa-economica-federal-256.png" style="max-width: 150px; max-height: 40px;" />
-                                                        <span class="text-muted">Caixa</span>
+                                                        <span class="text-muted">Caixa <?= ($item->vezes != 1 ? $item->vezes."x" : "à vista").($item->juros == 1 ? " com juros" : " sem juros") ?></span>
                                                     </div>
                                                 <?php endif; ?>
                                                 <?php if($item->id_tipo_pagamento == 16): ?>
-                                                    <div class="col-lg-2 col-md-3 col-sm-4">
+                                                    <div class="col-lg-3 col-md-3 col-sm-4">
                                                         <img class="img-fluid mb-2" src="https://logospng.org/download/mercado-pago/logo-mercado-pago-icone-256.png" style="max-width: 150px; max-height: 40px;" />
-                                                        <span class="text-muted">Mercado pago</span>
+                                                        <span class="text-muted">Mercado pago <?= ($item->vezes != 1 ? $item->vezes."x" : "à vista").($item->juros == 1 ? " com juros" : " sem juros") ?></span>
                                                     </div>
                                                 <?php endif; ?>
                                                 <?php if($item->id_tipo_pagamento == 17): ?>
-                                                    <div class="col-lg-2 col-md-3 col-sm-4">
+                                                    <div class="col-lg-3 col-md-3 col-sm-4">
                                                         <img class="img-fluid mb-2" src="https://logospng.org/download/picpay/logo-picpay-256.png" style="max-width: 150px; max-height: 40px;" />
-                                                        <span class="text-muted">PicPay</span>
+                                                        <span class="text-muted">PicPay <?= ($item->vezes != 1 ? $item->vezes."x" : "à vista").($item->juros == 1 ? " com juros" : " sem juros") ?></span>
                                                     </div>
                                                 <?php endif; ?>
                                                 <?php if($item->id_tipo_pagamento == 18): ?>
-                                                    <div class="col-lg-2 col-md-3 col-sm-4">
+                                                    <div class="col-lg-3 col-md-3 col-sm-4">
                                                         <img class="img-fluid mb-2" src="https://cdn.iconscout.com/icon/free/png-256/paypal-5-226456.png" style="max-width: 150px; max-height: 40px;" />
-                                                        <span class="text-muted">PayPal</span>
+                                                        <span class="text-muted">PayPal <?= ($item->vezes != 1 ? $item->vezes."x" : "à vista").($item->juros == 1 ? " com juros" : " sem juros") ?></span>
                                                     </div>
                                                 <?php endif; ?>
                                                 <?php if($item->id_tipo_pagamento == 19): ?>
                                                     <div class="col-lg-3  col-md-3 col-sm-4">
                                                         <img class="img-fluid mb-2" src="https://logospng.org/download/banco-do-brasil/logo-banco-do-brasil-icon-256.png" style="max-width: 150px; max-height: 40px;" />
-                                                        <span class="text-muted">Banco do Brasil</span>
+                                                        <span class="text-muted">Banco do Brasil <?= ($item->vezes != 1 ? $item->vezes."x" : "à vista").($item->juros == 1 ? " com juros" : " sem juros") ?></span>
                                                     </div>
                                                 <?php endif; ?>
                                             <?php endforeach; ?>
@@ -227,7 +247,7 @@
                                                 <?php if($item->id_tipo_pagamento == 20): ?>
                                                     <div class="col-md-2 col-sm-4">
                                                         <img class="img-fluid mb-2" src="https://www.autoimportsweb.com.br/wp-content/uploads/2019/02/ico_boleto.svg" style="max-width: 150px; max-height: 40px;" />
-                                                        <span class="text-muted">Boleto</span>
+                                                        <span class="text-muted">Boleto <?= ($item->vezes != 1 ? $item->vezes."x" : "à vista").($item->juros == 1 ? " com juros" : " sem juros") ?></span>
                                                     </div>
                                                 <?php endif; ?>
                                             <?php endforeach; ?>
