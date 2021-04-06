@@ -58,7 +58,7 @@ class Usuario_model extends CI_Model{
         }
 
         //Realiza a consulta a partir dos dados digitados pelo usuario.
-        $query = $this->db->get_where("Usuario", "email = '$data->email' AND senha = '".md5($data->senha)."'")->row();
+        $query = $this->db->get_where("Usuario", "email = '".strtolower($data->email)."' AND senha = '".md5($data->senha)."'")->row();
 
         if(!$query)
         {

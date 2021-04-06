@@ -92,7 +92,7 @@
                                                 <?php if($item->id_tipo_pagamento == 1): ?>
                                                     <div class="col-md-2 col-sm-4">
                                                         <img class="img-fluid mb-2" src="https://latinoscassinos.com/wp-content/uploads/2019/01/62.png" style="max-width: 150px; max-height: 40px;" />
-                                                        <span class="text-muted">12x</span>
+                                                        <span class="text-muted"><?= $item->vezes."x".($item->juros == 1 ? " Com Juros" : " Sem Juros") ?></span>
                                                     </div>        
                                                 <?php endif; ?>
                                                 <?php if($item->id_tipo_pagamento == 2): ?>
@@ -111,7 +111,7 @@
                                                     <div class="col-md-2 col-sm-4">
                                                         <img class="img-fluid mb-2" src="https://i2.wp.com/goldlinebrow.com/wp-content/uploads/2018/02/American-Express-icon.png?ssl=1" style="max-width: 150px; max-height: 40px;" />
                                                         <span class="text-muted">12x</span>
-                                                    </div>       
+                                                    </div>
                                                 <?php endif; ?>
                                                 <?php if($item->id_tipo_pagamento == 5): ?>
                                                     <div class="col-md-2 col-sm-4">

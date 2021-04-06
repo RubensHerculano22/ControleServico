@@ -291,8 +291,9 @@ class Servico_model extends CI_Model{
         $this->db->set("nome", $data->nome);
         $this->db->set("descricao_curta", $data->descricao_curta);
         $this->db->set("descricao", $data->descricao_completa);
-        $this->db->set("data_inclusao", "NOW()", false);
-        $this->db->set("data_atualizacao", "NOW()", false);
+        $this->db->set("ativo", 1);
+        $this->db->set("data_inclusao", date("d-m-Y h:i:s"));
+        $this->db->set("data_atualizacao", date("d-m-Y h:i:s"));
         $this->db->set("id_tipo_servico", $data->tipo_servico);
         $this->db->set("id_categoria", $data->categoria_especifica);
         $this->db->set("valor", str_replace(".", ",", explode(" ", $data->valor)[1]));
@@ -347,7 +348,7 @@ class Servico_model extends CI_Model{
                 $this->db->set("ativo", 1);
                 $this->db->set("nome", $files[$count]["name"]);
                 $this->db->set("tipo_imagem", $files[$count]["type"]);
-                $this->db->set("data_insercao", "NOW()", false);
+                $this->db->set("data_insercao", date("d-m-Y h:i:s"));
                 $this->db->set("img", base64_encode(file_get_contents($files[$count]["path"])));
 
                 $this->db->insert("Imagens");
