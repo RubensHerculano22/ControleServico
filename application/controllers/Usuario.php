@@ -39,6 +39,25 @@ class Usuario extends CI_Controller{
         $this->load->view("template/content", $this->data);
     }
 
+    public function perfil()
+    {
+        $this->data["breadcrumb"] = (object)array("titulo" => "Perfil", "before" => array((object)array("nome" => "Home", "link" => "Home")), "current" => "Perfil");
+
+        $this->data["info"] = $this->m_usuario->info_usuario($this->data["dados"]->usuario_id);
+
+        // echo '<pre>';
+        // print_r($this->data["info"]);
+        // echo '</pre>';
+        // exit;
+
+        $this->data["javascript"] = [
+            base_url("assets/js/usuario/perfil.js")
+        ];
+
+        $this->data["content"] = $this->load->view("usuario/perfil", $this->data, true);
+        $this->load->view("template/content", $this->data);
+    }
+
     public function login()
     {
         $this->data["breadcrumb"] = (object)array("titulo" => "Autentificação", "before" => array((object)array("nome" => "Home", "link" => "Home")), "current" => "Autentificação");

@@ -1975,7 +1975,7 @@
     highlightName: true,
     highlightPath: false,
     highlightClass: 'text-light',
-    notFoundText: 'Nenhum Serviço encontrado'
+    notFoundText: 'Serviço não encontrado'
   };
   var SearchItems = [];
   /**

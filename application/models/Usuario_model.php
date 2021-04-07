@@ -29,6 +29,12 @@ class Usuario_model extends CI_Model{
     {
         $query = $this->db->get_where("Usuario", "id = $id")->row();
 
+        $query->estado = get_estados_id($query->estado);
+
+        $query->cpf = formatar($query->cpf, "cpf");
+        $query->telefone = formatar($query->telefone, "fone");
+        $query->celular = formatar($query->celular, "fone");
+
         return $query;
     }
 

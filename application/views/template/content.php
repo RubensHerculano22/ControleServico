@@ -5,43 +5,43 @@
     <?= $header ?>
 </head>
 
-<body class="hold-transition sidebar-mini layout-fixed">
+<body class="hold-transition sidebar-mini sidebar-collapse">
     <div class="wrapper">
-    <?= $navbar ?>
+        <?= $navbar ?>
 
-    <?= $sidebar ?>
+        <?= $sidebar ?>
 
-    <div class="content-wrapper">
-        <?php if(isset($breadcrumb) AND $breadcrumb): ?>
-            <div class="content-header">
-                <div class="container-fluid">
-                    <div class="row">
-                        <!-- <div class="col-sm-6">
-                            <h1 class="m-0"><?= $breadcrumb->titulo ?></h1>
-                        </div> -->
-                        <div class="col-sm-12">
-                            <ol class="breadcrumb float-sm-right">
-                                <?php foreach($breadcrumb->before as $item): ?>
-                                    <li class="breadcrumb-item"><a href="<?= base_url($item->link) ?>" style="color: #17a2b8 "><?= $item->nome ?></a></li>
-                                <?php endforeach; ?>
-                                <li class="breadcrumb-item" style="color: #083c44"><?= $breadcrumb->current ?></li>
-                            </ol>
+        <div class="content-wrapper">
+            <?php if(isset($breadcrumb) AND $breadcrumb): ?>
+                <div class="content-header">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <!-- <div class="col-sm-6">
+                                <h1 class="m-0"><?= $breadcrumb->titulo ?></h1>
+                            </div> -->
+                            <div class="col-sm-12">
+                                <ol class="breadcrumb float-sm-right">
+                                    <?php foreach($breadcrumb->before as $item): ?>
+                                        <li class="breadcrumb-item"><a href="<?= base_url($item->link) ?>" style="color: #17a2b8 "><?= $item->nome ?></a></li>
+                                    <?php endforeach; ?>
+                                    <li class="breadcrumb-item" style="color: #083c44"><?= $breadcrumb->current ?></li>
+                                </ol>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        <?php endif; ?>
+            <?php endif; ?>
 
-        <!-- Main content -->
-        <section class="content">
-            <?= $content ?>
-        </section>
-        <!-- /.content -->
+            <!-- Main content -->
+            <section class="content">
+                <?= $content ?>
+            </section>
+            <!-- /.content -->
         </div>
+        <footer class="main-footer">
+            <strong>Copyright &copy; 2020 a 2021 <a href="<?= base_url("") ?>">NextoYou</a>.</strong> Todos os direitos reservados.
+        </footer>
     </div>
-    <footer class="main-footer">
-        <strong>Copyright &copy; 2020 a 2021 <a href="<?= base_url("") ?>">NextoYou</a>.</strong> Todos os direitos reservados.
-    </footer>
     <?= $footer ?>
     <?php if(isset($javascript) && !empty($javascript)): ?>
         <?php foreach($javascript as $js): ?>

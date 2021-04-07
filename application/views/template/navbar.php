@@ -25,11 +25,12 @@
         </li>
       <?php endforeach; ?> -->
     </ul>
-    <div class="form-inline ml-auto">
-      <div class="input-group" data-widget="sidebar-search" width="80%">
-        <input class="form-control form-control-sidebar" type="search" placeholder="Procurar por um Serviço" aria-label="Search">
+
+    <form class="form-inline ml-auto">
+      <div class="input-group input-group-sm" data-widget="sidebar-search">
+        <input class="form-control form-control-navbar" type="search" placeholder="Procurar Serviço" aria-label="Search">
       </div>
-    </div>
+    </form>
 
     <ul class="navbar-nav ml-auto">
       <li class="nav-item dropdown">
@@ -84,7 +85,7 @@
           </li>
           <li class="user-body">
             <a href="<?= base_url("Usuario/index/$dados->usuario_id") ?>" class="btn btn-default btn-flat btn-block">Minhas Informações (editar por enquanto)</a>
-            <button type="button" class="btn btn-default btn-flat btn-block">Meus Serviços</button>
+            <a href="<?= base_url("Usuario/perfil") ?>" class="btn btn-default btn-flat btn-block">Meus Serviços</a>
             <button type="button" class="btn btn-default btn-flat btn-block">Lista de favoritos</button>
             <button type="button" class="btn btn-default btn-flat btn-block">Serviços contratos</button>
             <a href="<?= base_url("Usuario/logout/$local") ?>" class="btn btn-default btn-flat btn-block">Sair</a>

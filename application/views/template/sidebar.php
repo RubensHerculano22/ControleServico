@@ -3,7 +3,7 @@
     <!-- Brand Logo -->
     <a href="<?= base_url("Servico") ?>" class="brand-link navbar-cyan">
       <img src="<?= base_url("assets/img/logo_transparent.png") ?>" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-      <span class="brand-text font-weight-light">NextoYou</span>
+      <span class="brand-text font-weight-light">NEXTOYOU</span>
     </a>
 
     <!-- Sidebar -->
