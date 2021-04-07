@@ -1,10 +1,10 @@
-<nav class="main-header navbar navbar-expand navbar-dark navbar-cyan">
+<nav class="main-header navbar navbar-expand navbar-light navbar-cyan">
     <!-- Left navbar links -->
     <ul class="navbar-nav">
       <li class="nav-item">
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
-      <a href="<?= base_url("") ?>">
+      <!-- <a href="<?= base_url("") ?>">
       <li class="d-none d-sm-inline-block">
         <img src="<?= base_url("assets/img/logo_transparent.png") ?>" style="max-width: 35px; max-height: 35px;"/>
       </li>
@@ -23,15 +23,13 @@
             <?php endforeach; ?>
           </ul>
         </li>
-      <?php endforeach; ?>
+      <?php endforeach; ?> -->
     </ul>
-
-    <form class="form-inline ml-4">
-      <div class="form-group">
-        <select class="form-control select2" style="width: 100%;" placeholder="Buscar">
-        </select>
+    <div class="form-inline ml-auto">
+      <div class="input-group" data-widget="sidebar-search" width="80%">
+        <input class="form-control form-control-sidebar" type="search" placeholder="Procurar por um Serviço" aria-label="Search">
       </div>
-    </form>
+    </div>
 
     <ul class="navbar-nav ml-auto">
       <li class="nav-item dropdown">

@@ -21,7 +21,10 @@ class Servico extends CI_Controller{
         $this->data["local"] = $local;
 
         $this->data["categorias"] = $this->m_sistema->listar_categorias();
-
+        // echo '<pre>';
+        // print_r($this->data["categorias"]);
+        // echo '</pre>';
+        // exit;
         $this->data["header"] = $this->load->view("template/header", $this->data, true);
         $this->data["navbar"] = $this->load->view("template/navbar", $this->data, true);
         $this->data["sidebar"] = $this->load->view("template/sidebar", $this->data, true);
