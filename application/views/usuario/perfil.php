@@ -1,7 +1,7 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-3 col-sm-3 col-xs-12">
-            <div class="card card-danger card-outline">
+            <div class="card card-info card-outline">
                 <div class="card-body box-profile">
                 <div class="text-center">
                     <img class="profile-user-img img-fluid img-circle" src="https://franquia.globalmedclinica.com.br/wp-content/uploads/2016/01/investidores-img-02-01.png" alt="User profile picture">
@@ -28,12 +28,12 @@
                     </li>
                 </ul>
                 
-                <a href="<?= base_url("Usuario/logout") ?>" class="btn btn-danger btn-block"><i class="fas fa-sign-out-alt"></i> <b>Sair</b></a>
+                <a href="<?= base_url("Usuario/logout") ?>" class="btn btn-info btn-block"><i class="fas fa-sign-out-alt"></i> <b>Sair</b></a>
                 </div>
             </div>
         </div>
         <div class="col-md-9 col-sm-9 col-xs-12">
-            <div class="card card-danger card-outline">
+            <div class="card card-info card-outline">
                 <div class="card-body box-profile">
                     <div class="tab-content" id="vert-tabs-tabContent">
                         <div class="tab-pane text-left fade show active" id="dados_tab" role="tabpanel">
@@ -73,6 +73,21 @@
                                         <label for="exampleInputEmail1">Enredeço</label>
                                         <input type="text" class="form-control" value="<?= $info->endereco.", ".$info->numero.", ".$info->bairro.", ".$info->cidade." - ".$info->estado->nome ?>" id="endereco" readonly>
                                     </div>
+                                </div>
+                                <div class="col-md-4 col-sm-4 col-xs-12">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">CPF</label>
+                                        <input type="text" class="form-control" id="cpf" readonly>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-sm-4 col-xs-12">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Data Nascimento</label>
+                                        <input type="text" class="form-control" id="data_nascimento" readonly>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <a href="<?= base_url("Usuario/logout") ?>" class="btn btn-warning float-right"><i class="fas fa-edit"></i> Editar Dados</a>
                                 </div>
                             </div>
                         </div>
