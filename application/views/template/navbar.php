@@ -25,12 +25,14 @@
         </li>
       <?php endforeach; ?> -->
     </ul>
-
-    <form class="form-inline ml-auto">
-      <div class="input-group input-group-sm" data-widget="sidebar-search">
-        <input class="form-control form-control-navbar" type="search" placeholder="Procurar Serviço" aria-label="Search">
+      <div class="input-group input-group-sm ml-auto" style="width: 50%">
+        <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
+        <div class="input-group-append">
+          <button class="btn btn-navbar" type="submit">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
       </div>
-    </form>
 
     <ul class="navbar-nav ml-auto">
       <li class="nav-item dropdown">

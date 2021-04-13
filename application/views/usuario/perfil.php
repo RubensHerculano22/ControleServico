@@ -3,32 +3,33 @@
         <div class="col-md-3 col-sm-3 col-xs-12">
             <div class="card card-danger card-outline">
                 <div class="card-body box-profile">
-                <div class="text-center">
-                    <img class="profile-user-img img-fluid img-circle" src="https://franquia.globalmedclinica.com.br/wp-content/uploads/2016/01/investidores-img-02-01.png" alt="User profile picture">
-                </div>
+                    <div class="text-center">
+                        <img class="profile-user-img img-fluid img-circle" src="https://franquia.globalmedclinica.com.br/wp-content/uploads/2016/01/investidores-img-02-01.png" alt="User profile picture">
+                    </div>
 
-                <h3 class="profile-username text-center"><?= $info->nome." ".$info->sobrenome ?></h3>
+                    <h3 class="profile-username text-center"><?= $info->nome." ".$info->sobrenome ?></h3>
+                    <small>Membro desde <?= formata_data_info($info->data_criacao) ?></small>
 
-                <ul class="list-group list-group-unbordered mb-3 text-center">
-                    <li class="list-group-item tabs" id="dados">
-                        <i class="fas fa-user-edit"></i>
-                        <b>Perfil</b>
-                    </li>
-                    <li class="list-group-item tabs" id="favoritos">
-                        <i class="fas fa-heart"></i>
-                        <b>Favoritos</b>
-                    </li>
-                    <li class="list-group-item tabs" id="pedidos">
-                        <i class="fas fa-list"></i>
-                        <b>Contratos</b>
-                    </li>
-                    <li class="list-group-item tabs" id="cadastrado">
-                        <i class="fas fa-edit"></i>
-                        <b>Cadastrados por você</b>
-                    </li>
-                </ul>
-                
-                <a href="<?= base_url("Usuario/logout") ?>" class="btn btn-danger btn-block"><i class="fas fa-sign-out-alt"></i> <b>Sair</b></a>
+                    <ul class="list-group list-group-unbordered mb-3 text-center">
+                        <li class="list-group-item tabs" id="dados">
+                            <i class="fas fa-user-edit"></i>
+                            <b>Perfil</b>
+                        </li>
+                        <li class="list-group-item tabs" id="favoritos">
+                            <i class="fas fa-heart"></i>
+                            <b>Favoritos</b>
+                        </li>
+                        <li class="list-group-item tabs" id="pedidos">
+                            <i class="fas fa-list"></i>
+                            <b>Contratos</b>
+                        </li>
+                        <li class="list-group-item tabs" id="cadastrado">
+                            <i class="fas fa-edit"></i>
+                            <b>Cadastrados por você</b>
+                        </li>
+                    </ul>
+                    
+                    <a href="<?= base_url("Usuario/logout") ?>" class="btn btn-danger btn-block"><i class="fas fa-sign-out-alt"></i> <b>Sair</b></a>
                 </div>
             </div>
         </div>
@@ -66,6 +67,24 @@
                                     <div class="form-group">
                                         <label for="exampleInputEmail1">Celular</label>
                                         <input type="text" class="form-control" id="celular" value="<?= $info->celular ?>" readonly>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Enredeço</label>
+                                        <input type="text" class="form-control" value="<?= $info->endereco.", ".$info->numero.", ".$info->bairro.", ".$info->cidade." - ".$info->estado->nome ?>" id="endereco" readonly>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Enredeço</label>
+                                        <input type="text" class="form-control" value="<?= $info->endereco.", ".$info->numero.", ".$info->bairro.", ".$info->cidade." - ".$info->estado->nome ?>" id="endereco" readonly>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Enredeço</label>
+                                        <input type="text" class="form-control" value="<?= $info->endereco.", ".$info->numero.", ".$info->bairro.", ".$info->cidade." - ".$info->estado->nome ?>" id="endereco" readonly>
                                     </div>
                                 </div>
                                 <div class="col-md-12 col-sm-12 col-xs-12">

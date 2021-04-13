@@ -60,6 +60,41 @@
 
     $(document).ready(function(){
         $(".select2").select2();
+
+        $("#search_bar").select2({
+            escapeMarkup: function (markup) { return markup; },
+            minimumInputLegth: 10,
+            maximumInputLength: 20,
+
+            templateResult: formatRepo,
+            templateSelection: formatRepoSelection,
+            language: "pt-BR",
+            width: "100%",
+            tags: false,
+            allowClear: true,
+            placeholder: ' Pesquisar... ',
+            ajax: {
+                url: "/search",
+                dataType: 'json',
+                type: "POST",
+                data: function (params) {
+                    var query = {
+                        search: params.term
+                    }
+
+                    return query;
+                },
+                delay: 250,
+                processResults: function (data) {
+
+                    return {
+                        results: data
+                    };
+                },
+                cache: true
+            },
+
+        });
     });
 
     function showNotification(colorName, title, text, positionClass) {
@@ -139,6 +174,37 @@
               }
           });
         }
+    }
+
+    function formatRepo(res) {
+
+        if (res.loading) 
+        {
+            return res.text;
+        }
+        var html = "<div class='select2-result-repository clearfix' >";
+
+        if (isNaN(res.id)) 
+        {
+            html += "<div  class='select2-result-repository__avatar'  ><b>" + res.nome + "</b></div>";
+        }
+        else {
+
+            if (res.arquivo == 1) 
+            {
+                html += "<div class='select2-result-repository__avatar'>Arquivo: <b>" + res.nome + "</b></div><div class='select2-result-repository__meta'><div class='select2-result-repository__title'>" + "Data expiração: " + res.data + "</div></div></div>";
+            }
+            else 
+            {
+                html += "<div class='select2-result-repository__avatar' id " + res.id + ">Pasta :: <b>" + res.nome + "</b></div>";
+            }
+        }
+
+        return html;
+    }
+
+    function formatRepoSelection(res) {
+        return res.nome || res.text;
     }
 
 </script>
