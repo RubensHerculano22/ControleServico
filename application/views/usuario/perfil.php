@@ -1,7 +1,7 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-3 col-sm-3 col-xs-12">
-            <div class="card card-danger card-outline">
+            <div class="card card-info card-outline">
                 <div class="card-body box-profile">
                     <div class="text-center">
                         <img class="profile-user-img img-fluid img-circle" src="https://franquia.globalmedclinica.com.br/wp-content/uploads/2016/01/investidores-img-02-01.png" alt="User profile picture">
@@ -34,7 +34,7 @@
             </div>
         </div>
         <div class="col-md-9 col-sm-9 col-xs-12">
-            <div class="card card-danger card-outline">
+            <div class="card card-info card-outline">
                 <div class="card-body box-profile">
                     <div class="tab-content" id="vert-tabs-tabContent">
                         <div class="tab-pane text-left fade show active" id="dados_tab" role="tabpanel">
