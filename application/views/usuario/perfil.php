@@ -8,7 +8,7 @@
                     </div>
 
                     <h3 class="profile-username text-center"><?= $info->nome." ".$info->sobrenome ?></h3>
-                    <small>Membro desde <?= formata_data_info($info->data_criacao) ?></small>
+                    <p class="text-muted text-center">Membro desde <?= formata_data_info($info->data_criacao_br) ?></p>
 
                     <ul class="list-group list-group-unbordered mb-3 text-center">
                         <li class="list-group-item tabs" id="dados">
@@ -75,23 +75,23 @@
                                         <input type="text" class="form-control" value="<?= $info->endereco.", ".$info->numero.", ".$info->bairro.", ".$info->cidade." - ".$info->estado->nome ?>" id="endereco" readonly>
                                     </div>
                                 </div>
-                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class="col-md-12 col-sm-12 col-xs-12 bloc_eye">
+                                    <i class="fas fa-eye float-right icon_eyes"></i>
+                                </div>
+                                <div class="col-md-4 col-sm-4 col-xs-12">
                                     <div class="form-group">
-                                        <label for="exampleInputEmail1">Enredeço</label>
-                                        <input type="text" class="form-control" value="<?= $info->endereco.", ".$info->numero.", ".$info->bairro.", ".$info->cidade." - ".$info->estado->nome ?>" id="endereco" readonly>
+                                        <label for="exampleInputEmail1">CPF</label>
+                                        <input type="text" class="form-control" id="cpf" readonly>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-sm-4 col-xs-12">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Data Nascimento</label>
+                                        <input type="text" class="form-control" id="data_nascimento" readonly>
                                     </div>
                                 </div>
                                 <div class="col-md-12 col-sm-12 col-xs-12">
-                                    <div class="form-group">
-                                        <label for="exampleInputEmail1">Enredeço</label>
-                                        <input type="text" class="form-control" value="<?= $info->endereco.", ".$info->numero.", ".$info->bairro.", ".$info->cidade." - ".$info->estado->nome ?>" id="endereco" readonly>
-                                    </div>
-                                </div>
-                                <div class="col-md-12 col-sm-12 col-xs-12">
-                                    <div class="form-group">
-                                        <label for="exampleInputEmail1">Enredeço</label>
-                                        <input type="text" class="form-control" value="<?= $info->endereco.", ".$info->numero.", ".$info->bairro.", ".$info->cidade." - ".$info->estado->nome ?>" id="endereco" readonly>
-                                    </div>
+                                    <a href="<?= base_url("Usuario/logout") ?>" class="btn btn-warning float-right"><i class="fas fa-edit"></i> Editar Dados</a>
                                 </div>
                             </div>
                         </div>
@@ -107,6 +107,8 @@
                         <div class="tab-pane fade" id="suporte_tab" role="tabpanel">
                             Pagina de suporte
                         </div>
+                        <input type="hidden" id="cpf_hidden" value="<?= $info->cpf ?>" />
+                        <input type="hidden" id="data_nascimento_hidden" value="<?= $info->data_nascimento ?>" />
                     </div>
                 </div>
             </div>

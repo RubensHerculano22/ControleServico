@@ -45,10 +45,10 @@ class Usuario extends CI_Controller{
 
         $this->data["info"] = $this->m_usuario->info_usuario($this->data["dados"]->usuario_id);
 
-        echo '<pre>';
-        print_r($this->data["info"]);
-        echo '</pre>';
-        exit;
+        // echo '<pre>';
+        // print_r($this->data["info"]);
+        // echo '</pre>';
+        // exit;
 
         $this->data["javascript"] = [
             base_url("assets/js/usuario/perfil.js")

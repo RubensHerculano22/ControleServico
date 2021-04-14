@@ -34,7 +34,7 @@ class Usuario_model extends CI_Model{
         $query->cpf = formatar($query->cpf, "cpf");
         $query->telefone = formatar($query->telefone, "fone");
         $query->celular = formatar($query->celular, "fone");
-        $query->data_criacao_br = formatar($query->data_criacao, "bd2dt");
+        $query->data_criacao_br = formatar(transforma_datatime_to_date($query->data_criacao), "bd2dt");
 
         return $query;
     }

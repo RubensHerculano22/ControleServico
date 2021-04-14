@@ -63,7 +63,6 @@ function somente_numeros($string)
     return preg_replace("#[^0-9]#", "", $string);
 }
 
-
 function meses($mes)
 {
     $arr = array("1" => "Janeiro", "2" => "Fevereiro", "3" => "Março", "4" => "Abril", "5" => "Maio", "6" => "Junho"
@@ -117,7 +116,13 @@ function formata_data_info($data)
     $info = explode("/", $data);
     $mes = troca_mes($info[1]);
     
-    return $mes.".".$info[2];
+    return $mes.". ".$info[2];
+}
+
+function transforma_datatime_to_date($data)
+{
+    $info = explode(" ", $data);
+    return $info[0];
 }
 
 function troca_mes($mes)
