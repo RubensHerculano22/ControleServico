@@ -199,31 +199,22 @@ class Usuario_model extends CI_Model{
     {
         $dados = $this->session->userdata("dados" . APPNAME);
 
-        $this->db->select("nome, descricao_curta, id_categoria, id_usuario");
+        $this->db->select("id, nome, descricao_curta, id_categoria, id_usuario");
         $servico = $this->db->get_where("Servico", "id_usuario = $dados->usuario_id")->result();
 
         foreach($servico as $item)
-
-        $dados = $this->session->userdata("dados" . APPNAME);
-
-        $favoritos = $this->db->get_where("Favoritos", "ativo = 1 AND id_usuario = $dados->usuario_id")->result();
-
-        foreach($favoritos as $item)
         {
-            $this->db->select("nome, descricao_curta, id_categoria, id_usuario");
-            $item->servico = $this->db->get_where("Servico", "id = $item->id_servico")->row();
-            
             $this->db->select("nome");
-            $item->categoria = $this->db->get_where("Categoria", "id = ".$item->servico->id_categoria)->row();
+            $item->categoria = $this->db->get_where("Categoria", "id = ".$item->id_categoria)->row();
 
             $this->db->select("nome");
-            $item->usuario = $this->db->get_where("Usuario", "id = ".$item->servico->id_usuario)->row();
+            $item->usuario = $this->db->get_where("Usuario", "id = ".$item->id_usuario)->row();
 
             $this->db->select("tipo_imagem, img");
-            $item->img = $this->db->get_where("Imagens", "principal = 1 AND id_servico = $item->id_servico")->row();
+            $item->img = $this->db->get_where("Imagens", "principal = 1 AND id_servico = $item->id")->row();
         }
 
-        return $favoritos;
+        return $servico;
     }
 
 /**

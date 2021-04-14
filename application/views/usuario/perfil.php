@@ -119,7 +119,10 @@
                             <?php endforeach; ?>
                         </div>
                         <div class="tab-pane fade <?= $identificador == "pedidos" ? "show active" : "" ?>" id="pedidos_tab" role="tabpanel">
-                            <?php foreach($favoritos as $key => $item): ?>
+                            Lista de Serviço Contratos
+                        </div>
+                        <div class="tab-pane fade <?= $identificador == "cadastrado" ? "show active" : "" ?>" id="cadastrado_tab" role="tabpanel"> <!-- eu -->
+                            <?php foreach($cadastrados as $key => $item): ?>
                                 <div class="row">
                                     <div class="col-md-3 col-sm-3 col-xs-12">
                                         <?php if($item->img): ?>
@@ -129,20 +132,17 @@
                                         <?php endif; ?>
                                     </div>
                                     <div class="col-md-7 col-sm-7 col-xs-12 p-3">
-                                        <h4 class="text-center"><?= $item->usuario->nome." - ".$item->servico->nome." - ".$item->categoria->nome ?></h4>
-                                        <p class="text-justify pt-2"><?= $item->servico->descricao_curta ?></p>
+                                        <h4 class="text-center"><?= $item->usuario->nome." - ".$item->nome." - ".$item->categoria->nome ?></h4>
+                                        <p class="text-justify pt-2"><?= $item->descricao_curta ?></p>
                                     </div>
                                     <div class="col-md-2 col-sm-2 col-xs-12 align-self-center text-center">
-                                        <a href="<?= base_url("Servico/detalhes/".$item->servico->nome."/".$item->id_servico) ?>" class="btn btn-warning btn-block">Ver mais</a>
+                                        <a href="<?= base_url("Servico/gerenciar_produto/".$item->id) ?>" class="btn btn-warning btn-block">Gerenciar</a>
                                     </div>
                                 </div>
-                                <?php if($key < (count($favoritos) - 1)): ?>
+                                <?php if($key < (count($cadastrados) - 1)): ?>
                                     <hr>
                                 <?php endif; ?>
                             <?php endforeach; ?>
-                        </div>
-                        <div class="tab-pane fade <?= $identificador == "cadastrado" ? "show active" : "" ?>" id="cadastrado_tab" role="tabpanel"> <!-- eu -->
-                            Lista de serviços cadastrados por você
                         </div>
                         <input type="hidden" id="cpf_hidden" value="<?= $info->cpf ?>" />
                         <input type="hidden" id="data_nascimento_hidden" value="<?= $info->data_nascimento ?>" />

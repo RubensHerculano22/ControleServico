@@ -84,6 +84,17 @@ class Servico extends CI_Controller{
         $this->load->view("template/content", $this->data);
     }
 
+    public function gerenciar_produto($id)
+    {
+        $this->data["breadcrumb"] = (object)array("titulo" => "Gerenciamento do Serviço", "before" => array((object)array("nome" => "Home", "link" => "Servico")), "current" => "Gerenciamento do Serviço");
+        $this->data["javascript"] = [
+            base_url("assets/js/produto/gerenciamento.js")
+        ];
+
+        $this->data["content"] = $this->load->view("produto/gerenciamento", $this->data, true);
+        $this->load->view("template/content", $this->data);
+    }
+
     public function cadastrar_pergunta()
     {
         $rst = $this->m_servico->cadastrar_pergunta();
