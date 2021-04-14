@@ -29,12 +29,16 @@ class Usuario_model extends CI_Model{
     {
         $query = $this->db->get_where("Usuario", "id = $id")->row();
 
-        $query->estado = get_estados_id($query->estado);
+        if($query)
+        {
+            $query->estado = get_estados_id($query->estado);
 
-        $query->cpf = formatar($query->cpf, "cpf");
-        $query->telefone = formatar($query->telefone, "fone");
-        $query->celular = formatar($query->celular, "fone");
-        $query->data_criacao_br = formatar(transforma_datatime_to_date($query->data_criacao), "bd2dt");
+            $query->cpf = formatar($query->cpf, "cpf");
+            $query->telefone = formatar($query->telefone, "fone");
+            $query->celular = formatar($query->celular, "fone");
+            $query->data_nascimento = formatar($query->data_nascimento, "bd2dt");
+            $query->data_criacao_br = formatar(transforma_datatime_to_date($query->data_criacao), "bd2dt");
+        }
 
         return $query;
     }
@@ -166,6 +170,62 @@ class Usuario_model extends CI_Model{
 
         return $rst;
     }
+
+    public function get_favoritos()
+    {
+        $dados = $this->session->userdata("dados" . APPNAME);
+
+        $favoritos = $this->db->get_where("Favoritos", "ativo = 1 AND id_usuario = $dados->usuario_id")->result();
+
+        foreach($favoritos as $item)
+        {
+            $this->db->select("nome, descricao_curta, id_categoria, id_usuario");
+            $item->servico = $this->db->get_where("Servico", "id = $item->id_servico")->row();
+            
+            $this->db->select("nome");
+            $item->categoria = $this->db->get_where("Categoria", "id = ".$item->servico->id_categoria)->row();
+
+            $this->db->select("nome");
+            $item->usuario = $this->db->get_where("Usuario", "id = ".$item->servico->id_usuario)->row();
+
+            $this->db->select("tipo_imagem, img");
+            $item->img = $this->db->get_where("Imagens", "principal = 1 AND id_servico = $item->id_servico")->row();
+        }
+
+        return $favoritos;
+    }
+
+    public function get_servicos_cadastrados()
+    {
+        $dados = $this->session->userdata("dados" . APPNAME);
+
+        $this->db->select("nome, descricao_curta, id_categoria, id_usuario");
+        $servico = $this->db->get_where("Servico", "id_usuario = $dados->usuario_id")->result();
+
+        foreach($servico as $item)
+
+        $dados = $this->session->userdata("dados" . APPNAME);
+
+        $favoritos = $this->db->get_where("Favoritos", "ativo = 1 AND id_usuario = $dados->usuario_id")->result();
+
+        foreach($favoritos as $item)
+        {
+            $this->db->select("nome, descricao_curta, id_categoria, id_usuario");
+            $item->servico = $this->db->get_where("Servico", "id = $item->id_servico")->row();
+            
+            $this->db->select("nome");
+            $item->categoria = $this->db->get_where("Categoria", "id = ".$item->servico->id_categoria)->row();
+
+            $this->db->select("nome");
+            $item->usuario = $this->db->get_where("Usuario", "id = ".$item->servico->id_usuario)->row();
+
+            $this->db->select("tipo_imagem, img");
+            $item->img = $this->db->get_where("Imagens", "principal = 1 AND id_servico = $item->id_servico")->row();
+        }
+
+        return $favoritos;
+    }
+
 /**
      * Realiza a verificação se o email já está cadastrado no sistema.
      * @access private

@@ -28,6 +28,10 @@ $(document).ready(function(){
         e.preventDefault();
         var id = $(this)[0].id;
 
+        $.post(BASE_URL+"Usuario/troca_local/"+id, null, function(result){
+
+        }, "json");
+
         $("#dados_tab").removeClass("show active");
         $("#favoritos_tab").removeClass("show active");
         $("#pedidos_tab").removeClass("show active");

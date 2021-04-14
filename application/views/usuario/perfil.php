@@ -29,7 +29,7 @@
                         </li>
                     </ul>
                     
-                    <a href="<?= base_url("Usuario/logout") ?>" class="btn btn-danger btn-block"><i class="fas fa-sign-out-alt"></i> <b>Sair</b></a>
+                    <a href="<?= base_url("Usuario/logout") ?>" class="btn btn-warning btn-block"><i class="fas fa-sign-out-alt"></i> <b>Sair</b></a>
                 </div>
             </div>
         </div>
@@ -37,7 +37,7 @@
             <div class="card card-info card-outline">
                 <div class="card-body box-profile">
                     <div class="tab-content" id="vert-tabs-tabContent">
-                        <div class="tab-pane text-left fade show active" id="dados_tab" role="tabpanel">
+                        <div class="tab-pane text-left fade <?= $identificador == "dados" || $identificador == null ? "show active" : "" ?>" id="dados_tab" role="tabpanel">
                             <div class="row">
                                 <div class="col-md-4 col-sm-12 col-xs-12">
                                     <div class="form-group">
@@ -91,21 +91,58 @@
                                     </div>
                                 </div>
                                 <div class="col-md-12 col-sm-12 col-xs-12">
-                                    <a href="<?= base_url("Usuario/logout") ?>" class="btn btn-warning float-right"><i class="fas fa-edit"></i> Editar Dados</a>
+                                    <a href="<?= base_url("Usuario/index/".$info->id) ?>" class="btn btn-warning float-right"><i class="fas fa-edit"></i> Editar Dados</a>
                                 </div>
                             </div>
                         </div>
-                        <div class="tab-pane fade" id="favoritos_tab" role="tabpanel"> <!-- eu -->
-                            Lista de Favoritos
+                        <div class="tab-pane fade <?= $identificador == "favoritos" ? "show active" : "" ?>" id="favoritos_tab" role="tabpanel">
+                            <?php foreach($favoritos as $key => $item): ?>
+                                <div class="row">
+                                    <div class="col-md-3 col-sm-3 col-xs-12">
+                                        <?php if($item->img): ?>
+                                            <img src="data:<?= $item->img->tipo_imagem ?>;base64,<?= $item->img->img ?>" class="img-fluid mb-2" alt="white sample" style="max-width: 170px; max-height: 120px">
+                                        <?php else: ?>
+                                            <img src="https://levecrock.com.br/wp-content/uploads/2020/05/Produto-sem-Imagem-por-Enquanto.jpg" class="img-fluid mb-2" alt="white sample" style="max-width: 170px; max-height: 120px">
+                                        <?php endif; ?>
+                                    </div>
+                                    <div class="col-md-7 col-sm-7 col-xs-12 p-3">
+                                        <h4 class="text-center"><?= $item->usuario->nome." - ".$item->servico->nome." - ".$item->categoria->nome ?></h4>
+                                        <p class="text-justify pt-2"><?= $item->servico->descricao_curta ?></p>
+                                    </div>
+                                    <div class="col-md-2 col-sm-2 col-xs-12 align-self-center text-center">
+                                        <a href="<?= base_url("Servico/detalhes/".$item->servico->nome."/".$item->id_servico) ?>" class="btn btn-warning btn-block">Ver mais</a>
+                                    </div>
+                                </div>
+                                <?php if($key < (count($favoritos) - 1)): ?>
+                                    <hr>
+                                <?php endif; ?>
+                            <?php endforeach; ?>
                         </div>
-                        <div class="tab-pane fade" id="pedidos_tab" role="tabpanel">
-                            Pedidos
+                        <div class="tab-pane fade <?= $identificador == "pedidos" ? "show active" : "" ?>" id="pedidos_tab" role="tabpanel">
+                            <?php foreach($favoritos as $key => $item): ?>
+                                <div class="row">
+                                    <div class="col-md-3 col-sm-3 col-xs-12">
+                                        <?php if($item->img): ?>
+                                            <img src="data:<?= $item->img->tipo_imagem ?>;base64,<?= $item->img->img ?>" class="img-fluid mb-2" alt="white sample" style="max-width: 170px; max-height: 120px">
+                                        <?php else: ?>
+                                            <img src="https://levecrock.com.br/wp-content/uploads/2020/05/Produto-sem-Imagem-por-Enquanto.jpg" class="img-fluid mb-2" alt="white sample" style="max-width: 170px; max-height: 120px">
+                                        <?php endif; ?>
+                                    </div>
+                                    <div class="col-md-7 col-sm-7 col-xs-12 p-3">
+                                        <h4 class="text-center"><?= $item->usuario->nome." - ".$item->servico->nome." - ".$item->categoria->nome ?></h4>
+                                        <p class="text-justify pt-2"><?= $item->servico->descricao_curta ?></p>
+                                    </div>
+                                    <div class="col-md-2 col-sm-2 col-xs-12 align-self-center text-center">
+                                        <a href="<?= base_url("Servico/detalhes/".$item->servico->nome."/".$item->id_servico) ?>" class="btn btn-warning btn-block">Ver mais</a>
+                                    </div>
+                                </div>
+                                <?php if($key < (count($favoritos) - 1)): ?>
+                                    <hr>
+                                <?php endif; ?>
+                            <?php endforeach; ?>
                         </div>
-                        <div class="tab-pane fade" id="cadastrado_tab" role="tabpanel"> <!-- eu -->
+                        <div class="tab-pane fade <?= $identificador == "cadastrado" ? "show active" : "" ?>" id="cadastrado_tab" role="tabpanel"> <!-- eu -->
                             Lista de serviços cadastrados por você
-                        </div>
-                        <div class="tab-pane fade" id="suporte_tab" role="tabpanel">
-                            Pagina de suporte
                         </div>
                         <input type="hidden" id="cpf_hidden" value="<?= $info->cpf ?>" />
                         <input type="hidden" id="data_nascimento_hidden" value="<?= $info->data_nascimento ?>" />

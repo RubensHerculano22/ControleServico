@@ -26,7 +26,7 @@
       <?php endforeach; ?> -->
     </ul>
       <div class="input-group input-group-sm ml-auto" style="width: 50%">
-        <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
+        <input class="form-control form-control-navbar" type="search" placeholder="Procurar ..." aria-label="Search">
         <div class="input-group-append">
           <button class="btn btn-navbar" type="submit">
             <i class="fas fa-search"></i>
@@ -86,10 +86,10 @@
             </div>
           </li>
           <li class="user-body">
-            <a href="<?= base_url("Usuario/index/$dados->usuario_id") ?>" class="btn btn-default btn-flat btn-block">Minhas Informações (editar por enquanto)</a>
-            <a href="<?= base_url("Usuario/perfil") ?>" class="btn btn-default btn-flat btn-block">Meus Serviços</a>
-            <button type="button" class="btn btn-default btn-flat btn-block">Lista de favoritos</button>
-            <button type="button" class="btn btn-default btn-flat btn-block">Serviços contratos</button>
+            <a href="<?= base_url("Usuario/perfil/dados") ?>" class="btn btn-default btn-flat btn-block">Minhas Informações</a>
+            <a href="<?= base_url("Usuario/perfil/cadastrado") ?>" class="btn btn-default btn-flat btn-block">Meus Serviços</a>
+            <a href="<?= base_url("Usuario/perfil/favoritos") ?>" class="btn btn-default btn-flat btn-block">Lista de favoritos</a>
+            <a href="<?= base_url("Usuario/perfil/pedidos") ?>" class="btn btn-default btn-flat btn-block">Serviços contratos</a>
             <a href="<?= base_url("Usuario/logout/$local") ?>" class="btn btn-default btn-flat btn-block">Sair</a>
           </li>
         </ul>

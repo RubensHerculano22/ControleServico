@@ -12,6 +12,7 @@ class Usuario extends CI_Controller{
         $this->data["dados"] = $this->dados;
         $this->local = $this->session->userdata("local");
         $this->data["local"] = $this->local;
+        
         $this->data["categorias"] = $this->m_sistema->listar_categorias();
 
         $this->load->model("Usuario_model", "m_usuario");
@@ -39,16 +40,22 @@ class Usuario extends CI_Controller{
         $this->load->view("template/content", $this->data);
     }
 
-    public function perfil()
+    public function perfil($id = null)
     {
-        $this->data["breadcrumb"] = (object)array("titulo" => "Perfil", "before" => array((object)array("nome" => "Home", "link" => "Home")), "current" => "Perfil");
+        $this->data["breadcrumb"] = (object)array("titulo" => "Perfil", "before" => array((object)array("nome" => "Home", "link" => "Home")), "current" => "Perfil - Informações de Usuário");
 
         $this->data["info"] = $this->m_usuario->info_usuario($this->data["dados"]->usuario_id);
+        $this->data["identificador"] = $id;
+
+        $this->data["favoritos"] = $this->m_usuario->get_favoritos();
+        $this->data["cadastrados"] = $this->m_usuario->get_servicos_cadastrados();
 
         // echo '<pre>';
-        // print_r($this->data["info"]);
+        // print_r($id);
         // echo '</pre>';
         // exit;
+
+        $this->troca_local($id);
 
         $this->data["javascript"] = [
             base_url("assets/js/usuario/perfil.js")
@@ -100,6 +107,13 @@ class Usuario extends CI_Controller{
             $rst->local = $this->session->userdata("local");
         }
         echo json_encode($rst, JSON_UNESCAPED_UNICODE);
+    }
+
+    public function troca_local($id)
+    {
+        $local = "Usuario/perfil/".$id;
+        $this->session->set_userdata(array("local" => $local));
+        $this->data["local"] = $local;
     }
 
 }

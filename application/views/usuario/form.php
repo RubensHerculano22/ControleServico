@@ -103,8 +103,13 @@
                         </div>
                     </div>
                     <input type="hidden" name="id_usuario" id="id_usuario" value="<?= @$usuario->id ?>" />
-                    <div class="card-footer text-right">
-                        <button type="submit" class="btn btn-info">Salvar</button>
+                    <div class="card-footer">
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <a href="<?= base_url($local) ?>" class="btn btn-info float-left">Voltar</a>
+                                <button type="submit" class="btn btn-info float-right">Salvar</button>
+                            </div>
+                        </div>
                     </div>
                 </form>
             </div>
