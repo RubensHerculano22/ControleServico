@@ -8,7 +8,7 @@
                 <form id="submit">
                     <div class="card-body p-0">
                         <div class="bs-stepper">
-                            <div class="bs-stepper-header" role="tablist">
+                            <div class="row bs-stepper-header" role="tablist">
                                 <!-- your steps here -->
                                 <div class="step" data-target="#informacoes-part">
                                     <button type="button" class="step-trigger" role="tab" aria-controls="informacoes-part" id="informacoes-part-trigger">
