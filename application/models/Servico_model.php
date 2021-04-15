@@ -303,7 +303,8 @@ class Servico_model extends CI_Model{
         $this->db->set("data_atualizacao", date("Y-m-d h:i:s"));
         $this->db->set("id_tipo_servico", $data->tipo_servico);
         $this->db->set("id_categoria", $data->categoria_especifica);
-        $this->db->set("valor", str_replace(".", ",", explode(" ", $data->valor)[1]));
+        if($data->valor)
+            $this->db->set("valor", str_replace(".", ",", explode(" ", $data->valor)[1]));
         if($data->tipo_servico == 2)
         {
             $this->db->set("quantidade_disponivel", $data->quantidade);
