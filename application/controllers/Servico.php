@@ -84,8 +84,10 @@ class Servico extends CI_Controller{
         $this->load->view("template/content", $this->data);
     }
 
-    public function gerenciar_produto($id)
+    public function gerenciar_servico($id)
     {
+        $this->data["id"] = $id;
+
         $this->data["breadcrumb"] = (object)array("titulo" => "Gerenciamento do Serviço", "before" => array((object)array("nome" => "Home", "link" => "Servico")), "current" => "Gerenciamento do Serviço");
         $this->data["javascript"] = [
             base_url("assets/js/produto/gerenciamento.js")
@@ -127,6 +129,12 @@ class Servico extends CI_Controller{
     public function cadastro_servico()
     {
         $rst = $this->m_servico->cadastro_servico();
+        echo json_encode($rst, JSON_UNESCAPED_UNICODE);
+    }
+
+    public function responder_pergunta()
+    {
+        $rst = $this->m_servico->responder_pergunta();
         echo json_encode($rst, JSON_UNESCAPED_UNICODE);
     }
 
