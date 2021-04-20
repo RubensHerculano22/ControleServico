@@ -136,7 +136,7 @@
                                         <p class="text-justify pt-2"><?= $item->descricao_curta ?></p>
                                     </div>
                                     <div class="col-md-2 col-sm-2 col-xs-12 align-self-center text-center">
-                                        <a href="<?= base_url("Servico/gerenciar_produto/".$item->id) ?>" class="btn btn-warning btn-block">Gerenciar</a>
+                                        <a href="<?= base_url("Servico/gerenciar_servico/".$item->id) ?>" class="btn btn-warning btn-block">Gerenciar</a>
                                     </div>
                                 </div>
                                 <?php if($key < (count($cadastrados) - 1)): ?>
