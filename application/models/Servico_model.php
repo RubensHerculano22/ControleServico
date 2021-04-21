@@ -417,15 +417,37 @@ class Servico_model extends CI_Model{
         //colocar um log
     }
 
+    public function get_perguntas($id, $resposta)
+    {
+        if($resposta == "false")
+            $this->db->where("resposta IS NULL");
+
+        $query = $this->db->get_where("Perguntas", "id_servico = $id")->result();
+        
+        foreach($query as $item)
+        {
+            $item->data_inclusao_br = formatar($item->data_inclusao, "bd2dt");
+        }
+
+        return $query;
+    }
+
     public function responder_pergunta()
     {
         $rst = (object)array("rst" => true, "msg" => "");
         $data = (object)$this->input->post();
 
-        echo '<pre>';
-        print_r($data);
-        echo '</pre>';
-        exit;
+        $this->db->set("resposta", $data->resposta);
+        $this->db->set("data_resposta", date("d-m-Y h:i:s"));
+        
+        $this->db->where("id = $data->id_pergunta");
+        if($this->db->update("Perguntas"))
+        {
+            $rst->rst = true;
+            $rst->msg = "Resposta inserida com sucesso!";
+        }
+        else
+            $rst->msg = "Erro ao inserir resposta ao pergunta";
 
         return $rst;
     }

@@ -10,7 +10,7 @@
                             <p>Visualização do Mês</p>
                         </div>
                         <div class="icon">
-                            <i class="ion ion-bag"></i>
+                            <i class="fas fa-chart-line"></i>
                         </div>
                     </div>
                 </div>
@@ -22,7 +22,7 @@
                             <p>Contratações</p>
                         </div>
                         <div class="icon">
-                            <i class="ion ion-bag"></i>
+                            <i class="fas fa-handshake"></i>
                         </div>
                     </div>
                 </div>
@@ -34,7 +34,7 @@
                             <p>Em andamento</p>
                         </div>
                         <div class="icon">
-                            <i class="ion ion-bag"></i>
+                            <i class="fas fa-running"></i>
                         </div>
                     </div>
                 </div>
@@ -46,7 +46,7 @@
                             <p>Orçamentos em aberto</p>
                         </div>
                         <div class="icon">
-                            <i class="ion ion-bag"></i>
+                            <i class="fas fa-comments-dollar"></i>
                         </div>
                     </div>
                 </div>
@@ -76,18 +76,25 @@
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-md-12 col-sm-12 col-xs-12">
-                            <blockquote class="quote-info">
-                                <div class="row">
-                                    <div class="col-md-10 col-sm-12 col-xs-12">
-                                        <p id="pergunta1">Uma pergunta interessante Uma pergunta interessante Uma pergunta interessante Uma pergunta interessante Uma pergunta interessante Uma pergunta interessante</p>
-                                    </div>
-                                    <div class="col-md-2 col-sm-12 col-xs-12 align-self-center text-center">
-                                        <button type="button" class="btn btn-info mr-4" data-id="1" onclick="abrirResposta(1)">Responder</button>
-                                    </div>
-                                </div>
-                            </blockquote>
+                        <div class="col-md-12 co-sm-12 col-xs-12 text-right">
+                            <button type="button" id="ver_lista" class="btn bg-gradient-info btn-sm">Ver Lista Completa</button>
                         </div>
+                    </div>
+                    <br/>
+                    <div class="row" id="lista_pergunta">
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-xs-12 lcp_bloc d-none">
+            <div class="card">
+                <div class="card-header" style="background-color: #e36802">
+                    <h3 class="card-title text-white">Lista Completa de Perguntas</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row" id="lcp">
+                        
                     </div>
                 </div>
             </div>

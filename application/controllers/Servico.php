@@ -132,6 +132,12 @@ class Servico extends CI_Controller{
         echo json_encode($rst, JSON_UNESCAPED_UNICODE);
     }
 
+    public function get_perguntas($id, $resposta = false)
+    {
+        $rst = $this->m_servico->get_perguntas($id, $resposta);
+        echo json_encode($rst, JSON_UNESCAPED_UNICODE);
+    }
+
     public function responder_pergunta()
     {
         $rst = $this->m_servico->responder_pergunta();

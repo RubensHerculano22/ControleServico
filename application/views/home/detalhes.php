@@ -271,25 +271,6 @@
                                 <div class="row">
                                     <div class="col-md-12 col-sm-12 col-xs-12">
                                         <?= $info->descricao ?>
-                                        <!-- <p class="text-justify"> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi vitae condimentum erat. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Sed posuere, purus at efficitur hendrerit, augue elit lacinia arcu, a eleifend sem elit et nunc. Sed rutrum vestibulum est, sit amet cursus dolor fermentum vel. Suspendisse mi nibh, congue et ante et, commodo mattis lacus. Duis varius finibus purus sed venenatis. Vivamus varius metus quam, id dapibus velit mattis eu. Praesent et semper risus. Vestibulum erat erat, condimentum at elit at, bibendum placerat orci. Nullam gravida velit mauris, in pellentesque urna pellentesque viverra. Nullam non pellentesque justo, et ultricies neque. Praesent vel metus rutrum, tempus erat a, rutrum ante. Quisque interdum efficitur nunc vitae consectetur. Suspendisse venenatis, tortor non convallis interdum, urna mi molestie eros, vel tempor justo lacus ac justo. Fusce id enim a erat fringilla sollicitudin ultrices vel metus.</p>
-                                        <p class="text-justify"> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi vitae condimentum erat. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Sed posuere, purus at efficitur hendrerit, augue elit lacinia arcu, a eleifend sem elit et nunc. Sed rutrum vestibulum est, sit amet cursus dolor fermentum vel. Suspendisse mi nibh, congue et ante et, commodo mattis lacus. Duis varius finibus purus sed venenatis. Vivamus varius metus quam, id dapibus velit mattis eu. Praesent et semper risus. Vestibulum erat erat, condimentum at elit at, bibendum placerat orci. Nullam gravida velit mauris, in pellentesque urna pellentesque viverra. Nullam non pellentesque justo, et ultricies neque. Praesent vel metus rutrum, tempus erat a, rutrum ante. Quisque interdum efficitur nunc vitae consectetur. Suspendisse venenatis, tortor non convallis interdum, urna mi molestie eros, vel tempor justo lacus ac justo. Fusce id enim a erat fringilla sollicitudin ultrices vel metus.</p>
-                                        <ul>
-                                            <li>Lorem ipsum dolor sit amet</li>
-                                            <li>Consectetur adipiscing elit</li>
-                                            <li>Integer molestie lorem at massa</li>
-                                            <li>Facilisis in pretium nisl aliquet</li>
-                                            <li>Nulla volutpat aliquam velit
-                                                <ul>
-                                                    <li>Phasellus iaculis neque</li>
-                                                    <li>Purus sodales ultricies</li>
-                                                    <li>Vestibulum laoreet porttitor sem</li>
-                                                    <li>Ac tristique libero volutpat at</li>
-                                                </ul>
-                                            </li>
-                                            <li>Faucibus porta lacus fringilla vel</li>
-                                            <li>Aenean sit amet erat nunc</li>
-                                            <li>Eget porttitor lorem</li>
-                                        </ul> -->
                                     </div>
                                 </div>
                             </div>
