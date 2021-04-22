@@ -460,7 +460,15 @@ class Servico_model extends CI_Model{
     */
     public function get_mensangens($id)
     {
-        $query = $this->db->get_where("");
+        //$query = $this->db->get_where("");
+
+        //return $query;
+        return (object)array();
+    }
+
+    public function get_orcamentos($id)
+    {
+        return (object)array();
     }
 
     /**

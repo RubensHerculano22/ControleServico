@@ -53,6 +53,11 @@
 <script src="<?= base_url("assets/plugins/dist/js/demo.js") ?>"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="<?= base_url("assets/plugins/dist/js/pages/dashboard.js") ?>"></script>
+<!-- DataTables  & Plugins -->
+<script src="<?= base_url("assets/plugins/datatables/jquery.dataTables.min.js") ?>"></script>
+<script src="<?= base_url("assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js") ?>"></script>
+<script src="<?= base_url("assets/plugins/datatables-responsive/js/dataTables.responsive.min.js") ?>"></script>
+<script src="<?= base_url("assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js") ?>"></script>
 
 <script type="text/javascript">
     var BASE_URL = "<?= base_url() ?>";
