@@ -453,6 +453,17 @@ class Servico_model extends CI_Model{
     }
 
     /**
+     * Consulta as ultimas mensagens do Serviço.
+     * @access public
+     * @param  int   $id   Identificador do Serviço.
+     * @return object;
+    */
+    public function get_mensangens($id)
+    {
+        $query = $this->db->get_where("");
+    }
+
+    /**
      * Realiza a verificação no texto, para maior segurança.
      * @access private
      * @param  string   $dado   Texto a ser verificado.

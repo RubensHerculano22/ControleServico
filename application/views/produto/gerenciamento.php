@@ -72,7 +72,7 @@
         <div class="col-md-12 col-sm-12 col-xs-12">
             <div class="card">
                 <div class="card-header" style="background-color: #e36802">
-                    <h3 class="card-title text-white">Perguntas no Serviço</h3>(Colocar modal para responder a pergunta)
+                    <h3 class="card-title text-white">Perguntas no Serviço</h3>
                 </div>
                 <div class="card-body">
                     <div class="row">
@@ -95,6 +95,40 @@
                 <div class="card-body">
                     <div class="row" id="lcp">
                         
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="card">
+                <div class="card-header" style="background-color: #e36802">
+                    <h3 class="card-title text-white">Mensagens</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12 co-sm-12 col-xs-12">
+                            <table class="table" id="lista_mensagem">
+                                <thead></thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="card">
+                <div class="card-header" style="background-color: #e36802">
+                    <h3 class="card-title text-white">Orçamentos</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12 co-sm-12 col-xs-12">
+                            <table class="table" id="lista_orcamentos">
+                                <thead></thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>

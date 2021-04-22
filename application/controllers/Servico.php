@@ -144,6 +144,12 @@ class Servico extends CI_Controller{
         echo json_encode($rst, JSON_UNESCAPED_UNICODE);
     }
 
+    public function get_mensangens($id)
+    {
+        $rst = $this->m_servico->get_mensangens($id);
+        echo json_encode($rst, JSON_UNESCAPED_UNICODE);
+    }
+
     public function set_files()
     {
 
