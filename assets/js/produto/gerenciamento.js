@@ -1,5 +1,8 @@
+var tableOrcamento;
+var i = 0;
+
 $(document).ready(function(){
-    var id = $("#id_servico").val();
+    var id = $("#id_servico").val();    
     atualiza_perguntas(id);
 
     $("input[data-bootstrap-switch]").each(function(){
@@ -95,7 +98,7 @@ $(document).ready(function(){
         ],
     });
 
-    var tableOrcamento = $("#lista_orcamentos").DataTable({
+    tableOrcamento = $("#lista_orcamentos").DataTable({
         language: {
             url: BASE_URL+"assets/plugins/datatables/portugues-brasil.json",
             select: { rows: { _: "%d linhas selecionadas", 1: "1 linha selecionada", 0: "" } }
@@ -106,27 +109,27 @@ $(document).ready(function(){
             type: "post",
             dataType: "json",
         },
-        order: [[5, "asc"],[4,"desc"],[3, "desc"]],
         columns: [
-            {data: "id_tipo_movimentacao.nome", title: "Tipo de Movimentação"},
-            {data: "id_emitente.nome", title: "Emitente"},
-            {data: "status.nome", title: "Status"},
-            {data: "data_movimentacao", title: "Data de Solicitação"},
-            {data: "data_modificacao", title: "Ultima Modificação"},
             {
-                data: null,
-                title: "Opções",
+                data:null,
+                title: "Ação",
                 render: function(data, x, row){
-
-                    var edita = '<a href="<?= base_url("Movimentacao/") ?>'+row.tipo_movimentacao+'/'+row.id+'" class="btn bg-amber waves-effect"><p class="hide">1</p><i class="material-icons">edit</i></a>';
-                    var exibe = '<a href="<?= base_url("Movimentacao/exibeMovimentacao") ?>'+'/'+row.id+'" class="btn bg-indigo waves-effect"><p class="hide">3</p><i class="material-icons">info</i></a>';
-                    var exibe_finalizada = '<a href="<?= base_url("Movimentacao/exibeMovimentacao") ?>'+'/'+row.id+'" class="btn bg-green waves-effect"><p class="hide">2</p><i class="material-icons">check</i></a>';
-                    var responder = '<a href="<?= base_url("Movimentacao/exibeMovimentacao") ?>'+'/'+row.id+'" class="btn bg-red waves-effect"><p class="hide">1</p><i class="material-icons">create</i></a>';
+                    i++;
+                    return '<button type="button" class="btn btn-outline-info" onclick="abriOrcamento('+i+')"><i class="fas fa-info-circle"></i></button>';
                 }
-            }
+            },
+            {data: "usuario.nome", title: "Nome do Solicitante"},
+            {data: "solicitacao.descricao", title: "Horário de Solicitação"},
+            {
+                data: null, 
+                title: "Ultima Modificação",
+                render: function(data, x, row){
+                    return row.solicitacao.data_servico + " " + row.solicitacao.hora_servico;
+                }
+            },
+            {data: "status.nome", title: "Status do Orçamento"},
         ],
         "columnDefs": [
-            {"type": 'date-uk', "targets": [3, 4]},
             {"className": "text-center", "targets": "_all"},
         ],
     });
@@ -281,4 +284,18 @@ function atualiza_perguntas(id, resposta = false)
             }
         }
     });
+}
+
+function abriOrcamento(id)
+{
+    id = id - 1;
+    var data = tableOrcamento.row(id).data();
+    console.log(data)
+    
+    $("#data_servico").val(data.solicitacao.data_servico);
+    $("#hora_servico").val(data.solicitacao.horario_servico);
+    $("#descricao").val(data.solicitacao.descricao);
+    $("#endereco").val(data.solicitacao.endereco);
+
+    $("#modal_orcamento").modal("show");
 }

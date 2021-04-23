@@ -11,8 +11,8 @@
     "sZeroRecords": "Nenhum registro encontrado",
     "sSearch": "Pesquisar",
     "oPaginate": {
-        "sNext": "<i class='material-icons'>chevron_right</i>",
-        "sPrevious": "<i class='material-icons'>chevron_left</i>",
+        "sNext": "<i class='fas fa-arrow-right'></i>",
+        "sPrevious": "<i class='fas fa-arrow-left'></i>",
         "sFirst": "Primeiro",
         "sLast": "Último"
     },

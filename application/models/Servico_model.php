@@ -203,13 +203,6 @@ class Servico_model extends CI_Model{
         return $rst;
     }
 
-    public function datas_disponiveis()
-    {
-        $periodo = array();
-
-        return $periodo;
-    }
-
     /**
      * Realiza o cadastro da solicitação de contratação de serviço.
      * @access public
@@ -220,34 +213,44 @@ class Servico_model extends CI_Model{
         $data = (object)$this->input->post();
         $rst = (object)array("rst" => false, "msg" => "");
 
-        //verifica se o campo de utilizar o endereço cadastrado, está selecionado
-        if(!isset($data->endereco))
-        {
-            //Consulta os dados de endereço do usuario.
-            $this->db->select("endereco, bairro, cidade, estado");
-            $query = $this->db->get_where("Usuario", "id = ".$this->dados->usuario_id)->row();
-
-            //Consulta o nome do estado, a partir de seu id.
-            $estado = get_estados_id($query->estado);
-
-            $data->endereco = $query->endereco.", ".$query->bairro." - ".$query->cidade.", ".$estado->nome."";
-        }
-
         $this->db->set("id_servico", $data->id_servico);
-        $this->db->set("id_solicitante", $this->dados->usuario_id);
-        $this->db->set("data_servico", formatar($data->data_servico, "dt2bd"));
-        $this->db->set("hora_servico", $data->hora_servico);
-        $this->db->set("descricao", $data->descricao);
-        $this->db->set("endereco", $data->endereco);
+        $this->db->set("id_usuario", $this->dados->usuario_id);
 
-        if($this->db->insert("ContrataServico"))
+        if($this->db->insert("Orcamento"))
         {
-            $rst->rst = true;
-            $rst->msg = "Solicitação de serviço enviado para o Prestador";
-        }
-        else
-        {
-            $rst->msg = "Erro ao solicitar o serviço, tente novamente mais tarde.";
+            $id_orcamento = $this->db->insert_id();
+
+            //verifica se o campo de utilizar o endereço cadastrado, está selecionado
+            if(!isset($data->endereco))
+            {
+                //Consulta os dados de endereço do usuario.
+                $this->db->select("endereco, bairro, cidade, estado");
+                $query = $this->db->get_where("Usuario", "id = ".$this->dados->usuario_id)->row();
+
+                //Consulta o nome do estado, a partir de seu id.
+                $estado = get_estados_id($query->estado);
+
+                $data->endereco = $query->endereco.", ".$query->bairro." - ".$query->cidade.", ".$estado->nome."";
+            }
+
+            $this->db->set("id_orcamento", $id_orcamento);
+            $this->db->set("status", 1);
+            $this->db->set("ativo", 1);
+            $this->db->set("id_usuario", $this->dados->usuario_id);
+            $this->db->set("data_servico", formatar($data->data_servico, "dt2bd"));
+            $this->db->set("hora_servico", $data->hora_servico);
+            $this->db->set("descricao", $data->descricao);
+            $this->db->set("endereco", $data->endereco);
+
+            if($this->db->insert("ContrataServico"))
+            {
+                $rst->rst = true;
+                $rst->msg = "Solicitação de serviço enviado para o Prestador";
+            }
+            else
+            {
+                $rst->msg = "Erro ao solicitar o serviço, tente novamente mais tarde.";
+            }
         }
 
         return $rst;
@@ -358,7 +361,7 @@ class Servico_model extends CI_Model{
                 $this->db->set("ativo", 1);
                 $this->db->set("nome", $files[$count]["name"]);
                 $this->db->set("tipo_imagem", $files[$count]["type"]);
-                $this->db->set("data_insercao", date("d-m-Y h:i:s"));
+                $this->db->set("data_insercao", date("Y-m-d h:i:s"));
                 $this->db->set("img", base64_encode(file_get_contents($files[$count]["path"])));
 
                 $this->db->insert("Imagens");
@@ -438,7 +441,7 @@ class Servico_model extends CI_Model{
         $data = (object)$this->input->post();
 
         $this->db->set("resposta", $data->resposta);
-        $this->db->set("data_resposta", date("d-m-Y h:i:s"));
+        $this->db->set("data_resposta", date("Y-m-d h:i:s"));
         
         $this->db->where("id = $data->id_pergunta");
         if($this->db->update("Perguntas"))
@@ -468,7 +471,18 @@ class Servico_model extends CI_Model{
 
     public function get_orcamentos($id)
     {
-        return (object)array();
+        $rst = $this->db->get_where("Orcamento", "id_servico = $id")->result();
+        
+        foreach($rst as $item)
+        {
+            $item->solicitacao = $this->db->get_where("ContrataServico", "id_orcamento = '$item->id' AND status = 1")->row();
+            $item->usuario = $this->db->get_where("Usuario", "id = $item->id_usuario")->row();
+            $item->status = $this->db->get_where("OrcamentoStatus", "id = ".$item->solicitacao->status)->row();
+
+            $item->solicitacao->data_servico = formatar($item->solicitacao->data_servico, "bd2dt");
+        }
+
+        return $rst;
     }
 
     /**
