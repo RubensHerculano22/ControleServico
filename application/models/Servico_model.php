@@ -9,6 +9,43 @@ class Servico_model extends CI_Model{
         $this->dados = $this->session->userdata("dados" . APPNAME);
     }
 
+    public function get_visibilidade($id)
+    {
+        $query = $this->db->get_where("Servico", "id = $id")->row();
+
+        return $query->ativo;
+    }
+
+    public function insere_acesso($id)
+    {
+        $data = date("Y-m-d h:i:00", strtotime("-1 minutes"));
+
+        if(isset($this->dados->usuario_id) && $this->dados->usuario_id != null)
+        {
+            $this->db->where("id_usuario = ".$this->dados->usuario_id);
+            $this->db->where("data_acesso BETWEEN '".$data."' AND '".date("Y-m-d h:i:s")."'");
+            $query = $this->db->get("ControleVisualizacao")->result();
+
+            if(!$query)
+            {
+                $this->db->set("id_servico", $id);
+                $this->db->set("id_usuario", $this->dados->usuario_id);    
+                $this->db->set("data_acesso", date("Y-m-d h:i:s"));
+    
+                $this->db->insert("ControleVisualizacao");
+            }
+        }
+        else
+        {
+            $this->db->set("id_servico", $id);                
+            $this->db->set("data_acesso", date("Y-m-d h:i:s"));
+
+            $this->db->insert("ControleVisualizacao");   
+        }
+
+        
+    }
+
     //Faz a função que ele lista apenas a categoria se necessário.
     /**
      * Realiza a consulta de todos os servico que estão naquela subcategoria.
@@ -471,7 +508,9 @@ class Servico_model extends CI_Model{
 
     public function get_orcamentos($id)
     {
-        $rst = $this->db->get_where("Orcamento", "id_servico = $id")->result();
+        $this->db->select("O.*");
+        $this->db->join("ContrataServico C", "C.ativo = 1 AND C.status = 1 AND O.id = C.id_orcamento");
+        $rst = $this->db->get_where("Orcamento O", "O.id_servico = $id")->result();
         
         foreach($rst as $item)
         {
@@ -481,6 +520,84 @@ class Servico_model extends CI_Model{
 
             $item->solicitacao->data_servico = formatar($item->solicitacao->data_servico, "bd2dt");
         }
+
+        return $rst;
+    }
+
+    public function resposta_orcamento()
+    {
+        $rst = (object)array("rst" => false, "msg" => "");
+        $data = (object)$this->input->post();
+
+        $this->db->set("ativo", 0);
+        $this->db->where("id_orcamento", $data->id_orcamento);
+        if($this->db->update("ContrataServico"))
+        {
+            if($data->solicitacao_pedido == 1)
+                $this->db->set("status", 2);
+            elseif($data->solicitacao_pedido == 2)
+                $this->db->set("status", 3);
+
+            $this->db->set("id_orcamento", $data->id_orcamento);
+            $this->db->set("id_usuario", $this->dados->usuario_id);
+            $this->db->set("ativo", 1);
+            $this->db->set("orcamento", $data->orcamento);
+            if($data->descricao_orcamento)
+                $this->db->set("descricao", $data->descricao_orcamento);
+
+            if($this->db->insert("ContrataServico"))
+            {
+                $rst->rst = true;
+                $rst->msg = "Resposta do Orçamento enviado";
+            }
+            else
+            {
+                $rst->msg = "Erro ao enviar resposta do Orçamento";
+            }
+        }
+
+        return $rst;
+    }
+
+    public function visibilidade()
+    {
+        $data = (object)$this->input->post();
+
+        $this->db->set("ativo", $data->visivel);
+
+        $this->db->where("id", $data->servico);
+        if($this->db->update("Servico"))
+            return true;
+        else
+            return false;
+    }
+
+    public function get_info_card($id)
+    {
+        $rst = (object)array("visualizacao" => 0, "contratacoes" => 0, "andamento" => 0, "orcamentos" => 0);
+
+        $ultimo_dia = date('t');
+        $inicio_mes = date('Y-m-01');
+        $fim_mes = date('Y-m-'.$ultimo_dia);
+
+        $this->db->where("DATE(data_acesso) BETWEEN '$inicio_mes' AND '$fim_mes'");
+        $visualizacao = $this->db->get_where("ControleVisualizacao", "id_servico = $id")->result();
+        $rst->visualizacao = count($visualizacao);
+
+        $this->db->select("O.id");
+        $this->db->join("ContrataServico C", "O.id = C.id_orcamento AND C.ativo = 1 AND C.status = 4");
+        $contratacoes = $this->db->get("Orcamento O", "O.id_servico = $id")->result();
+        $rst->contratacoes = count($contratacoes);
+
+        $this->db->select("O.id");
+        $this->db->join("ContrataServico C", "O.id = C.id_orcamento AND C.ativo = 1 AND (C.status != 4 OR C.status != 5 AND C.status != 3)");
+        $andamento = $this->db->get("Orcamento O", "O.id_servico = $id")->result();
+        $rst->andamento = count($andamento);
+
+        $this->db->select("O.id");
+        $this->db->join("ContrataServico C", "O.id = C.id_orcamento AND C.ativo = 1 AND C.status = 1");
+        $orcamentos = $this->db->get("Orcamento O", "O.id_servico = $id")->result();
+        $rst->orcamentos = count($orcamentos);
 
         return $rst;
     }

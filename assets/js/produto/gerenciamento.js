@@ -2,11 +2,62 @@ var tableOrcamento;
 var i = 0;
 
 $(document).ready(function(){
+
+    var verifVisivel = 1;
+
+    $(".preco").inputmask('decimal', {
+        'alias': 'numeric',
+        'groupSeparator': ',',
+        'autoGroup': true,
+        'digits': 2,
+        'radixPoint': ".",
+        'digitsOptional': false,
+        'allowMinus': false,
+        'prefix': 'R$ ',
+    });
+
     var id = $("#id_servico").val();    
     atualiza_perguntas(id);
 
     $("input[data-bootstrap-switch]").each(function(){
-        $(this).bootstrapSwitch('state', $(this).prop('checked'));
+        $.post( BASE_URL+"Servico/get_visibilidade/"+id, function( data ) {
+            if(data == 1)
+                $("input[data-bootstrap-switch]").bootstrapSwitch('state', $("input[data-bootstrap-switch]").prop('checked'));
+            else
+            {
+                $("input[data-bootstrap-switch]").bootstrapSwitch('state', false);
+            }
+        });
+    });
+
+    $('input[name="my-checkbox"]').on('switchChange.bootstrapSwitch', function (event, state) {
+        if(verifVisivel == 1)
+        {
+            verifVisivel = 0;
+        }
+        else
+        {
+            var visivel = $('input[name="my-checkbox"]').bootstrapSwitch('state');
+            tipo = visivel == true ? 1 : 0;
+            var post = {"servico": id, "visivel": tipo};
+            $.ajax({
+                type: "post",
+                url: BASE_URL+"Servico/visibilidade",
+                dataType: "json",
+                data: post,
+                success: function(data)
+                {
+                    if(data === true)
+                    {
+                        showNotification("success", "Sucesso!", "Estado do Serviço atualizado.", "toast-top-center");
+                    }
+                    else if(data === false)
+                    {
+                        showNotification("warning", "Erro ao alterar o estado do Servico", "Tente novamente daqui a alguns minutos", "toast-top-center");
+                    }
+                }
+            });
+        }
     });
 
     var tableMensagem = $("#lista_mensagem").DataTable({
@@ -182,6 +233,40 @@ $(document).ready(function(){
         });
     });
 
+    $("#submit_orcamento").submit(function(e){
+        e.preventDefault();
+        var data = $(this).serialize();
+        data = new FormData($("#submit_orcamento").get(0));
+
+        $.ajax({
+            type: "post",
+            url: BASE_URL+"Servico/resposta_orcamento",
+            cache: false,
+            contentType: false,
+            processData: false,
+            dataType: "json",
+            data: data,
+            success: function(data)
+            {
+                if(data.rst === true)
+                {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Sucesso',
+                        text: data.msg
+                    });
+
+                    tableOrcamento.ajax.reload();
+                    $("#modal_orcamento").modal("hide");
+                }
+                else if(data.rst === false)
+                {
+                    showNotification("warning", data.msg, "Tente novamente daqui a alguns minutos", "toast-top-center");
+                }
+            }
+        });
+    });
+
     $("#modal_resposta").on("hide.bs.modal", function(e){
         $("#resposta").val("");
     });
@@ -290,12 +375,12 @@ function abriOrcamento(id)
 {
     id = id - 1;
     var data = tableOrcamento.row(id).data();
-    console.log(data)
     
     $("#data_servico").val(data.solicitacao.data_servico);
     $("#hora_servico").val(data.solicitacao.horario_servico);
     $("#descricao").val(data.solicitacao.descricao);
     $("#endereco").val(data.solicitacao.endereco);
+    $("#id_orcamento").val(data.id);
 
     $("#modal_orcamento").modal("show");
 }

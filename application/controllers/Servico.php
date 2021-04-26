@@ -58,6 +58,7 @@ class Servico extends CI_Controller{
 
     public function detalhes($servico, $id_servico)
     {
+        $this->m_servico->insere_acesso($id_servico);
         $this->data["info"] = $this->m_servico->get_info_servico($id_servico);
 
         $this->data["breadcrumb"] = (object)array("titulo" => "Detalhes de Produtos/Serviços", "before" => array((object)array("nome" => "Home", "link" => "Servico"), (object)array("nome" => "".$this->data["info"]->subcategoria->nome, "link" => "Servico/lista/".$this->data["info"]->categoria->nome."/".$this->data["info"]->subcategoria->nome)), "current" => "".$this->data["info"]->nome);
@@ -87,6 +88,8 @@ class Servico extends CI_Controller{
     public function gerenciar_servico($id)
     {
         $this->data["id"] = $id;
+
+        $this->data["info_card"] = $this->m_servico->get_info_card($id);
 
         $this->data["breadcrumb"] = (object)array("titulo" => "Gerenciamento do Serviço", "before" => array((object)array("nome" => "Home", "link" => "Servico")), "current" => "Gerenciamento do Serviço");
         $this->data["javascript"] = [
@@ -153,6 +156,24 @@ class Servico extends CI_Controller{
     public function get_orcamentos($id)
     {
         $rst = $this->m_servico->get_orcamentos($id);
+        echo json_encode($rst, JSON_UNESCAPED_UNICODE);
+    }
+
+    public function resposta_orcamento()
+    {
+        $rst = $this->m_servico->resposta_orcamento();
+        echo json_encode($rst, JSON_UNESCAPED_UNICODE);
+    }
+
+    public function visibilidade()
+    {
+        $rst = $this->m_servico->visibilidade();
+        echo json_encode($rst, JSON_UNESCAPED_UNICODE);
+    }
+
+    public function get_visibilidade($id)
+    {
+        $rst = $this->m_servico->get_visibilidade($id);
         echo json_encode($rst, JSON_UNESCAPED_UNICODE);
     }
 

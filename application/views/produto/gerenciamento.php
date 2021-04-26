@@ -5,7 +5,7 @@
                 <div class="col-md-3 col-sm-3 col-xs-12">
                     <div class="small-box bg-info">
                         <div class="inner">
-                            <h3>150</h3>
+                            <h3><?= $info_card->visualizacao ?></h3>
 
                             <p>Visualização do Mês</p>
                         </div>
@@ -17,7 +17,7 @@
                 <div class="col-md-3 col-sm-3 col-xs-12">
                     <div class="small-box bg-info">
                         <div class="inner">
-                            <h3>150</h3>
+                            <h3><?= $info_card->contratacoes ?></h3>
 
                             <p>Contratações</p>
                         </div>
@@ -29,7 +29,7 @@
                 <div class="col-md-3 col-sm-3 col-xs-12">
                     <div class="small-box bg-info">
                         <div class="inner">
-                            <h3>150</h3>
+                            <h3><?= $info_card->andamento ?></h3>
 
                             <p>Em andamento</p>
                         </div>
@@ -41,7 +41,7 @@
                 <div class="col-md-3 col-sm-3 col-xs-12">
                     <div class="small-box bg-info">
                         <div class="inner">
-                            <h3>150</h3>
+                            <h3><?= $info_card->orcamentos ?></h3>
 
                             <p>Orçamentos em aberto</p>
                         </div>
@@ -62,7 +62,6 @@
                         <div class="col-md-12 col-sm-12 col-xs-12">
                             <button type="button" class="btn btn-outline-info mr-4">Editar</button>
                             <button type="button" class="btn btn-outline-info mr-4">Pré Visualizar</button>
-                            <button type="button" class="btn btn-outline-info mr-4">Orçamento em Aberto</button>
                             <span class="float-right"><input type="checkbox" name="my-checkbox" checked data-bootstrap-switch data-off-color="danger" data-on-text="Visivel" data-off-text="Invisivel" data-on-color="success"></span>
                         </div>
                     </div>
@@ -119,7 +118,7 @@
         <div class="col-md-12 col-sm-12 col-xs-12">
             <div class="card">
                 <div class="card-header" style="background-color: #e36802">
-                    <h3 class="card-title text-white">Orçamentos</h3>
+                    <h3 class="card-title text-white">Orçamentos <small>(Faz a visualização de todos os Orçamentos)</small></h3>
                 </div>
                 <div class="card-body">
                     <div class="row">
@@ -214,11 +213,11 @@
                         <div class="col-md-12 col-sm-12 col-xs-12">
                             <div class="form-group">
                                 <div class="custom-control custom-radio">
-                                    <input class="custom-control-input custom-control-input-danger" type="radio" id="aceitar" name="solicitacao_pedido"required>
+                                    <input class="custom-control-input custom-control-input-danger" value="1" type="radio" id="aceitar" name="solicitacao_pedido"required>
                                     <label for="aceitar" class="custom-control-label">Aceitar Pedido </label>
                                 </div>
                                 <div class="custom-control custom-radio">
-                                    <input class="custom-control-input custom-control-input-danger" type="radio" id="recusar" name="solicitacao_pedido" required>
+                                    <input class="custom-control-input custom-control-input-danger" value="0" type="radio" id="recusar" name="solicitacao_pedido" required>
                                     <label for="recusar" class="custom-control-label">Recusar Pedido</label>
                                 </div>
                             </div>
@@ -226,18 +225,19 @@
                         <div class="col-md-12 col-sm-12 col-xs-12">
                             <div class="form-group">
                                 <label for="nome">Orçamento</label>
-                                <input type="text" class="form-control" name="orcamento" id="orcamento" placeholder="Valor de Orçamento" required>
+                                <input type="text" class="form-control preco" name="orcamento" id="orcamento" placeholder="Valor de Orçamento" required>
                             </div>
                         </div>
                         <div class="col-md-12 col-sm-12 col-xs-12">
                             <div class="form-group">
-                                <label for="nome">Descrição</label>
+                                <label for="nome">Descrição <small>(Opcional)</small></label>
                                 <textarea class="form-control" name="descricao_orcamento" rows="3" id="descricao_orcamento" placeholder="Descrição sobre o Orçamento do Pedido"></textarea>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer justify-content-between">
+                <input type="hidden" value="" id="id_orcamento" name="id_orcamento"/>
+                <div class="modal-footer align-self-end">
                     <button type="submit" class="btn btn-primary">Salvar</button>
                 </div>
             </form>
