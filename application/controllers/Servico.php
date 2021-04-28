@@ -17,6 +17,8 @@ class Servico extends CI_Controller{
         $this->load->model("Servico_model", "m_servico");
 
         $local = str_replace("TCC/", "", $_SERVER["REQUEST_URI"]);
+        $local = str_replace("tcc/", "", $local);
+        
         $this->session->set_userdata(array("local" => $local));
         $this->data["local"] = $local;
 
@@ -87,6 +89,9 @@ class Servico extends CI_Controller{
 
     public function gerenciar_servico($id)
     {
+        if(!isset($this->dados->usuario_id))
+            redirect(base_url("Servico"));
+
         $this->data["id"] = $id;
 
         $this->data["info_card"] = $this->m_servico->get_info_card($id);
