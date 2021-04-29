@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container-fluid">
     <div class="row">
         <div class="col-md-12 col-sm-12 col-xs-12">
             <div class="row mb-5">
@@ -51,84 +51,78 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="col-md-12 col-sm-12 col-xs-12">
-            <div class="card">
-                <div class="card-header" style="background-color: #e36802">
-                    <h3 class="card-title text-white">Gerenciamento Geral</h3>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-12 col-sm-12 col-xs-12">
-                            <button type="button" class="btn btn-outline-info mr-4">Editar</button>
-                            <button type="button" class="btn btn-outline-info mr-4">Pré Visualizar</button>
-                            <span class="float-right"><input type="checkbox" name="my-checkbox" checked data-bootstrap-switch data-off-color="danger" data-on-text="Visivel" data-off-text="Invisivel" data-on-color="success"></span>
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="card card-tabs">
+                        <div class="card-header p-0 pt-1" style="background-color: #e36802">
+                            <ul class="nav nav-tabs" id="custom-tabs-one-tab" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark active" id="custom-tabs-one-geral-tab" data-toggle="pill" href="#custom-tabs-one-geral" role="tab" aria-controls="custom-tabs-one-geral" aria-selected="true">Gerenciamento Geral</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" id="custom-tabs-one-perguntas-tab" data-toggle="pill" href="#custom-tabs-one-perguntas" role="tab" aria-controls="custom-tabs-one-perguntas" aria-selected="false">Perguntas no Serviço</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" id="custom-tabs-one-mensagem-tab" data-toggle="pill" href="#custom-tabs-one-mensagem" role="tab" aria-controls="custom-tabs-one-mensagem" aria-selected="false">Mensagens</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" id="custom-tabs-one-orcamento-tab" data-toggle="pill" href="#custom-tabs-one-orcamento" role="tab" aria-controls="custom-tabs-one-orcamento" aria-selected="false">Orçamento</a>
+                                </li>
+                            </ul>
                         </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-12 col-sm-12 col-xs-12">
-            <div class="card">
-                <div class="card-header" style="background-color: #e36802">
-                    <h3 class="card-title text-white">Perguntas no Serviço</h3>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-12 co-sm-12 col-xs-12 text-right">
-                            <button type="button" id="ver_lista" class="btn bg-gradient-info btn-sm">Ver Lista Completa</button>
-                        </div>
-                    </div>
-                    <br/>
-                    <div class="row" id="lista_pergunta">
+                        <div class="card-body">
+                            <div class="tab-content" id="custom-tabs-one-tabContent">
+                            <div class="tab-pane fade show active" id="custom-tabs-one-geral" role="tabpanel" aria-labelledby="custom-tabs-one-geral-tab">
+                                <div class="row">
+                                    <div class="col-md-12 col-sm-12 col-xs-12">
+                                        <button type="button" class="btn btn-outline-info mr-4">Editar</button>
+                                        <button type="button" class="btn btn-outline-info mr-4">Pré Visualizar</button>
+                                        <span class="float-right"><input type="checkbox" name="my-checkbox" checked data-bootstrap-switch data-off-color="danger" data-on-text="Visivel" data-off-text="Invisivel" data-on-color="success"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="custom-tabs-one-perguntas" role="tabpanel" aria-labelledby="custom-tabs-one-perguntas-tab">
+                                <div class="row">
+                                    <div class="col-md-12 co-sm-12 col-xs-12 text-right">
+                                        <button type="button" id="ver_lista" class="btn bg-gradient-info btn-sm">Ver Lista Completa</button>
+                                    </div>
+                                </div>
+                                <br/>
+                                <div class="row" id="lista_pergunta">
+                                    
+                                </div>
+                                <br/>
+                                <br/>
+                                <h3 class="card-title ">Lista Completa de Perguntas</h3>
+                                <br/>
+                                <div class="row" id="lcp">
                         
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-12 col-sm-12 col-xs-12 lcp_bloc d-none">
-            <div class="card">
-                <div class="card-header" style="background-color: #e36802">
-                    <h3 class="card-title text-white">Lista Completa de Perguntas</h3>
-                </div>
-                <div class="card-body">
-                    <div class="row" id="lcp">
-                        
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-12 col-sm-12 col-xs-12">
-            <div class="card">
-                <div class="card-header" style="background-color: #e36802">
-                    <h3 class="card-title text-white">Mensagens</h3>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-12 co-sm-12 col-xs-12">
-                            <table class="table" id="lista_mensagem">
-                                <thead></thead>
-                                <tbody></tbody>
-                            </table>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="custom-tabs-one-mensagem" role="tabpanel" aria-labelledby="custom-tabs-one-mensagem-tab">
+                                <div class="row">
+                                    <div class="col-md-12 co-sm-12 col-xs-12">
+                                        <table class="table" id="lista_mensagem" style="width: 100%">
+                                            <thead></thead>
+                                            <tbody></tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="custom-tabs-one-orcamento" role="tabpanel" aria-labelledby="custom-tabs-one-orcamento-tab">
+                                <div class="row">
+                                    <div class="col-md-12 co-sm-12 col-xs-12">
+                                        <table class="table" id="lista_orcamentos" style="width: 100%">
+                                            <thead></thead>
+                                            <tbody></tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-12 col-sm-12 col-xs-12">
-            <div class="card">
-                <div class="card-header" style="background-color: #e36802">
-                    <h3 class="card-title text-white">Orçamentos <small>(Faz a visualização de todos os Orçamentos)</small></h3>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-12 co-sm-12 col-xs-12">
-                            <table class="table" id="lista_orcamentos">
-                                <thead></thead>
-                                <tbody></tbody>
-                            </table>
-                        </div>
-                    </div>
+                    <!-- /.card -->
                 </div>
             </div>
         </div>
