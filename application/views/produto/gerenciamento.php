@@ -57,16 +57,16 @@
                         <div class="card-header p-0 pt-1" style="background-color: #e36802">
                             <ul class="nav nav-tabs" id="custom-tabs-one-tab" role="tablist">
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark active" id="custom-tabs-one-geral-tab" data-toggle="pill" href="#custom-tabs-one-geral" role="tab" aria-controls="custom-tabs-one-geral" aria-selected="true">Gerenciamento Geral</a>
+                                    <a class="tabs_link nav-link text-dark active" id="custom-tabs-one-geral-tab" data-toggle="pill" href="#custom-tabs-one-geral" role="tab" aria-controls="custom-tabs-one-geral" aria-selected="true">Gerenciamento Geral</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" id="custom-tabs-one-perguntas-tab" data-toggle="pill" href="#custom-tabs-one-perguntas" role="tab" aria-controls="custom-tabs-one-perguntas" aria-selected="false">Perguntas no Serviço</a>
+                                    <a class="tabs_link nav-link text-dark" id="custom-tabs-one-perguntas-tab" data-toggle="pill" href="#custom-tabs-one-perguntas" role="tab" aria-controls="custom-tabs-one-perguntas" aria-selected="false">Perguntas no Serviço</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" id="custom-tabs-one-mensagem-tab" data-toggle="pill" href="#custom-tabs-one-mensagem" role="tab" aria-controls="custom-tabs-one-mensagem" aria-selected="false">Mensagens</a>
+                                    <a class="tabs_link nav-link text-dark" id="custom-tabs-one-mensagem-tab" data-toggle="pill" href="#custom-tabs-one-mensagem" role="tab" aria-controls="custom-tabs-one-mensagem" aria-selected="false">Mensagens</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" id="custom-tabs-one-orcamento-tab" data-toggle="pill" href="#custom-tabs-one-orcamento" role="tab" aria-controls="custom-tabs-one-orcamento" aria-selected="false">Orçamento</a>
+                                    <a class="tabs_link nav-link text-dark" id="custom-tabs-one-orcamento-tab" data-toggle="pill" href="#custom-tabs-one-orcamento" role="tab" aria-controls="custom-tabs-one-orcamento" aria-selected="false">Orçamento</a>
                                 </li>
                             </ul>
                         </div>
@@ -82,21 +82,18 @@
                                 </div>
                             </div>
                             <div class="tab-pane fade" id="custom-tabs-one-perguntas" role="tabpanel" aria-labelledby="custom-tabs-one-perguntas-tab">
-                                <div class="row">
-                                    <div class="col-md-12 co-sm-12 col-xs-12 text-right">
-                                        <button type="button" id="ver_lista" class="btn bg-gradient-info btn-sm">Ver Lista Completa</button>
-                                    </div>
-                                </div>
-                                <br/>
-                                <div class="row" id="lista_pergunta">
+                                <h3 class="card-title ">Lista de Perguntas sem Resposta</h3><br/><br/>
+                                <div class="row mb-4" id="lista_pergunta">
                                     
                                 </div>
-                                <br/>
-                                <br/>
-                                <h3 class="card-title ">Lista Completa de Perguntas</h3>
-                                <br/>
-                                <div class="row" id="lcp">
-                        
+                                <h3 class="card-title ">Lista Completa de Perguntas</h3><br/>
+                                <div class="row">
+                                    <div class="col-md-12 co-sm-12 col-xs-12">
+                                        <table class="table" id="lista_pergunta_completa" style="width: 100%">
+                                            <thead></thead>
+                                            <tbody></tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                             <div class="tab-pane fade" id="custom-tabs-one-mensagem" role="tabpanel" aria-labelledby="custom-tabs-one-mensagem-tab">
@@ -219,7 +216,7 @@
                         <div class="col-md-12 col-sm-12 col-xs-12">
                             <div class="form-group">
                                 <label for="nome">Orçamento</label>
-                                <input type="text" class="form-control preco" name="orcamento" id="orcamento" placeholder="Valor de Orçamento" required>
+                                <input type="text" class="form-control preco" name="orcamento" id="orcamento" value="" placeholder="Valor de Orçamento" required>
                             </div>
                         </div>
                         <div class="col-md-12 col-sm-12 col-xs-12">
@@ -231,7 +228,7 @@
                     </div>
                 </div>
                 <input type="hidden" value="" id="id_orcamento" name="id_orcamento"/>
-                <div class="modal-footer align-self-end">
+                <div class="modal-footer align-self-end" id="button_orcamento">
                     <button type="submit" class="btn btn-primary">Salvar</button>
                 </div>
             </form>

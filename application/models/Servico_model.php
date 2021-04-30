@@ -463,10 +463,14 @@ class Servico_model extends CI_Model{
             $this->db->where("resposta IS NULL");
 
         $query = $this->db->get_where("Perguntas", "id_servico = $id")->result();
-        
+
         foreach($query as $item)
         {
             $item->data_inclusao_br = formatar($item->data_inclusao, "bd2dt");
+            $item->data_resposta_br = formatar($item->data_resposta, "bd2dt");
+
+            $this->db->select("nome, sobrenome");
+            $item->usuario_pergunta = $this->db->get_where("Usuario", "id = $item->id_usuario")->row();
         }
 
         return $query;
@@ -478,16 +482,16 @@ class Servico_model extends CI_Model{
         $data = (object)$this->input->post();
 
         $this->db->set("resposta", $data->resposta);
-        $this->db->set("data_resposta", date("Y-m-d h:i:s"));
+        $this->db->set("data_resposta", date("Y-m-d"));
         
         $this->db->where("id = $data->id_pergunta");
         if($this->db->update("Perguntas"))
         {
             $rst->rst = true;
-            $rst->msg = "Resposta inserida com sucesso!";
+            $rst->msg = "Resposta realizada com sucesso!";
         }
         else
-            $rst->msg = "Erro ao inserir resposta ao pergunta";
+            $rst->msg = "Erro ao realizar resposta ao pergunta";
 
         return $rst;
     }
@@ -509,16 +513,22 @@ class Servico_model extends CI_Model{
     public function get_orcamentos($id)
     {
         $this->db->select("O.*");
-        $this->db->join("ContrataServico C", "C.ativo = 1 AND C.status = 1 AND O.id = C.id_orcamento");
+        $this->db->join("ContrataServico C", "C.ativo = 1 AND O.id = C.id_orcamento");
         $rst = $this->db->get_where("Orcamento O", "O.id_servico = $id")->result();
-        
         foreach($rst as $item)
         {
-            $item->solicitacao = $this->db->get_where("ContrataServico", "id_orcamento = '$item->id' AND status = 1")->row();
+            $this->db->order_by("status", "asc");
+            $item->solicitacao = $this->db->get_where("ContrataServico", "id_orcamento = '$item->id'")->result();
             $item->usuario = $this->db->get_where("Usuario", "id = $item->id_usuario")->row();
-            $item->status = $this->db->get_where("OrcamentoStatus", "id = ".$item->solicitacao->status)->row();
+            
+            if(isset($item->data_servico) && !empty($item->data_servico))
+                $item->data_servico = formatar($item->data_servico, "bd2dt");
 
-            $item->solicitacao->data_servico = formatar($item->solicitacao->data_servico, "bd2dt");
+            foreach($item->solicitacao as $value)
+            {
+                $value->status = $this->db->get_where("OrcamentoStatus", "id = ".$value->status)->row();
+                $value->data_alteracao = formatar($value->data_alteracao, "bd2dt");
+            }
         }
 
         return $rst;
@@ -586,19 +596,19 @@ class Servico_model extends CI_Model{
 
         $this->db->select("O.id");
         $this->db->join("ContrataServico C", "O.id = C.id_orcamento AND C.ativo = 1 AND C.status = 4");
-        $contratacoes = $this->db->get("Orcamento O", "O.id_servico = $id")->result();
+        $contratacoes = $this->db->get_where("Orcamento O", "O.id_servico = $id")->result();
         $rst->contratacoes = count($contratacoes);
 
         $this->db->select("O.id");
         $this->db->join("ContrataServico C", "O.id = C.id_orcamento AND C.ativo = 1 AND (C.status != 4 OR C.status != 5 AND C.status != 3)");
-        $andamento = $this->db->get("Orcamento O", "O.id_servico = $id")->result();
+        $andamento = $this->db->get_where("Orcamento O", "O.id_servico = $id")->result();
         $rst->andamento = count($andamento);
 
         $this->db->select("O.id");
         $this->db->join("ContrataServico C", "O.id = C.id_orcamento AND C.ativo = 1 AND C.status = 1");
-        $orcamentos = $this->db->get("Orcamento O", "O.id_servico = $id")->result();
+        $orcamentos = $this->db->get_where("Orcamento O", "O.id_servico = $id")->result();
         $rst->orcamentos = count($orcamentos);
-
+        
         return $rst;
     }
 

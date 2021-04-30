@@ -1,9 +1,11 @@
-var tableOrcamento;
-var i = 0;
+var tableOrcamento, tableTodasPergunta;
+var i = 0, contPergunta = 0;
 
 $(document).ready(function(){
 
     var verifVisivel = 1;
+    var id = $("#id_servico").val();    
+    atualiza_perguntas(id);
 
     $(".preco").inputmask('decimal', {
         'alias': 'numeric',
@@ -15,9 +17,6 @@ $(document).ready(function(){
         'allowMinus': false,
         'prefix': 'R$ ',
     });
-
-    var id = $("#id_servico").val();    
-    atualiza_perguntas(id);
 
     $("input[data-bootstrap-switch]").each(function(){
         $.post( BASE_URL+"Servico/get_visibilidade/"+id, function( data ) {
@@ -58,6 +57,11 @@ $(document).ready(function(){
                 }
             });
         }
+    });
+
+    $(".tabs_link").on("click", function(){
+        $(".tabs_link").removeClass("text-dark").addClass("text-white");
+        $(this).removeClass("text-white").addClass("text-dark");
     });
 
     var tableMensagem = $("#lista_mensagem").DataTable({
@@ -149,6 +153,44 @@ $(document).ready(function(){
         ],
     });
 
+    tableTodasPergunta = $("#lista_pergunta_completa").DataTable({
+        language: {
+            url: BASE_URL+"assets/plugins/datatables/portugues-brasil.json",
+            select: { rows: { _: "%d linhas selecionadas", 1: "1 linha selecionada", 0: "" } }
+        },
+        ajax: {
+            url: BASE_URL+"Servico/get_perguntas/"+id+"/"+true,
+            dataSrc: "",
+            type: "post",
+            dataType: "json",
+        },
+        columns: [
+            {data: "pergunta", title: "Perguntas"},
+            {
+                data:null,
+                title: "Nome",
+                render: function(data, x, row)
+                {
+                    return row.usuario_pergunta.nome + " " +row.usuario_pergunta.sobrenome
+                }
+            },
+            {data: "data_inclusao_br", title: "Data da Pergunta"},
+            {data: "resposta", title: "Resposta"},
+            {data: "data_resposta_br", title: "Data da Resposta"},
+            {
+                data:null,
+                title: "Ação",
+                render: function(data, x, row){
+                    contPergunta++;
+                    return '<button type="button" class="btn btn-outline-info" onclick="editaResposta('+contPergunta+')"><i class="fas fa-edit"></i></button>';
+                }
+            },
+        ],
+        "columnDefs": [
+            {"className": "text-center", "targets": "_all"},
+        ],
+    });
+
     tableOrcamento = $("#lista_orcamentos").DataTable({
         language: {
             url: BASE_URL+"assets/plugins/datatables/portugues-brasil.json",
@@ -161,43 +203,56 @@ $(document).ready(function(){
             dataType: "json",
         },
         columns: [
+            {data: "usuario.nome", title: "Nome do Solicitante"},
+            {
+                data:null,
+                title: "Descrição de Solicitação",
+                render: function(data, x, row){
+                    return row.solicitacao[0].descricao;
+                }
+            },
+            {
+                data:null,
+                title: "Ultima Modificação",
+                render: function(data, x, row){
+                    return row.solicitacao[0].data_alteracao;
+                }
+            },
+            {
+                data:null,
+                title: "Status do Orçamento",
+                render: function(data, x, row){
+                    return row.solicitacao[row.solicitacao.length - 1].status.nome;
+                }
+            },
             {
                 data:null,
                 title: "Ação",
                 render: function(data, x, row){
                     i++;
-                    return '<button type="button" class="btn btn-outline-info" onclick="abriOrcamento('+i+')"><i class="fas fa-info-circle"></i></button>';
+                    
+                    for(cont=0;cont<row.solicitacao.length;cont++)
+                    {
+
+                        if(row.solicitacao[cont].status.id == 1 && row.solicitacao[cont].ativo == 1)
+                            return '<span class="fade">1</span><button type="button" class="btn btn-outline-info" onclick="abriOrcamento('+i+')"><i class="fas fa-info-circle"></i></button>';
+                        else
+                            return '<span class="fade">2</span><button type="button" class="btn btn-outline-info" onclick="abriOrcamento('+i+')"><i class="fas fa-info-circle"></i></button>';
+                    }
                 }
             },
-            {data: "usuario.nome", title: "Nome do Solicitante"},
-            {data: "solicitacao.descricao", title: "Horário de Solicitação"},
-            {
-                data: null, 
-                title: "Ultima Modificação",
-                render: function(data, x, row){
-                    return row.solicitacao.data_servico + " " + row.solicitacao.hora_servico;
-                }
-            },
-            {data: "status.nome", title: "Status do Orçamento"},
         ],
         "columnDefs": [
             {"className": "text-center", "targets": "_all"},
         ],
+        rowCallback: function (row, data){
+            for(cont=0;cont<data.solicitacao.length;cont++)
+            {
+                if(data.solicitacao[cont].status.id == 1 && data.solicitacao[cont].ativo == 1)
+                    $(row).prop('class','bg-light');
+            }
+        }
     });
-
-    $("#ver_lista").on("click", function(e){
-        e.preventDefault();
-        if($(".lcp_bloc").hasClass('d-none'))
-        {
-            atualiza_perguntas(id, true);
-            $(".lcp_bloc").removeClass("d-none");
-        }
-        else
-        {
-            $(".lcp_bloc").addClass("d-none");
-        }
-            
-    })
 
     $("#submit_pergunta").submit(function(e){
         e.preventDefault();
@@ -222,7 +277,8 @@ $(document).ready(function(){
                         text: data.msg
                     });
                     atualiza_perguntas(id)
-                    atualiza_perguntas(id, true)
+                    contPergunta = 0;
+                    tableTodasPergunta.ajax.reload();
                     $("#modal_resposta").modal("hide");
                 }
                 else if(data.rst === false)
@@ -276,7 +332,6 @@ function abrirResposta(id)
 {
     var pergunta = $("#pergunta"+id)[0].innerHTML;
     var resposta = $("#resposta"+id);
-    console.log(resposta.length)
     $("#id_pergunta").val(id);
     $("#pergunta_input").val(pergunta);
     if(resposta.length > 0)
@@ -284,88 +339,60 @@ function abrirResposta(id)
     $("#modal_resposta").modal("show");
 }
 
-function atualiza_perguntas(id, resposta = false)
+function editaResposta(id)
+{
+    id--;
+    var data = tableTodasPergunta.row(id).data();
+    
+    $("#id_pergunta").val(data.id);
+    $("#pergunta_input").val(data.pergunta);
+    $("#resposta").val(data.resposta);
+
+    $("#modal_resposta").modal("show");
+}
+
+function atualiza_perguntas(id)
 {
     $.ajax({
         type: "post",
-        url: BASE_URL+"Servico/get_perguntas/"+id+"/"+resposta,
+        url: BASE_URL+"Servico/get_perguntas/"+id+"/"+false,
         cache: false,
         contentType: false,
         processData: false,
         dataType: "json",
         success: function(data)
         {
-            if(resposta == true)
-            {
-                $(".lista_pergunta_completa").remove();
+            $(".lista_pergunta").remove();
 
-                if(data.length > 0)
-                {
-                    $.each( data, function( key, value ) {
-                        var html = '<div class="col-md-12 col-sm-12 col-xs-12 lista_pergunta_completa">' +
-                                        '<div class="callout callout-info">' +
-                                            '<div class="row">' +
-                                                '<div class="col-md-10 col-sm-12 col-xs-12">' +
-                                                    '<p id="pergunta'+value.id+'">'+value.pergunta+'</p>' +
-                                                    (value.resposta != null ? '<small id="resposta'+value.id+'">'+value.resposta+'</small>' : '')  +
-                                                    '<small class="float-right">'+value.data_inclusao_br+'</small>' +
-                                                '</div>' +
-                                                '<div class="col-md-2 col-sm-12 col-xs-12 align-self-center text-center">' +
-                                                    '<button type="button" class="btn btn-info mr-4" onclick="abrirResposta('+value.id+')">'+(value.resposta != null ? 'Editar Resposta' : 'Responder')+'</button>' +
-                                                '</div>' +
+            if(data.length > 0)
+            {
+                $.each( data, function( key, value ) {
+                    var html = '<div class="col-md-12 col-sm-12 col-xs-12 lista_pergunta">' +
+                                    '<div class="callout callout-info">' +
+                                        '<div class="row">' +
+                                            '<div class="col-md-10 col-sm-12 col-xs-12">' +
+                                                '<p id="pergunta'+value.id+'">'+value.pergunta+'</p>' +
+                                                '<small class="float-right">'+value.data_inclusao_br+'</small>' +
+                                            '</div>' +
+                                            '<div class="col-md-2 col-sm-12 col-xs-12 align-self-center text-center">' +
+                                                '<button type="button" class="btn btn-info mr-4" onclick="abrirResposta('+value.id+')">Responder</button>' +
                                             '</div>' +
                                         '</div>' +
-                                    '</div>';    
-                        
-                        $("#lcp").append(html);
-                    });
-                }
-                else
-                {
-                    var html = '<div class="col-md-12 col-sm-12 col-xs-12 lista_pergunta">' +
-                                '<div class="callout callout-info">' +
-                                    '<p>Este Serviço ainda não possui perguntas.</p>' +
-                                '</div>' +
-                            '</div>';
-                            
-                    $("#lcp").append(html);
-                }
-                
+                                    '</div>' +
+                                '</div>';    
+
+                    $("#lista_pergunta").append(html);
+                });
             }
             else
             {
-                $(".lista_pergunta").remove();
-
-                if(data.length > 0)
-                {
-                    $.each( data, function( key, value ) {
-                        var html = '<div class="col-md-12 col-sm-12 col-xs-12 lista_pergunta">' +
-                                        '<div class="callout callout-info">' +
-                                            '<div class="row">' +
-                                                '<div class="col-md-10 col-sm-12 col-xs-12">' +
-                                                    '<p id="pergunta'+value.id+'">'+value.pergunta+'</p>' +
-                                                    '<small class="float-right">'+value.data_inclusao_br+'</small>' +
-                                                '</div>' +
-                                                '<div class="col-md-2 col-sm-12 col-xs-12 align-self-center text-center">' +
-                                                    '<button type="button" class="btn btn-info mr-4" onclick="abrirResposta('+value.id+')">Responder</button>' +
-                                                '</div>' +
-                                            '</div>' +
-                                        '</div>' +
-                                    '</div>';    
-
-                        $("#lista_pergunta").append(html);
-                    });
-                }
-                else
-                {
-                    var html = '<div class="col-md-12 col-sm-12 col-xs-12 lista_pergunta">' +
-                                '<div class="callout callout-info">' +
-                                    '<p>Este Serviço ainda não possui perguntas pedentes.</p>' +
-                                '</div>' +
-                            '</div>';
-                            
-                    $("#lista_pergunta").append(html);
-                }
+                var html = '<div class="col-md-12 col-sm-12 col-xs-12 lista_pergunta">' +
+                            '<div class="callout callout-info">' +
+                                '<p>Este Serviço ainda não possui perguntas pedentes.</p>' +
+                            '</div>' +
+                        '</div>';
+                        
+                $("#lista_pergunta").append(html);
             }
         }
     });
@@ -375,12 +402,58 @@ function abriOrcamento(id)
 {
     id = id - 1;
     var data = tableOrcamento.row(id).data();
-    
-    $("#data_servico").val(data.solicitacao.data_servico);
-    $("#hora_servico").val(data.solicitacao.horario_servico);
-    $("#descricao").val(data.solicitacao.descricao);
-    $("#endereco").val(data.solicitacao.endereco);
+
     $("#id_orcamento").val(data.id);
+    
+    for(cont=0;cont<data.solicitacao.length;cont++)
+    {
+        console.log(data.solicitacao[cont]);
+        //bloco 1
+        if(data.solicitacao[cont].status.id == 1)
+        {
+            //bloc 1
+            $("#data_servico").val(data.solicitacao[cont].data_servico);
+            $("#hora_servico").val(data.solicitacao[cont].horario_servico);
+            $("#descricao").val(data.solicitacao[cont].descricao);
+            $("#endereco").val(data.solicitacao[cont].endereco);        
+
+            //bloc 2
+            $("#aceitar").attr("disabled", false);
+            $("#recusar").attr("disabled", false);
+            $("#orcamento").attr("readonly", false);
+            $("#descricao_orcamento").attr("readonly", false);
+
+            $("#aceitar").attr("checked", false);
+            $("#recusar").attr("checked", false);
+            $("#orcamento").val("");
+            $("#descricao_orcamento").val("");
+
+            $("#button_orcamento").removeClass("d-none");
+        }
+        else
+        {
+            if(data.solicitacao[cont].status.id == 2)
+                $("#aceitar").attr("checked", true);
+            else if(data.solicitacao[cont].status.id == 3)
+                $("#recusar").attr("checked", true);
+
+            $("#orcamento").val(data.solicitacao[cont].orcamento);
+            $("#descricao_orcamento").val(data.solicitacao[cont].descricao);
+
+            $("#aceitar").attr("disabled", true);
+            $("#recusar").attr("disabled", true);
+            $("#orcamento").attr("readonly", true);
+            $("#descricao_orcamento").attr("readonly", true);
+
+            $("#button_orcamento").addClass("d-none");
+        }
+
+        //bloco 2
+        if(data.solicitacao[cont].status.id == 2)
+        {
+
+        }
+    }
 
     $("#modal_orcamento").modal("show");
 }
