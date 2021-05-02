@@ -119,7 +119,30 @@
                             <?php endforeach; ?>
                         </div>
                         <div class="tab-pane fade <?= $identificador == "pedidos" ? "show active" : "" ?>" id="pedidos_tab" role="tabpanel">
-                            Lista de Serviço Contratos
+                            <?php foreach($contratados as $key => $item): ?>
+                                <div class="row">
+                                    <div class="col-xl-6 col-lg-6 col-md-4 col-sm-12 col-xs-12">
+                                        <?php if($item->img): ?>
+                                            <img src="data:<?= $item->img->tipo_imagem ?>;base64,<?= $item->img->img ?>" class="img-fluid mb-2" alt="white sample" style="max-width: 170px; max-height: 120px">
+                                        <?php else: ?>
+                                            <img src="https://levecrock.com.br/wp-content/uploads/2020/05/Produto-sem-Imagem-por-Enquanto.jpg" class="img-fluid mb-2" alt="white sample" style="max-width: 170px; max-height: 120px">
+                                        <?php endif; ?>
+                                    </div>
+                                    <div class="col-xl-6 col-lg-6 col-md-8 col-sm-12 col-xs-12 p-3">
+                                        <h4 class="text-center"><?= $item->usuario->nome." - ".$item->servico->nome." - ".$item->categoria->nome ?></h4>
+                                        <p class="text-justify pt-2"><?= $item->servico->descricao_curta ?></p>
+                                    </div>
+                                    <div class="col-xl-2 col-lg-2 col-md-6 col-sm-12 col-xs-12 align-self-center text-center">
+                                        <button type="button" class="btn btn-warning btn-block">Orçamento</button>
+                                    </div>
+                                    <div class="col-xl-2 col-lg-2 col-md-6 col-sm-12 col-xs-12 align-self-center text-center">
+                                        <a href="<?= base_url("Servico/gerenciar_servico/".$item->id) ?>" class="btn btn-warning btn-block">Mensagens</a>
+                                    </div>
+                                </div>
+                                <?php if($key < (count($cadastrados) - 1)): ?>
+                                    <hr>
+                                <?php endif; ?>
+                            <?php endforeach; ?>
                         </div>
                         <div class="tab-pane fade <?= $identificador == "cadastrado" ? "show active" : "" ?>" id="cadastrado_tab" role="tabpanel"> <!-- eu -->
                             <?php foreach($cadastrados as $key => $item): ?>

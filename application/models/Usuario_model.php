@@ -217,6 +217,34 @@ class Usuario_model extends CI_Model{
         return $servico;
     }
 
+    public function get_servicos_contratos()
+    {
+        $dados = $this->session->userdata("dados" . APPNAME);
+
+        $contrato = $this->db->get_where("Orcamento", "id_usuario = $dados->usuario_id")->result();
+
+        foreach($contrato as $item)
+        {
+            $this->db->select("nome, ativo, descricao_curta, id_tipo_servico, id_categoria, id_usuario");
+            $item->servico = $this->db->get_where("Servico", "id = $item->id_servico")->row();
+            
+            $this->db->select("tipo_imagem, img");
+            $item->img = $this->db->get_where("Imagens", "id_servico = $item->id_servico AND principal = 1 AND ativo = 1")->row();
+
+            $this->db->select("nome");
+            $item->categoria = $this->db->get_where("Categoria", "id = ".$item->servico->id_categoria)->row();
+
+            $this->db->select("nome");
+            $item->usuario = $this->db->get_where("Usuario", "id = ".$item->servico->id_usuario)->row();
+            
+            $this->db->select("O.*");
+            $this->db->join("OrcamentoStatus O", "O.id = C.status");
+            $item->status = $this->db->get_where("ContrataServico C", "C.id_orcamento = $item->id AND C.ativo = 1")->row();
+        }
+
+        return $contrato;
+    }
+
 /**
      * Realiza a verificação se o email já está cadastrado no sistema.
      * @access private

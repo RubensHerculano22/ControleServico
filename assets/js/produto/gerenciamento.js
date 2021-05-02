@@ -21,7 +21,10 @@ $(document).ready(function(){
     $("input[data-bootstrap-switch]").each(function(){
         $.post( BASE_URL+"Servico/get_visibilidade/"+id, function( data ) {
             if(data == 1)
+            {
                 $("input[data-bootstrap-switch]").bootstrapSwitch('state', $("input[data-bootstrap-switch]").prop('checked'));
+                verifVisivel = 0;
+            }
             else
             {
                 $("input[data-bootstrap-switch]").bootstrapSwitch('state', false);

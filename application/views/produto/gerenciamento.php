@@ -60,13 +60,13 @@
                                     <a class="tabs_link nav-link text-dark active" id="custom-tabs-one-geral-tab" data-toggle="pill" href="#custom-tabs-one-geral" role="tab" aria-controls="custom-tabs-one-geral" aria-selected="true">Gerenciamento Geral</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="tabs_link nav-link text-dark" id="custom-tabs-one-perguntas-tab" data-toggle="pill" href="#custom-tabs-one-perguntas" role="tab" aria-controls="custom-tabs-one-perguntas" aria-selected="false">Perguntas no Serviço</a>
+                                    <a class="tabs_link nav-link text-white" id="custom-tabs-one-perguntas-tab" data-toggle="pill" href="#custom-tabs-one-perguntas" role="tab" aria-controls="custom-tabs-one-perguntas" aria-selected="false">Perguntas no Serviço</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="tabs_link nav-link text-dark" id="custom-tabs-one-mensagem-tab" data-toggle="pill" href="#custom-tabs-one-mensagem" role="tab" aria-controls="custom-tabs-one-mensagem" aria-selected="false">Mensagens</a>
+                                    <a class="tabs_link nav-link text-white" id="custom-tabs-one-mensagem-tab" data-toggle="pill" href="#custom-tabs-one-mensagem" role="tab" aria-controls="custom-tabs-one-mensagem" aria-selected="false">Mensagens</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="tabs_link nav-link text-dark" id="custom-tabs-one-orcamento-tab" data-toggle="pill" href="#custom-tabs-one-orcamento" role="tab" aria-controls="custom-tabs-one-orcamento" aria-selected="false">Orçamento</a>
+                                    <a class="tabs_link nav-link text-white" id="custom-tabs-one-orcamento-tab" data-toggle="pill" href="#custom-tabs-one-orcamento" role="tab" aria-controls="custom-tabs-one-orcamento" aria-selected="false">Orçamento</a>
                                 </li>
                             </ul>
                         </div>

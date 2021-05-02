@@ -49,6 +49,7 @@ class Usuario extends CI_Controller{
 
         $this->data["favoritos"] = $this->m_usuario->get_favoritos();
         $this->data["cadastrados"] = $this->m_usuario->get_servicos_cadastrados();
+        $this->data["contratados"] = $this->m_usuario->get_servicos_contratos();
 
         // echo '<pre>';
         // print_r($id);
