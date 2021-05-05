@@ -121,19 +121,19 @@
                         <div class="tab-pane fade <?= $identificador == "pedidos" ? "show active" : "" ?>" id="pedidos_tab" role="tabpanel">
                             <?php foreach($contratados as $key => $item): ?>
                                 <div class="row">
-                                    <div class="col-xl-6 col-lg-6 col-md-4 col-sm-12 col-xs-12">
+                                    <div class="col-xl-4 col-lg-6 col-md-4 col-sm-12 col-xs-12">
                                         <?php if($item->img): ?>
                                             <img src="data:<?= $item->img->tipo_imagem ?>;base64,<?= $item->img->img ?>" class="img-fluid mb-2" alt="white sample" style="max-width: 170px; max-height: 120px">
                                         <?php else: ?>
                                             <img src="https://levecrock.com.br/wp-content/uploads/2020/05/Produto-sem-Imagem-por-Enquanto.jpg" class="img-fluid mb-2" alt="white sample" style="max-width: 170px; max-height: 120px">
                                         <?php endif; ?>
                                     </div>
-                                    <div class="col-xl-6 col-lg-6 col-md-8 col-sm-12 col-xs-12 p-3">
+                                    <div class="col-xl-4 col-lg-6 col-md-8 col-sm-12 col-xs-12 p-3">
                                         <h4 class="text-center"><?= $item->usuario->nome." - ".$item->servico->nome." - ".$item->categoria->nome ?></h4>
                                         <p class="text-justify pt-2"><?= $item->servico->descricao_curta ?></p>
                                     </div>
                                     <div class="col-xl-2 col-lg-2 col-md-6 col-sm-12 col-xs-12 align-self-center text-center">
-                                        <button type="button" class="btn btn-warning btn-block">Orçamento</button>
+                                        <button type="button" class="btn btn-warning btn-block orcamento_m" data-toggle="modal" data-target="#modal_orcamento" data-id="<?= $item->status->id_orcamento ?>">Orçamento</button>
                                     </div>
                                     <div class="col-xl-2 col-lg-2 col-md-6 col-sm-12 col-xs-12 align-self-center text-center">
                                         <a href="<?= base_url("Servico/gerenciar_servico/".$item->id) ?>" class="btn btn-warning btn-block">Mensagens</a>
@@ -172,6 +172,56 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal_orcamento">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Sobre o Orçamento</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="submit">
+                <div class="modal-body">
+                    <div class="row">
+                        <table width="100%" class="text-center">
+                            <tbody id="bloco_orcamento">
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                    <hr style="border: 1px solid #000">
+                    <div class="row text-center">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="form-group">
+                                <div class="custom-control custom-radio d-inline">
+                                    <input class="custom-control-input custom-control-input-danger" value="1" type="radio" id="aceitar" name="aceite_orcamento" required>
+                                    <label for="aceitar" class="custom-control-label">Aceitar Orçamento </label>
+                                </div>
+                                <div class="custom-control custom-radio d-inline">
+                                    <input class="custom-control-input custom-control-input-danger" value="0" type="radio" id="recusar" name="aceite_orcamento" required>
+                                    <label for="recusar" class="custom-control-label">Recusar Orçamento</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="form-group">
+                                <label for="nome">Descrição <small>(Opcional)</small></label>
+                                <textarea class="form-control" name="descricao_aceite" rows="3" id="descricao_aceite" placeholder="Descrição sobre a decisão"></textarea>
+                            </div>
+                        </div>
+
+                        <input type="hidden" name="id_orcamento" id="id_orcamento" value=""/>
+                    </div>
+                </div>
+                <div class="modal-footer align-items-end">
+                    <button type="submit" class="btn btn-primary">Salvar</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>

@@ -216,7 +216,7 @@
                         <div class="col-md-12 col-sm-12 col-xs-12">
                             <div class="form-group">
                                 <label for="nome">Orçamento</label>
-                                <input type="text" class="form-control preco" name="orcamento" id="orcamento" value="" placeholder="Valor de Orçamento" required>
+                                <input type="text" class="form-control preco" name="orcamento" id="orcamento" value="" placeholder="Valor de Orçamento">
                             </div>
                         </div>
                         <div class="col-md-12 col-sm-12 col-xs-12">

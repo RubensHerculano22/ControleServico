@@ -551,7 +551,9 @@ class Servico_model extends CI_Model{
             $this->db->set("id_orcamento", $data->id_orcamento);
             $this->db->set("id_usuario", $this->dados->usuario_id);
             $this->db->set("ativo", 1);
+            if($data->orcamento)
             $this->db->set("orcamento", $data->orcamento);
+            $this->db->set("data_alteracao", date("Y-m-d h:i:s"));
             if($data->descricao_orcamento)
                 $this->db->set("descricao", $data->descricao_orcamento);
 

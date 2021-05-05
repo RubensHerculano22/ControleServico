@@ -110,6 +110,18 @@ class Usuario extends CI_Controller{
         echo json_encode($rst, JSON_UNESCAPED_UNICODE);
     }
 
+    public function resposta_orcamento()
+    {
+        $rst = $this->m_usuario->resposta_orcamento();
+        echo json_encode($rst, JSON_UNESCAPED_UNICODE);
+    }
+
+    public function get_orcamentos($id)
+    {
+        $rst = $this->m_usuario->get_orcamentos($id);
+        echo json_encode($rst, JSON_UNESCAPED_UNICODE);
+    }
+
     public function troca_local($id)
     {
         $local = "Usuario/perfil/".$id;

@@ -237,12 +237,71 @@ class Usuario_model extends CI_Model{
             $this->db->select("nome");
             $item->usuario = $this->db->get_where("Usuario", "id = ".$item->servico->id_usuario)->row();
             
-            $this->db->select("O.*");
+            $this->db->select("O.*, C.id_orcamento");
             $this->db->join("OrcamentoStatus O", "O.id = C.status");
             $item->status = $this->db->get_where("ContrataServico C", "C.id_orcamento = $item->id AND C.ativo = 1")->row();
         }
 
+        // echo '<pre>';
+        // print_r($contrato);
+        // echo '</pre>';
+        // exit;
+
         return $contrato;
+    }
+
+    public function get_orcamentos($id)
+    {
+        $query = $this->db->get_where("ContrataServico", "id_orcamento = $id")->result();
+
+        foreach($query as $item)
+        {
+            $item->status = $this->db->get_where("OrcamentoStatus", "id = $item->status")->row();
+
+            if(isset($item->data_servico) && !empty($item->data_servico))
+                $item->data_servico = formatar($item->data_servico, "bd2dt");
+
+            $item->data_alteracao = formatar($item->data_alteracao, "bd2dt");
+        }
+        
+        return $query;
+    }
+
+    public function resposta_orcamento()
+    {
+        $rst = (object)array("rst" => false, "msg" => "");
+        $data = (object)$this->input->post();
+        $dados = $this->session->userdata("dados" . APPNAME);
+
+        $this->db->set("ativo", 0);
+        $this->db->where("id_orcamento", $data->id_orcamento);
+        if($this->db->update("ContrataServico"))
+        {
+            if($data->aceite_orcamento == 1)
+                $this->db->set("status", 4);
+            else
+                $this->db->set("status", 5);
+
+            if($data->descricao_aceite)
+                $this->db->set("descricao", $data->descricao_aceite);
+            
+            $this->db->set("id_orcamento", $data->id_orcamento);
+            $this->db->set("data_alteracao", date("Y-m-d h:i:s"));
+            $this->db->set("ativo", 1);
+            $this->db->set("id_usuario", $dados->usuario_id);
+
+            if($this->db->insert("ContrataServico"))
+            {
+                $rst->rst = true;
+                $rst->msg = "Serviço fechado com sucesso!";
+            }
+            else
+            {
+                $rst->msg = "Erro ao realizar o fechamento do sucesso!";
+            }
+        }
+
+        return $rst;
     }
 
 /**
