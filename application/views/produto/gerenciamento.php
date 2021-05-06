@@ -163,17 +163,24 @@
 </div>
 
 <div class="modal fade" id="modal_orcamento">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Orçamento</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
+                    <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <form id="submit_orcamento">
                 <div class="modal-body">
                     <div class="row">
+                        <table width="100%" class="text-center">
+                            <tbody id="bloco_orcamento">
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- <div class="row">
                         <div class="col-md-6 col-sm-3 col-xs-12">
                             <div class="form-group">
                                 <label for="nome">Data para o Serviço</label>
@@ -225,7 +232,7 @@
                                 <textarea class="form-control" name="descricao_orcamento" rows="3" id="descricao_orcamento" placeholder="Descrição sobre o Orçamento do Pedido"></textarea>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
                 <input type="hidden" value="" id="id_orcamento" name="id_orcamento"/>
                 <div class="modal-footer align-self-end" id="button_orcamento">

@@ -404,59 +404,155 @@ function atualiza_perguntas(id)
 function abriOrcamento(id)
 {
     id = id - 1;
-    var data = tableOrcamento.row(id).data();
-
-    $("#id_orcamento").val(data.id);
+    var value = tableOrcamento.row(id).data();
+    console.log(value);
+    $("#id_orcamento").val(value.id);
     
-    for(cont=0;cont<data.solicitacao.length;cont++)
+    $(".bloc_remove").remove();
+
+    var html = "";
+    for(i=0;i<value.solicitacao.length;i++)
     {
-        console.log(data.solicitacao[cont]);
-        //bloco 1
-        if(data.solicitacao[cont].status.id == 1)
+        var data = value.solicitacao;
+        console.log(i)
+        if(i%2==0)
         {
-            //bloc 1
-            $("#data_servico").val(data.solicitacao[cont].data_servico);
-            $("#hora_servico").val(data.solicitacao[cont].horario_servico);
-            $("#descricao").val(data.solicitacao[cont].descricao);
-            $("#endereco").val(data.solicitacao[cont].endereco);        
-
-            //bloc 2
-            $("#aceitar").attr("disabled", false);
-            $("#recusar").attr("disabled", false);
-            $("#orcamento").attr("readonly", false);
-            $("#descricao_orcamento").attr("readonly", false);
-
-            $("#aceitar").attr("checked", false);
-            $("#recusar").attr("checked", false);
-            $("#orcamento").val("");
-            $("#descricao_orcamento").val("");
-
-            $("#button_orcamento").removeClass("d-none");
+            html += '<tr class="bloc_remove">';
+            html += '<td style="border-right: 1px solid #000;" width="50%">';
         }
         else
         {
-            if(data.solicitacao[cont].status.id == 2)
-                $("#aceitar").attr("checked", true);
-            else if(data.solicitacao[cont].status.id == 3)
-                $("#recusar").attr("checked", true);
-
-            $("#orcamento").val(data.solicitacao[cont].orcamento);
-            $("#descricao_orcamento").val(data.solicitacao[cont].descricao);
-
-            $("#aceitar").attr("disabled", true);
-            $("#recusar").attr("disabled", true);
-            $("#orcamento").attr("readonly", true);
-            $("#descricao_orcamento").attr("readonly", true);
-
-            $("#button_orcamento").addClass("d-none");
+            html += '<td width="50%">';
         }
 
-        //bloco 2
-        if(data.solicitacao[cont].status.id == 2)
+        html += '<div class="row mr-3 ml-3">';
+
+        if(data[i].status.id == 1)
         {
 
+            html += '<div class="col-md-6 col-sm-3 col-xs-12">'+
+                        '<div class="form-group">'+
+                            '<label for="nome">Data para o Serviço</label>'+
+                            '<input type="text" class="form-control" value="'+data[i].data_servico+'" readonly>'+
+                        '</div>'+
+                    '</div>';
+            html += '<div class="col-md-6 col-sm-6 col-xs-12">'+
+                        '<div class="form-group">'+
+                            '<label for="nome">Hora para o Serviço</label>'+
+                            '<input type="text" class="form-control" value="'+data[i].hora_servico+'" readonly>'+
+                        '</div>'+
+                    '</div>';
+            html += '<div class="col-md-12 col-sm-12 col-xs-12">'+
+                        '<div class="form-group">'+
+                            '<label for="nome">Descrição</label>'+
+                            '<textarea class="form-control" rows="3" readonly>'+data[i].descricao+'</textarea>'+
+                        '</div>'+
+                    '</div>';
+            html += '<div class="col-md-12 col-sm-12 col-xs-12">'+
+                        '<div class="form-group">'+
+                            '<label for="nome">Endereço</label>'+
+                            '<input type="text" class="form-control" value="'+data[i].endereco+'" readonly>'+
+                        '</div>'+
+                    '</div>';
+        }
+        else if(data[i].status.id == 2)
+        {
+            html += '<div class="col-md-4 col-sm-4 col-xs-12">'+
+                        '<div class="form-group">'+
+                            '<label for="nome">Status do Pedido</label>'+
+                            '<br/><i class="fas fa-chevron-right"></i> Orçamento Gerado'+
+                        '</div>'+
+                    '</div>';
+            html += '<div class="col-md-8 col-sm-8 col-xs-12">'+
+                        '<div class="form-group">'+
+                            '<label for="nome">Orçamento</label>'+
+                            '<input type="text" class="form-control" value="'+data[i].orcamento+'" readonly>'+
+                        '</div>'+
+                    '</div>';
+            html += '<div class="col-md-12 col-sm-12 col-xs-12">'+
+                        '<div class="form-group">'+
+                            '<label for="nome">Descrição</label>'+
+                            '<textarea class="form-control" rows="3" readonly>'+data[i].descricao+'</textarea>'+
+                        '</div>'+
+                    '</div>';
+        }
+        else if(data[i].status.id == 3)
+        {
+            html += '<div class="col-md-4 col-sm-4 col-xs-12">'+
+                        '<div class="form-group">'+
+                            '<label for="nome">Status do Pedido</label>'+
+                            '<i class="fas fa-chevron-right"></i> Serviço Recusado'+
+                        '</div>'+
+                    '</div>';
+            html += '<div class="col-md-12 col-sm-12 col-xs-12">'+
+                        '<div class="form-group">'+
+                            '<label for="nome">Descrição</label>'+
+                            '<textarea class="form-control" rows="3" readonly>'+data[i].descricao+'</textarea>'+
+                        '</div>'+
+                    '</div>';
+        }
+
+        html += '</div>';
+        html += '</td>';
+
+        if(i-2 >= 0 && (i-2)%2==0)
+        {
+            html += '</tr>';
         }
     }
+
+    console.log(html)
+    $("#bloco_orcamento").append(html);
+
+    // for(cont=0;cont<data.solicitacao.length;cont++)
+    // {
+    //     console.log(data.solicitacao[cont]);
+    //     //bloco 1
+    //     if(data.solicitacao[cont].status.id == 1)
+    //     {
+    //         //bloc 1
+    //         $("#data_servico").val(data.solicitacao[cont].data_servico);
+    //         $("#hora_servico").val(data.solicitacao[cont].horario_servico);
+    //         $("#descricao").val(data.solicitacao[cont].descricao);
+    //         $("#endereco").val(data.solicitacao[cont].endereco);        
+
+    //         //bloc 2
+    //         $("#aceitar").attr("disabled", false);
+    //         $("#recusar").attr("disabled", false);
+    //         $("#orcamento").attr("readonly", false);
+    //         $("#descricao_orcamento").attr("readonly", false);
+
+    //         $("#aceitar").attr("checked", false);
+    //         $("#recusar").attr("checked", false);
+    //         $("#orcamento").val("");
+    //         $("#descricao_orcamento").val("");
+
+    //         $("#button_orcamento").removeClass("d-none");
+    //     }
+    //     else
+    //     {
+    //         if(data.solicitacao[cont].status.id == 2)
+    //             $("#aceitar").attr("checked", true);
+    //         else if(data.solicitacao[cont].status.id == 3)
+    //             $("#recusar").attr("checked", true);
+
+    //         $("#orcamento").val(data.solicitacao[cont].orcamento);
+    //         $("#descricao_orcamento").val(data.solicitacao[cont].descricao);
+
+    //         $("#aceitar").attr("disabled", true);
+    //         $("#recusar").attr("disabled", true);
+    //         $("#orcamento").attr("readonly", true);
+    //         $("#descricao_orcamento").attr("readonly", true);
+
+    //         $("#button_orcamento").addClass("d-none");
+    //     }
+
+    //     //bloco 2
+    //     if(data.solicitacao[cont].status.id == 2)
+    //     {
+
+    //     }
+    // }
 
     $("#modal_orcamento").modal("show");
 }
