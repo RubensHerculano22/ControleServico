@@ -491,6 +491,10 @@ function abriOrcamento(id)
                         '</div>'+
                     '</div>';
         }
+        else if(data[i].status.id == 4)
+        {
+            html += '';
+        }
 
         html += '</div>';
         html += '</td>';
