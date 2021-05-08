@@ -60,11 +60,16 @@ $(document).ready(function(){
             {
                 $(".bloc_remove").remove();
 
+                console.log(data);
+
                 var html = "";
+                var abre = 0;
                 for(i=0;i<data.length;i++)
                 {
+                    $(".orcamentoResposta").addClass("d-none");
                     if(i%2==0)
                     {
+                        abre = i;
                         html += '<tr class="bloc_remove">';
                         html += '<td style="border-right: 1px solid #000;" width="50%">';
                     }
@@ -123,10 +128,12 @@ $(document).ready(function(){
                                         '<textarea class="form-control" rows="3" readonly>'+data[i].descricao+'</textarea>'+
                                     '</div>'+
                                 '</div>';
+
+                        $(".orcamentoResposta").removeClass("d-none");
                     }
                     else if(data[i].status.id == 3)
                     {
-                        html += '<div class="col-md-4 col-sm-4 col-xs-12">'+
+                        html += '<div class="col-md-12 col-sm-12 col-xs-12">'+
                                    '<div class="form-group">'+
                                         '<label for="nome">Status do Pedido</label>'+
                                         '<i class="fas fa-chevron-right"></i> Serviço Recusado'+
@@ -139,16 +146,41 @@ $(document).ready(function(){
                                     '</div>'+
                                 '</div>';
                     }
+                    else if(data[i].status.id == 4)
+                    {
+                        html += '<div class="col-md-12 col-sm-12 col-xs-12 mt-4">'+
+                                    '<div class="alert alert-warning  alert-dismissible">'+
+                                        '<h5><i class="icon fas fa-check"></i> Confirmado</h5>'+
+                                        'O Serviço foi aceito por ambas as partes, e será realizado no dia: '+data[0].data_servico+' horário: '+data[0].hora_servico +
+                                    '</div>'
+                                '</div>';
+                    }
+                    else if(data[i].status.id == 5)
+                    {
+                        var small = "";
+
+                        if(data[i+1] == null)
+                        {
+                            small = "(No aguardo de uma nova resposta do Prestador)";
+                        }
+
+                        html += '<div class="col-md-12 col-sm-12 col-xs-12 mt-4">' +
+                                    '<div class="form-group">' +
+                                        '<label for="nome">Status do Pedido</label>' +
+                                        '<br/><i class="fas fa-chevron-right"></i> O cliente recusou o orçamento gerado.' +
+                                        '<small>'+small+'</small>'+
+                                    '</div>'+
+                                '</div>';
+                    }
 
 
                     html += '</div>';
                     html += '</td>';
 
-                    if(i-2 >= 0 && (i-2)%2==0)
+                    if(i == abre + 2)
                     {
                         html += '</tr>';
                     }
-                    
                 }
                 
                 $("#id_orcamento").val(id_orcamento);

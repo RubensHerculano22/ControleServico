@@ -180,46 +180,15 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="row">
+                    <hr class="orcamentoResposta d-none">
+                    <div class="row orcamentoResposta d-none">
                         <div class="col-md-12 col-sm-12 col-xs-12">
-                            aaaaa
-                        </div>
-                    </div>
-                    <!-- <div class="row">
-                        <div class="col-md-6 col-sm-3 col-xs-12">
-                            <div class="form-group">
-                                <label for="nome">Data para o Serviço</label>
-                                <input type="text" class="form-control data" name="data_servico" id="data_servico" placeholder="Data para o serviço" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask readonly>
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                            <div class="form-group">
-                                <label for="nome">Hora para o Serviço</label>
-                                <input type="text" class="form-control data" name="hora_servico" id="hora_servico" placeholder="Hora para o serviço" readonly>
-                            </div>
-                        </div>
-                        <div class="col-md-12 col-sm-12 col-xs-12">
-                            <div class="form-group">
-                                <label for="nome">Descrição</label>
-                                <textarea class="form-control" name="descricao" rows="3" id="descricao" placeholder="Descrição sobre o Serviço a ser solicitado" readonly></textarea>
-                            </div>
-                        </div>
-                        <div class="col-md-12 col-sm-12 col-xs-12">
-                            <div class="form-group">
-                                <label for="nome">Endereço</label>
-                                <input type="text" class="form-control" name="endereco" id="endereco" placeholder="Endereço" readonly>
-                            </div>     
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="row">
-                        <div class="col-md-12 col-sm-12 col-xs-12">
-                            <div class="form-group">
-                                <div class="custom-control custom-radio">
+                            <div class="form-group text-center">
+                                <div class="custom-control custom-radio d-inline">
                                     <input class="custom-control-input custom-control-input-danger" value="1" type="radio" id="aceitar" name="solicitacao_pedido"required>
                                     <label for="aceitar" class="custom-control-label">Aceitar Pedido </label>
                                 </div>
-                                <div class="custom-control custom-radio">
+                                <div class="custom-control custom-radio d-inline">
                                     <input class="custom-control-input custom-control-input-danger" value="0" type="radio" id="recusar" name="solicitacao_pedido" required>
                                     <label for="recusar" class="custom-control-label">Recusar Pedido</label>
                                 </div>
@@ -237,10 +206,10 @@
                                 <textarea class="form-control" name="descricao_orcamento" rows="3" id="descricao_orcamento" placeholder="Descrição sobre o Orçamento do Pedido"></textarea>
                             </div>
                         </div>
-                    </div> -->
+                    </div>
                 </div>
                 <input type="hidden" value="" id="id_orcamento" name="id_orcamento"/>
-                <div class="modal-footer align-self-end" id="button_orcamento">
+                <div class="modal-footer align-self-end orcamentoResposta d-none" id="button_orcamento">
                     <button type="submit" class="btn btn-primary">Salvar</button>
                 </div>
             </form>

@@ -411,12 +411,13 @@ function abriOrcamento(id)
     $(".bloc_remove").remove();
 
     var html = "";
+    var abre = 0;
     for(i=0;i<value.solicitacao.length;i++)
     {
         var data = value.solicitacao;
-        console.log(i)
         if(i%2==0)
         {
+            abre = i;
             html += '<tr class="bloc_remove">';
             html += '<td style="border-right: 1px solid #000;" width="50%">';
         }
@@ -454,6 +455,8 @@ function abriOrcamento(id)
                             '<input type="text" class="form-control" value="'+data[i].endereco+'" readonly>'+
                         '</div>'+
                     '</div>';
+
+            $(".orcamentoResposta").removeClass("d-none");
         }
         else if(data[i].status.id == 2)
         {
@@ -475,6 +478,8 @@ function abriOrcamento(id)
                             '<textarea class="form-control" rows="3" readonly>'+data[i].descricao+'</textarea>'+
                         '</div>'+
                     '</div>';
+                    
+            $(".orcamentoResposta").addClass("d-none");
         }
         else if(data[i].status.id == 3)
         {
@@ -490,73 +495,45 @@ function abriOrcamento(id)
                             '<textarea class="form-control" rows="3" readonly>'+data[i].descricao+'</textarea>'+
                         '</div>'+
                     '</div>';
+            
+            $(".orcamentoResposta").addClass("d-none");
         }
         else if(data[i].status.id == 4)
         {
-            html += '';
+            html += '<div class="col-md-12 col-sm-12 col-xs-12">'+
+                        '<div class="alert alert-warning  alert-dismissible">'+
+                            '<h5><i class="icon fas fa-check"></i> Confirmado</h5>'+
+                            'O Serviço foi aceito por ambas as partes, e será realizado no dia: '+data[0].data_servico+' horário: '+data[0].hora_servico +
+                        '</div>'
+                    '</div>';
+
+            $(".orcamentoResposta").addClass("d-none");
+        }
+        else if(data[i].status.id == 5)
+                    {
+            var small = "";
+
+            html += '<div class="col-md-12 col-sm-12 col-xs-12">' +
+                        '<div class="form-group">' +
+                            '<label for="nome">Status do Pedido</label>' +
+                            '<br/><i class="fas fa-chevron-right"></i> O Cliente recusou o orçamento gerado.' +
+                            '<small>'+small+'</small>'+
+                        '</div>'+
+                    '</div>';
+
+            $(".orcamentoResposta").removeClass("d-none");
         }
 
         html += '</div>';
         html += '</td>';
 
-        if(i-2 >= 0 && (i-2)%2==0)
+        if(i == abre + 2)
         {
             html += '</tr>';
         }
     }
 
-    console.log(html)
     $("#bloco_orcamento").append(html);
-
-    // for(cont=0;cont<data.solicitacao.length;cont++)
-    // {
-    //     console.log(data.solicitacao[cont]);
-    //     //bloco 1
-    //     if(data.solicitacao[cont].status.id == 1)
-    //     {
-    //         //bloc 1
-    //         $("#data_servico").val(data.solicitacao[cont].data_servico);
-    //         $("#hora_servico").val(data.solicitacao[cont].horario_servico);
-    //         $("#descricao").val(data.solicitacao[cont].descricao);
-    //         $("#endereco").val(data.solicitacao[cont].endereco);        
-
-    //         //bloc 2
-    //         $("#aceitar").attr("disabled", false);
-    //         $("#recusar").attr("disabled", false);
-    //         $("#orcamento").attr("readonly", false);
-    //         $("#descricao_orcamento").attr("readonly", false);
-
-    //         $("#aceitar").attr("checked", false);
-    //         $("#recusar").attr("checked", false);
-    //         $("#orcamento").val("");
-    //         $("#descricao_orcamento").val("");
-
-    //         $("#button_orcamento").removeClass("d-none");
-    //     }
-    //     else
-    //     {
-    //         if(data.solicitacao[cont].status.id == 2)
-    //             $("#aceitar").attr("checked", true);
-    //         else if(data.solicitacao[cont].status.id == 3)
-    //             $("#recusar").attr("checked", true);
-
-    //         $("#orcamento").val(data.solicitacao[cont].orcamento);
-    //         $("#descricao_orcamento").val(data.solicitacao[cont].descricao);
-
-    //         $("#aceitar").attr("disabled", true);
-    //         $("#recusar").attr("disabled", true);
-    //         $("#orcamento").attr("readonly", true);
-    //         $("#descricao_orcamento").attr("readonly", true);
-
-    //         $("#button_orcamento").addClass("d-none");
-    //     }
-
-    //     //bloco 2
-    //     if(data.solicitacao[cont].status.id == 2)
-    //     {
-
-    //     }
-    // }
 
     $("#modal_orcamento").modal("show");
 }

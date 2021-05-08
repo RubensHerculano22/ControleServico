@@ -293,7 +293,10 @@ class Usuario_model extends CI_Model{
             if($this->db->insert("ContrataServico"))
             {
                 $rst->rst = true;
-                $rst->msg = "Serviço fechado com sucesso!";
+                if($data->aceite_orcamento == 1)
+                    $rst->msg = "Serviço fechado com sucesso!";
+                else
+                    $rst->msg = "Orçamento recusado com sucesso, aviso foi enviado ao Prestador.";
             }
             else
             {

@@ -51,11 +51,6 @@ class Usuario extends CI_Controller{
         $this->data["cadastrados"] = $this->m_usuario->get_servicos_cadastrados();
         $this->data["contratados"] = $this->m_usuario->get_servicos_contratos();
 
-        // echo '<pre>';
-        // print_r($id);
-        // echo '</pre>';
-        // exit;
-
         $this->troca_local($id);
 
         $this->data["javascript"] = [

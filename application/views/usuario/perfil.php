@@ -133,7 +133,7 @@
                                         <p class="text-justify pt-2"><?= $item->servico->descricao_curta ?></p>
                                     </div>
                                     <div class="col-xl-2 col-lg-2 col-md-6 col-sm-12 col-xs-12 align-self-center text-center">
-                                        <button type="button" class="btn btn-warning btn-block orcamento_m" data-toggle="modal" data-target="#modal_orcamento" data-id="<?= $item->status->id_orcamento ?>">Orçamento</button>
+                                        <button type="button" class="btn btn-warning btn-block orcamento_m" data-toggle="modal" data-target="#modal_orcamento" data-id="<?= $item->status->id_orcamento ?>">Historico Orçamento</button>
                                     </div>
                                     <div class="col-xl-2 col-lg-2 col-md-6 col-sm-12 col-xs-12 align-self-center text-center">
                                         <a href="<?= base_url("Servico/gerenciar_servico/".$item->id) ?>" class="btn btn-warning btn-block">Mensagens</a>
@@ -194,8 +194,8 @@
                             </tbody>
                         </table>
                     </div>
-                    <hr style="border: 1px solid #000">
-                    <div class="row text-center">
+                    <hr style="border: 1px solid #000" class="orcamentoResposta d-none">
+                    <div class="row text-center orcamentoResposta d-none">
                         <div class="col-md-12 col-sm-12 col-xs-12">
                             <div class="form-group">
                                 <div class="custom-control custom-radio d-inline">
@@ -219,7 +219,7 @@
                     </div>
                 </div>
                 <div class="modal-footer align-items-end">
-                    <button type="submit" class="btn btn-primary">Salvar</button>
+                    <button type="submit" class="btn btn-primary orcamentoResposta d-none">Salvar</button>
                 </div>
             </form>
         </div>

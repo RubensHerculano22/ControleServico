@@ -18,19 +18,19 @@ class Servico_model extends CI_Model{
 
     public function insere_acesso($id)
     {
-        $data = date("Y-m-d h:i:00", strtotime("-1 minutes"));
+        $data = date("Y-m-d H:i:00", strtotime("-1 minutes"));
 
         if(isset($this->dados->usuario_id) && $this->dados->usuario_id != null)
         {
             $this->db->where("id_usuario = ".$this->dados->usuario_id);
-            $this->db->where("data_acesso BETWEEN '".$data."' AND '".date("Y-m-d h:i:s")."'");
+            $this->db->where("data_acesso BETWEEN '".$data."' AND '".date("Y-m-d H:i:s")."'");
             $query = $this->db->get("ControleVisualizacao")->result();
 
             if(!$query)
             {
                 $this->db->set("id_servico", $id);
                 $this->db->set("id_usuario", $this->dados->usuario_id);    
-                $this->db->set("data_acesso", date("Y-m-d h:i:s"));
+                $this->db->set("data_acesso", date("Y-m-d H:i:s"));
     
                 $this->db->insert("ControleVisualizacao");
             }
@@ -38,7 +38,7 @@ class Servico_model extends CI_Model{
         else
         {
             $this->db->set("id_servico", $id);                
-            $this->db->set("data_acesso", date("Y-m-d h:i:s"));
+            $this->db->set("data_acesso", date("Y-m-d H:i:s"));
 
             $this->db->insert("ControleVisualizacao");   
         }
@@ -278,6 +278,7 @@ class Servico_model extends CI_Model{
             $this->db->set("hora_servico", $data->hora_servico);
             $this->db->set("descricao", $data->descricao);
             $this->db->set("endereco", $data->endereco);
+            $this->db->set("data_alteracao", date("Y-m-d H:i:s"));
 
             if($this->db->insert("ContrataServico"))
             {
@@ -339,8 +340,8 @@ class Servico_model extends CI_Model{
         $this->db->set("descricao_curta", $data->descricao_curta);
         $this->db->set("descricao", $data->descricao_completa);
         $this->db->set("ativo", 1);
-        $this->db->set("data_inclusao", date("Y-m-d h:i:s"));
-        $this->db->set("data_atualizacao", date("Y-m-d h:i:s"));
+        $this->db->set("data_inclusao", date("Y-m-d H:i:s"));
+        $this->db->set("data_atualizacao", date("Y-m-d H:i:s"));
         $this->db->set("id_tipo_servico", $data->tipo_servico);
         $this->db->set("id_categoria", $data->categoria_especifica);
         if($data->valor)
@@ -398,7 +399,7 @@ class Servico_model extends CI_Model{
                 $this->db->set("ativo", 1);
                 $this->db->set("nome", $files[$count]["name"]);
                 $this->db->set("tipo_imagem", $files[$count]["type"]);
-                $this->db->set("data_insercao", date("Y-m-d h:i:s"));
+                $this->db->set("data_insercao", date("Y-m-d H:i:s"));
                 $this->db->set("img", base64_encode(file_get_contents($files[$count]["path"])));
 
                 $this->db->insert("Imagens");
@@ -517,7 +518,6 @@ class Servico_model extends CI_Model{
         $rst = $this->db->get_where("Orcamento O", "O.id_servico = $id")->result();
         foreach($rst as $item)
         {
-            $this->db->order_by("status", "asc");
             $item->solicitacao = $this->db->get_where("ContrataServico", "id_orcamento = '$item->id'")->result();
             $item->usuario = $this->db->get_where("Usuario", "id = $item->id_usuario")->row();
             
@@ -527,6 +527,8 @@ class Servico_model extends CI_Model{
             foreach($item->solicitacao as $value)
             {
                 $value->status = $this->db->get_where("OrcamentoStatus", "id = ".$value->status)->row();
+                if($value->data_servico)
+                    $value->data_servico = formatar($value->data_servico, "bd2dt");    
                 $value->data_alteracao = formatar($value->data_alteracao, "bd2dt");
             }
         }
@@ -553,7 +555,7 @@ class Servico_model extends CI_Model{
             $this->db->set("ativo", 1);
             if($data->orcamento)
             $this->db->set("orcamento", $data->orcamento);
-            $this->db->set("data_alteracao", date("Y-m-d h:i:s"));
+            $this->db->set("data_alteracao", date("Y-m-d H:i:s"));
             if($data->descricao_orcamento)
                 $this->db->set("descricao", $data->descricao_orcamento);
 
