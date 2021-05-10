@@ -75,7 +75,7 @@
                             <div class="tab-pane fade show active" id="custom-tabs-one-geral" role="tabpanel" aria-labelledby="custom-tabs-one-geral-tab">
                                 <div class="row">
                                     <div class="col-md-12 col-sm-12 col-xs-12">
-                                        <button type="button" class="btn btn-outline-info mr-4">Editar</button>
+                                        <a href="<?= base_url("Servico/edita_servico/".$id) ?>" class="btn btn-outline-info mr-4">Editar</a>
                                         <button type="button" class="btn btn-outline-info mr-4">Pré Visualizar</button>
                                         <span class="float-right"><input type="checkbox" name="my-checkbox" checked data-bootstrap-switch data-off-color="danger" data-on-text="Visivel" data-off-text="Invisivel" data-on-color="success"></span>
                                     </div>

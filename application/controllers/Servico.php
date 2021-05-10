@@ -104,6 +104,20 @@ class Servico extends CI_Controller{
         $this->data["content"] = $this->load->view("produto/gerenciamento", $this->data, true);
         $this->load->view("template/content", $this->data);
     }
+    
+    public function edita_servico($id)
+    {
+        $this->data["id"] = $id;
+        $this->data["info"] = $this->m_servico->get_info_servico($id);
+
+        $this->data["breadcrumb"] = (object)array("titulo" => "Editar Informações Serviço", "before" => array((object)array("nome" => "Home", "link" => "Servico")), "current" => "Editar Informações Serviço");
+        $this->data["javascript"] = [
+            base_url("assets/js/produto/edita.js")
+        ];
+
+        $this->data["content"] = $this->load->view("produto/edita", $this->data, true);
+        $this->load->view("template/content", $this->data);
+    }
 
     public function cadastrar_pergunta()
     {
