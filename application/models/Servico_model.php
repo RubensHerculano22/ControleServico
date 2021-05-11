@@ -636,4 +636,20 @@ class Servico_model extends CI_Model{
 
         return false;
     }
+
+    public function get_cidades($id)
+    {
+        $json = file_get_contents(base_url("assets/Cidades.json"));
+        $data = json_decode($json);
+
+        $lista = array();
+        foreach($data as $item)
+        {
+            if($item->Estado == $id)
+            $lista[] = $item;
+        }
+
+        return $lista;
+
+    }
 }
