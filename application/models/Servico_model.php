@@ -136,6 +136,12 @@ class Servico_model extends CI_Model{
             $item->dia_semana = $this->db->get_where("Horario", "id = $item->dia_semana")->row();
         }
 
+        //Consulta o estado
+        $query->estado = $this->db->get_where("Estados", "id = '$query->estado'")->row();
+
+        //Consulta a cidade
+        $query->cidade = $this->get_cidades_id($query->cidade);
+
         //Consulta todas as imagens cadastradas no serviço.
         $this->db->order_by("principal", "desc");
         $query->imagens = $this->db->get_where("Imagens", "id_servico = '$query->id' and ativo = 1")->result();
@@ -331,6 +337,40 @@ class Servico_model extends CI_Model{
         return $result;
     }
 
+    public function get_estados()
+    {
+        $query = $this->db->get("Estados")->result();
+
+        return $query;
+    }
+
+    public function get_cidades($id)
+    {
+        $json = file_get_contents(base_url("assets/Cidades.json"));
+        $data = json_decode($json);
+
+        $lista = array();
+        foreach($data as $item)
+        {
+            if($item->Estado == $id)
+                $lista[] = $item;
+        }
+
+        return $lista;
+    }
+
+    public function get_cidades_id($id_cidade)
+    {
+        $json = file_get_contents(base_url("assets/Cidades.json"));
+        $data = json_decode($json);
+
+        foreach($data as $item)
+        {
+            if($item->ID == $id_cidade)
+                return $item;
+        }
+    }
+
     public function cadastro_servico()
     {
         $rst = (object)array("rst" => true, "msg" => "");
@@ -344,6 +384,10 @@ class Servico_model extends CI_Model{
         $this->db->set("data_atualizacao", date("Y-m-d H:i:s"));
         $this->db->set("id_tipo_servico", $data->tipo_servico);
         $this->db->set("id_categoria", $data->categoria_especifica);
+        $this->db->set("estado", $data->estado);
+        $this->db->set("cidade", $data->cidade);
+        if($data->local)
+            $this->db->set("endereco", $data->endereco);
         if($data->valor)
             $this->db->set("valor", str_replace(".", ",", explode(" ", $data->valor)[1]));
         if($data->tipo_servico == 2)
@@ -635,21 +679,5 @@ class Servico_model extends CI_Model{
         }
 
         return false;
-    }
-
-    public function get_cidades($id)
-    {
-        $json = file_get_contents(base_url("assets/Cidades.json"));
-        $data = json_decode($json);
-
-        $lista = array();
-        foreach($data as $item)
-        {
-            if($item->Estado == $id)
-            $lista[] = $item;
-        }
-
-        return $lista;
-
     }
 }

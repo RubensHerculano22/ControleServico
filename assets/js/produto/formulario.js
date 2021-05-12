@@ -31,6 +31,45 @@ $(document).ready(function(){
             $("#categoria_especifica").html(html);
         });
     });
+
+    $("#estado").on("change", function(){
+        var estado = $("#estado").val();
+        $(".option_cidades").remove();
+        $.ajax({
+            type: "post",
+            url: BASE_URL+"Servico/get_cidades/"+estado,
+            cache: false,
+            contentType: false,
+            processData: false,
+            dataType: "json",
+            success: function(data)
+            {
+                if(data != null)
+                {
+                    var html = '';
+                    for(i=0;i<data.length;i++)
+                    {
+                        html += '<option class="option_cidades" value="'+data[i].ID+'">'+data[i].Nome+'</option>';
+                    }
+
+                    $("#cidade").append(html);
+                    $("#cidade").trigger('change');
+                }
+                else
+                {
+                    showNotification("error", "Cidades não encontradas", "Não há nenhuma cidade cadastrada para este estado.", "toast-top-center", "15000");
+                }
+            }
+        });
+    });
+
+    $("#local_servico").on("click", function(){
+        var valor = $("input[name=local]")[0];
+        if(valor.checked == true)
+            $("#endereco_input").removeClass("d-none");
+        else
+            $("#endereco_input").addClass("d-none");
+    });
     
     $("#adicionar_meio_pagamento").on("click", function(e){
         e.preventDefault();

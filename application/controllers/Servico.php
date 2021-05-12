@@ -76,6 +76,7 @@ class Servico extends CI_Controller{
     {
         $this->data["categoria"] = $this->m_servico->get_categorias_principais();
         $this->data["pagamento"] = $this->m_servico->get_pagamento();
+        $this->data["estados"] = $this->m_servico->get_estados();
 
         $this->data["breadcrumb"] = (object)array("titulo" => "Cadastro de Produtos/Serviços", "before" => array((object)array("nome" => "Home", "link" => "Servico")), "current" => "Cadastrando novo Serviço");
         $this->data["javascript"] = [
@@ -196,7 +197,7 @@ class Servico extends CI_Controller{
         echo json_encode($rst, JSON_UNESCAPED_UNICODE);
     }
 
-    public function importa_cidade($id)
+    public function get_cidades($id)
     {
         $rst = $this->m_servico->get_cidades($id);
         echo json_encode($rst, JSON_UNESCAPED_UNICODE);

@@ -65,7 +65,7 @@
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="col-md-4 col-sm-4 col-xs-12 categoria_especifica d-none">
+                                        <div class="col-md-4 col-sm-4 col-xs-12 categoria_especifica">
                                             <div class="form-group">
                                                 <label>Categoria Especifica</label>
                                                 <select class="custom-select" name="categoria_especifica" id="categoria_especifica">
@@ -91,6 +91,36 @@
                                                     <label class="form-check-label">Aluguel de Equipamento</label>
                                                 </div>
                                             </div>
+                                        </div>
+                                        <div class="col-md-3 col-sm-6 col-xs-12">
+                                            <div class="form-group">
+                                                <label for="estado">Estado</label>
+                                                <select class="form-control select2bs4" id="estado" name="estado">
+                                                    <?php foreach($estados as $item): ?>
+                                                        <option value="<?= $item->id ?>"><?= $item->nome." - ".$item->sigla ?></option>
+                                                    <?php endforeach; ?>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 col-sm-6 col-xs-12">
+                                            <div class="form-group">
+                                                <label for="estado">Cidade</label>
+                                                <select class="form-control select2bs4" id="cidade" name="cidade">
+                                                    
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4 col-sm-4 col-sm-12">
+                                            <div class="form-check">
+                                                <input type="checkbox" class="form-check-input" id="local_servico" name="local" val="1">
+                                                <label class="form-check-label" for="local_servico">Caso o Serviço seja executado em um local especifico</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-8 col-sm-8 col-xs-12 d-none" id="endereco_input">
+                                            <label for="endereco">Endereço</label>
+                                            <input type="text" class="form-control" name="endereco" id="endereco" placeholder="Endereço"/>
                                         </div>
                                     </div>
                                     <div class="row d-none" id="aluguel_equipamentos">

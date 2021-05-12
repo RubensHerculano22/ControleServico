@@ -29,6 +29,12 @@
                                         </div>
                                     </div>
                                     <div class="col-md-4 col-sm-12">
+                                        <div class="float-right">
+                                            <h5 class="mb-0">
+                                            <?= $info->cidade->Nome." ".$info->estado->nome." - ".$info->estado->sigla ?>
+                                            </h5>
+                                        </div>
+                                        <br/>
                                         <h3 class="my-3"><?= $info->nome ?></h3>
                                         <div class="row">
                                             <div class="col-md-6 col-sm-12 col-xs-12">
@@ -88,6 +94,13 @@
                                                 </table>
                                             </div>
                                         </div>
+                                        <?php if($info->endereco): ?>
+                                        <div class="mt-4">
+                                            <h6 class="mb-0">
+                                                <b>Endereço:</b> <?= $info->endereco ?>
+                                            </h6>
+                                        </div>
+                                        <?php endif; ?>
                                     </div>
                                 </div>
                             </div>
