@@ -60,8 +60,6 @@ $(document).ready(function(){
             {
                 $(".bloc_remove").remove();
 
-                console.log(data);
-
                 var html = "";
                 var abre = 0;
                 for(i=0;i<data.length;i++)
@@ -125,7 +123,7 @@ $(document).ready(function(){
                         html += '<div class="col-md-12 col-sm-12 col-xs-12">'+
                                     '<div class="form-group">'+
                                         '<label for="nome">Descrição</label>'+
-                                        '<textarea class="form-control" rows="3" readonly>'+data[i].descricao+'</textarea>'+
+                                        '<textarea class="form-control" rows="2" readonly>'+data[i].descricao+'</textarea>'+
                                     '</div>'+
                                 '</div>';
 
@@ -142,7 +140,7 @@ $(document).ready(function(){
                         html += '<div class="col-md-12 col-sm-12 col-xs-12">'+
                                     '<div class="form-group">'+
                                         '<label for="nome">Descrição</label>'+
-                                        '<textarea class="form-control" rows="3" readonly>'+data[i].descricao+'</textarea>'+
+                                        '<textarea class="form-control" rows="2" readonly>'+data[i].descricao+'</textarea>'+
                                     '</div>'+
                                 '</div>';
                     }
@@ -158,17 +156,21 @@ $(document).ready(function(){
                     else if(data[i].status.id == 5)
                     {
                         var small = "";
+                        var descriçao = "";
 
                         if(data[i+1] == null)
                         {
                             small = "(No aguardo de uma nova resposta do Prestador)";
                         }
+                        if(data[i].descricao != null)
+                            descricao = '<textarea class="form-control" rows="2" readonly>'+data[i].descricao+'</textarea>';
 
                         html += '<div class="col-md-12 col-sm-12 col-xs-12 mt-4">' +
                                     '<div class="form-group">' +
                                         '<label for="nome">Status do Pedido</label>' +
                                         '<br/><i class="fas fa-chevron-right"></i> O cliente recusou o orçamento gerado.' +
                                         '<small>'+small+'</small>'+
+                                        descricao +
                                     '</div>'+
                                 '</div>';
                     }
