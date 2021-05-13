@@ -50,7 +50,7 @@ class Usuario extends CI_Controller{
         $this->data["favoritos"] = $this->m_usuario->get_favoritos();
         $this->data["cadastrados"] = $this->m_usuario->get_servicos_cadastrados();
         $this->data["contratados"] = $this->m_usuario->get_servicos_contratos();
-
+        
         $this->troca_local($id);
 
         $this->data["javascript"] = [
@@ -77,13 +77,14 @@ class Usuario extends CI_Controller{
     {
         $dados = $this->session->userdata("dados" . APPNAME);
         $this->session->unset_userdata(array("is_logged", "dados" . APPNAME));
+        redirect(base_url());
         if ($this->local) 
         {
             redirect(base_url($this->local));
         }
         else
         {
-            redirect(base_url("Home"));
+            redirect(base_url());
         }
     }
 
@@ -114,6 +115,12 @@ class Usuario extends CI_Controller{
     public function get_orcamentos($id)
     {
         $rst = $this->m_usuario->get_orcamentos($id);
+        echo json_encode($rst, JSON_UNESCAPED_UNICODE);
+    }
+
+    public function cancela_servico($id)
+    {
+        $rst = $this->m_usuario->cancela_servico($id);
         echo json_encode($rst, JSON_UNESCAPED_UNICODE);
     }
 

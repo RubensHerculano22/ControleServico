@@ -203,6 +203,12 @@ class Servico extends CI_Controller{
         echo json_encode($rst, JSON_UNESCAPED_UNICODE);
     }
 
+    public function cancela_servico($id)
+    {
+        $rst = $this->m_servico->cancela_servico($id);
+        echo json_encode($rst, JSON_UNESCAPED_UNICODE);
+    }
+
     public function set_files()
     {
 

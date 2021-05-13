@@ -262,6 +262,9 @@ class Usuario_model extends CI_Model{
                 $item->data_servico = formatar($item->data_servico, "bd2dt");
 
             $item->data_alteracao = formatar($item->data_alteracao, "bd2dt");
+            
+            $this->db->select("id, nome");
+            $item->usuario = $this->db->get_where("Usuario", "id = $item->id_usuario")->row();
         }
         
         return $query;
@@ -306,6 +309,30 @@ class Usuario_model extends CI_Model{
 
         return $rst;
     }
+
+    public function cancela_servico($id)
+    {
+        $dados = $this->session->userdata("dados" . APPNAME);
+
+        $this->db->set("ativo", 0);
+        $this->db->where("id_orcamento = '$id'");
+        if($this->db->update("ContrataServico"))
+        {
+            $this->db->set("id_orcamento", $id);
+            $this->db->set("status", 6);
+            $this->db->set("ativo", 1);
+            $this->db->set("id_usuario", $dados->usuario_id);
+            $this->db->set("data_alteracao", date("Y-m-d h:i:s"));
+
+            if($this->db->insert("ContrataServico"))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
 
 /**
      * Realiza a verificação se o email já está cadastrado no sistema.

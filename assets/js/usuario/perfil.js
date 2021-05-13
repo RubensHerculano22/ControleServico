@@ -174,6 +174,17 @@ $(document).ready(function(){
                                     '</div>'+
                                 '</div>';
                     }
+                    else if(data[i].status.id == 6)
+                    {
+                        html += '<div class="col-md-12 col-sm-12 col-xs-12 mt-4">'+
+                                    '<div class="alert alert-danger alert-dismissible">'+
+                                        '<h5><i class="icon fas fa-exclamation-circle"></i>Serviço Cancelado</h5>'+
+                                        'O serviço foi cancelado por: '+data[i].usuario.nome+', na data: '+data[i].data_alteracao +
+                                    '</div>'
+                                '</div>';
+
+                        $(".orcamentoResposta").addClass("d-none");
+                    }
 
 
                     html += '</div>';
@@ -224,4 +235,42 @@ $(document).ready(function(){
         });
     });
 
+    $(".cancela_servico").on("click", function(e){
+        e.preventDefault();
+        var id = $(this).data("id");
+        Swal.fire({
+            title: 'Aviso',
+            text: "Deseja realmente cancelar esse serviço?",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: `Sim`,
+            cancelButtonText: `Não`,
+            }).then((result) => {
+            if (result.isConfirmed)
+            {
+                $.ajax({
+                    type: "post",
+                    url: BASE_URL+"Usuario/cancela_servico/"+id,
+                    dataType: "json",
+                    success: function(data)
+                    {
+                        if(data === true)
+                        {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Sucesso',
+                                text: "Serviço cancelado com sucesso!"
+                            }).then((result) => {
+                                window.location.href = BASE_URL+"Usuario/perfil/pedidos";
+                            });
+                        }
+                        else if(data.rst === false)
+                        {
+                            showNotification("warning", "Erro ao tentar cancelar o serviço", "Tente novamente daqui a alguns minutos", "toast-top-center");
+                        }
+                    }
+                });
+            }
+        });
+    });
 });

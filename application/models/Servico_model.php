@@ -574,6 +574,8 @@ class Servico_model extends CI_Model{
                 if($value->data_servico)
                     $value->data_servico = formatar($value->data_servico, "bd2dt");    
                 $value->data_alteracao = formatar($value->data_alteracao, "bd2dt");
+                $this->db->select("id, nome");
+                $value->usuario = $this->db->get_where("Usuario", "id = $value->id_usuario")->row();
             }
         }
 
@@ -658,6 +660,29 @@ class Servico_model extends CI_Model{
         $rst->orcamentos = count($orcamentos);
         
         return $rst;
+    }
+
+    public function cancela_servico($id)
+    {
+        $dados = $this->session->userdata("dados" . APPNAME);
+
+        $this->db->set("ativo", 0);
+        $this->db->where("id_orcamento = '$id'");
+        if($this->db->update("ContrataServico"))
+        {
+            $this->db->set("id_orcamento", $id);
+            $this->db->set("status", 6);
+            $this->db->set("ativo", 1);
+            $this->db->set("id_usuario", $dados->usuario_id);
+            $this->db->set("data_alteracao", date("Y-m-d h:i:s"));
+
+            if($this->db->insert("ContrataServico"))
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
