@@ -66,6 +66,10 @@
     $(document).ready(function(){
         $(".select2").select2();
 
+        $('.select2bs4').select2({
+            theme: 'bootstrap4'
+        });
+
         $("#search_bar").select2({
             escapeMarkup: function (markup) { return markup; },
             minimumInputLegth: 10,

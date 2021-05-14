@@ -35,8 +35,13 @@
       </div>
 
     <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="#" data-toggle="modal" data-target="#modalLocalizacao">
+          <i class="far fa-bell"></i>
+        </a>
+      </li>
       <li class="nav-item dropdown">
-        <a class="nav-link" data-toggle="dropdown" href="#">
+        <a class="nav-link" data-toggle="dropdown" href="#modalLocalizacao">
           <i class="far fa-bell"></i>
           <span class="badge badge-warning navbar-badge">15</span>
         </a>
@@ -97,3 +102,44 @@
       <?php endif; ?>
     </ul>
 </nav>
+
+<div class="modal fade" id="modalLocalizacao" style="display: none;" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Região dos Serviços</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="form-group">
+              <label>Estado</label>
+              <select class="form-control select2bs4" id="estado_atual" name="estado_atual">
+                  <?php foreach($estados as $item): ?>
+                      <option value="<?= $item->id ?>"><?= $item->nome." - ".$item->sigla ?></option>
+                  <?php endforeach; ?>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="form-group">
+              <label>Cidade</label>
+              <select class="form-control select2bs4" id="cidade_atual" name="cidade_atual">
+                                                    
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer justify-content-between">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-info">Trocar</button>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>

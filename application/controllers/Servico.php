@@ -23,6 +23,7 @@ class Servico extends CI_Controller{
         $this->data["local"] = $local;
 
         $this->data["categorias"] = $this->m_sistema->listar_categorias();
+        $this->data["estados"] = $this->m_servico->get_estados();
         // echo '<pre>';
         // print_r($this->data["categorias"]);
         // echo '</pre>';
