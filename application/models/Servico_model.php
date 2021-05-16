@@ -55,6 +55,7 @@ class Servico_model extends CI_Model{
     */
     public function servico_categoria($subcategoria)
     {
+        $cidade = $this->session->userdata("cidade");
         $rst = array();
         if($subcategoria)
         {
@@ -62,7 +63,7 @@ class Servico_model extends CI_Model{
             $query = $this->db->get_where("Categoria", "nome = '$subcategoria'")->row();
 
             //Consulta todos os serviço que são daquela subcategoria
-            $rst = $this->db->get_where("Servico", "ativo = 1 AND id_categoria = $query->id")->result();
+            $rst = $this->db->get_where("Servico", "ativo = 1 AND id_categoria = '$query->id' AND cidade = '$cidade->id_cidade'")->result();
 
             foreach($rst as $item)
             {

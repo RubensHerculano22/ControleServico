@@ -70,6 +70,16 @@
             theme: 'bootstrap4'
         });
 
+        var modal_aberto = "<?= (!empty($cidade) ? 1 : 0) ?>";
+        if(modal_aberto == 0)
+        {
+            $("#modalLocalizacao").modal("show");
+        }
+        else
+        {
+
+        }
+
         $("#search_bar").select2({
             escapeMarkup: function (markup) { return markup; },
             minimumInputLegth: 10,
@@ -103,6 +113,97 @@
                 cache: true
             },
 
+        });
+
+        $("#modalLocalizacao").on("show.bs.modal", function(){
+            var estado = $("#estado_atual").val();
+            if(estado)
+            {
+                $(".option_atual").remove();
+                $.ajax({
+                    type: "post",
+                    url: BASE_URL+"Servico/get_cidades/"+estado,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    dataType: "json",
+                    success: function(data)
+                    {
+                        if(data != null)
+                        {
+                            var cidade = "<?= $cidade && $cidade->id_cidade ? $cidade->id_cidade : "" ?>"
+                            var html = '';
+                            for(i=0;i<data.length;i++)
+                            {
+                                html += '<option class="option_atual" value="'+data[i].ID+'" '+(cidade == data[i].ID ? "selected" : "")+'>'+data[i].Nome+'</option>';
+                            }
+
+                            $("#cidade_atual").append(html);
+                            $("#cidade_atual").trigger('change');
+                        }
+                        else
+                        {
+                            showNotification("error", "Cidades não encontradas", "Não há nenhuma cidade cadastrada para este estado.", "toast-top-center", "15000");
+                        }
+                    }
+                });
+            }
+        });
+
+        $("#estado_atual").on("change", function(){
+            var estado = $("#estado_atual").val();
+            $(".option_atual").remove();
+            $.ajax({
+                type: "post",
+                url: BASE_URL+"Servico/get_cidades/"+estado,
+                cache: false,
+                contentType: false,
+                processData: false,
+                dataType: "json",
+                success: function(data)
+                {
+                    if(data != null)
+                    {
+                        var html = '';
+                        for(i=0;i<data.length;i++)
+                        {
+                            html += '<option class="option_atual" value="'+data[i].ID+'">'+data[i].Nome+'</option>';
+                        }
+
+                        $("#cidade_atual").append(html);
+                        $("#cidade_atual").trigger('change');
+                    }
+                    else
+                    {
+                        showNotification("error", "Cidades não encontradas", "Não há nenhuma cidade cadastrada para este estado.", "toast-top-center", "15000");
+                    }
+                }
+            });
+        });
+
+        $("#troca_cidade").on("click", function(){
+            var estado = $("#estado_atual").val();
+            var cidade = $("#cidade_atual").val();
+            
+            $.ajax({
+                type: "post",
+                url: BASE_URL+"Servico/troca_cidade/"+estado+"/"+cidade,
+                cache: false,
+                contentType: false,
+                processData: false,
+                dataType: "json",
+                success: function(data)
+                {
+                    if(data == true)
+                    {
+                        window.location.reload();
+                    }
+                    else
+                    {
+                        showNotification("error", "Um erro aconteceu!", "Não foi possivel realizar a troca da cidade.", "toast-top-center", "15000");
+                    }
+                }
+            });
         });
     });
 

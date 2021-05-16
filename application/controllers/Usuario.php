@@ -14,6 +14,7 @@ class Usuario extends CI_Controller{
         $this->data["local"] = $this->local;
         
         $this->data["categorias"] = $this->m_sistema->listar_categorias();
+        $this->data["cidade"] = $this->session->userdata("cidade");
 
         $this->load->model("Usuario_model", "m_usuario");
 

@@ -37,7 +37,7 @@
     <ul class="navbar-nav ml-auto">
       <li class="nav-item">
         <a class="nav-link" href="#" data-toggle="modal" data-target="#modalLocalizacao">
-          <i class="far fa-bell"></i>
+          <i class="fas fa-exchange-alt"></i>
         </a>
       </li>
       <li class="nav-item dropdown">
@@ -119,7 +119,7 @@
               <label>Estado</label>
               <select class="form-control select2bs4" id="estado_atual" name="estado_atual">
                   <?php foreach($estados as $item): ?>
-                      <option value="<?= $item->id ?>"><?= $item->nome." - ".$item->sigla ?></option>
+                      <option value="<?= $item->id ?>" <?= $cidade && $cidade->id_estado == $item->id ? "selected" : false ?>><?= $item->nome." - ".$item->sigla ?></option>
                   <?php endforeach; ?>
               </select>
             </div>
@@ -128,15 +128,14 @@
             <div class="form-group">
               <label>Cidade</label>
               <select class="form-control select2bs4" id="cidade_atual" name="cidade_atual">
-                                                    
+                
               </select>
             </div>
           </div>
         </div>
       </div>
       <div class="modal-footer justify-content-between">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-info">Trocar</button>
+        <button type="button" class="btn btn-info" id="troca_cidade">Trocar</button>
       </div>
     </div>
     <!-- /.modal-content -->

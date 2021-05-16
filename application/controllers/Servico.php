@@ -21,11 +21,12 @@ class Servico extends CI_Controller{
         
         $this->session->set_userdata(array("local" => $local));
         $this->data["local"] = $local;
+        $this->data["cidade"] = $this->session->userdata("cidade");
 
         $this->data["categorias"] = $this->m_sistema->listar_categorias();
         $this->data["estados"] = $this->m_servico->get_estados();
         // echo '<pre>';
-        // print_r($this->data["categorias"]);
+        // print_r($this->data["cidade"]);
         // echo '</pre>';
         // exit;
         $this->data["header"] = $this->load->view("template/header", $this->data, true);
@@ -208,6 +209,13 @@ class Servico extends CI_Controller{
     {
         $rst = $this->m_servico->cancela_servico($id);
         echo json_encode($rst, JSON_UNESCAPED_UNICODE);
+    }
+
+    public function troca_cidade($id_estado, $id_cidade)
+    {
+        $this->session->set_userdata(array("cidade" => (object)array("id_estado" => $id_estado, "id_cidade" => $id_cidade)));
+
+        echo json_encode(true, JSON_UNESCAPED_UNICODE);
     }
 
     public function set_files()
