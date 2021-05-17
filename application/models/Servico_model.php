@@ -57,14 +57,13 @@ class Servico_model extends CI_Model{
     {
         $cidade = $this->session->userdata("cidade");
         $rst = array();
-        if($subcategoria)
+        if($subcategoria && $cidade)
         {
             //Consulta o id que corresponde aquela subcategoria
             $query = $this->db->get_where("Categoria", "nome = '$subcategoria'")->row();
 
             //Consulta todos os serviço que são daquela subcategoria
             $rst = $this->db->get_where("Servico", "ativo = 1 AND id_categoria = '$query->id' AND cidade = '$cidade->id_cidade'")->result();
-
             foreach($rst as $item)
             {
                 //Consulta os dados do usuario que cadastrou aquele serviço.

@@ -115,6 +115,11 @@
       <div class="modal-body">
         <div class="row">
           <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="alert alert-warning alert-dismissible">
+              Por favor, selecione uma cidade para filtrar os serviços no sistema.
+            </div>
+          </div>
+          <div class="col-md-12 col-sm-12 col-xs-12">
             <div class="form-group">
               <label>Estado</label>
               <select class="form-control select2bs4" id="estado_atual" name="estado_atual">
