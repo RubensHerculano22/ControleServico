@@ -112,6 +112,17 @@ class Servico extends CI_Controller{
     {
         $this->data["id"] = $id;
         $this->data["info"] = $this->m_servico->get_info_servico($id);
+        $this->data["categoria"] = $this->m_servico->get_categorias_principais();
+        $this->data["lista_subcategoria"] = $this->m_servico->get_subcategorias($this->data["info"]->categoria_pai->id);
+        $this->data["pagamento"] = $this->m_servico->get_pagamento();
+        $this->data["estados"] = $this->m_servico->get_estados();
+        $this->data["cidade"] = $this->m_servico->get_cidades($this->data["info"]->estado->id);
+
+        // echo '<pre>';
+        // print_r($this->data["info"]);
+        // echo '</pre>';
+        // exit;
+
 
         $this->data["breadcrumb"] = (object)array("titulo" => "Editar Informações Serviço", "before" => array((object)array("nome" => "Home", "link" => "Servico")), "current" => "Editar Informações Serviço");
         $this->data["javascript"] = [
@@ -145,9 +156,9 @@ class Servico extends CI_Controller{
         echo json_encode($rst, JSON_UNESCAPED_UNICODE);
     }
 
-    public function get_subcategorias()
+    public function get_subcategorias($id)
     {
-        $rst = $this->m_servico->get_subcategorias();
+        $rst = $this->m_servico->get_subcategorias($id);
         echo json_encode($rst, JSON_UNESCAPED_UNICODE);
     }
 

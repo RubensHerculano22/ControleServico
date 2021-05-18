@@ -120,16 +120,25 @@ class Servico_model extends CI_Model{
         //Consulta todas as formas de pagamento cadastradas no serviço.
         $query->pagamento = $this->db->get_where("PagamentoServico", "id_servico = '$query->id'")->result();
 
+        foreach($query->pagamento as $item)
+        {
+            $item->tipo_pagamento = $this->db->get_where("TipoPagamento", "id = $item->id_tipo_pagamento")->row();
+        }
+
         //Consulta todas as perguntas cadastradas naquele serviço.
         $query->perguntas = $this->db->get_where("Perguntas", "id_servico = '$query->id'")->result();
 
-        //Consulta a subcategoria do serviço.
+        //Consulta a sub da subcategoria do serviço.
         $query->subcategoria = $this->db->get_where("Categoria", "id = $query->id_categoria")->row();
 
-        //Consulta a categoria do serviço.
+        //Consulta a subcategoria do serviço.
         $query->categoria = $this->db->get_where("Categoria", "id = ".$query->subcategoria->id_pai)->row();
 
+        //Consulta a categoria do serviço.
+        $query->categoria_pai = $this->db->get_where("Categoria", "id = ".$query->categoria->id_pai)->row();
+
         //Consulta os horarios
+        $this->db->order_by("dia_semana", "asc");
         $query->horario = $this->db->get_where("HorarioServico", "id_servico = '$query->id'")->result();
         foreach($query->horario as $item)
         {
@@ -145,6 +154,20 @@ class Servico_model extends CI_Model{
         //Consulta todas as imagens cadastradas no serviço.
         $this->db->order_by("principal", "desc");
         $query->imagens = $this->db->get_where("Imagens", "id_servico = '$query->id' and ativo = 1")->result();
+
+        if($query->valor)
+        {
+            $valor_V = explode(",", $query->valor);
+            $valor = str_replace(".", ",", $valor_V[0]);
+            $query->valor_D = $valor.".".$valor_V[1];
+        }
+
+        if($query->caucao)
+        {
+            $valor_V = explode(",", $query->caucao);
+            $valor = str_replace(".", ",", $valor_V[0]);
+            $query->caucao_D = $valor.".".$valor_V[1];
+        }
 
         //Verifica se está logado para realizar a consulta se o servico está no favoritos do usuario.
         if(!empty($this->dados))
@@ -307,12 +330,12 @@ class Servico_model extends CI_Model{
         return $query;
     }
 
-    public function get_subcategorias()
+    public function get_subcategorias($id)
     {
         $lista_categoria = array();
         $data = (object)$this->input->post();
         
-        $query = $this->db->get_where("Categoria", "id_pai = '$data->categoria'")->result();
+        $query = $this->db->get_where("Categoria", "id_pai = '$id'")->result();
 
         foreach($query as $item)
         {
@@ -389,11 +412,22 @@ class Servico_model extends CI_Model{
         if($data->local)
             $this->db->set("endereco", $data->endereco);
         if($data->valor)
-            $this->db->set("valor", str_replace(".", ",", explode(" ", $data->valor)[1]));
+        {
+            $valor_T = explode(" ", $data->valor);
+            $valor_V = explode(".", $valor_T[1]);
+            $valor = str_replace(",", ".", $valor_V[0]);
+            $this->db->set("valor", $valor.",".$valor_V[1]);
+        }
         if($data->tipo_servico == 2)
         {
             $this->db->set("quantidade_disponivel", $data->quantidade);
-            $this->db->set("caucao", str_replace(".", ",", explode(" ", $data->caucao)[1]));
+            if($data->caucao)
+            {
+                $valor_T = explode(" ", $data->caucao);
+                $valor_V = explode(".", $valor_T[1]);
+                $valor = str_replace(",", ".", $valor_V[0]);
+                $this->db->set("caucao", $valor.",".$valor_V[1]);
+            }
         }
         $this->db->set("id_usuario", $this->dados->usuario_id);
 

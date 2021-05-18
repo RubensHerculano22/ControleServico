@@ -15,7 +15,7 @@ $(document).ready(function(){
         
         $(".categoria_especifica").removeClass("d-none");
 
-        $.post(BASE_URL+"servico/get_subcategorias", {categoria: valor}, function(result){
+        $.post(BASE_URL+"servico/get_subcategorias/"+valor, null, function(result){
             $(".optremove").remove();
             var html = "";
             result = JSON.parse(result);
@@ -68,7 +68,10 @@ $(document).ready(function(){
         if(valor.checked == true)
             $("#endereco_input").removeClass("d-none");
         else
+        {
+            $("#endereco").val("");
             $("#endereco_input").addClass("d-none");
+        }
     });
     
     $("#adicionar_meio_pagamento").on("click", function(e){

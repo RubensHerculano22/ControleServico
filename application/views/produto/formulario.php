@@ -94,7 +94,7 @@
                                         </div>
                                         <div class="col-md-3 col-sm-6 col-xs-12">
                                             <div class="form-group">
-                                                <label for="estado">Estado</label>
+                                                <label for="estado">Estado(Usar a cidade cadastrada na session)</label>
                                                 <select class="form-control select2bs4" id="estado" name="estado">
                                                     <?php foreach($estados as $item): ?>
                                                         <option value="<?= $item->id ?>"><?= $item->nome." - ".$item->sigla ?></option>
