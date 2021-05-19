@@ -76,6 +76,7 @@
                                 <div class="row">
                                     <div class="col-md-12 col-sm-12 col-xs-12">
                                         <a href="<?= base_url("Servico/edita_servico/".$id) ?>" class="btn btn-outline-info mr-4">Editar</a>
+                                        <a href="<?= base_url("Servico/editar_imagens/".$id) ?>" class="btn btn-outline-info mr-4">Editar Imagens</a>
                                         <button type="button" class="btn btn-outline-info mr-4">Pré Visualizar</button>
                                         <span class="float-right"><input type="checkbox" name="my-checkbox" checked data-bootstrap-switch data-off-color="danger" data-on-text="Visivel" data-off-text="Invisivel" data-on-color="success"></span>
                                     </div>

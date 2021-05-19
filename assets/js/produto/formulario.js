@@ -186,8 +186,7 @@ $(document).ready(function(){
                                 confirmButtonText: `Ok`,
                                 }).then((result) => {
                                 if (result.isConfirmed)
-                                    window.location.reload();
-                                    // window.location.href = BASE_URL+"Servico/jogo/"+data.id_jogo;
+                                    window.location.href = BASE_URL+"Servico/gerenciar_servico/"+data.id_servico;
                             })
                         }
                         else if(data.rst === false)

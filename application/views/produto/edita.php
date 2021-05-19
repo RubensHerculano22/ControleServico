@@ -3,7 +3,7 @@
         <div class="col-sm-12 col-xs-12 col-xs-12">
             <div class="card card-default">
                 <div class="card-header">
-                    <h3 class="card-title">Formulário de Cadastro de Serviço</h3>
+                    <h3 class="card-title">Formulário de Edição de Serviço</h3>
                 </div>
                 <form id="submit">
                     <div class="card-body">
@@ -60,7 +60,7 @@
                                     <label for="cidade">Cidade</label>
                                     <select class="form-control select2bs4" id="cidade" name="cidade" >
                                     <?php foreach($cidade as $item): ?>
-                                            <option value="<?= $item->ID ?>" ><?= $item->Nome ?></option>
+                                            <option class="option_cidades" value="<?= $item->ID ?>" ><?= $item->Nome ?></option>
                                         <?php endforeach; ?>
                                     </select>
                                 </div>
@@ -94,7 +94,7 @@
                             <div class="col-md-3 col-sm-4 col-xs-12 aluguel_equipamento <?= $info->id_tipo_servico == "2" ? "" : "d-none" ?>">
                                 <div class="form-group">
                                     <label for="caucao">Caução</label>
-                                    <input type="text" class="form-control preco" name="caucao" value="<?= $info->caucao ?>" id="caucao" placeholder="Caução">
+                                    <input type="text" class="form-control preco" name="caucao" value="<?= $info->caucao_D ?>" id="caucao" placeholder="Caução">
                                 </div>
                             </div>
                         </div>
@@ -208,6 +208,9 @@
                                     </div>
                                     <div class="col-md-12 col-sm-12 col-xs-12 pt-4" id="lista_de_horario">
                                         <ol class="list-group list-group-numbered" id="lista_horario">
+                                            <?php foreach($info->horario as $key => $item): ?>
+                                                <li class="list-group-item list_group_horario" id="li_horario_<?= $key ?>" data-id="<?= $item->dia_semana->id."/".explode(" ", $item->texto)[0]."/".explode(" ", $item->texto)[2] ?>"><?= $item->dia_semana->titulo." / ".explode(" ", $item->texto)[0]." - ".explode(" ", $item->texto)[2] ?><span class="float-right"><button class="btn btn-danger" type="button" onclick="exclui_meio_pagamento('li_horario_<?= $key ?>')"><i class="fas fa-times"></i></button></span></li>
+                                            <?php endforeach; ?>
                                         </ol>
                                     </div>
                                     <input type="hidden" value="" id="lista_horario_input" name="lista_tipo_horario"/>
@@ -223,11 +226,11 @@
                                 </textarea>
                             </div>
                         </div>
-                        
+                        <input type="hidden" name="id_servico" value="<?= $info->id ?>" id="id_servico" />
                     </div>
                     <div class="card-footer justify-content-between">
-                        <a href="<?= base_url("Servico/gerenciar_servico/$id") ?>" class="btn btn-info">Voltar</a>
-                        <button type="submit" class="btn btn-info ">Salvar</button>
+                        <a href="<?= base_url("Servico/gerenciar_servico/$id") ?>" class="btn btn-info float-left">Voltar</a>
+                        <button type="submit" class="btn btn-info float-right">Salvar</button>
                     </div>
                 </form>
             </div>

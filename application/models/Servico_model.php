@@ -396,7 +396,7 @@ class Servico_model extends CI_Model{
 
     public function cadastro_servico()
     {
-        $rst = (object)array("rst" => true, "msg" => "");
+        $rst = (object)array("rst" => true, "msg" => "", "id" => 0);
         $data = (object)$this->input->post();
 
         $this->db->set("nome", $data->nome);
@@ -433,7 +433,7 @@ class Servico_model extends CI_Model{
 
         if($this->db->insert("Servico"))
         {
-            $id = $this->db->insert_id();
+            $rst->id = $id = $this->db->insert_id();
 
             $this->set_img($id);
 
@@ -717,6 +717,90 @@ class Servico_model extends CI_Model{
         }
 
         return false;
+    }
+
+    public function editar_servico()
+    {
+        $rst = (object)array("rst" => false, "msg" => "", "id" => 0);
+        $data = (object)$this->input->post();
+
+        $this->db->set("nome", $data->nome);
+        $this->db->set("descricao_curta", $data->descricao_curta);
+        $this->db->set("descricao", $data->descricao_completa);
+        $this->db->set("data_atualizacao", date("Y-m-d H:i:s"));
+        $this->db->set("id_tipo_servico", $data->tipo_servico);
+        $this->db->set("id_categoria", $data->categoria_especifica);
+        $this->db->set("estado", $data->estado);
+        $this->db->set("cidade", $data->cidade);
+        if(isset($data->local) && $data->local)
+            $this->db->set("endereco", $data->endereco);
+        else
+            $this->db->set("endereco", "");
+
+        if($data->valor)
+        {
+            $valor_T = explode(" ", $data->valor);
+            $valor_V = explode(".", $valor_T[1]);
+            $valor = str_replace(",", ".", $valor_V[0]);
+            $this->db->set("valor", $valor.",".$valor_V[1]);
+        }
+        else
+        {
+            $this->db->set("valor", "");
+        }
+
+        if($data->tipo_servico == 2)
+        {
+            $this->db->set("quantidade_disponivel", $data->quantidade);
+            if($data->caucao)
+            {
+                $valor_T = explode(" ", $data->caucao);
+                $valor_V = explode(".", $valor_T[1]);
+                $valor = str_replace(",", ".", $valor_V[0]);
+                $this->db->set("caucao", $valor.",".$valor_V[1]);
+            }
+        }
+        else
+        {
+            $this->db->set("quantidade_disponivel", 0);
+            $this->db->set("caucao", "");
+        }
+
+        $this->db->where("id", $data->id_servico);
+        if($this->db->update("Servico"))
+        {
+            $rst->id = $id = $data->id_servico;
+
+            if($data->lista_tipo_pagamento)
+            {
+                $this->db->where("id_servico", $id);
+                if($this->db->delete("PagamentoServico"))
+                {
+                    $this->set_pagamento($id);
+                }
+            }
+
+            if($data->lista_tipo_horario)
+            {
+                $this->db->where("id_servico", $id);
+                if($this->db->delete("HorarioServico"))
+                {
+                    $this->set_horario($id);
+                }
+            }
+
+            $rst->rst = true;
+            $rst->msg = "Serviço editado com sucesso!";
+        }
+
+        return $rst;
+    }
+
+    public function get_imagens($id)
+    {
+        $query = $this->db->get_where("Imagens", "id_servico = '$id' AND ativo = '1'")->result();
+
+        return $query;
     }
 
     /**

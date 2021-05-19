@@ -118,18 +118,25 @@ class Servico extends CI_Controller{
         $this->data["estados"] = $this->m_servico->get_estados();
         $this->data["cidade"] = $this->m_servico->get_cidades($this->data["info"]->estado->id);
 
-        // echo '<pre>';
-        // print_r($this->data["info"]);
-        // echo '</pre>';
-        // exit;
-
-
-        $this->data["breadcrumb"] = (object)array("titulo" => "Editar Informações Serviço", "before" => array((object)array("nome" => "Home", "link" => "Servico")), "current" => "Editar Informações Serviço");
+        $this->data["breadcrumb"] = (object)array("titulo" => "Editar Informações do Serviço", "before" => array((object)array("nome" => "Home", "link" => "Servico")), "current" => "Editar Informações do Serviço");
         $this->data["javascript"] = [
             base_url("assets/js/produto/edita.js")
         ];
 
         $this->data["content"] = $this->load->view("produto/edita", $this->data, true);
+        $this->load->view("template/content", $this->data);
+    }
+
+    public function editar_imagens($id)
+    {
+        $this->data["imagem"] = $this->m_servico->get_imagens($id);
+
+        $this->data["breadcrumb"] = (object)array("titulo" => "Editar Imagens do Serviço", "before" => array((object)array("nome" => "Home", "link" => "Servico")), "current" => "Editar Imagens do Serviço");
+        $this->data["javascript"] = [
+            base_url("assets/js/produto/edita_imagem.js")
+        ];
+
+        $this->data["content"] = $this->load->view("produto/edita_imagem", $this->data, true);
         $this->load->view("template/content", $this->data);
     }
 
@@ -227,6 +234,12 @@ class Servico extends CI_Controller{
         $this->session->set_userdata(array("cidade" => (object)array("id_estado" => $id_estado, "id_cidade" => $id_cidade)));
 
         echo json_encode(true, JSON_UNESCAPED_UNICODE);
+    }
+
+    public function editar_servico()
+    {
+        $rst = $this->m_servico->editar_servico();
+        echo json_encode($rst, JSON_UNESCAPED_UNICODE);
     }
 
     public function set_files()
