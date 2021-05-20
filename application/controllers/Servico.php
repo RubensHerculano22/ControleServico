@@ -8,7 +8,8 @@ class Servico extends CI_Controller{
     {
         parent:: __construct();
         $this->data = array();
-     
+        
+        cria_pasta();
         // $this->m_sistema->inseri_servico();
 
         $this->dados = $this->session->userdata("dados" . APPNAME);
@@ -129,12 +130,18 @@ class Servico extends CI_Controller{
 
     public function editar_imagens($id)
     {
+        $this->data["id"] = $id;
         $this->data["imagem"] = $this->m_servico->get_imagens($id);
 
         $this->data["breadcrumb"] = (object)array("titulo" => "Editar Imagens do Serviço", "before" => array((object)array("nome" => "Home", "link" => "Servico")), "current" => "Editar Imagens do Serviço");
         $this->data["javascript"] = [
             base_url("assets/js/produto/edita_imagem.js")
         ];
+
+        // echo '<pre>';
+        // print_r($this->data["imagem"]);
+        // echo '</pre>';
+        // exit;
 
         $this->data["content"] = $this->load->view("produto/edita_imagem", $this->data, true);
         $this->load->view("template/content", $this->data);
@@ -242,6 +249,19 @@ class Servico extends CI_Controller{
         echo json_encode($rst, JSON_UNESCAPED_UNICODE);
     }
 
+    public function insere_imagem()
+    {
+        $this->set_files();
+        $rst = $this->m_servico->insere_imagem();
+        echo json_encode($rst, JSON_UNESCAPED_UNICODE);
+    }
+
+    public function trocaPrincipal()
+    {
+        $rst = $this->m_servico->trocaPrincipal();
+        echo json_encode($rst, JSON_UNESCAPED_UNICODE);
+    }
+
     public function set_files()
     {
 
@@ -265,6 +285,7 @@ class Servico extends CI_Controller{
 
         $files[] = $arquivo;
         $this->session->set_userdata(array("files". APPNAME => $files));
+        unset($_FILES["file"]);
     }
 
 }

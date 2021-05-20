@@ -179,5 +179,13 @@ function limpa_uploads ()
     }
 }
 
+function cria_pasta()
+{
+    if(!is_dir("./assets/uploads/"))
+    {
+        mkdir("./assets/uploads/", 0777, true);
+    }
+}
+
 /* End of file formatacao_helper.php */
 /* Location: ./application/helpers/formatacao_helper.php */

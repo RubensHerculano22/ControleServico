@@ -119,7 +119,7 @@
                                             </div>
                                         </div>
                                         <div class="col-md-8 col-sm-8 col-xs-12 d-none" id="endereco_input">
-                                            <label for="endereco">Endereço</label>
+                                            <label for="endereco">Endereço (Colocar um validador de endereço)</label>
                                             <input type="text" class="form-control" name="endereco" id="endereco" placeholder="Endereço"/>
                                         </div>
                                     </div>

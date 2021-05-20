@@ -803,6 +803,101 @@ class Servico_model extends CI_Model{
         return $query;
     }
 
+    public function insere_imagem()
+    {
+        $rst = (object)array("rst" => false, "msg" => "");
+        $data = (object)$this->input->post();
+        
+        $files = $this->session->userdata("files".APPNAME);
+
+        $this->session->set_userdata("files".APPNAME, "");
+
+        if($data->id_imagem)
+        {
+            $this->db->set("nome", $files[0]["name"]);
+            $this->db->set("tipo_imagem", $files[0]["type"]);
+            $this->db->set("data_insercao", date("Y-m-d H:i:s"));
+            $this->db->set("img", base64_encode(file_get_contents($files[0]["path"])));
+
+            $this->db->where("id", $data->id_imagem);
+            if($this->db->update("Imagens"))
+            {
+                $rst->rst = true;
+                $rst->msg = "Imagem alterada com sucesso";
+            }
+            else
+            {
+                $rst->msg = "Erro ao alterar a imagem";
+            }
+        }
+        else
+        {
+            if(isset($data->principal) && !empty($data->principal))
+            {
+                $this->db->set("principal", 0);
+    
+                $this->db->where("id_servico", $data->id_servico);
+                $this->db->update("Imagens");
+    
+                $this->db->set("principal", 1);
+            }
+            else
+            {
+                $this->db->set("principal", 0);
+            }
+    
+            $this->db->set("ativo", 1);
+            $this->db->set("id_servico", $data->id_servico);
+            $this->db->set("nome", $files[0]["name"]);
+            $this->db->set("tipo_imagem", $files[0]["type"]);
+            $this->db->set("data_insercao", date("Y-m-d H:i:s"));
+            $this->db->set("img", base64_encode(file_get_contents($files[0]["path"])));
+    
+            if($this->db->insert("Imagens"))
+            {
+                $rst->rst = true;
+                $rst->msg = "Imagem inserida com sucesso";
+            }
+            else
+            {
+                $rst->msg = "Erro ao inserir a imagem";
+            }
+        }
+
+        return $rst;
+    }
+
+    public function trocaPrincipal()
+    {
+        $rst = (object)array("rst" => false, "msg" => "");
+        $data = (object)$this->input->post();
+
+        $this->db->set("principal", 0);
+
+        $this->db->where("id_servico", $data->id_servico);
+        if($this->db->update("Imagens"))
+        {
+            $this->db->set("principal", 1);
+
+            $this->db->where("id", $data->id_imagem);
+            if($this->db->update("Imagens"))
+            {
+                $rst->rst = true;
+                $rst->msg = "Imagem definida como principal";
+            }
+            else
+            {
+                $rst->msg = "Erro ao definir como principal";
+            }
+        }
+        else
+        {
+            $rst->msg = "Erro ao definir como principal";
+        }
+
+        return $rst;
+    }
+
     /**
      * Realiza a verificação no texto, para maior segurança.
      * @access private

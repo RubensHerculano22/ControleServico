@@ -115,9 +115,11 @@
       <div class="modal-body">
         <div class="row">
           <div class="col-md-12 col-sm-12 col-xs-12">
-            <div class="alert alert-warning alert-dismissible">
-              Por favor, selecione uma cidade para filtrar os serviços no sistema.
-            </div>
+            <?php if(empty($cidade)): ?>
+              <div class="alert alert-warning alert-dismissible">
+                Por favor, selecione uma cidade para filtrar os serviços no sistema.
+              </div>
+            <?php endif; ?>
           </div>
           <div class="col-md-12 col-sm-12 col-xs-12">
             <div class="form-group">

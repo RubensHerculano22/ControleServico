@@ -7,6 +7,8 @@ class Usuario extends CI_Controller{
     {
         parent:: __construct();
         $this->data = array();
+        
+        cria_pasta();
 
         $this->dados = $this->session->userdata("dados" . APPNAME);
         $this->data["dados"] = $this->dados;
