@@ -59,7 +59,7 @@ $autoload['packages'] = array();
 |	$autoload['libraries'] = array('user_agent' => 'ua');
 */
 //Aqui vc pode colocar para carregar todos os tipos de biblioteca que você quiser. Toda biblioteca que você queira que esteja automaticamente carrego é so colocar aqui.
-$autoload['libraries'] = array('session', 'database');
+$autoload['libraries'] = array('session', 'database', "sistema");
 
 /*
 | -------------------------------------------------------------------

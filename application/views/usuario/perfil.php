@@ -72,7 +72,8 @@
                                 <div class="col-md-12 col-sm-12 col-xs-12">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1">Enredeço</label>
-                                        <input type="text" class="form-control" value="<?= $info->endereco.", ".$info->numero.", ".$info->bairro.", ".$info->cidade." - ".$info->estado->nome ?>" id="endereco" readonly>
+                                        <!-- <input type="text" class="form-control" value="<?= $info->endereco.", ".$info->numero.", ".$info->bairro.", ".$info->cidade." - ".$info->estado->nome ?>" id="endereco" readonly> -->
+                                        <input type="text" class="form-control" value="Corrigir aqui" id="endereco" readonly>
                                     </div>
                                 </div>
                                 <div class="col-md-12 col-sm-12 col-xs-12 bloc_eye">

@@ -32,8 +32,12 @@ class Usuario extends CI_Controller{
         $titulo = $id != null ? "Atualizando dados de cadastro" : "Formulário de Cadastro";
         $this->data["breadcrumb"] = (object)array("titulo" => $titulo, "before" => array((object)array("nome" => "Home", "link" => "Home")), "current" => $titulo);
 
-        $this->data["estados"] = get_estados();
         $this->data["usuario"] = $this->m_usuario->info_usuario($id);
+
+        // echo '<pre>';
+        // print_r($this->data["usuario"]);
+        // echo '</pre>';
+        // exit;
 
         $this->data["javascript"] = [
             base_url("assets/js/usuario/form.js")

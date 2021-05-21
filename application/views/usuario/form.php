@@ -32,7 +32,7 @@
                             <div class="col-md-3 col-sm-3 col-xs-12">
                                 <div class="form-group">
                                     <label for="data_nascimento">Data de Nascimento</label><small class="text-danger"> *</small>
-                                    <input type="text" class="form-control" name="data_nascimento" id="data_nascimento" value="<?= set_value('data_nascimento', formatar(@$usuario->data_nascimento, "bd2dt")); ?>" placeholder="Exemplo: 01/01/2004" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask required>
+                                    <input type="text" class="form-control" name="data_nascimento" id="data_nascimento" value="<?= set_value('data_nascimento', @$usuario->data_nascimento); ?>" placeholder="Exemplo: 01/01/2004" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask required>
                                 </div>
                             </div>
                             <div class="col-md-3 col-sm-3 col-xs-12">
@@ -47,38 +47,52 @@
                                     <input type="text" class="form-control" name="celular" id="celular" value="<?= set_value('celular', @$usuario->celular); ?>" placeholder="Exemplo: (11) 11111-1111">
                                 </div>
                             </div>
-                            <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="col-md-3 col-sm-3 col-xs-12">
                                 <div class="form-group">
-                                    <label for="endereco">Endereço</label><small class="text-danger"> *</small>
-                                    <input type="text" class="form-control" name="endereco" id="endereco" value="<?= set_value('endereco', @$usuario->endereco); ?>" placeholder="Endereço" required>
+                                    <label for="endereco">CEP</label><small class="text-danger"> *</small>
+                                    <input type="text" class="form-control" name="cep" id="cep" value="<?= set_value('cep', @$usuario->cep); ?>" placeholder="CEP" required>
                                 </div>
                             </div>
-                            <div class="col-md-3 col-sm-3 col-xs-12">
+                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                <div class="bloc_pesquisa">
+                                    <br/>
+                                    <button type="button" id="pesquisar_cep" class="btn btn-info mt-2"><i class="fas fa-search-location"></i> Pesquisar</button>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <div class="form-group">
+                                    <label for="estado">Estado</label>
+                                    <input type="text" class="form-control" name="estado" id="estado" value="<?= set_value('estado', @$usuario->estado); ?>" placeholder="Estado" readonly>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <div class="form-group">
+                                    <label for="cidade">Cidade</label>
+                                    <input type="text" class="form-control" name="cidade" id="cidade" value="<?= set_value('cidade', @$usuario->cidade); ?>" placeholder="Cidade" readonly>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <div class="form-group">
+                                    <label for="bairro">Bairro</label>
+                                    <input type="text" class="form-control" name="bairro" id="bairro" value="<?= set_value('bairro', @$usuario->bairro); ?>" placeholder="Bairro" readonly>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <div class="form-group">
+                                    <label for="endereco">Endereço</label>
+                                    <input type="text" class="form-control" name="endereco" id="endereco" value="<?= set_value('endereco', @$usuario->endereco); ?>" placeholder="Endereço" readonly>
+                                </div>
+                            </div>
+                            <div class="col-md-2 col-sm-2 col-xs-12">
                                 <div class="form-group">
                                     <label for="numero">Numero</label><small class="text-danger"> *</small>
-                                    <input type="text" class="form-control" name="numero" id="numero" value="<?= set_value('numero', @$usuario->numero); ?>" placeholder="Numero" required>
+                                    <input type="number" class="form-control" name="numero" id="numero" value="<?= set_value('numero', @$usuario->numero); ?>" placeholder="Numero">
                                 </div>
                             </div>
-                            <div class="col-md-3 col-sm-3 col-xs-12">
+                            <div class="col-md-4 col-sm-4 col-xs-12">
                                 <div class="form-group">
-                                    <label for="bairro">Bairro</label><small class="text-danger"> *</small>
-                                    <input type="text" class="form-control" name="bairro" id="bairro" value="<?= set_value('bairro', @$usuario->bairro); ?>" placeholder="Bairro" required>
-                                </div>
-                            </div>
-                            <div class="col-md-3 col-sm-3 col-xs-12">
-                                <div class="form-group">
-                                    <label for="cidade">Cidade</label><small class="text-danger"> *</small>
-                                    <input type="text" class="form-control" name="cidade" id="cidade" value="<?= set_value('cidade', @$usuario->cidade); ?>" placeholder="Cidade" required>
-                                </div>
-                            </div>
-                            <div class="col-md-3 col-sm-3 col-xs-12">
-                                <div class="form-group">
-                                    <label for="estado">Estado</label><small class="text-danger"> *</small>
-                                    <select class="form-control" style="height: 100%" name="estado" id="estado" required>
-                                        <?php foreach($estados as $item): ?>
-                                            <option value="<?= $item->id ?>" <?= set_select('estado', $item->id, $item->id == @$usuario->estado ? true : false); ?>><?= $item->nome. " - ".$item->sigla ?></option>
-                                        <?php endforeach; ?>
-                                    </select>
+                                    <label for="complemento">Complemento</label><small class="text-danger"> *</small>
+                                    <input type="text" class="form-control" name="complemento" id="complemento" value="<?= set_value('complemento', @$usuario->complemento); ?>" placeholder="Complemento">
                                 </div>
                             </div>
                             <div class="col-md-12 col-sm-12 col-xs-12">

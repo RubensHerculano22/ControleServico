@@ -16,12 +16,40 @@ $(document).ready(function(){
         mask: ['(99) 99999-9999'],
         keepStatic: true
     });
-    $('#numero').inputmask({
-        mask: ['[9][9][9]9'],
+    $('#cep').inputmask({
+        mask: ['99999-999'],
         keepStatic: true
     });
     $('[data-mask]').inputmask();
 
+    $("#pesquisar_cep").on("click", function(e){
+        e.preventDefault();
+        
+        var cep = $("#cep").val();
+        if(cep.length > 8)
+        {
+                $(".bloc_pesquisa").replaceWith('<div class="bloc_pesquisa"><br/><button type="button" class="btn btn-info mt-2"><span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>&nbsp;Carregando</button></div>');
+                setTimeout(() => {        
+                    
+                    cep_tratado = cep.split("").filter(n => (Number(n) || n == 0)).join("");
+
+                    var data = {"cep": cep_tratado};
+                    $.post(BASE_URL+"Servico/get_cep", data, function(data) {
+                        $("#endereco").val(data.logradouro)
+                        $("#bairro").val(data.bairro)
+                        $("#cidade").val(data.localidade)
+                        $("#estado").val(data.estado.nome)
+
+                        $(".bloc_pesquisa").replaceWith('<div class="bloc_pesquisa"><br/><button type="button" id="pesquisar_cep" class="btn btn-info mt-2"><i class="fas fa-search-location"></i> Pesquisar</button></div>');
+                    }, "json");
+
+                }, 5000);
+        }
+        else
+        {
+            showNotification("error", "Erro no campo CEP", "Valores invalidos foram cadastrados no campo CEP.", "toast-top-center");
+        }
+    })
 
     $("#submit").submit(function(e){
         e.preventDefault();

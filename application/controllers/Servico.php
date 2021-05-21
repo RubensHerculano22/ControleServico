@@ -147,6 +147,17 @@ class Servico extends CI_Controller{
         $this->load->view("template/content", $this->data);
     }
 
+    public function get_cep()
+    {
+        $rst = $this->sistema->get_cep();
+        if($rst)
+        {
+            $rst->estado = $this->m_servico->get_estado_sigla($rst->uf);
+        }
+
+        echo json_encode($rst, JSON_UNESCAPED_UNICODE);
+    }
+
     public function cadastrar_pergunta()
     {
         $rst = $this->m_servico->cadastrar_pergunta();
@@ -256,9 +267,21 @@ class Servico extends CI_Controller{
         echo json_encode($rst, JSON_UNESCAPED_UNICODE);
     }
 
-    public function trocaPrincipal()
+    public function troca_principal()
     {
-        $rst = $this->m_servico->trocaPrincipal();
+        $rst = $this->m_servico->troca_principal();
+        echo json_encode($rst, JSON_UNESCAPED_UNICODE);
+    }
+
+    public function troca_ativo()
+    {
+        $rst = $this->m_servico->troca_ativo();
+        echo json_encode($rst, JSON_UNESCAPED_UNICODE);
+    }
+
+    public function exclui_imagem()
+    {
+        $rst = $this->m_servico->exclui_imagem();
         echo json_encode($rst, JSON_UNESCAPED_UNICODE);
     }
 

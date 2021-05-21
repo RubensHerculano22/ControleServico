@@ -1,6 +1,138 @@
 
 $(document).ready(function(){
 
+    $("input[data-bootstrap-switch]").bootstrapSwitch();
+
+    $('input[name="principal_switch"]').on('switchChange.bootstrapSwitch', function (event, state) {
+        var data = {"ativo": state, "id_imagem": $(this).data("imagem"), "id_servico": $("#id_servico").val()};
+
+        Swal.fire({
+            title: 'Aviso',
+            text: "Deseja realmente definir está imagem como principal?",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: `Sim`,
+            cancelButtonText: `Não`,
+            }).then((result) => {
+            if (result.isConfirmed && state == true)
+            {
+                $.post(BASE_URL+"Servico/troca_principal", data, function(data) {
+                    if(data.rst == true)
+                    {
+                        Swal.fire({
+                            title: 'Sucesso',
+                            text: data.msg,
+                            icon: 'success',
+                            confirmButtonText: `Ok`,
+                            }).then((result) => {
+                            if (result.isConfirmed)
+                            {
+                                window.location.reload();
+                            }
+                                
+                        });
+                    }
+                    else
+                    {
+                        Swal.fire({
+                            title: data.msg,
+                            text: "Ocorreu um problema ao definir a imagem como principal.",
+                            icon: 'warning',
+                            confirmButtonText: `Ok`,
+                            }).then((result) => {
+                            if (result.isConfirmed)
+                            {
+                                window.location.reload();
+                            }
+                                
+                        });
+                    }
+                }, "json");
+            }
+            else
+            {
+                if(state == false)
+                {
+                    Swal.fire({
+                        title: 'Não é possivel realizar essa operação',
+                        text: "Caso queira trocar a imagem principal, apenas troque na imagem que seja definir",
+                        icon: 'warning',
+                        confirmButtonText: `Ok`,
+                        }).then((result) => {
+                        if (result.isConfirmed)
+                        {
+                            window.location.reload();
+                        }
+                            
+                    });
+                }
+                else
+                    window.location.reload();
+            }
+                
+        })
+    });
+
+    $('input[name="ativo_switch"]').on('switchChange.bootstrapSwitch', function (event, state) {
+        var data = {"ativo": state, "id_imagem": $(this).data("imagem")};
+
+        var text = "";
+        if(state == true)
+            text = "ativo";
+        else
+            text = "desativado";
+
+        Swal.fire({
+            title: 'Aviso',
+            text: "Deseja realmente definir está imagem como "+text+"?",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: `Sim`,
+            cancelButtonText: `Não`,
+            }).then((result) => {
+            if (result.isConfirmed)
+            {
+                $.post(BASE_URL+"Servico/troca_ativo", data, function(data) {
+                    if(data.rst == true)
+                    {
+                        Swal.fire({
+                            title: 'Sucesso',
+                            text: data.msg,
+                            icon: 'success',
+                            confirmButtonText: `Ok`,
+                            }).then((result) => {
+                            if (result.isConfirmed)
+                            {
+                                window.location.reload();
+                            }
+                                
+                        });
+                    }
+                    else
+                    {
+                        Swal.fire({
+                            title: "Ops...",
+                            text: data.msg,
+                            icon: 'warning',
+                            confirmButtonText: `Ok`,
+                            }).then((result) => {
+                            if (result.isConfirmed)
+                            {
+                                window.location.reload();
+                            }
+                                
+                        });
+                    }
+                }, "json");
+            }
+            else
+            {
+                window.location.reload();
+            }
+                
+        })
+    });
+
     $("#submit").submit(function(e){
         e.preventDefault(); 
         var data = $(this).serialize();
@@ -57,21 +189,21 @@ function editaImagem(id)
     $("#modalImagem").modal("show");
 }
 
-function trocaPrincipal(tipo, id_imagem)
+function removeImagem(id)
 {
-    var data = {"ativo": tipo, "id_imagem":id_imagem, "id_servico": $("#id_servico").val()};
+    var data = {"id_imagem":id};
 
     Swal.fire({
         title: 'Aviso',
-        text: "Deseja realmente definir está imagem como principal?",
-        icon: 'info',
+        text: "Deseja realmente excluir essa imagem permanentemente?",
+        icon: 'question',
         showCancelButton: true,
         confirmButtonText: `Sim`,
         cancelButtonText: `Não`,
         }).then((result) => {
         if (result.isConfirmed)
         {
-            $.post(BASE_URL+"Servico/trocaPrincipal", data, function(data) {
+            $.post(BASE_URL+"Servico/exclui_imagem", data, function(data) {
                 console.log(data)
                 if(data.rst == true)
                 {
@@ -90,7 +222,7 @@ function trocaPrincipal(tipo, id_imagem)
                 }
                 else
                 {
-                    showNotification("error", data.msg, "Ocorreu um problema ao definir a imagem como principal.", "toast-top-center", "15000");
+                    showNotification("error", data.msg, data.subtexto, "toast-top-center", "15000");
                 }
             }, "json");
         }

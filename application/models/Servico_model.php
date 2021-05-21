@@ -367,6 +367,13 @@ class Servico_model extends CI_Model{
         return $query;
     }
 
+    public function get_estado_sigla($sigla)
+    {
+        $query = $this->db->get_where("Estados", "sigla = $sigla")->row();
+
+        return $query;
+    }
+
     public function get_cidades($id)
     {
         $json = file_get_contents(base_url("assets/Cidades.json"));
@@ -798,7 +805,7 @@ class Servico_model extends CI_Model{
 
     public function get_imagens($id)
     {
-        $query = $this->db->get_where("Imagens", "id_servico = '$id' AND ativo = '1'")->result();
+        $query = $this->db->get_where("Imagens", "id_servico = '$id'")->result();
 
         return $query;
     }
@@ -867,7 +874,7 @@ class Servico_model extends CI_Model{
         return $rst;
     }
 
-    public function trocaPrincipal()
+    public function troca_principal()
     {
         $rst = (object)array("rst" => false, "msg" => "");
         $data = (object)$this->input->post();
@@ -893,6 +900,79 @@ class Servico_model extends CI_Model{
         else
         {
             $rst->msg = "Erro ao definir como principal";
+        }
+
+        return $rst;
+    }
+
+    public function troca_ativo()
+    {
+        $rst = (object)array("rst" => false, "msg" => "");
+        $data = (object)$this->input->post();
+
+        if($data->ativo == "true")
+        {
+            $this->db->set("ativo", 1);
+
+            $this->db->where("id", $data->id_imagem);
+            if($this->db->update("Imagens"))
+            {
+                $rst->rst = true;
+                $rst->msg = "Imagem definida como ativa";
+            }
+            else
+            {
+                $rst->msg = "Erro ao definir imagem como ativa";
+            }
+        }
+        else
+        {
+            $query = $this->db->get_where("Imagens", "id = $data->id_imagem")->row();
+
+            if($query->principal == 1)
+            {
+                $rst->msg = "Erro ao definir imagem como desativada, pois a imagem é a principal do serviço";
+            }
+            else
+            {
+                $this->db->set("ativo", 0);
+
+                $this->db->where("id", $data->id_imagem);
+                if($this->db->update("Imagens"))
+                {
+                    $rst->rst = true;
+                    $rst->msg = "Imagem definida como desativada";
+                }
+                else
+                {
+                    $rst->msg = "Erro ao definir imagem como desativada";
+                }
+            }
+        }
+
+        return $rst;
+    }
+
+    public function exclui_imagem()
+    {
+        $rst = (object)array("rst" => false, "msg" => "", "subtexto" => "");
+        $data = (object)$this->input->post();
+
+        $query = $this->db->get_where("Imagens", "id = $data->id_imagem")->row();
+
+        if($query->principal == 1)
+        {
+            $rst->msg = "Está imagem está definida como principal.";
+            $rst->subtexto = "Altere a imagem principal, antes de tentar excluir está imagem";
+        }
+        else
+        {
+            $this->db->where("id", $data->id_imagem);
+            if($this->db->delete("Imagens"))
+            {
+                $rst->rst = true;
+                $rst->msg = "Imagem deletada com sucesso";
+            }
         }
 
         return $rst;

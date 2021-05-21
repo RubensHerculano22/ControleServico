@@ -11,13 +11,13 @@
                             <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modalImagem">Adicionar nova Imagem</button>
                         </div>
                         <?php foreach($imagem as $key => $item): ?>
-                            <div class="col-md-4 col-sm-4 col-xs-12 text-center">
+                            <div class="col-md-4 col-sm-4 col-xs-12 text-center pb-4">
                                 <img src="data:<?= $item->tipo_imagem ?>;base64,<?= $item->img ?>" class="img-thumbnail mb-2" alt="<?= $item->nome ?>" title="<?= $item->nome ?>" style="max-height:180px;"/>
                                 <div class="form-group">
-                                    <div class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
-                                        <input type="checkbox" class="custom-control-input" onclick="trocaPrincipal(<?= $item->principal ?>, <?= $item->id ?>)" id="principal<?= $key ?>" <?= $item->principal == 1 ? "checked" : "" ?>>
-                                        <label class="custom-control-label" for="principal<?= $key ?>">Principal</label>
-                                    </div>
+                                    <input type="checkbox" name="principal_switch" id="principal<?= $key ?>" <?= $item->principal == 1 ? "checked" : "" ?> data-id="<?= $item->principal ?>" data-imagem="<?= $item->id ?>" data-bootstrap-switch data-off-color="danger" data-on-text="Principal" data-on-color="success">
+                                </div>
+                                <div class="form-group">
+                                    <input type="checkbox" name="ativo_switch" id="ativo<?= $key ?>" <?= $item->ativo == 1 ? "checked" : "" ?> data-id="<?= $item->principal ?>" data-imagem="<?= $item->id ?>" data-bootstrap-switch data-off-color="danger" data-on-text="Ativo" data-on-color="success" data-off-text="Desativado">
                                 </div>
                                 <button type="button" class="btn btn-warning" onclick="editaImagem(<?= $item->id ?>)"><i class="fas fa-edit"></i></button>
                                 <button type="button" class="btn btn-danger" onclick="removeImagem(<?= $item->id ?>)"><i class="fas fa-trash-alt"></i></button>

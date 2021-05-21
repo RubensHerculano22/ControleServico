@@ -31,7 +31,8 @@ class Usuario_model extends CI_Model{
 
         if($query)
         {
-            $query->estado = get_estados_id($query->estado);
+            $query->estado = $this->get_estado_id($query->estado);
+            $query->cidade = $this->get_cidade_id($query->cidade);
 
             $query->cpf = formatar($query->cpf, "cpf");
             $query->telefone = formatar($query->telefone, "fone");
@@ -123,11 +124,14 @@ class Usuario_model extends CI_Model{
                 $this->db->set("telefone", somente_numeros($data->telefone));
             if($data->celular)
                 $this->db->set("celular", somente_numeros($data->celular));
+            
+            $this->db->set("cep", $data->cep);
             $this->db->set("endereco", $data->endereco);
             $this->db->set("numero", somente_numeros($data->numero));
             $this->db->set("bairro", $data->bairro);
-            $this->db->set("cidade", $data->cidade);
-            $this->db->set("estado", $data->estado);
+            $this->db->set("estado", $this->get_estado_nome($data->estado));
+            $this->db->set("cidade", $this->get_cidade_nome($data->cidade));
+            $this->db->set("complemento", $data->complemento);
             $this->db->set("email", strtolower($data->email));
             //Verifica se a senha também será alterada.
             if($data->senha)
@@ -331,6 +335,44 @@ class Usuario_model extends CI_Model{
         }
 
         return false;
+    }
+
+    public function get_estado_id($id)
+    {
+        $query = $this->db->get_where("Estados", "id = '$id'")->row();
+
+        return $query->nome;
+    }
+
+    public function get_cidade_id($id)
+    {
+        $json = file_get_contents(base_url("assets/Cidades.json"));
+        $data = json_decode($json);
+
+        foreach($data as $item)
+        {
+            if($item->ID == $id)
+                return $item->Nome;
+        }
+    }
+
+    public function get_estado_nome($nome)
+    {
+        $query = $this->db->get_where("Estados", "nome = '$nome'")->row();
+
+        return $query->id;
+    }
+
+    public function get_cidade_nome($nome)
+    {
+        $json = file_get_contents(base_url("assets/Cidades.json"));
+        $data = json_decode($json);
+
+        foreach($data as $item)
+        {
+            if($item->Nome == $nome)
+                return $item->ID;
+        }
     }
 
 
