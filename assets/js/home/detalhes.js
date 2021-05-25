@@ -6,6 +6,10 @@ $(document).ready(function(){
     });
     $('[data-mask]').inputmask();
 
+    $("#data_servico").on("change", function(){
+        console.log(isValidDate($("#data_servico").val()))
+    })
+
     //Cadastra uma pergunta.
     $("#perguntar").on("click", function(e){
         e.preventDefault();

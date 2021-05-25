@@ -243,7 +243,7 @@ $(document).ready(function(){
                 data:null,
                 title: "Cancelar",
                 render: function(data, x, row){                    
-                    if(row.solicitacao[row.solicitacao.length - 1].status.id != 6)
+                    if(row.solicitacao[row.solicitacao.length - 1].status.id == 1 || row.solicitacao[row.solicitacao.length - 1].status.id == 2)
                         return '<button type="button" class="btn btn-outline-danger" onclick="cancelaServico('+row.id+')"><i class="fas fa-times"></i></button>';
                     else
                         return '<button type="button" class="btn btn-outline-danger disabled"><i class="fas fa-times"></i></button>';
