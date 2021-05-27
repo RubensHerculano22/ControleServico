@@ -92,6 +92,9 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="col-md-12 col-sm-12 col-xs-12">
+                                            <p>Mudar o check para algum tipo de marcador (radio ou switch) para caso a pessoa for um estabelecimento conseguir cadastrar seus endereço, e caso não for conseguir selecionar o estado e cidade.</p>
+                                        </div>
                                         <div class="col-md-3 col-sm-6 col-xs-12">
                                             <div class="form-group">
                                                 <label for="estado">Estado(Usar a cidade cadastrada na session)</label>

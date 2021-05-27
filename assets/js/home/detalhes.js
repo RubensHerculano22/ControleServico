@@ -10,6 +10,9 @@ $(document).ready(function(){
         console.log(isValidDate($("#data_servico").val()))
     })
 
+    //validador de hora
+    //const validHHMMstring = (str) => /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/.test(str);
+
     //Cadastra uma pergunta.
     $("#perguntar").on("click", function(e){
         e.preventDefault();
