@@ -25,10 +25,26 @@
         </li>
       <?php endforeach; ?> -->
     </ul>
+    <!-- <div class="navbar-search-block">
+      <form class="form-inline">
+        <div class="input-group">
+          <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
+          <div class="input-group-append">
+            <button class="btn btn-navbar" type="submit">
+              <i class="fas fa-search"></i>
+            </button>
+            <button class="btn btn-navbar" type="button" data-widget="navbar-search">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+        </div>
+      </form>
+    </div> -->
+
       <div class="input-group input-group-sm ml-auto" style="width: 50%">
-        <input class="form-control form-control-navbar" type="search" placeholder="Procurar ..." aria-label="Search">
+        <input class="form-control form-control-navbar" type="search" placeholder="Procure por um Serviço, equipamento..." aria-label="Search" id="input_search_bar">
         <div class="input-group-append">
-          <button class="btn btn-navbar" type="submit">
+          <button class="btn btn-navbar" type="submit" id="button_search_bar">
             <i class="fas fa-search"></i>
           </button>
         </div>
@@ -103,7 +119,7 @@
     </ul>
 </nav>
 
-<div class="modal fade" id="modalLocalizacao" style="display: none;" aria-hidden="true">
+<div class="modal fade" id="modalLocalizacao" <?= empty($cidade) ? 'data-backdrop="static"' : '' ?> style="display: none;" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">

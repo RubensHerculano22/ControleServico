@@ -138,12 +138,22 @@ class Servico extends CI_Controller{
             base_url("assets/js/produto/edita_imagem.js")
         ];
 
-        // echo '<pre>';
-        // print_r($this->data["imagem"]);
-        // echo '</pre>';
-        // exit;
-
         $this->data["content"] = $this->load->view("produto/edita_imagem", $this->data, true);
+        $this->load->view("template/content", $this->data);
+    }
+
+    public function pesquisa($pesquisa)
+    {
+        $this->data["pesquisa"] = urldecode($pesquisa);
+
+        $this->data["cards"] = $this->m_servico->pesquisa_servico($pesquisa);
+
+        $this->data["breadcrumb"] = (object)array("titulo" => "Pesquisa Personalizada", "before" => array((object)array("nome" => "Home", "link" => "Servico")), "current" => "Pesquisa Personalizada");
+        $this->data["javascript"] = [
+            base_url("assets/js/pesquisa/pesquisa.js")
+        ];
+
+        $this->data["content"] = $this->load->view("pesquisa/pesquisa", $this->data, true);
         $this->load->view("template/content", $this->data);
     }
 

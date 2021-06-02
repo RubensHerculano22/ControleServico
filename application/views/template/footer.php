@@ -72,50 +72,17 @@
             theme: 'bootstrap4'
         });
 
+        $("#button_search_bar").on("click", function(e){
+            e.preventDefault();
+            var pesquisa = $("#input_search_bar").val();
+            window.location.href = BASE_URL+"Servico/pesquisa/"+pesquisa;
+        })
+
         var modal_aberto = "<?= (!empty($cidade) ? 1 : 0) ?>";
         if(modal_aberto == 0)
         {
             $("#modalLocalizacao").modal("show");
         }
-        else
-        {
-
-        }
-
-        $("#search_bar").select2({
-            escapeMarkup: function (markup) { return markup; },
-            minimumInputLegth: 10,
-            maximumInputLength: 20,
-
-            templateResult: formatRepo,
-            templateSelection: formatRepoSelection,
-            language: "pt-BR",
-            width: "100%",
-            tags: false,
-            allowClear: true,
-            placeholder: ' Pesquisar... ',
-            ajax: {
-                url: "/search",
-                dataType: 'json',
-                type: "POST",
-                data: function (params) {
-                    var query = {
-                        search: params.term
-                    }
-
-                    return query;
-                },
-                delay: 250,
-                processResults: function (data) {
-
-                    return {
-                        results: data
-                    };
-                },
-                cache: true
-            },
-
-        });
 
         $("#modalLocalizacao").on("show.bs.modal", function(){
             var estado = $("#estado_atual").val();
@@ -299,37 +266,6 @@
         return composedDate.getDate() == d &&
                 composedDate.getMonth() == m &&
                 composedDate.getFullYear() == y;
-    }
-
-    function formatRepo(res) {
-
-        if (res.loading) 
-        {
-            return res.text;
-        }
-        var html = "<div class='select2-result-repository clearfix' >";
-
-        if (isNaN(res.id)) 
-        {
-            html += "<div  class='select2-result-repository__avatar'  ><b>" + res.nome + "</b></div>";
-        }
-        else {
-
-            if (res.arquivo == 1) 
-            {
-                html += "<div class='select2-result-repository__avatar'>Arquivo: <b>" + res.nome + "</b></div><div class='select2-result-repository__meta'><div class='select2-result-repository__title'>" + "Data expiração: " + res.data + "</div></div></div>";
-            }
-            else 
-            {
-                html += "<div class='select2-result-repository__avatar' id " + res.id + ">Pasta :: <b>" + res.nome + "</b></div>";
-            }
-        }
-
-        return html;
-    }
-
-    function formatRepoSelection(res) {
-        return res.nome || res.text;
     }
 
 </script>

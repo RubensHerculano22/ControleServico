@@ -978,6 +978,32 @@ class Servico_model extends CI_Model{
         return $rst;
     }
 
+    public function pesquisa_servico($pesquisa)
+    {
+
+        $this->db->where("nome LIKE '%$pesquisa%'");
+        $query = $this->db->get("Servico")->result();
+
+        foreach($query as $item)
+        {
+            //Consulta os dados do usuario que cadastrou aquele serviço.
+            $this->db->select("nome, sobrenome");
+            $item->usuario = $this->db->get_where("Usuario", "id = '$item->id_usuario'")->row();
+
+            //Consulta os dados de feedback para montar o nivel.
+            $this->db->group_by("id", "desc");
+            $item->feedback = $this->db->get_where("Feedback", "id_servico = '$item->id'")->result();
+
+            //Verifica se está logado para realizar a consulta se o servico está no favoritos do usuario.
+            if(!empty($this->dados))
+                $item->favorito = $this->db->get_where("Favoritos", "id_servico = '$item->id' AND id_usuario = '".$this->dados->usuario_id."'")->row();
+            else
+                $item->favorito = array();
+        }
+
+        return $query;
+    }
+
     /**
      * Realiza a verificação no texto, para maior segurança.
      * @access private

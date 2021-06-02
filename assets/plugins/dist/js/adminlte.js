@@ -1974,8 +1974,8 @@
     maxResults: 7,
     highlightName: true,
     highlightPath: false,
-    highlightClass: 'text-light',
-    notFoundText: 'Serviço não encontrado'
+    highlightClass: 'text-dark',
+    notFoundText: 'Categoria não encontrada'
   };
   var SearchItems = [];
   /**
