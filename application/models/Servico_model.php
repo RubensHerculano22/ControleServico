@@ -984,24 +984,58 @@ class Servico_model extends CI_Model{
         $this->db->where("nome LIKE '%$pesquisa%'");
         $query = $this->db->get("Servico")->result();
 
+        $result = array();
+
         foreach($query as $item)
         {
-            //Consulta os dados do usuario que cadastrou aquele serviço.
-            $this->db->select("nome, sobrenome");
-            $item->usuario = $this->db->get_where("Usuario", "id = '$item->id_usuario'")->row();
+            if(count($result) > 0)
+            {
+                $verif = 0;
+                foreach($result as $value)
+                {
+                    if($value->id == $item->id_categoria)
+                    {
+                        $verif = 1;
+                        $value->itens[] = $item;
+                    }
+                }
 
-            //Consulta os dados de feedback para montar o nivel.
-            $this->db->group_by("id", "desc");
-            $item->feedback = $this->db->get_where("Feedback", "id_servico = '$item->id'")->result();
-
-            //Verifica se está logado para realizar a consulta se o servico está no favoritos do usuario.
-            if(!empty($this->dados))
-                $item->favorito = $this->db->get_where("Favoritos", "id_servico = '$item->id' AND id_usuario = '".$this->dados->usuario_id."'")->row();
+                if($verif == 0)
+                {
+                    $categoria = $this->db->get_where("Categoria", "id = '$item->id_categoria'")->row();
+                    $categoria->itens = array($item);
+                    $result[] = $categoria;    
+                }
+            }
             else
-                $item->favorito = array();
+            {
+                $categoria = $this->db->get_where("Categoria", "id = '$item->id_categoria'")->row();
+                $categoria->itens = array($item);
+                $result[] = $categoria;
+            }
         }
 
-        return $query;
+        foreach($result as $item)
+        {
+            foreach($item->itens as $value)
+            {
+                //Consulta os dados do usuario que cadastrou aquele serviço.
+                $this->db->select("nome, sobrenome");
+                $value->usuario = $this->db->get_where("Usuario", "id = '$value->id_usuario'")->row();
+
+                //Consulta os dados de feedback para montar o nivel.
+                $this->db->group_by("id", "desc");
+                $value->feedback = $this->db->get_where("Feedback", "id_servico = '$value->id'")->result();
+
+                //Verifica se está logado para realizar a consulta se o servico está no favoritos do usuario.
+                if(!empty($this->dados))
+                    $value->favorito = $this->db->get_where("Favoritos", "id_servico = '$value->id' AND id_usuario = '".$this->dados->usuario_id."'")->row();
+                else
+                    $value->favorito = array();
+            }
+        }
+
+        return $result;
     }
 
     /**

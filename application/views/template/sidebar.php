@@ -31,10 +31,50 @@
 
       <!-- Sidebar Menu -->
       <nav class="mt-2">
-        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="true">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
+          <li class="nav-item">
+            <a href="#" class="nav-link" id="cadastra_produto">
+              <i class="nav-icon fas fa-tools text-info"></i>
+              <p>Cadastrar Serviço</p>
+            </a>
+          </li>
+          
           <?php foreach($categorias as $principal): ?>
+            <li class="nav-header"><?= mb_strtoupper ($principal["nome"]) ?></li>
+            <?php if($principal["filho"]): ?>
+              <?php foreach($principal["filho"] as $filho1): ?>
+                <li class="nav-item">
+                  <a href="<?= isset($filho1["filho"]) && $filho1["filho"] ? "#" : base_url("Servico/lista/".$principal["nome"].'/'.$filho1["nome"]) ?>" class="nav-link">
+                    <i class="nav-icon fas fa-circle"></i>
+                    <p>
+                      <?= $filho1["nome"] ?>
+                      <i class="right fas fa-angle-left"></i>
+                    </p>
+                  </a>
+                  <?php if($filho1["filho"]) ?>
+                  <ul class="nav nav-treeview ml-1">
+                    <?php foreach($filho1["filho"] as $filho2): ?>
+                      <li class="nav-item">
+                        <a href="<?= isset($filho2->filho) && $filho2->filho ? "#" : base_url("Servico/lista/".$filho1["nome"].'/'.$filho2->nome) ?>" class="nav-link">
+                          <i class="far fa-circle nav-icon"></i>
+                          <p>
+                            <?= $filho2->nome ?>
+                            <?php if(isset($filho2->filho) && $filho2->filho): ?>
+                            <i class="right fas fa-angle-left"></i>
+                            <?php endif; ?>
+                          </p>
+                        </a>
+                      </li>
+                    <?php endforeach; ?>
+                  </ul>
+                </li>
+              <?php endforeach; ?>
+            <?php endif; ?>
+            </li>
+          <?php endforeach; ?>
+          <!-- <?php foreach($categorias as $principal): ?>
           <li class="nav-item">
             <a href="<?= $principal["filho"] ? "#" : base_url("Servico/lista/".$principal["nome"]) ?>" class="nav-link">
               <i class="nav-icon fas fa-circle"></i>
@@ -78,7 +118,7 @@
                 </ul>
             <?php endif; ?>
           </li>
-          <?php endforeach; ?>
+          <?php endforeach; ?> -->
         </ul>
       </nav>
       <!-- /.sidebar-menu -->
