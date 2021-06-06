@@ -81,11 +81,17 @@
                                         <h3 class="card-title text-white"><?= $item->usuario->nome ?> - <?= $item->nome ?></h3>
                                     </div>
                                     <div class="card-body">
-                                        <i class="fas fa-star" style="color: Gold"></i>
+                                        <?php for($i=0;$i<(intval ($item->feedback));$i++): ?>
+                                            <i class="fas fa-star fa-1x" style="color: Gold"></i>
+                                        <?php endfor; ?>
+                                        <?php if(($item->feedback)%2 != 0): ?>
+                                            <i class="fas fa-star-half-alt fa-1x" style="color: Gold"></i>
+                                        <?php endif; ?>
+                                        <!-- <i class="fas fa-star" style="color: Gold"></i>
                                         <i class="fas fa-star-half-alt" style="color: Gold"></i>
                                         <i class="far fa-star" style="color: Gold"></i>
                                         <i class="far fa-star" style="color: Gold"></i>
-                                        <i class="far fa-star" style="color: Gold"></i> <small class="text-muted">(Media de Avaliação)</small>
+                                        <i class="far fa-star" style="color: Gold"></i> <small class="text-muted">(Media de Avaliação)</small> -->
 
                                         <span id="fav<?= $item->id ?>">
                                             <?php if(!empty($item->favorito) && $item->favorito->ativo == 1): ?>

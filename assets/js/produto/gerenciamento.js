@@ -233,10 +233,14 @@ $(document).ready(function(){
                 title: "Ação",
                 render: function(data, x, row){
                     i++;
-                    if(row.solicitacao[row.solicitacao.length - 1].status.id == 1)
-                        return '<span class="fade">1</span><button type="button" class="btn btn-outline-warning" onclick="abriOrcamento('+i+')"><i class="fas fa-edit"></i></button>';
+                    var realizado = '';
+                    if(row.solicitacao[row.solicitacao.length - 1].status.id == 4)
+                        realizado = '<span class="fade">1</span><button type="button" class="btn btn-outline-success mr-2" title="Definir como realizado" onclick="servicoRealizado('+row.id+')"><i class="fas fa-check-circle"></i></button>';
+
+                    if(row.solicitacao[row.solicitacao.length - 1].status.id == 1 || row.solicitacao[row.solicitacao.length - 1].status.id == 5)
+                        return '<span class="fade">1</span>'+realizado+'<button type="button" class="btn btn-outline-warning" onclick="abriOrcamento('+i+')"><i class="fas fa-edit"></i></button>';
                     else
-                        return '<span class="fade">2</span><button type="button" class="btn btn-outline-info" onclick="abriOrcamento('+i+')"><i class="fas fa-info-circle"></i></button>';
+                        return '<span class="fade">2</span>'+realizado+'<button type="button" class="btn btn-outline-info" onclick="abriOrcamento('+i+')"><i class="fas fa-info-circle"></i></button>';
                 }
             },
             {
@@ -335,6 +339,7 @@ $(document).ready(function(){
     $("#modal_resposta").on("hide.bs.modal", function(e){
         $("#resposta").val("");
     });
+
 });
 
 function abrirResposta(id)
@@ -497,7 +502,7 @@ function abriOrcamento(id)
             html += '<div class="col-md-12 col-sm-12 col-xs-12">'+
                         '<div class="form-group">'+
                             '<label for="nome">Descrição</label>'+
-                            '<textarea class="form-control" rows="3" readonly>'+data[j].descricao+'</textarea>'+
+                            '<textarea class="form-control" rows="3" readonly>'+(data[j].descricao != null ? data[j].descricao : "Sem descrição cadastrada")+'</textarea>'+
                         '</div>'+
                     '</div>';
             
@@ -519,7 +524,7 @@ function abriOrcamento(id)
             var small = "";
 
             if(data[j].descricao != null)
-                descricao = '<textarea class="form-control" rows="2" readonly>'+data[j].descricao+'</textarea>';
+                descricao = '<textarea class="form-control" rows="2" readonly>'+(data[j].descricao != null ? data[j].descricao : "Sem descrição cadastrada")+'</textarea>';
 
             html += '<div class="col-md-12 col-sm-12 col-xs-12">' +
                         '<div class="form-group">' +
@@ -542,6 +547,15 @@ function abriOrcamento(id)
                     '</div>';
 
             $(".orcamentoResposta").addClass("d-none");
+        }
+        else if(data[j].status.id == 7)
+        {
+            html += '<div class="col-md-12 col-sm-12 col-xs-12">'+
+                        '<div class="alert alert-success  alert-dismissible">'+
+                            '<h5><i class="icon fas fa-check"></i> Concluido</h5>'+
+                            'O Serviço foi concluido na data: (colocar data)'+
+                        '</div>'
+                    '</div>';
         }
 
         html += '</div>';
@@ -589,6 +603,45 @@ function cancelaServico(id){
                     else if(data.rst === false)
                     {
                         showNotification("warning", "Erro ao tentar cancelar o serviço", "Tente novamente daqui a alguns minutos", "toast-top-center");
+                    }
+                }
+            });
+        }
+    });
+}
+
+function servicoRealizado(id)
+{
+    Swal.fire({
+        title: 'Aviso',
+        text: "Definir este serviço como realizado?",
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: `Sim`,
+        cancelButtonText: `Não`,
+        }).then((result) => {
+        if (result.isConfirmed)
+        {
+            $.ajax({
+                type: "post",
+                url: BASE_URL+"Servico/servico_realizado/"+id,
+                dataType: "json",
+                success: function(data)
+                {
+                    if(data.rst === true)
+                    {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Sucesso',
+                            text: data.msg
+                        }).then((result) => {
+                            i=0;
+                            tableOrcamento.ajax.reload();
+                        });
+                    }
+                    else if(data.rst === false)
+                    {
+                        showNotification("warning", data.msg, "Tente novamente daqui a alguns minutos", "toast-top-center");
                     }
                 }
             });

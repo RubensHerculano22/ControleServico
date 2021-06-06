@@ -352,75 +352,30 @@
                             <div class="card-body">
                                 <div class="row text-center">
                                     <div class="col-md-4 col-sm-3 col-xs-12 text-right">
-                                        <h1>4.5</h1>
-                                        <i class="fas fa-star fa-1x" style="color: Gold"></i>
-                                        <i class="fas fa-star fa-1x" style="color: Gold"></i>
-                                        <i class="fas fa-star fa-1x" style="color: Gold"></i>
-                                        <i class="fas fa-star fa-1x" style="color: Gold"></i>
-                                        <i class="fas fa-star-half-alt fa-1x" style="color: Gold"></i>
+                                        <h1><?= $info->media_feedback ?></h1>
+                                        <?php for($i=0;$i<intval($info->media_feedback);$i++): ?>
+                                            <i class="fas fa-star fa-1x" style="color: Gold"></i>
+                                        <?php endfor; ?>
+                                        <?php if(($info->media_feedback*2)%2 != 0): ?>
+                                            <i class="fas fa-star-half-alt fa-1x" style="color: Gold"></i>
+                                        <?php endif; ?>
                                     </div>
                                     <div class="col-md-6 col-sm-9 col-xs-12">
                                         <table class="table table-borderless table-sm">
+                                            <?php for($i=5;$i>0;$i--): ?>
                                             <tr>
-                                                <td width="26%">5 Estrelas</td>
+                                                <td width="26%"><?= $i ?> Estrelas</td>
                                                 <td width="70%">
                                                     <div class="progress progress-sm">
-                                                        <div class="progress-bar bg-warning" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 80%">
+                                                        <div class="progress-bar bg-warning" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: <?= ($info->estrelas_feedback[$i]/$info->estrelas_feedback[0])*100 ?>%">
                                                         </div>
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    12
+                                                    <?= $info->estrelas_feedback[$i] ?>
                                                 </td>
                                             </tr>
-                                            <tr>
-                                                <td width="26%">4 Estrelas</td>
-                                                <td width="70%">
-                                                    <div class="progress progress-sm">
-                                                        <div class="progress-bar bg-warning" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 10%">
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    4
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td width="26%">3 Estrelas</td>
-                                                <td width="70%">
-                                                    <div class="progress progress-sm">
-                                                        <div class="progress-bar bg-warning" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 2%">
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    1
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td width="26%">2 Estrelas</td>
-                                                <td width="70%">
-                                                    <div class="progress progress-sm">
-                                                        <div class="progress-bar bg-warning" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    0
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td width="26%">1 Estrelas</td>
-                                                <td width="70%">
-                                                    <div class="progress progress-sm">
-                                                        <div class="progress-bar bg-warning" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    0
-                                                </td>
-                                            </tr>
+                                            <?php endfor; ?>
                                         </table>
                                     </div>
                                 </div>
@@ -437,70 +392,81 @@
                                             <div class="col-lg-10 col-md-9 col-sm-9 col">
                                                 <div class="tab-content" id="vert-tabs-tabContent">
                                                     <div class="tab-pane text-left fade show active" id="vert-tabs-todos" role="tabpanel" aria-labelledby="vert-tabs-todos-tab">
+                                                        <?php foreach($info->feedback as $item): ?>
                                                         <div class="pb-4">
-                                                            <i class="fas fa-star fa-1x" style="color: Gold"></i>
-                                                            <i class="fas fa-star fa-1x" style="color: Gold"></i>
-                                                            <i class="fas fa-star fa-1x" style="color: Gold"></i>
-                                                            <i class="fas fa-star fa-1x" style="color: Gold"></i>
-                                                            <i class="fas fa-star-half-alt fa-1x" style="color: Gold"></i>
-
-                                                            <h6 class="text-bold">Um titulo para o Feedback</h6>
-                                                            <p class="text-justify">Mauris tincidunt mi at erat gravida, eget tristique urna bibendum. Mauris pharetra purus ut ligula tempor, et vulputate metus facilisis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Maecenas sollicitudin, nisi a luctus interdum, nisl ligula placerat mi, quis posuere purus ligula eu lectus. Donec nunc tellus, elementum sit amet ultricies at, posuere nec nunc. Nunc euismod pellentesque diam.</p>
+                                                            <div class="row">
+                                                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                                                    <h6 class="text-bold"><?= $item[1]->titulo ?></h6>
+                                                                </div>
+                                                                <div class="col-md-6 col-sm-6 col-xs-12 text-right">
+                                                                    <h6 ><b><?= $item[0]->nome." ".$item[0]->sobrenome ?></b> -  <?= $item[1]->data_br ?></h6>
+                                                                </div>
+                                                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                                                <?php for($i=0;$i<(intval ($item[1]->quantidade_estrelas/2));$i++): ?>
+                                                                    <i class="fas fa-star fa-1x" style="color: Gold"></i>
+                                                                <?php endfor; ?>
+                                                                <?php if(($item[1]->quantidade_estrelas)%2 != 0): ?>
+                                                                    <i class="fas fa-star-half-alt fa-1x" style="color: Gold"></i>
+                                                                <?php endif; ?>
+                                                                </div>
+                                                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                                                    <p class="text-justify"><?= $item[1]->descricao ?></p>
+                                                                </div>
+                                                            </div>
                                                         </div>
-                                                        <div class="pb-4">
-                                                            <i class="fas fa-star fa-1x" style="color: Gold"></i>
-                                                            <i class="fas fa-star fa-1x" style="color: Gold"></i>
-                                                            <i class="fas fa-star fa-1x" style="color: Gold"></i>
-                                                            <i class="fas fa-star fa-1x" style="color: Gold"></i>
-                                                            <i class="fas fa-star-half-alt fa-1x" style="color: Gold"></i>
-
-                                                            <h6 class="text-bold">Um titulo para o Feedback</h6>
-                                                            <p class="text-justify">Mauris tincidunt mi at erat gravida, eget tristique urna bibendum. Mauris pharetra purus ut ligula tempor, et vulputate metus facilisis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Maecenas sollicitudin, nisi a luctus interdum, nisl ligula placerat mi, quis posuere purus ligula eu lectus. Donec nunc tellus, elementum sit amet ultricies at, posuere nec nunc. Nunc euismod pellentesque diam.</p>
-                                                        </div>
-                                                        <div class="pb-4">
-                                                            <i class="fas fa-star fa-1x" style="color: Gold"></i>
-                                                            <i class="fas fa-star fa-1x" style="color: Gold"></i>
-                                                            <i class="fas fa-star fa-1x" style="color: Gold"></i>
-                                                            <i class="fas fa-star fa-1x" style="color: Gold"></i>
-                                                            <i class="fas fa-star-half-alt fa-1x" style="color: Gold"></i>
-
-                                                            <h6 class="text-bold">Um titulo para o Feedback</h6>
-                                                            <p class="text-justify">Mauris tincidunt mi at erat gravida, eget tristique urna bibendum. Mauris pharetra purus ut ligula tempor, et vulputate metus facilisis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Maecenas sollicitudin, nisi a luctus interdum, nisl ligula placerat mi, quis posuere purus ligula eu lectus. Donec nunc tellus, elementum sit amet ultricies at, posuere nec nunc. Nunc euismod pellentesque diam.</p>
-                                                        </div>
+                                                        <?php endforeach; ?>
                                                     </div>
                                                     <div class="tab-pane fade" id="vert-tabs-positivos" role="tabpanel" aria-labelledby="vert-tabs-positivos-tab">
-                                                        <div class="pb-4">
-                                                            <i class="fas fa-star fa-1x" style="color: Gold"></i>
-                                                            <i class="fas fa-star fa-1x" style="color: Gold"></i>
-                                                            <i class="fas fa-star fa-1x" style="color: Gold"></i>
-                                                            <i class="fas fa-star fa-1x" style="color: Gold"></i>
-                                                            <i class="fas fa-star-half-alt fa-1x" style="color: Gold"></i>
-
-                                                            <h6 class="text-bold">Um titulo para o Feedback</h6>
-                                                            <p class="text-justify">Mauris tincidunt mi at erat gravida, eget tristique urna bibendum. Mauris pharetra purus ut ligula tempor, et vulputate metus facilisis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Maecenas sollicitudin, nisi a luctus interdum, nisl ligula placerat mi, quis posuere purus ligula eu lectus. Donec nunc tellus, elementum sit amet ultricies at, posuere nec nunc. Nunc euismod pellentesque diam.</p>
-                                                        </div>
+                                                        <?php foreach($info->feedback as $item): ?>
+                                                            <?php if($item[1]->quantidade_estrelas >=5 ): ?>
+                                                                <div class="pb-4">
+                                                                    <div class="row">
+                                                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                                                            <h6 class="text-bold"><?= $item[1]->titulo ?></h6>
+                                                                        </div>
+                                                                        <div class="col-md-6 col-sm-6 col-xs-12 text-right">
+                                                                            <h6 ><b><?= $item[0]->nome." ".$item[0]->sobrenome ?></b> -  <?= $item[1]->data_br ?></h6>
+                                                                        </div>
+                                                                        <div class="col-md-12 col-sm-12 col-xs-12">
+                                                                        <?php for($i=0;$i<(intval ($item[1]->quantidade_estrelas/2));$i++): ?>
+                                                                            <i class="fas fa-star fa-1x" style="color: Gold"></i>
+                                                                        <?php endfor; ?>
+                                                                        <?php if(($item[1]->quantidade_estrelas)%2 != 0): ?>
+                                                                            <i class="fas fa-star-half-alt fa-1x" style="color: Gold"></i>
+                                                                        <?php endif; ?>
+                                                                        </div>
+                                                                        <div class="col-md-12 col-sm-12 col-xs-12">
+                                                                            <p class="text-justify"><?= $item[1]->descricao ?></p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            <?php endif; ?>
+                                                        <?php endforeach; ?>
                                                     </div>
                                                     <div class="tab-pane fade" id="vert-tabs-negativos" role="tabpanel" aria-labelledby="vert-tabs-negativos-tab">
-                                                        <div class="pb-4">
-                                                            <i class="fas fa-star fa-1x" style="color: Gold"></i>
-                                                            <i class="fas fa-star fa-1x" style="color: Gold"></i>
-                                                            <i class="fas fa-star fa-1x" style="color: Gold"></i>
-                                                            <i class="fas fa-star fa-1x" style="color: Gold"></i>
-                                                            <i class="fas fa-star-half-alt fa-1x" style="color: Gold"></i>
-
-                                                            <h6 class="text-bold">Um titulo para o Feedback</h6>
-                                                            <p class="text-justify">Mauris tincidunt mi at erat gravida, eget tristique urna bibendum. Mauris pharetra purus ut ligula tempor, et vulputate metus facilisis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Maecenas sollicitudin, nisi a luctus interdum, nisl ligula placerat mi, quis posuere purus ligula eu lectus. Donec nunc tellus, elementum sit amet ultricies at, posuere nec nunc. Nunc euismod pellentesque diam.</p>
-                                                        </div>
-                                                        <div class="pb-4">
-                                                            <i class="fas fa-star fa-1x" style="color: Gold"></i>
-                                                            <i class="fas fa-star fa-1x" style="color: Gold"></i>
-                                                            <i class="fas fa-star fa-1x" style="color: Gold"></i>
-                                                            <i class="fas fa-star fa-1x" style="color: Gold"></i>
-                                                            <i class="fas fa-star-half-alt fa-1x" style="color: Gold"></i>
-
-                                                            <h6 class="text-bold">Um titulo para o Feedback</h6>
-                                                            <p class="text-justify">Mauris tincidunt mi at erat gravida, eget tristique urna bibendum. Mauris pharetra purus ut ligula tempor, et vulputate metus facilisis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Maecenas sollicitudin, nisi a luctus interdum, nisl ligula placerat mi, quis posuere purus ligula eu lectus. Donec nunc tellus, elementum sit amet ultricies at, posuere nec nunc. Nunc euismod pellentesque diam.</p>
-                                                        </div>
+                                                        <?php if($item[1]->quantidade_estrelas < 5 ): ?>
+                                                            <div class="pb-4">
+                                                                <div class="row">
+                                                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                                                        <h6 class="text-bold"><?= $item[1]->titulo ?></h6>
+                                                                    </div>
+                                                                    <div class="col-md-6 col-sm-6 col-xs-12 text-right">
+                                                                        <h6 ><b><?= $item[0]->nome." ".$item[0]->sobrenome ?></b> -  <?= $item[1]->data_br ?></h6>
+                                                                    </div>
+                                                                    <div class="col-md-12 col-sm-12 col-xs-12">
+                                                                    <?php for($i=0;$i<(intval ($item[1]->quantidade_estrelas/2));$i++): ?>
+                                                                        <i class="fas fa-star fa-1x" style="color: Gold"></i>
+                                                                    <?php endfor; ?>
+                                                                    <?php if(($item[1]->quantidade_estrelas)%2 != 0): ?>
+                                                                        <i class="fas fa-star-half-alt fa-1x" style="color: Gold"></i>
+                                                                    <?php endif; ?>
+                                                                    </div>
+                                                                    <div class="col-md-12 col-sm-12 col-xs-12">
+                                                                        <p class="text-justify"><?= $item[1]->descricao ?></p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        <?php endif; ?>
                                                     </div>
                                                 </div>
                                             </div>

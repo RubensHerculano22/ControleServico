@@ -31,12 +31,24 @@ class Feedback extends CI_Controller{
         $this->data["footer"] = $this->load->view("template/footer", $this->data, true);
     }
 
-    public function index()
+    public function index($id)
     {
+        $this->data["id"] = $id;
+        $this->data["servico"] = $this->m_feedback->get_servico_info($id);
+
         $this->data["breadcrumb"] = (object)array("titulo" => "Feedback", "before" => array((object) array("nome" => "Home", "link" => "Servico")), "current" => "Feedback de Serviço");
+        $this->data["javascript"] = [
+            base_url("assets/js/feedback/home.js")
+        ];
 
         $this->data["content"] = $this->load->view("feedback/home", $this->data, true);
         $this->load->view("template/content", $this->data);
+    }
+
+    public function cadastra_feedback()
+    {
+        $rst = $this->m_feedback->cadastra_feedback();
+        echo json_encode($rst, JSON_UNESCAPED_UNICODE);
     }
     
 }

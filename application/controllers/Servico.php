@@ -180,11 +180,6 @@ class Servico extends CI_Controller{
         echo json_encode($rst, JSON_UNESCAPED_UNICODE);
     }
 
-    public function datas_disponiveis($id_servico)
-    {
-        $rst = $this->m_servico->datas_disponiveis($id_servico);
-    }
-
     public function contrata_servico()
     {
         $rst = $this->m_servico->contrata_servico();
@@ -292,6 +287,12 @@ class Servico extends CI_Controller{
     public function exclui_imagem()
     {
         $rst = $this->m_servico->exclui_imagem();
+        echo json_encode($rst, JSON_UNESCAPED_UNICODE);
+    }
+
+    public function servico_realizado($id)
+    {
+        $rst = $this->m_servico->servico_realizado($id);
         echo json_encode($rst, JSON_UNESCAPED_UNICODE);
     }
 

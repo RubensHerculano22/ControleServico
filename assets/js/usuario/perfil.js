@@ -140,7 +140,7 @@ $(document).ready(function(){
                         html += '<div class="col-md-12 col-sm-12 col-xs-12">'+
                                     '<div class="form-group">'+
                                         '<label for="nome">Descrição</label>'+
-                                        '<textarea class="form-control" rows="2" readonly>'+data[i].descricao+'</textarea>'+
+                                        '<textarea class="form-control" rows="2" readonly>'+(data[i].descricao != null ? data[i].descricao : "Sem descrição cadastrada")+'</textarea>'+
                                     '</div>'+
                                 '</div>';
                     }
@@ -163,7 +163,7 @@ $(document).ready(function(){
                             small = "(No aguardo de uma nova resposta do Prestador)";
                         }
                         if(data[i].descricao != null)
-                            descricao = '<textarea class="form-control" rows="2" readonly>'+data[i].descricao+'</textarea>';
+                            descricao = '<textarea class="form-control" rows="2" readonly>'+(data[i].descricao != null ? data[i].descricao : "Sem descrição cadastrada")+'</textarea>';
 
                         html += '<div class="col-md-12 col-sm-12 col-xs-12 mt-4">' +
                                     '<div class="form-group">' +
@@ -184,6 +184,15 @@ $(document).ready(function(){
                                 '</div>';
 
                         $(".orcamentoResposta").addClass("d-none");
+                    }
+                    else if(data[i].status.id == 7)
+                    {
+                        html += '<div class="col-md-12 col-sm-12 col-xs-12">'+
+                                    '<div class="alert alert-success  alert-dismissible">'+
+                                        '<h5><i class="icon fas fa-check"></i> Concluido</h5>'+
+                                        'O Serviço foi concluido na data: (colocar data)'+
+                                    '</div>'
+                                '</div>';
                     }
 
 

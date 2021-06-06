@@ -71,8 +71,8 @@ class Servico_model extends CI_Model{
                 $item->usuario = $this->db->get_where("Usuario", "id = '$item->id_usuario'")->row();
 
                 //Consulta os dados de feedback para montar o nivel.
-                $this->db->group_by("id", "desc");
-                $item->feedback = $this->db->get_where("Feedback", "id_servico = '$item->id'")->result();
+                $item->feedback = $this->media_feedback($item->id);
+                
 
                 //Verifica se está logado para realizar a consulta se o servico está no favoritos do usuario.
                 if(!empty($this->dados))
@@ -168,6 +168,34 @@ class Servico_model extends CI_Model{
             $valor = str_replace(".", ",", $valor_V[0]);
             $query->caucao_D = $valor.".".$valor_V[1];
         }
+
+        $lista_orcamento = $this->db->get_where("Orcamento", "id_servico = $id_servico")->result();
+        // $media_feedback = 0;
+        $lista_feedback = array();
+        foreach($lista_orcamento as $item)
+        {
+            $usuario = $this->db->get_where("Usuario", "id = $item->id_usuario")->row();
+            $feedback = $this->db->get_where("Feedback", "id_orcamento = $item->id")->row();
+            if($feedback != null && $usuario != null)
+            {
+                // $media_feedback += $feedback->quantidade_estrelas;
+                list($data, $hora) = explode(" ", $feedback->data_inclusao);
+                $feedback->data_br = formatar($data, "bd2dt");
+                $lista_feedback[] = array($usuario, $feedback);
+            }
+        }
+
+        $query->media_feedback = $this->media_feedback($id_servico);
+
+        $query->estrelas_feedback = array("0" => 0, "1" => 0, "2" => 0, "3" => 0, "4" => 0, "5" => 0);
+        $query->estrelas_feedback[0] += $query->estrelas_feedback[1] = $this->quantidade_estrelas($id_servico, 2);
+        $query->estrelas_feedback[0] += $query->estrelas_feedback[2] = $this->quantidade_estrelas($id_servico, 4);
+        $query->estrelas_feedback[0] += $query->estrelas_feedback[3] = $this->quantidade_estrelas($id_servico, 6);
+        $query->estrelas_feedback[0] += $query->estrelas_feedback[4] = $this->quantidade_estrelas($id_servico, 8);
+        $query->estrelas_feedback[0] += $query->estrelas_feedback[5] = $this->quantidade_estrelas($id_servico, 10);
+        
+        //Pagina de detalhes
+        $query->feedback = $lista_feedback;
 
         //Verifica se está logado para realizar a consulta se o servico está no favoritos do usuario.
         if(!empty($this->dados))
@@ -634,7 +662,7 @@ class Servico_model extends CI_Model{
         {
             if($data->solicitacao_pedido == 1)
                 $this->db->set("status", 2);
-            elseif($data->solicitacao_pedido == 2)
+            elseif($data->solicitacao_pedido == 0)
                 $this->db->set("status", 3);
 
             $this->db->set("id_orcamento", $data->id_orcamento);
@@ -696,7 +724,7 @@ class Servico_model extends CI_Model{
         $rst->andamento = count($andamento);
 
         $this->db->select("O.id");
-        $this->db->join("ContrataServico C", "O.id = C.id_orcamento AND C.ativo = 1 AND C.status = 1");
+        $this->db->join("ContrataServico C", "O.id = C.id_orcamento AND C.ativo = 1 AND (C.status = 1 OR C.status = 5)");
         $orcamentos = $this->db->get_where("Orcamento O", "O.id_servico = $id")->result();
         $rst->orcamentos = count($orcamentos);
         
@@ -1036,6 +1064,83 @@ class Servico_model extends CI_Model{
         }
 
         return $result;
+    }
+
+    public function servico_realizado($id)
+    {
+        $rst = (object)array("rst" => false, "msg" => "");
+        $dados = $this->session->userdata("dados" . APPNAME);
+        
+        $this->db->set("ativo", 0);
+
+        $this->db->where("id_orcamento", $id);
+        if($this->db->update("ContrataServico"))
+        {
+            $this->db->set("id_orcamento", $id);
+            $this->db->set("status", 7);
+            $this->db->set("id_usuario", $dados->usuario_id);
+            $this->db->set("ativo", 1);
+            $this->db->set("data_alteracao", date("Y-m-d H:i:s"));
+    
+            if($this->db->insert("ContrataServico"))
+            {
+                $rst->rst = true;
+                $rst->msg = "Serviço definido como realizado";
+            }
+            else
+            {
+                $rst->msg = "Erro ao definir serviço como realizado";
+            }
+        }
+        else
+        {
+            $rst->msg = "Erro ao definir serviço como realizado";
+        }
+
+        return $rst;
+    }
+
+    private function media_feedback($id_servico)
+    {
+        $orcamentos = $this->db->get_where("Orcamento", "id_servico = $id_servico")->result();
+
+        $feedback = 0;
+        $count = 0;
+
+        foreach($orcamentos as $item)
+        {
+            $query = $this->db->get_where("Feedback", "id_orcamento = $item->id")->row();
+            if($query)
+            {
+                $feedback += $query->quantidade_estrelas;
+                $count++;
+            }
+        }
+
+        if($count>0)
+            $media = (($feedback)/$count)/2;
+        else
+            $media = 0;
+        
+        return $media;
+    }
+
+    private function quantidade_estrelas($id_servico, $quantidade)
+    {
+        $orcamentos = $this->db->get_where("Orcamento", "id_servico = $id_servico")->result();
+
+        $count = 0;
+
+        foreach($orcamentos as $item)
+        {
+            $query = $this->db->get_where("Feedback", "id_orcamento = $item->id AND (quantidade_estrelas = $quantidade OR quantidade_estrelas = ".($quantidade - 1).")")->row();
+            if($query)
+            {
+                $count++;
+            }
+        }
+        
+        return $count;
     }
 
     /**
