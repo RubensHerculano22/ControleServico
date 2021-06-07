@@ -35,149 +35,45 @@
                 <div class="col-md-12 col-sm-12 co-xs-12">
                     <h3 class="text-title">Com Altas Avaliações</h3>
                 </div> 
-                <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12 pb-4">
-                    <div class="card h-100">
-                        <div class="card-header bg-info">
-                            <h3 class="card-title">Lie - Materiais para festar de crianças</h3>
-                        </div>
-                        <div class="card-body">
-                            <i class="fas fa-star" style="color: Gold"></i>
-                            <i class="fas fa-star-half-alt" style="color: Gold"></i>
-                            <i class="far fa-star" style="color: Gold"></i>
-                            <i class="far fa-star" style="color: Gold"></i>
-                            <i class="far fa-star" style="color: Gold"></i> <small class="text-muted">(Media de Avaliação)</small>
+                <div class="row">
+                    <?php foreach($feedback as $item): ?>
+                        <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-xs-12 pb-4">
+                            <div class="card h-100">
+                                <div class="card-header" style="background-color: #e36802">
+                                    <h3 class="card-title text-white"><?= $item->usuario->nome ?> - <?= $item->nome ?></h3>
+                                </div>
+                                <div class="card-body">
+                                    <?php if($item->feedback): ?>
+                                        <?php for($i=0;$i<(intval ($item->feedback));$i++): ?>
+                                            <i class="fas fa-star fa-1x" style="color: Gold"></i>
+                                        <?php endfor; ?>
+                                        <?php if(($item->feedback)%2 != 0): ?>
+                                            <i class="fas fa-star-half-alt fa-1x" style="color: Gold"></i>
+                                        <?php endif; ?>
+                                    <?php else: ?>
+                                        <small>Sem Classficação de Feedback</small>
+                                    <?php endif; ?>
 
-                            <i class="fas fa-heart float-right favoritos" style="color: Red"></i>
-                            <br/>
-                            <p class="text-justify">Materiais perfeitos para festa de crianças entre 0 a 5 anos, materiais para varios temas.</p>
+                                    <span id="fav<?= $item->id ?>">
+                                        <?php if(!empty($item->favorito) && $item->favorito->ativo == 1): ?>
+                                            <i class="fas fa-heart float-right" onclick="favoritos('<?= $item->id ?>', 'preenchido')" data-tipo="preenchido" style="color: red" id="item<?= $item->id ?>"></i>
+                                        <?php else: ?>
+                                            <i class="far fa-heart float-right" onclick="favoritos('<?= $item->id ?>', 'vazio')" data-tipo="vazio" style="color: grey" id="item<?= $item->id ?>"></i>
+                                        <?php endif; ?>
+                                    </span>
+                                    <br/>
+                                    <p class="text-justify"><?= $item->descricao_curta ?></p>
+                                </div>
+                                <div class="card-footer">
+                                    <h3 class="card-title">Avaliação mais recente</h3>
+                                    <br/>
+                                    <p class="text-justify"><?= $item->ult_feedback ? $item->ult_feedback : "Esse Serviço ainda não possui avaliação" ?></p>
+                                    <!--Nome da pessoa que fez a avaliação - Uma avaliação.-->
+                                    <a href="<?= base_url("Servico/detalhes/$item->nome/$item->id") ?>" class="btn btn-block btn-outline-primary">Ver Mais</a>
+                                </div>
+                            </div>
                         </div>
-                        <div class="card-footer disabled">
-                            <h3 class="card-title">Avaliação mais recente</h3>
-                            <br/>
-                            <p class="text-justify">Esse Serviço ainda não possui avaliação.</p>
-                            <a href="<?= base_url("Servico/detalhes/Materiais para festar de crianças/6") ?>" class="btn btn-block btn-outline-primary">Ver Mais</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12 pb-4">
-                    <div class="card h-100">
-                        <div class="card-header bg-info">
-                            <h3 class="card-title">Rubens - Salão de Festas - Debutante</h3>
-                        </div>
-                        <div class="card-body">
-                            <i class="fas fa-star" style="color: Gold"></i>
-                            <i class="fas fa-star" style="color: Gold"></i>
-                            <i class="fas fa-star" style="color: Gold"></i>
-                            <i class="fas fa-star" style="color: Gold"></i>
-                            <i class="fas fa-star" style="color: Gold"></i>  <small class="text-muted">(Media de Avaliação)</small>
-
-                            <i class="far fa-heart float-right favoritos" style="color: grey"></i>
-                            <br/>
-                            <p class="text-justify">Salão de Festas para as garotas que estão completando seus 15 anos.</p>
-                        </div>
-                        <div class="card-footer">
-                            <h3 class="card-title">Avaliação mais recente</h3>
-                            <br/>
-                            <p class="text-justify">Esse Serviço ainda não possui avaliação.</p>
-                            <a href="<?= base_url("Servico/detalhes/Salão de Festas - Debutante/11") ?>" class="btn btn-block btn-outline-primary">Ver Mais</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12 pb-4">
-                    <div class="card h-100">
-                        <div class="card-header bg-info">
-                            <h3 class="card-title">Rubens - Bartenders Profissional</h3>
-                        </div>
-                        <div class="card-body">
-                            <i class="fas fa-star" style="color: Gold"></i>
-                            <i class="fas fa-star" style="color: Gold"></i>
-                            <i class="fas fa-star-half-alt" style="color: Gold"></i>
-                            <i class="far fa-star" style="color: Gold"></i>
-                            <i class="far fa-star" style="color: Gold"></i> <small class="text-muted">(Media de Avaliação)</small>
-
-                            <i class="far fa-heart float-right favoritos" style="color: grey"></i>
-                            <br/>
-                            <p class="text-justify">Bartenders profissional para festas, eventos, casamentos.</p>
-                        </div>
-                        <div class="card-footer">
-                            <h3 class="card-title">Avaliação mais recente</h3>
-                            <br/>
-                            <p class="text-justify">Esse Serviço ainda não possui avaliação.</p>
-                            <a href="<?= base_url("Servico/detalhes/Bartenders Profissional/4") ?>" class="btn btn-block btn-outline-primary">Ver Mais</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12 pb-4">
-                    <div class="card h-100">
-                        <div class="card-header bg-info">
-                            <h3 class="card-title">Lie - Fotógrafa</h3>
-                        </div>
-                        <div class="card-body">
-                            <i class="fas fa-star" style="color: Gold"></i>
-                            <i class="fas fa-star-half-alt" style="color: Gold"></i>
-                            <i class="far fa-star" style="color: Gold"></i>
-                            <i class="far fa-star" style="color: Gold"></i>
-                            <i class="far fa-star" style="color: Gold"></i> <small class="text-muted">(Media de Avaliação)</small>
-
-                            <i class="fas fa-heart float-right favoritos" style="color: Red"></i>
-                            <br/>
-                            <p class="text-justify">Registre os melhores momentos da sua vida, contrate-nos!.</p>
-                        </div>
-                        <div class="card-footer">
-                            <h3 class="card-title">Avaliação mais recente</h3>
-                            <br/>
-                            <p class="text-justify">Esse Serviço ainda não possui avaliação.</p>
-                            <a href="<?= base_url("Servico/detalhes/Fotógrafa/17") ?>" class="btn btn-block btn-outline-primary">Ver Mais</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12 pb-4">
-                    <div class="card h-100">
-                        <div class="card-header bg-info">
-                            <h3 class="card-title">Lie - Boleira - Bolos de Qualidade</h3>
-                        </div>
-                        <div class="card-body">
-                            <i class="fas fa-star" style="color: Gold"></i>
-                            <i class="fas fa-star" style="color: Gold"></i>
-                            <i class="fas fa-star" style="color: Gold"></i>
-                            <i class="fas fa-star" style="color: Gold"></i>
-                            <i class="fas fa-star" style="color: Gold"></i>  <small class="text-muted">(Media de Avaliação)</small>
-
-                            <i class="fas fa-heart float-right favoritos" style="color: Red"></i>
-                            <br/>
-                            <p class="text-justify">Bolos de diversos sabores e tamanhos, para todos os gostos!.</p>
-                        </div>
-                        <div class="card-footer">
-                            <h3 class="card-title">Avaliação mais recente</h3>
-                            <br/>
-                            <p class="text-justify">Esse Serviço ainda não possui avaliação.</p>
-                            <a href="<?= base_url("Servico/detalhes/Boleira - Bolos de Qualidade/15") ?>" class="btn btn-block btn-outline-primary">Ver Mais</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12 pb-4">
-                    <div class="card h-100">
-                        <div class="card-header bg-info">
-                            <h3 class="card-title">Rubens - Assessor de Eventos - Formaturas</h3>
-                        </div>
-                        <div class="card-body">
-                            <i class="fas fa-star" style="color: Gold"></i>
-                            <i class="fas fa-star" style="color: Gold"></i>
-                            <i class="fas fa-star-half-alt" style="color: Gold"></i>
-                            <i class="far fa-star" style="color: Gold"></i>
-                            <i class="far fa-star" style="color: Gold"></i> <small class="text-muted">(Media de Avaliação)</small>
-
-                            <i class="far fa-heart float-right favoritos" style="color: grey"></i>
-                            <br/>
-                            <p class="text-justify">Equipe dedicada para auxiliar na organização da Formatura dos seus alunos. Contrate-nos!.</p>
-                        </div>
-                        <div class="card-footer">
-                            <h3 class="card-title">Avaliação mais recente</h3>
-                            <br/>
-                            <p class="text-justify">Esse Serviço ainda não possui avaliação.</p>
-                            <a href="<?= base_url("Servico/detalhes/Assessor de Eventos - Formaturas/16") ?>" class="btn btn-block btn-outline-primary">Ver Mais</a>
-                        </div>
-                    </div>
+                    <?php endforeach; ?>
                 </div>
             </div>
         </div>

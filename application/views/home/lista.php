@@ -81,17 +81,16 @@
                                         <h3 class="card-title text-white"><?= $item->usuario->nome ?> - <?= $item->nome ?></h3>
                                     </div>
                                     <div class="card-body">
-                                        <?php for($i=0;$i<(intval ($item->feedback));$i++): ?>
-                                            <i class="fas fa-star fa-1x" style="color: Gold"></i>
-                                        <?php endfor; ?>
-                                        <?php if(($item->feedback)%2 != 0): ?>
-                                            <i class="fas fa-star-half-alt fa-1x" style="color: Gold"></i>
+                                        <?php if($item->feedback): ?>
+                                            <?php for($i=0;$i<(intval ($item->feedback));$i++): ?>
+                                                <i class="fas fa-star fa-1x" style="color: Gold"></i>
+                                            <?php endfor; ?>
+                                            <?php if(($item->feedback)%2 != 0): ?>
+                                                <i class="fas fa-star-half-alt fa-1x" style="color: Gold"></i>
+                                            <?php endif; ?>
+                                        <?php else: ?>
+                                            <small>Sem Classficação de Feedback</small>
                                         <?php endif; ?>
-                                        <!-- <i class="fas fa-star" style="color: Gold"></i>
-                                        <i class="fas fa-star-half-alt" style="color: Gold"></i>
-                                        <i class="far fa-star" style="color: Gold"></i>
-                                        <i class="far fa-star" style="color: Gold"></i>
-                                        <i class="far fa-star" style="color: Gold"></i> <small class="text-muted">(Media de Avaliação)</small> -->
 
                                         <span id="fav<?= $item->id ?>">
                                             <?php if(!empty($item->favorito) && $item->favorito->ativo == 1): ?>
@@ -106,7 +105,7 @@
                                     <div class="card-footer">
                                         <h3 class="card-title">Avaliação mais recente</h3>
                                         <br/>
-                                        <p class="text-justify"><?= $item->feedback ? $item->feedback : "Esse Serviço ainda não possui avaliação" ?></p>
+                                        <p class="text-justify"><?= $item->ult_feedback ? $item->ult_feedback : "Esse Serviço ainda não possui avaliação" ?></p>
                                         <!--Nome da pessoa que fez a avaliação - Uma avaliação.-->
                                         <a href="<?= base_url("Servico/detalhes/$item->nome/$item->id") ?>" class="btn btn-block btn-outline-primary">Ver Mais</a>
                                     </div>
@@ -127,13 +126,15 @@
     </div>
     <div class="row pt-5 pb-5">
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <h4 class="text-title">Sugestões de outras categorias</h4>
             <div class="card">
+                <div class="card-header" style="background-color: #e36802">
+                    <h4 class="card-title text-white">Sugestões de outras categorias</h4>
+                </div>
                 <div class="card-body">
                     <div class="row">
                         <?php foreach($lista_categoria as $item): ?>
                             <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
-                                <a class="nav-link" href="<?= base_url("Servico/lista/$categoria/$item->nome") ?>"><?= $item->nome ?></a>
+                                <a class="nav-link" href="<?= base_url("Servico/lista/$categoria/$item->nome") ?>" ><?= $item->nome ?></a>
                             </div>
                         <?php endforeach; ?>
                     </div>

@@ -9,7 +9,7 @@ class Servico extends CI_Controller{
         parent:: __construct();
         $this->data = array();
         
-        cria_pasta();
+        // cria_pasta();
         // $this->m_sistema->inseri_servico();
 
         $this->dados = $this->session->userdata("dados" . APPNAME);
@@ -38,6 +38,8 @@ class Servico extends CI_Controller{
 
     public function index()
     {
+        $this->data["feedback"] = $this->m_servico->get_ult_feedbacks();
+
         $this->data["content"] = $this->load->view("home/home", $this->data, true);
         $this->load->view("template/content", $this->data);
     }

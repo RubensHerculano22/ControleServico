@@ -46,6 +46,42 @@ class Servico_model extends CI_Model{
         
     }
 
+    /**
+     * Consulta todos os dados para o card.
+     * @access private
+     * @param  object   $servico   Dados da Tabela de Serviço.
+     * @return object;
+    */
+    private function get_card($servico)
+    {
+        //Consulta os dados do usuario que cadastrou aquele serviço.
+        $this->db->select("nome, sobrenome");
+        $servico->usuario = $this->db->get_where("Usuario", "id = '$servico->id_usuario'")->row();
+
+        //Consulta os dados de feedback para montar o nivel.
+        $servico->feedback = $this->media_feedback($servico->id);
+
+        //Consulta do Ultimo feedaback
+        $this->db->select("F.*");
+        $this->db->join("Orcamento O", "O.id_servico = '$servico->id'");
+        $this->db->order_by("data_inclusao", "desc");
+        $query_ult_feedback = $this->db->get_where("Feedback F", "F.id_orcamento = O.id")->row();     
+        if($query_ult_feedback)           
+            $servico->ult_feedback = strlen ($query_ult_feedback->descricao) > 100 ? substr($query_ult_feedback->descricao, 0, 100)." ..." : $query_ult_feedback->descricao;
+        else
+        {
+            $servico->ult_feedback = "";
+        }
+
+        //Verifica se está logado para realizar a consulta se o servico está no favoritos do usuario.
+        if(!empty($this->dados))
+            $servico->favorito = $this->db->get_where("Favoritos", "id_servico = '$servico->id' AND id_usuario = '".$this->dados->usuario_id."'")->row();
+        else
+            $servico->favorito = array();
+
+        return $servico;
+    }
+
     //Faz a função que ele lista apenas a categoria se necessário.
     /**
      * Realiza a consulta de todos os servico que estão naquela subcategoria.
@@ -66,23 +102,36 @@ class Servico_model extends CI_Model{
             $rst = $this->db->get_where("Servico", "ativo = 1 AND id_categoria = '$query->id' AND cidade = '$cidade->id_cidade'")->result();
             foreach($rst as $item)
             {
-                //Consulta os dados do usuario que cadastrou aquele serviço.
-                $this->db->select("nome, sobrenome");
-                $item->usuario = $this->db->get_where("Usuario", "id = '$item->id_usuario'")->row();
-
-                //Consulta os dados de feedback para montar o nivel.
-                $item->feedback = $this->media_feedback($item->id);
-                
-
-                //Verifica se está logado para realizar a consulta se o servico está no favoritos do usuario.
-                if(!empty($this->dados))
-                    $item->favorito = $this->db->get_where("Favoritos", "id_servico = '$item->id' AND id_usuario = '".$this->dados->usuario_id."'")->row();
-                else
-                    $item->favorito = array();
+                $item = $this->get_card($item);
             }
         }
 
         return $rst;
+    }
+
+    public function get_ult_feedbacks()
+    {
+        $query_servico = $this->db->get_where("Servico", "ativo = 1")->result();
+
+        $lista_feedback = array();
+        foreach($query_servico as $item)
+        {
+            $lista_feedback[] = array($this->media_feedback($item->id), $item);
+        }
+
+        arsort($lista_feedback);
+        $lista_feedback = array_values($lista_feedback);        
+
+        $result = array();
+        for($i=0; $i<3;$i++)
+        {
+            $servico = $lista_feedback[$i][1];
+            $servico = $this->db->get_where("Servico", "id = $servico->id")->row();
+
+            $result[] = $this->get_card($servico);
+        }
+
+        return $result;
     }
 
     /**
@@ -193,7 +242,8 @@ class Servico_model extends CI_Model{
         $query->estrelas_feedback[0] += $query->estrelas_feedback[3] = $this->quantidade_estrelas($id_servico, 6);
         $query->estrelas_feedback[0] += $query->estrelas_feedback[4] = $this->quantidade_estrelas($id_servico, 8);
         $query->estrelas_feedback[0] += $query->estrelas_feedback[5] = $this->quantidade_estrelas($id_servico, 10);
-        
+    
+
         //Pagina de detalhes
         $query->feedback = $lista_feedback;
 
@@ -1047,19 +1097,7 @@ class Servico_model extends CI_Model{
         {
             foreach($item->itens as $value)
             {
-                //Consulta os dados do usuario que cadastrou aquele serviço.
-                $this->db->select("nome, sobrenome");
-                $value->usuario = $this->db->get_where("Usuario", "id = '$value->id_usuario'")->row();
-
-                //Consulta os dados de feedback para montar o nivel.
-                $this->db->group_by("id", "desc");
-                $value->feedback = $this->db->get_where("Feedback", "id_servico = '$value->id'")->result();
-
-                //Verifica se está logado para realizar a consulta se o servico está no favoritos do usuario.
-                if(!empty($this->dados))
-                    $value->favorito = $this->db->get_where("Favoritos", "id_servico = '$value->id' AND id_usuario = '".$this->dados->usuario_id."'")->row();
-                else
-                    $value->favorito = array();
+                $value = $this->get_card($value);
             }
         }
 

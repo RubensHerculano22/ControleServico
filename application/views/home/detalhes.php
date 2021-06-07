@@ -38,11 +38,16 @@
                                         <h3 class="my-3"><?= $info->nome ?></h3>
                                         <div class="row">
                                             <div class="col-md-6 col-sm-12 col-xs-12">
-                                                <i class="fas fa-star fa-1x" style="color: Gold"></i>
-                                                <i class="fas fa-star fa-1x" style="color: Gold"></i>
-                                                <i class="fas fa-star fa-1x" style="color: Gold"></i>
-                                                <i class="fas fa-star fa-1x" style="color: Gold"></i>
-                                                <i class="fas fa-star-half-alt fa-1x" style="color: Gold"></i>
+                                            <?php if($info->media_feedback): ?>
+                                                <?php for($i=0;$i<intval($info->media_feedback);$i++): ?>
+                                                    <i class="fas fa-star fa-1x" style="color: Gold"></i>
+                                                <?php endfor; ?>
+                                                <?php if(($info->media_feedback*2)%2 != 0): ?>
+                                                    <i class="fas fa-star-half-alt fa-1x" style="color: Gold"></i>
+                                                <?php endif; ?>
+                                            <?php else: ?>
+                                                <small>Sem Classficação de Feedback</small>
+                                            <?php endif; ?>
                                             </div>
                                             <div class="col-md-6 col-sm-12 col-xs-12 text-right">
                                                 <span id="fav<?= $info->id ?>">
@@ -353,11 +358,15 @@
                                 <div class="row text-center">
                                     <div class="col-md-4 col-sm-3 col-xs-12 text-right">
                                         <h1><?= $info->media_feedback ?></h1>
-                                        <?php for($i=0;$i<intval($info->media_feedback);$i++): ?>
-                                            <i class="fas fa-star fa-1x" style="color: Gold"></i>
-                                        <?php endfor; ?>
-                                        <?php if(($info->media_feedback*2)%2 != 0): ?>
-                                            <i class="fas fa-star-half-alt fa-1x" style="color: Gold"></i>
+                                        <?php if($info->media_feedback): ?>
+                                            <?php for($i=0;$i<intval($info->media_feedback);$i++): ?>
+                                                <i class="fas fa-star fa-1x" style="color: Gold"></i>
+                                            <?php endfor; ?>
+                                            <?php if(($info->media_feedback*2)%2 != 0): ?>
+                                                <i class="fas fa-star-half-alt fa-1x" style="color: Gold"></i>
+                                            <?php endif; ?>
+                                        <?php else: ?>
+                                            <small>Sem Classficação de Feedback</small>
                                         <?php endif; ?>
                                     </div>
                                     <div class="col-md-6 col-sm-9 col-xs-12">
@@ -367,7 +376,11 @@
                                                 <td width="26%"><?= $i ?> Estrelas</td>
                                                 <td width="70%">
                                                     <div class="progress progress-sm">
-                                                        <div class="progress-bar bg-warning" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: <?= ($info->estrelas_feedback[$i]/$info->estrelas_feedback[0])*100 ?>%">
+                                                        <?php if($info->estrelas_feedback[0] > 0): ?>
+                                                            <div class="progress-bar bg-warning" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: <?= ($info->estrelas_feedback[$i]/$info->estrelas_feedback[0])*100 ?>%">
+                                                        <?php else: ?>
+                                                            <div class="progress-bar bg-warning" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+                                                        <?php endif; ?>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -444,29 +457,31 @@
                                                         <?php endforeach; ?>
                                                     </div>
                                                     <div class="tab-pane fade" id="vert-tabs-negativos" role="tabpanel" aria-labelledby="vert-tabs-negativos-tab">
-                                                        <?php if($item[1]->quantidade_estrelas < 5 ): ?>
-                                                            <div class="pb-4">
-                                                                <div class="row">
-                                                                    <div class="col-md-6 col-sm-6 col-xs-12">
-                                                                        <h6 class="text-bold"><?= $item[1]->titulo ?></h6>
-                                                                    </div>
-                                                                    <div class="col-md-6 col-sm-6 col-xs-12 text-right">
-                                                                        <h6 ><b><?= $item[0]->nome." ".$item[0]->sobrenome ?></b> -  <?= $item[1]->data_br ?></h6>
-                                                                    </div>
-                                                                    <div class="col-md-12 col-sm-12 col-xs-12">
-                                                                    <?php for($i=0;$i<(intval ($item[1]->quantidade_estrelas/2));$i++): ?>
-                                                                        <i class="fas fa-star fa-1x" style="color: Gold"></i>
-                                                                    <?php endfor; ?>
-                                                                    <?php if(($item[1]->quantidade_estrelas)%2 != 0): ?>
-                                                                        <i class="fas fa-star-half-alt fa-1x" style="color: Gold"></i>
-                                                                    <?php endif; ?>
-                                                                    </div>
-                                                                    <div class="col-md-12 col-sm-12 col-xs-12">
-                                                                        <p class="text-justify"><?= $item[1]->descricao ?></p>
+                                                        <?php foreach($info->feedback as $item): ?>
+                                                            <?php if($item[1]->quantidade_estrelas < 5 ): ?>
+                                                                <div class="pb-4">
+                                                                    <div class="row">
+                                                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                                                            <h6 class="text-bold"><?= $item[1]->titulo ?></h6>
+                                                                        </div>
+                                                                        <div class="col-md-6 col-sm-6 col-xs-12 text-right">
+                                                                            <h6 ><b><?= $item[0]->nome." ".$item[0]->sobrenome ?></b> -  <?= $item[1]->data_br ?></h6>
+                                                                        </div>
+                                                                        <div class="col-md-12 col-sm-12 col-xs-12">
+                                                                        <?php for($i=0;$i<(intval ($item[1]->quantidade_estrelas/2));$i++): ?>
+                                                                            <i class="fas fa-star fa-1x" style="color: Gold"></i>
+                                                                        <?php endfor; ?>
+                                                                        <?php if(($item[1]->quantidade_estrelas)%2 != 0): ?>
+                                                                            <i class="fas fa-star-half-alt fa-1x" style="color: Gold"></i>
+                                                                        <?php endif; ?>
+                                                                        </div>
+                                                                        <div class="col-md-12 col-sm-12 col-xs-12">
+                                                                            <p class="text-justify"><?= $item[1]->descricao ?></p>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
-                                                            </div>
-                                                        <?php endif; ?>
+                                                            <?php endif; ?>
+                                                        <?php endforeach; ?>
                                                     </div>
                                                 </div>
                                             </div>

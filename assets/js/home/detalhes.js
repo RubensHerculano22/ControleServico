@@ -10,6 +10,37 @@ $(document).ready(function(){
         console.log(isValidDate($("#data_servico").val()))
     })
 
+    var negativos = $("#vert-tabs-negativos");
+    var positivos = $("#vert-tabs-positivos");
+    var todos = $("#vert-tabs-todos");
+    if(negativos[0].children.length <= 0)
+    {
+        html = '<div class="callout callout-warning">'+
+                    '<p>Nenhum feedback negativo cadastrado a este serviço!</p>'+
+                '</div>';
+
+        $(negativos).append(html);
+    }
+
+    if(positivos[0].children.length <= 0)
+    {
+        html = '<div class="callout callout-warning">'+
+                    '<p>Nenhum feedback positivos cadastrado a este serviço!</p>'+
+                '</div>';
+
+        $(positivos).append(html);
+    }
+
+    if(todos[0].children.length <= 0)
+    {
+        html = '<div class="callout callout-warning">'+
+                    '<p>Nenhum feedback cadastrado a este serviço!</p>'+
+                '</div>';
+
+        $(todos).append(html);
+    }
+
+
     //validador de hora
     //const validHHMMstring = (str) => /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/.test(str);
 
