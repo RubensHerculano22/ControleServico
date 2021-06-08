@@ -132,7 +132,7 @@
         <div class="row">
           <div class="col-md-12 col-sm-12 col-xs-12">
             <?php if(empty($cidade)): ?>
-              <div class="alert alert-warning alert-dismissible">
+              <div class="alert alert-dismissible" style="background-color: <?= $colores->color4 ?>">
                 Por favor, selecione uma cidade para filtrar os serviços no sistema.
               </div>
             <?php endif; ?>
@@ -157,8 +157,8 @@
           </div>
         </div>
       </div>
-      <div class="modal-footer justify-content-between">
-        <button type="button" class="btn btn-info" id="troca_cidade">Trocar</button>
+      <div class="modal-footer float-right">
+        <button type="button" class="btn" id="troca_cidade" style="background-color: <?= $colores->color2 ?>"><span style="color: <?= $colores->color5 ?>"><?= empty($cidade) ? "Definir Região" : "Trocar Região" ?></span></button>
       </div>
     </div>
     <!-- /.modal-content -->

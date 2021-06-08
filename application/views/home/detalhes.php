@@ -5,8 +5,8 @@
                 <div class="row">
                     <div class="col-md-12 col-sm-12 col-xs-12">
                         <div class="card">
-                            <div class="card-header" style="background-color: #e36802">
-                                <h3 class="card-title text-white">Informações</h3>
+                            <div class="card-header" style="background-color: <?= $colores->color2 ?>">
+                                <h3 class="card-title" style="color: <?= $colores->color5 ?>">Informações</h3>
                             </div>
                             <div class="card-body">
                                 <div class="row">

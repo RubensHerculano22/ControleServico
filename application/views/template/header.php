@@ -46,21 +46,11 @@
 
   
 
-  <style>
-  /* Pode colocar o css aqui, quando for para todas as paginas, caso seja para uma so eu vou criar depois a função para isso. */
-  
-  .itens-menu:hover .dropdown-menu {
-      display: block;
-      position: absolute;
-      transform: translate3d(5px, 28px, 0px); /* distancia entre menu e btn */
-      top: 0px;
-      left: 0px;
-      will-change: transform; 
-  }
-
-  .itens-menu {
-      display: inline-block; 
-      list-style: none; 
-  }
-
+  <style type="text/css">
+    a.links_categorias:link, a.links_categorias:visited{
+        color: <?= $colores->color3 ?>;
+    }
+    a.links_categorias:hover{
+        color: <?= $colores->color1 ?>;
+    }
   </style>

@@ -58,7 +58,7 @@
                     <?php foreach($filho1["filho"] as $filho2): ?>
                       <li class="nav-item">
                         <a href="<?= isset($filho2->filho) && $filho2->filho ? "#" : base_url("Servico/lista/".$filho1["nome"].'/'.$filho2->nome) ?>" class="nav-link">
-                          <i class="fas fa-chevron-right nav-icon"></i>
+                        <i class="fas fa-angle-double-right nav-icon"></i>
                           <p>
                             <?= $filho2->nome ?>
                             <?php if(isset($filho2->filho) && $filho2->filho): ?>

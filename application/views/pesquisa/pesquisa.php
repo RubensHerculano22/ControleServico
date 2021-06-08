@@ -10,8 +10,8 @@
                     <?php foreach($value->itens as $item): ?>
                         <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-xs-12 pb-4">
                             <div class="card h-100">
-                                <div class="card-header" style="background-color: #e36802">
-                                    <h3 class="card-title text-white"><?= $item->usuario->nome ?> - <?= $item->nome ?></h3>
+                                <div class="card-header" style="background-color: <?= $colores->color2 ?>">
+                                    <h3 class="card-title" style="color: <?= $colores->color5 ?>"><?= $item->usuario->nome ?> - <?= $item->nome ?></h3>
                                 </div>
                                 <div class="card-body">
                                     <?php if($item->feedback): ?>
@@ -40,7 +40,7 @@
                                     <br/>
                                     <p class="text-justify"><?= $item->ult_feedback ? $item->ult_feedback : "Esse Serviço ainda não possui avaliação" ?></p>
                                     <!--Nome da pessoa que fez a avaliação - Uma avaliação.-->
-                                    <a href="<?= base_url("Servico/detalhes/$item->nome/$item->id") ?>" class="btn btn-block btn-outline-primary">Ver Mais</a>
+                                    <a href="<?= base_url("Servico/detalhes/$item->nome/$item->id") ?>" class="btn btn-block btn-outline-secondary">Ver Mais</a>
                                 </div>
                             </div>
                         </div>
