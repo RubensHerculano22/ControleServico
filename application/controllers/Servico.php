@@ -10,7 +10,6 @@ class Servico extends CI_Controller{
         $this->data = array();
         
         // cria_pasta();
-        // $this->m_sistema->inseri_servico();
 
         $this->dados = $this->session->userdata("dados" . APPNAME);
         $this->data["dados"] = $this->dados;
@@ -25,11 +24,11 @@ class Servico extends CI_Controller{
         $this->data["cidade"] = $this->session->userdata("cidade");
 
         $this->data["categorias"] = $this->m_sistema->listar_categorias();
+
         $this->data["estados"] = $this->m_servico->get_estados();
-        // echo '<pre>';
-        // print_r($this->data["cidade"]);
-        // echo '</pre>';
-        // exit;
+
+        $this->data["colores"] = $this->m_sistema->get_colores();
+
         $this->data["header"] = $this->load->view("template/header", $this->data, true);
         $this->data["navbar"] = $this->load->view("template/navbar", $this->data, true);
         $this->data["sidebar"] = $this->load->view("template/sidebar", $this->data, true);

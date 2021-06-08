@@ -42,8 +42,6 @@ class Servico_model extends CI_Model{
 
             $this->db->insert("ControleVisualizacao");   
         }
-
-        
     }
 
     /**
@@ -123,7 +121,7 @@ class Servico_model extends CI_Model{
         $lista_feedback = array_values($lista_feedback);        
 
         $result = array();
-        for($i=0; $i<3;$i++)
+        for($i=0; $i<6;$i++)
         {
             $servico = $lista_feedback[$i][1];
             $servico = $this->db->get_where("Servico", "id = $servico->id")->row();

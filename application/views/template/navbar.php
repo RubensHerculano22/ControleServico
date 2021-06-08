@@ -1,4 +1,4 @@
-<nav class="main-header navbar navbar-expand navbar-light navbar-cyan">
+<nav class="main-header navbar navbar-expand navbar-dark" style="background-color: <?= $colores->color1 ?>">
     <!-- Left navbar links -->
     <ul class="navbar-nav">
       <li class="nav-item">

@@ -18,6 +18,8 @@ class Usuario extends CI_Controller{
         $this->data["categorias"] = $this->m_sistema->listar_categorias();
         $this->data["cidade"] = $this->session->userdata("cidade");
 
+        $this->data["colores"] = $this->m_sistema->get_colores();
+
         $this->load->model("Usuario_model", "m_usuario");
 
         $this->data["header"] = $this->load->view("template/header", $this->data, true);

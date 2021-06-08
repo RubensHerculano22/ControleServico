@@ -30,13 +30,17 @@ class Sistema_model extends CI_Model{
             {
                 $query = $this->db->get_where("Categoria", "id_pai = $value->id")->result();
 
-                $rst2[] = array("id" => $value->id, "nome" => $value->nome, "filho" => $query);
+                $rst2[] = array("id" => $value->id, "nome" => $value->nome, "icon" => $value->icon, "filho" => $query);
             }
 
             $rst[] = array("id" => $item->id, "nome" => $item->nome, "filho" => $rst2);
         }
-
         return $rst;
+    }
+
+    public function get_colores()
+    {
+        return $this->db->get_where("Colores", "id = 1")->row();
     }
 
     public function inseri_servico()
