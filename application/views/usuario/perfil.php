@@ -1,10 +1,10 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-3 col-sm-2 col-xs-12">
-            <div class="card card-info card-outline">
+            <div class="card card-outline card-secondary">
                 <div class="card-body box-profile">
                     <div class="text-center">
-                        <img class="profile-user-img img-fluid img-circle" src="https://franquia.globalmedclinica.com.br/wp-content/uploads/2016/01/investidores-img-02-01.png" alt="User profile picture">
+                        <img class="profile-user-img img-fluid img-circle" src="https://i.pinimg.com/736x/6f/1e/fb/6f1efb3e2f7ddb6f6b9a3dbefabe0c67.jpg" alt="User profile picture">
                     </div>
 
                     <h3 class="profile-username text-center"><?= $info->nome." ".$info->sobrenome ?></h3>
@@ -29,12 +29,12 @@
                         </li>
                     </ul>
                     
-                    <a href="<?= base_url("Usuario/logout") ?>" class="btn btn-warning btn-block"><i class="fas fa-sign-out-alt"></i> <b>Sair</b></a>
+                    <a href="<?= base_url("Usuario/logout") ?>" class="btn btn-block" style="background-color: <?= $colores->color2 ?>; color: <?= $colores->color5 ?>"><i class="fas fa-sign-out-alt"></i> <b>Sair</b></a>
                 </div>
             </div>
         </div>
         <div class="col-md-9 col-sm-10 col-xs-12">
-            <div class="card card-info card-outline">
+            <div class="card card-secondary card-outline">
                 <div class="card-body box-profile">
                     <div class="tab-content" id="vert-tabs-tabContent">
                         <div class="tab-pane text-left fade <?= $identificador == "dados" || $identificador == null ? "show active" : "" ?>" id="dados_tab" role="tabpanel">
@@ -69,13 +69,6 @@
                                         <input type="text" class="form-control" id="celular" value="<?= $info->celular ?>" readonly>
                                     </div>
                                 </div>
-                                <div class="col-md-12 col-sm-12 col-xs-12">
-                                    <div class="form-group">
-                                        <label for="exampleInputEmail1">Enredeço</label>
-                                        <!-- <input type="text" class="form-control" value="<?= $info->endereco.", ".$info->numero.", ".$info->bairro.", ".$info->cidade." - ".$info->estado->nome ?>" id="endereco" readonly> -->
-                                        <input type="text" class="form-control" value="Corrigir aqui" id="endereco" readonly>
-                                    </div>
-                                </div>
                                 <div class="col-md-12 col-sm-12 col-xs-12 bloc_eye">
                                     <i class="fas fa-eye float-right icon_eyes"></i>
                                 </div>
@@ -92,7 +85,34 @@
                                     </div>
                                 </div>
                                 <div class="col-md-12 col-sm-12 col-xs-12">
-                                    <a href="<?= base_url("Usuario/index/".$info->id) ?>" class="btn btn-warning float-right"><i class="fas fa-edit"></i> Editar Dados</a>
+                                    <a href="<?= base_url("Usuario/index/".$info->id) ?>" class="btn float-right" style="background-color: <?= $colores->color2 ?>; color: <?= $colores->color5 ?>"><i class="fas fa-edit"></i> Editar Dados</a>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <label for="exampleInputEmail1">Endereços</label>
+                                    <table class="table table-hover table-bordered">
+                                        <thead>
+                                            <tr>
+                                            <th>Endereço</th>
+                                            <th>Editar</th>
+                                            <th>Remover</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="linha_tabela">
+                                            <?php foreach($info->enderecos as $item): ?>
+                                                <tr>
+                                                    <td><?= $item->cep ."( ".$item->endereco.", ".($item->complemento != "" ? $item->numero." ".$item->complemento : $item->numero ).".".$item->bairro." - ".$item->cidade.", ".$item->estado. " )" ?></td>
+                                                    <td class='text-center'><a href="<?= base_url("Usuario/edita_endereco") ?>" class='btn btn-warning'><i class='fas fa-edit'></i></a></td>
+                                                    <td class='text-center'><a href="<?= base_url("Usuario/remove_endereco") ?>" class='btn btn-danger'><i class='fas fa-minus-circle'></i></a></td>
+                                                "</tr>
+                                            <?php endforeach; ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <a href="<?= base_url("Usuario/geren_endereco/") ?>" class="btn mr-3 float-right" style="background-color: <?= $colores->color2 ?>; color: <?= $colores->color5 ?>"><i class="fas fa-plus"></i> Adicionar Endereço</a>
                                 </div>
                             </div>
                         </div>

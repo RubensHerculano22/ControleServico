@@ -43,9 +43,9 @@ class Sistema {
         $this->CI->load->library('email');
         
         $mail_config["protocol"] = "smtp";
-        $mail_config["smtp_host"] = "mail.reisoffice.com.br";
-        $mail_config["smtp_user"] = "spamtrap";
-        $mail_config["smtp_pass"] = "Ro1233332144";
+        $mail_config["smtp_host"] = "smtp.gmail.com";
+        $mail_config["smtp_user"] = "rubens.herculano04@gmail.com";
+        $mail_config["smtp_pass"] = "ifspsmtp";
         $mail_config["smtp_port"] = "587";
         $mail_config["mailtype"] = "html";
         $mail_config['crlf'] = "\r\n";

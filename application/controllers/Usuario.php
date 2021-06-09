@@ -14,9 +14,12 @@ class Usuario extends CI_Controller{
         $this->data["dados"] = $this->dados;
         $this->local = $this->session->userdata("local");
         $this->data["local"] = $this->local;
+
+        $this->load->model("Servico_model", "m_servico");
         
         $this->data["categorias"] = $this->m_sistema->listar_categorias();
         $this->data["cidade"] = $this->session->userdata("cidade");
+        $this->data["estados"] = $this->m_servico->get_estados();
 
         $this->data["colores"] = $this->m_sistema->get_colores();
 
@@ -35,11 +38,6 @@ class Usuario extends CI_Controller{
         $this->data["breadcrumb"] = (object)array("titulo" => $titulo, "before" => array((object)array("nome" => "Home", "link" => "Home")), "current" => $titulo);
 
         $this->data["usuario"] = $this->m_usuario->info_usuario($id);
-
-        // echo '<pre>';
-        // print_r($this->data["usuario"]);
-        // echo '</pre>';
-        // exit;
 
         $this->data["javascript"] = [
             base_url("assets/js/usuario/form.js")
@@ -87,6 +85,22 @@ class Usuario extends CI_Controller{
         $this->load->view("template/content", $this->data);
     }
 
+    public function geren_endereco($id = null)
+    {
+        $titulo = $id != null ? "Atualizando dados de endereço" : "Cadastro de Endereço";
+        $this->data["breadcrumb"] = (object)array("titulo" => $titulo, "before" => array((object)array("nome" => "Home", "link" => "Home")), "current" => $titulo);
+
+        $this->data["id"] = $id;
+        $this->data["endereco"] = $this->m_usuario->get_endereco($id);
+
+        $this->data["javascript"] = [
+            base_url("assets/js/usuario/endereco.js")
+        ];
+
+        $this->data["content"] = $this->load->view("usuario/endereco", $this->data, true);
+        $this->load->view("template/content", $this->data);
+    }
+
     public function logout()
     {
         $dados = $this->session->userdata("dados" . APPNAME);
@@ -97,6 +111,12 @@ class Usuario extends CI_Controller{
     public function salva_usuario()
     {
         $rst = $this->m_usuario->salva_usuario();
+        echo json_encode($rst, JSON_UNESCAPED_UNICODE);
+    }
+
+    public function salva_endereco()
+    {
+        $rst = $this->m_usuario->salva_endereco();
         echo json_encode($rst, JSON_UNESCAPED_UNICODE);
     }
 

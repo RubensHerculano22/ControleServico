@@ -3,7 +3,7 @@
         <div class="col-md-12 col-sm-12 col-xs-12 pt-5">
             <div class="card">
                 <div class="card-header" style="background-color: <?= $colores->color2 ?>">
-                    <h3 class="card-title">Formulário de Cadastro de Novos Usuarios</h3>
+                    <h3 class="card-title" style="color: <?= $colores->color5 ?>""><?= $usuario == false ? "Formulário de Cadastro de Novos Usuarios" : "Formulário de Edição de Informações de  Usuarios" ?></h3>
                 </div>
                 <form id="submit" role="form">
                     <div class="card-body">
@@ -69,61 +69,64 @@
                                     <input type="password" class="form-control" name="confirmacao_senha" id="confirmacao_senha" placeholder="Confirmação de Senha" <?php if(!isset($usuario->id)): ?> required <?php endif; ?>>
                                 </div>
                             </div>
-                            <div class="col-md-12 col-sm-12 col-xs-12">
-                                <hr>
-                            </div>
-                            <div class="col-md-3 col-sm-3 col-xs-12">
-                                <div class="form-group">
-                                    <label for="endereco">CEP</label><small class="text-danger"> *</small>
-                                    <input type="text" class="form-control" name="cep" id="cep" value="<?= set_value('cep', @$usuario->cep); ?>" placeholder="CEP" required>
+                            <?php if($usuario == null): ?>
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <hr>
                                 </div>
-                            </div>
-                            <div class="col-md-2 col-sm-2 col-xs-12">
-                                <div class="bloc_pesquisa">
+                                <div class="col-md-3 col-sm-3 col-xs-12">
+                                    <div class="form-group">
+                                        <label for="endereco">CEP</label><small class="text-danger"> *</small>
+                                        <input type="text" class="form-control endereco_input" id="cep" value="" placeholder="CEP">
+                                    </div>
+                                </div>
+                                <div class="col-md-2 col-sm-2 col-xs-12">
+                                    <div class="bloc_pesquisa">
+                                        <br/>
+                                        <button type="button" class="btn mt-2" onclick="pesquisa_cep()" style="background-color: <?= $colores->color2 ?>; color: <?= $colores->color5 ?>"><i class="fas fa-search-location"></i> Pesquisar</button>
+                                    </div>
+                                </div>
+                                <div class="col-md-7 col-sm-7 col-xs-12">
                                     <br/>
-                                    <button type="button" class="btn mt-2" onclick="pesquisa_cep()" style="background-color: <?= $colores->color2 ?>; color: <?= $colores->color5 ?>"><i class="fas fa-search-location"></i> Pesquisar</button>
+                                    <button type="button" id="add_endereco" class="btn mt-2 float-right" disabled style="background-color: <?= $colores->color2 ?>; color: <?= $colores->color5 ?>"><i class="fas fa-plus"></i> Adicionar Endereço</button>
                                 </div>
-                            </div>
-                            <div class="col-md-7 col-sm-7 col-xs-12">
-                                <br/>
-                                <button type="button" id="add_endereco" class="btn mt-2 float-right" style="background-color: <?= $colores->color2 ?>; color: <?= $colores->color5 ?>"><i class="fas fa-plus"></i> Adicionar Endereço</button>
-                            </div>
-                            <div class="col-md-4 col-sm-4 col-xs-12">
-                                <div class="form-group">
-                                    <label for="estado">Estado</label>
-                                    <input type="text" class="form-control" name="estado" id="estado" value="<?= set_value('estado', @$usuario->estado); ?>" placeholder="Estado" readonly>
+                                <div class="col-md-4 col-sm-4 col-xs-12">
+                                    <div class="form-group">
+                                        <label for="estado">Estado</label>
+                                        <input type="text" class="form-control endereco_input" id="estado" value="" placeholder="Estado" readonly>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-4 col-sm-4 col-xs-12">
-                                <div class="form-group">
-                                    <label for="cidade">Cidade</label>
-                                    <input type="text" class="form-control" name="cidade" id="cidade" value="<?= set_value('cidade', @$usuario->cidade); ?>" placeholder="Cidade" readonly>
+                                <div class="col-md-4 col-sm-4 col-xs-12">
+                                    <div class="form-group">
+                                        <label for="cidade">Cidade</label>
+                                        <input type="text" class="form-control" id="cidade" value="" placeholder="Cidade" readonly>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-4 col-sm-4 col-xs-12">
-                                <div class="form-group">
-                                    <label for="bairro">Bairro</label>
-                                    <input type="text" class="form-control" name="bairro" id="bairro" value="<?= set_value('bairro', @$usuario->bairro); ?>" placeholder="Bairro" readonly>
+                                <div class="col-md-4 col-sm-4 col-xs-12">
+                                    <div class="form-group">
+                                        <label for="bairro">Bairro</label>
+                                        <input type="text" class="form-control" id="bairro" value="" placeholder="Bairro" readonly>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                <div class="form-group">
-                                    <label for="endereco">Endereço</label>
-                                    <input type="text" class="form-control" name="endereco" id="endereco" value="<?= set_value('endereco', @$usuario->endereco); ?>" placeholder="Endereço" readonly>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <div class="form-group">
+                                        <label for="endereco">Endereço</label>
+                                        <input type="text" class="form-control" id="endereco" value="" placeholder="Endereço" readonly>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-2 col-sm-2 col-xs-12">
-                                <div class="form-group">
-                                    <label for="numero">Numero</label><small class="text-danger"> *</small>
-                                    <input type="number" class="form-control" name="numero" id="numero" value="<?= set_value('numero', @$usuario->numero); ?>" placeholder="Numero">
+                                <div class="col-md-2 col-sm-2 col-xs-12">
+                                    <div class="form-group">
+                                        <label for="numero">Numero</label><small class="text-danger"> *</small>
+                                        <input type="number" class="form-control endereco_input" id="numero" value="" placeholder="Numero">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-4 col-sm-4 col-xs-12">
-                                <div class="form-group">
-                                    <label for="complemento">Complemento</label><small class="text-danger"> *</small>
-                                    <input type="text" class="form-control" name="complemento" id="complemento" value="<?= set_value('complemento', @$usuario->complemento); ?>" placeholder="Complemento">
+                                <div class="col-md-4 col-sm-4 col-xs-12">
+                                    <div class="form-group">
+                                        <label for="complemento">Complemento</label>
+                                        <input type="text" class="form-control" id="complemento" value="" placeholder="Complemento">
+                                    </div>
                                 </div>
-                            </div>
+                            <?php endif; ?>
+                            <input type="hidden" name="enderecos" id="enderecos" value=""/>
                         </div>
                         <div class="row d-none" id="lista_endereco">
                             <div class="col-md-12 co-sm-12 col-xs-12">
@@ -135,11 +138,8 @@
                                         <th>Remover</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>183</td>
-                                            <td>John Doe</td>
-                                        </tr>
+                                    <tbody class="linha_tabela">
+                                        
                                     </tbody>
                                 </table>
                             </div>
@@ -149,8 +149,8 @@
                     <div class="card-footer">
                         <div class="row">
                             <div class="col-md-12 col-sm-12 col-xs-12">
-                                <a href="<?= base_url($local) ?>" class="btn btn-info float-left">Voltar</a>
-                                <button type="submit" class="btn btn-info float-right">Salvar</button>
+                                <a href="<?= base_url($local) ?>" class="btn float-left" style="background-color: <?= $colores->color2 ?>; color: <?= $colores->color5 ?>">Voltar</a>
+                                <button type="submit" class="btn float-right" id="salva" <?= $usuario == null ? "disabled" : "" ?> style="background-color: <?= $colores->color2 ?>; color: <?= $colores->color5 ?>">Salvar</button>
                             </div>
                         </div>
                     </div>

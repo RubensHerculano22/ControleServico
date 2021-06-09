@@ -31,6 +31,7 @@ class Usuario_model extends CI_Model{
 
         if($query)
         {
+            $query->enderecos = $this->db->get_where("Enderecos", "id_usuario = $id")->result();
             $query->estado = $this->get_estado_id($query->estado);
             $query->cidade = $this->get_cidade_id($query->cidade);
 
@@ -100,8 +101,14 @@ class Usuario_model extends CI_Model{
         $data = (object)$this->input->post();
         $rst = (object)array("rst" => 0, "msg" => "");
 
-        //verifica se possui um usuario para ser editado e verifica se o email já não está sendo utilizado quando for realizar o cadastro.
+        $enderecos = explode(" - ", $data->enderecos);
+        
+        for($i=0;$i<count($enderecos);$i++)
+        {
+            $enderecos[$i] = json_decode($enderecos[$i]);
+        }
 
+        //verifica se possui um usuario para ser editado e verifica se o email já não está sendo utilizado quando for realizar o cadastro.
         if($this->verifica_seguranca($data->senha))
         {
             $rst->msg = "Palavra utilizada na senha é proibida!";
@@ -125,13 +132,6 @@ class Usuario_model extends CI_Model{
             if($data->celular)
                 $this->db->set("celular", somente_numeros($data->celular));
             
-            $this->db->set("cep", $data->cep);
-            $this->db->set("endereco", $data->endereco);
-            $this->db->set("numero", somente_numeros($data->numero));
-            $this->db->set("bairro", $data->bairro);
-            $this->db->set("estado", $this->get_estado_nome($data->estado));
-            $this->db->set("cidade", $this->get_cidade_nome($data->cidade));
-            $this->db->set("complemento", $data->complemento);
             $this->db->set("email", strtolower($data->email));
             //Verifica se a senha também será alterada.
             if($data->senha)
@@ -157,8 +157,34 @@ class Usuario_model extends CI_Model{
                 $this->db->set("data_criacao", date("Y-m-d H:i:s"));
                 if($this->db->insert("Usuario"))
                 {
-                    $rst->rst = 1;
-                    $rst->msg = "Cadastro realizado com sucesso";
+                    $id_usuario = $this->db->insert_id();
+                    $erro = 1;
+                    foreach($enderecos as $item)
+                    {
+                        $this->db->set("cep", $item->cep);
+                        $this->db->set("endereco", $item->endereco);
+                        $this->db->set("numero", somente_numeros($item->numero));
+                        $this->db->set("bairro", $item->bairro);
+                        $this->db->set("estado", $this->get_estado_nome($item->estado));
+                        $this->db->set("cidade", $this->get_cidade_nome($item->cidade));
+                        $this->db->set("complemento", $item->complemento);
+                        $this->db->set("id_usuario", $id_usuario);
+
+                        if(!$this->db->insert("Enderecos"))
+                        {
+                            $erro = 0;
+                        }
+                    }
+                    
+                    if($erro == 1)
+                    {
+                        $rst->rst = 1;
+                        $rst->msg = "Cadastro realizado com sucesso";
+                    }
+                    else
+                    {
+                        $rst->msg = "Erro ao cadastrar o Usuario";
+                    }
                 }
                 else
                 {
@@ -170,6 +196,57 @@ class Usuario_model extends CI_Model{
         {
             $rst->rst = 2;
             $rst->msg = "O Email digitado já está cadastrado no sistema.";
+        }
+
+        return $rst;
+    }
+
+    public function get_endereco($id)
+    {
+        return $this->db->get_where("Enderecos", "id = $id")->row();
+    }
+
+    public function salva_endereco()
+    {
+        $data = (object)$this->input->post();
+        $rst = (object)array("rst" => 0, "msg" => "");
+        $this->dados = $this->session->userdata("dados" . APPNAME);
+
+        $this->db->set("cep", $data->cep);
+        $this->db->set("endereco", $data->endereco);
+        $this->db->set("numero", somente_numeros($data->numero));
+        $this->db->set("bairro", $data->bairro);
+        $this->db->set("estado", $this->get_estado_nome($data->estado));
+        $this->db->set("cidade", $this->get_cidade_nome($data->cidade));
+        $this->db->set("complemento", $data->complemento);
+        $this->db->set("id_usuario", $this->dados->usuario_id);
+
+        if($data->id)
+        {
+            $this->db->where("id = '$data->id'");
+            if($this->db->update("Enderecos"))
+            {
+                $rst->rst = 1;
+                $rst->msg = "Endereço atualizado com sucesso";
+            }
+            else
+            {
+                $rst->rst = 0;
+                $rst->msg = "Erro ao atualiza o endereco";
+            }
+        }
+        else
+        {
+            if($this->db->insert("Enderecos"))
+            {
+                $rst->rst = 1;
+                $rst->msg = "Endereço inserido com sucesso";
+            }
+            else
+            {
+                $rst->rst = 0;
+                $rst->msg = "Erro ao inserir o endereco";
+            }
         }
 
         return $rst;
