@@ -92,14 +92,6 @@ class Usuario extends CI_Controller{
         $dados = $this->session->userdata("dados" . APPNAME);
         $this->session->unset_userdata(array("is_logged", "dados" . APPNAME));
         redirect(base_url());
-        if ($this->local) 
-        {
-            redirect(base_url($this->local));
-        }
-        else
-        {
-            redirect(base_url());
-        }
     }
 
     public function salva_usuario()

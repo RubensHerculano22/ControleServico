@@ -1,7 +1,11 @@
 <div class="container">
     <div class="row">
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 pb-4">
-            <button type="button" class="btn btn-outline-secondary btn-lg float-right cadastro_servico">Cadastrar um Serviço</a>
+            <div class="alert alert-info alert-dismissible">
+                <h5><i class="icon fas fa-info"></i> Alert!</h5>
+                Area para o banner de cadastro
+            </div>
+            <!-- <button type="button" class="btn btn-outline-secondary btn-lg float-right cadastro_servico">Cadastrar um Serviço</a> -->
         </div>
         <!-- <div class="col-xl-2 col-lg-3 col-md-12 col-sm-12 col-xs-12">
             <div class="row">
@@ -124,7 +128,23 @@
             </div>
         </div>
     </div>
-    <div class="row pt-5 pb-5">
+    <div class="row pt-5">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="card">
+                <div class="card-header" style="background-color: <?= $colores->color2 ?>">
+                    <h4 class="card-title" style="color: <?= $colores->color5 ?>">Algumas informações sobre o Serviço: <?= $subcategoria?> </h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            aaaaaa
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row pt-3 pb-3">
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <div class="card">
                 <div class="card-header" style="background-color: <?= $colores->color2 ?>">

@@ -1,5 +1,7 @@
 $(document).ready(function(){
 
+    var lista_endereco = [];
+
     const regex = /[0-9]/
 
     $('.select2').select2()
@@ -22,33 +24,32 @@ $(document).ready(function(){
     });
     $('[data-mask]').inputmask();
 
-    $("#pesquisar_cep").on("click", function(e){
-        e.preventDefault();
-        
+    $("#add_endereco").on("click", function(){
         var cep = $("#cep").val();
-        if(cep.length > 8)
+        var estado = $("#estado").val();
+        var cidade = $("#cidade").val();
+        var bairro = $("#bairro").val();
+        var endereco = $("#endereco").val();
+        var numero = $("#numero").val();
+        var complemento = $("#complemento").val();
+
+        if(cep == null)
         {
-                $(".bloc_pesquisa").replaceWith('<div class="bloc_pesquisa"><br/><button type="button" class="btn btn-info mt-2"><span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>&nbsp;Carregando</button></div>');
-                setTimeout(() => {        
-                    
-                    cep_tratado = cep.split("").filter(n => (Number(n) || n == 0)).join("");
-
-                    var data = {"cep": cep_tratado};
-                    $.post(BASE_URL+"Servico/get_cep", data, function(data) {
-                        $("#endereco").val(data.logradouro)
-                        $("#bairro").val(data.bairro)
-                        $("#cidade").val(data.localidade)
-                        $("#estado").val(data.estado.nome)
-
-                        $(".bloc_pesquisa").replaceWith('<div class="bloc_pesquisa"><br/><button type="button" id="pesquisar_cep" class="btn btn-info mt-2"><i class="fas fa-search-location"></i> Pesquisar</button></div>');
-                    }, "json");
-
-                }, 5000);
+            showNotification("error", "Erro no campo CEP", "Nenhum valor foi adicionado ao campo cep.", "toast-top-center");
         }
-        else
+
+        if(estado == null || cidade == null || bairro == null || endereco == null)
         {
-            showNotification("error", "Erro no campo CEP", "Valores invalidos foram cadastrados no campo CEP.", "toast-top-center");
+            showNotification("error", "Erro!", "Nenhum valor valido foi inserido no cep.", "toast-top-center");
         }
+
+        if(numero == null)
+        {
+            showNotification("error", "Erro!", "Nenhum valor valido foi inserido no campo Numero.", "toast-top-center");
+        }
+
+        var item = {"cep": cep, "estado": estado, "cidade": cidade, "bairro": bairro, "endereco": endereco, "numero": numero, "complemento": complemento};
+        lista_endereco.push(item);
     })
 
     $("#submit").submit(function(e){
@@ -120,3 +121,38 @@ $(document).ready(function(){
     });
 
 });
+
+function pesquisa_cep()
+{
+    var cep = $("#cep").val();
+    if(cep.length > 8)
+    {
+            $(".bloc_pesquisa").replaceWith('<div class="bloc_pesquisa"><br/><button type="button" class="btn mt-2" style="background-color: #254B59; color: #F0F2F0"><span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>&nbsp;Carregando</button></div>');
+            setTimeout(() => {        
+                
+                cep_tratado = cep.split("").filter(n => (Number(n) || n == 0)).join("");
+
+                var data = {"cep": cep_tratado};
+                $.post(BASE_URL+"Servico/get_cep", data, function(data) {
+                    if(data.estado == null)
+                    {
+                        showNotification("error", "Erro no campo CEP", "Valores invalidos foram cadastrados no campo CEP.", "toast-top-center");                
+                    }
+                    else
+                    {
+                        $("#endereco").val(data.logradouro)
+                        $("#bairro").val(data.bairro)
+                        $("#cidade").val(data.localidade)
+                        $("#estado").val(data.estado.nome)
+                    }
+
+                    $(".bloc_pesquisa").replaceWith('<div class="bloc_pesquisa"><br/><button type="button" onclick="pesquisa_cep()" class="btn mt-2" style="background-color: #254B59; color: #F0F2F0"><i class="fas fa-search-location"></i> Pesquisar</button></div>');
+                }, "json");
+
+            }, 1000);
+    }
+    else
+    {
+        showNotification("error", "Erro no campo CEP", "Valores invalidos foram cadastrados no campo CEP.", "toast-top-center");
+    }
+}

@@ -14,17 +14,13 @@ class Servico extends CI_Controller{
         $this->dados = $this->session->userdata("dados" . APPNAME);
         $this->data["dados"] = $this->dados;
         
-        $this->load->model("Servico_model", "m_servico");
+        $this->data["local"] = $this->session->userdata("local");;
 
-        $local = str_replace("TCC/", "", $_SERVER["REQUEST_URI"]);
-        $local = str_replace("tcc/", "", $local);
-        
-        $this->session->set_userdata(array("local" => $local));
-        $this->data["local"] = $local;
-        $this->data["cidade"] = $this->session->userdata("cidade");
+        $this->load->model("Servico_model", "m_servico");
 
         $this->data["categorias"] = $this->m_sistema->listar_categorias();
 
+        $this->data["cidade"] = $this->session->userdata("cidade");
         $this->data["estados"] = $this->m_servico->get_estados();
 
         $this->data["colores"] = $this->m_sistema->get_colores();
@@ -37,6 +33,12 @@ class Servico extends CI_Controller{
 
     public function index()
     {
+        $local = str_replace("TCC/", "", $_SERVER["REQUEST_URI"]);
+        $local = str_replace("tcc/", "", $local);
+        
+        $this->session->set_userdata(array("local" => $local));
+        $this->data["local"] = $local;
+
         $this->data["feedback"] = $this->m_servico->get_ult_feedbacks();
 
         $this->data["content"] = $this->load->view("home/home", $this->data, true);
@@ -45,6 +47,12 @@ class Servico extends CI_Controller{
 
     public function lista($categoria = null, $subcategoria = null)
     {
+        $local = str_replace("TCC/", "", $_SERVER["REQUEST_URI"]);
+        $local = str_replace("tcc/", "", $local);
+        
+        $this->session->set_userdata(array("local" => $local));
+        $this->data["local"] = $local;
+
         $categoria = urldecode($categoria);
         $subcategoria = urldecode($subcategoria);
 
@@ -64,6 +72,12 @@ class Servico extends CI_Controller{
 
     public function detalhes($servico, $id_servico)
     {
+        $local = str_replace("TCC/", "", $_SERVER["REQUEST_URI"]);
+        $local = str_replace("tcc/", "", $local);
+        
+        $this->session->set_userdata(array("local" => $local));
+        $this->data["local"] = $local;
+
         $this->m_servico->insere_acesso($id_servico);
         $this->data["info"] = $this->m_servico->get_info_servico($id_servico);
 
@@ -161,7 +175,7 @@ class Servico extends CI_Controller{
     public function get_cep()
     {
         $rst = $this->sistema->get_cep();
-        if($rst)
+        if(!isset($rst->erro))
         {
             $rst->estado = $this->m_servico->get_estado_sigla($rst->uf);
         }

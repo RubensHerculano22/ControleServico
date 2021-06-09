@@ -92,16 +92,16 @@
           <span class="d-none d-md-inline"><?= $dados->nome." ".$dados->sobrenome ?></span>
         </a>
         <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-          <li class="bg-orange">
+          <li style="background-color: <?= $colores->color1 ?>">
             <div class="text-center pt-3">
-              <img src="https://www.microlins.com.br/galeria/repositorio/images/noticias/como-posicionar-melhor-seu-perfil-no-linkedin/02-Como-posicionar-melhor-seu-perfil-do-Linkedin.png" class="img-circle elevation-2" alt="User Image" style="max-width: 75px;">
+              <img src="https://i.pinimg.com/736x/6f/1e/fb/6f1efb3e2f7ddb6f6b9a3dbefabe0c67.jpg" class="img-circle elevation-2" alt="User Image" style="max-width: 75px;">
             </div>
             <div class="row">
               <div class="col-md-12 col-sm-12 col-xs-12 p-4">
                 <p class="text-center">
-                  <?= $dados->nome." ".$dados->sobrenome ?>
+                  <span style="color: <?= $colores->color5 ?>"><?= $dados->nome." ".$dados->sobrenome ?></span>
                   <br/>
-                  <small>Membro desde <?= formata_data_info($dados->data_criacao) ?></small>
+                  <small style="color: <?= $colores->color5 ?>">Membro desde <?= formata_data_info($dados->data_criacao) ?></small>
                 </p>
               </div>
             </div>

@@ -1,8 +1,8 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12 col-sm-12 col-xs-12 pt-5">
-            <div class="card card-info">
-                <div class="card-header">
+            <div class="card">
+                <div class="card-header" style="background-color: <?= $colores->color2 ?>">
                     <h3 class="card-title">Formulário de Cadastro de Novos Usuarios</h3>
                 </div>
                 <form id="submit" role="form">
@@ -47,17 +47,46 @@
                                     <input type="text" class="form-control" name="celular" id="celular" value="<?= set_value('celular', @$usuario->celular); ?>" placeholder="Exemplo: (11) 11111-1111">
                                 </div>
                             </div>
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <hr>
+                            </div>
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class="form-group">
+                                    <label for="email">Email</label><small class="text-danger"> *</small>
+                                    <input type="email" class="form-control" name="email" value="<?= set_value('email', @$usuario->email); ?>" id="email" placeholder="exemplo@exemplo.com.br" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <div class="form-group">
+                                    <label for="senha">Senha</label> <?php if(!isset($usuario->id)): ?><small class="text-danger"> *</small> <?php endif; ?><small>(Necessário no minimo conter 8 digitos e no minimo 1 numero)</small>
+                                    <input type="password" class="form-control" name="senha" id="senha" placeholder="Senha" <?php if(!isset($usuario->id)): ?> required <?php endif; ?>>
+                                    <?php if(isset($usuario->id)): ?><small>(Caso não deseje trocar a senha apenas deixe em branco)</small><?php endif; ?>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <div class="form-group">
+                                    <label for="confirmacao_senha">Confirmação de Senha</label> <?php if(!isset($usuario->id)): ?><small class="text-danger"> *</small> <?php endif; ?>
+                                    <input type="password" class="form-control" name="confirmacao_senha" id="confirmacao_senha" placeholder="Confirmação de Senha" <?php if(!isset($usuario->id)): ?> required <?php endif; ?>>
+                                </div>
+                            </div>
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <hr>
+                            </div>
                             <div class="col-md-3 col-sm-3 col-xs-12">
                                 <div class="form-group">
                                     <label for="endereco">CEP</label><small class="text-danger"> *</small>
                                     <input type="text" class="form-control" name="cep" id="cep" value="<?= set_value('cep', @$usuario->cep); ?>" placeholder="CEP" required>
                                 </div>
                             </div>
-                            <div class="col-md-9 col-sm-9 col-xs-12">
+                            <div class="col-md-2 col-sm-2 col-xs-12">
                                 <div class="bloc_pesquisa">
                                     <br/>
-                                    <button type="button" id="pesquisar_cep" class="btn btn-info mt-2"><i class="fas fa-search-location"></i> Pesquisar</button>
+                                    <button type="button" class="btn mt-2" onclick="pesquisa_cep()" style="background-color: <?= $colores->color2 ?>; color: <?= $colores->color5 ?>"><i class="fas fa-search-location"></i> Pesquisar</button>
                                 </div>
+                            </div>
+                            <div class="col-md-7 col-sm-7 col-xs-12">
+                                <br/>
+                                <button type="button" id="add_endereco" class="btn mt-2 float-right" style="background-color: <?= $colores->color2 ?>; color: <?= $colores->color5 ?>"><i class="fas fa-plus"></i> Adicionar Endereço</button>
                             </div>
                             <div class="col-md-4 col-sm-4 col-xs-12">
                                 <div class="form-group">
@@ -95,24 +124,24 @@
                                     <input type="text" class="form-control" name="complemento" id="complemento" value="<?= set_value('complemento', @$usuario->complemento); ?>" placeholder="Complemento">
                                 </div>
                             </div>
-                            <div class="col-md-12 col-sm-12 col-xs-12">
-                                <div class="form-group">
-                                    <label for="email">Email</label><small class="text-danger"> *</small>
-                                    <input type="email" class="form-control" name="email" value="<?= set_value('email', @$usuario->email); ?>" id="email" placeholder="exemplo@exemplo.com.br" required>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                <div class="form-group">
-                                    <label for="senha">Senha</label> <?php if(!isset($usuario->id)): ?><small class="text-danger"> *</small> <?php endif; ?><small>(Necessário no minimo conter 8 digitos e no minimo 1 numero)</small>
-                                    <input type="password" class="form-control" name="senha" id="senha" placeholder="Senha" <?php if(!isset($usuario->id)): ?> required <?php endif; ?>>
-                                    <?php if(isset($usuario->id)): ?><small>(Caso não deseje trocar a senha apenas deixe em branco)</small><?php endif; ?>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                <div class="form-group">
-                                    <label for="confirmacao_senha">Confirmação de Senha</label> <?php if(!isset($usuario->id)): ?><small class="text-danger"> *</small> <?php endif; ?>
-                                    <input type="password" class="form-control" name="confirmacao_senha" id="confirmacao_senha" placeholder="Confirmação de Senha" <?php if(!isset($usuario->id)): ?> required <?php endif; ?>>
-                                </div>
+                        </div>
+                        <div class="row d-none" id="lista_endereco">
+                            <div class="col-md-12 co-sm-12 col-xs-12">
+                                <label>Lista de Endereços</label>
+                                <table class="table table-hover table-bordered">
+                                    <thead>
+                                        <tr>
+                                        <th>Endereço</th>
+                                        <th>Remover</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>183</td>
+                                            <td>John Doe</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
