@@ -49,6 +49,8 @@ class Usuario extends CI_Controller{
 
     public function perfil($id = null)
     {
+        if(!$this->data["dados"])
+            redirect(base_url());
         $this->data["breadcrumb"] = (object)array("titulo" => "Perfil", "before" => array((object)array("nome" => "Home", "link" => "Home")), "current" => "Perfil - Informações de Usuário");
 
         $this->data["info"] = $this->m_usuario->info_usuario($this->data["dados"]->usuario_id);
@@ -87,6 +89,8 @@ class Usuario extends CI_Controller{
 
     public function geren_endereco($id = null)
     {
+        if(!$this->data["dados"])
+            redirect(base_url());
         $titulo = $id != null ? "Atualizando dados de endereço" : "Cadastro de Endereço";
         $this->data["breadcrumb"] = (object)array("titulo" => $titulo, "before" => array((object)array("nome" => "Home", "link" => "Home")), "current" => $titulo);
 
