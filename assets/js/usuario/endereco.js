@@ -47,31 +47,31 @@ function pesquisa_cep()
     var cep = $("#cep").val();
     if(cep.length > 8)
     {
-            $(".bloc_pesquisa").replaceWith('<div class="bloc_pesquisa"><br/><button type="button" class="btn mt-2" style="background-color: #254B59; color: #F0F2F0"><span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>&nbsp;Carregando</button></div>');
-            setTimeout(() => {        
-                
-                cep_tratado = cep.split("").filter(n => (Number(n) || n == 0)).join("");
+        $(".bloc_pesquisa").replaceWith('<div class="bloc_pesquisa"><br/><button type="button" class="btn mt-2" style="background-color: #254B59; color: #F0F2F0"><span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>&nbsp;Carregando</button></div>');
+        setTimeout(() => {        
+            
+            cep_tratado = cep.split("").filter(n => (Number(n) || n == 0)).join("");
 
-                var data = {"cep": cep_tratado};
-                $.post(BASE_URL+"Servico/get_cep", data, function(data) {
-                    if(data.estado == null)
-                    {
-                        showNotification("error", "Erro no campo CEP", "Valores invalidos foram cadastrados no campo CEP.", "toast-top-center");                
-                    }
-                    else
-                    {
-                        $("#endereco").val(data.logradouro)
-                        $("#bairro").val(data.bairro)
-                        $("#cidade").val(data.localidade)
-                        $("#estado").val(data.estado.nome)
-                    }
+            var data = {"cep": cep_tratado};
+            $.post(BASE_URL+"Servico/get_cep", data, function(data) {
+                if(data.estado == null)
+                {
+                    showNotification("error", "Erro no campo CEP", "Valores invalidos foram cadastrados no campo CEP.", "toast-top-center");                
+                }
+                else
+                {
+                    $("#endereco").val(data.logradouro)
+                    $("#bairro").val(data.bairro)
+                    $("#cidade").val(data.localidade)
+                    $("#estado").val(data.estado.nome)
+                }
 
-                    $(".bloc_pesquisa").replaceWith('<div class="bloc_pesquisa"><br/><button type="button" onclick="pesquisa_cep()" class="btn mt-2" style="background-color: #254B59; color: #F0F2F0"><i class="fas fa-search-location"></i> Pesquisar</button></div>');
-                }, "json");
+                $(".bloc_pesquisa").replaceWith('<div class="bloc_pesquisa"><br/><button type="button" onclick="pesquisa_cep()" class="btn mt-2" style="background-color: #254B59; color: #F0F2F0"><i class="fas fa-search-location"></i> Pesquisar</button></div>');
+            }, "json");
 
-            }, 1000);
+        }, 1000);
 
-            $("#salva").attr("disabled", false);
+        $("#salva").attr("disabled", false);
     }
     else
     {

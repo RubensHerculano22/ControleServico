@@ -32,8 +32,11 @@ class Usuario_model extends CI_Model{
         if($query)
         {
             $query->enderecos = $this->db->get_where("Enderecos", "id_usuario = $id")->result();
-            $query->estado = $this->get_estado_id($query->estado);
-            $query->cidade = $this->get_cidade_id($query->cidade);
+            foreach($query->enderecos as $item)
+            {
+                $item->estado = $this->get_estado_id($item->estado);
+                $item->cidade = $this->get_cidade_id($item->cidade);
+            }
 
             $query->cpf = formatar($query->cpf, "cpf");
             $query->telefone = formatar($query->telefone, "fone");
@@ -203,7 +206,14 @@ class Usuario_model extends CI_Model{
 
     public function get_endereco($id)
     {
-        return $this->db->get_where("Enderecos", "id = $id")->row();
+        $query = $this->db->get_where("Enderecos", "id = $id")->row();
+        if($query)
+        {
+            $query->estado = $this->get_estado_id($query->estado);
+            $query->cidade = $this->get_cidade_id($query->cidade);
+        }
+
+        return $query; 
     }
 
     public function salva_endereco()
@@ -452,6 +462,18 @@ class Usuario_model extends CI_Model{
         }
     }
 
+    public function remove_endereco($id)
+    {
+        $this->db->where("id = $id");
+        if($this->db->delete("Enderecos"))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 
 /**
      * Realiza a verificação se o email já está cadastrado no sistema.

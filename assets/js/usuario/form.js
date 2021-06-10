@@ -41,6 +41,28 @@ $(document).ready(function(){
         }
     });
 
+    $("#data_nascimento").on("change", function(){
+        var data = $("#data_nascimento").val();
+        if(verifData(data) == false)
+        {
+            showNotification("error", "Erro no cadastrar", "Campo data com data invalida, uma data de maior de idade deve ser inserida", "toast-top-center");
+            $("#salva").attr("disabled", true);
+        }
+        else
+        {
+            id_usuario = $("#id_usuario").val();
+            cpf = $("#cpf").val();
+            if((id_usuario != "" || $(".linha_tabela")[0].childElementCount > 0) && TestaCPF(cpf) == true)
+            {
+                $("#salva").attr("disabled", false);
+            }
+            else
+            {
+                $("#salva").attr("disabled", true);
+            }
+        }
+    });
+
     $("#add_endereco").on("click", function(){
         var cep = $("#cep").val();
         var estado = $("#estado").val();
@@ -52,7 +74,6 @@ $(document).ready(function(){
 
         var item = {"id": cont,"cep": cep, "estado": estado, "cidade": cidade, "bairro": bairro, "endereco": endereco, "numero": numero, "complemento": complemento};
         lista_endereco.push(item);
-        console.log(lista_endereco);
         $("#lista_endereco").removeClass("d-none");
 
         var html =  "<tr id='linha"+cont+"'>"+
@@ -69,7 +90,8 @@ $(document).ready(function(){
             string += JSON.stringify(lista_endereco[i]);
         }
 
-        if(TestaCPF($("#cpf").val()) == false)
+        data = $("#data_nascimento").val();
+        if(TestaCPF($("#cpf").val()) == false || verifData(data) == false)
         {
             $("#salva").attr("disabled", true)
         }
@@ -174,7 +196,8 @@ $(document).ready(function(){
         }
         else
         {
-            if(id_usuario != "" || $(".linha_tabela")[0].childElementCount > 0)
+            data = $("#data_nascimento").val();
+            if((id_usuario != "" || ($(".linha_tabela")[0].childElementCount > 0)) && verifData(data) == true)
             {
                 $("#salva").attr("disabled", false);
             }
@@ -271,6 +294,40 @@ function TestaCPF(strCPF) {
 
     if ((Resto == 10) || (Resto == 11))  Resto = 0;
     if (Resto != parseInt(strCPF.substring(10, 11) ) ) return false;
+
+    return true;
+}
+
+function verifData(data)
+{
+    if(data == "") return false;
+    dataSplit = data.split("/");
+
+    d = new Date()
+
+    ano = d.getFullYear()-18;
+    mes = d.getMonth()+1;
+    if (mes < 10) { mes = '0' + mes; }
+    dia = d.getDate();
+
+    if(((ano - dataSplit[2])) <= 0)
+    {
+        if((dataSplit[2] - ano) == 0)
+        {
+            if(dataSplit[1] == mes && dataSplit[0] > dia)
+            {
+                return false;
+            }
+            else if(dataSplit[1] > mes)
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return false;
+        }
+    }
 
     return true;
 }

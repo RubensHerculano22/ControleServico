@@ -91,22 +91,22 @@
                             <hr>
                             <div class="row">
                                 <div class="col-md-12 col-sm-12 col-xs-12">
-                                    <label for="exampleInputEmail1">Endereços</label>
+                                    <label>Endereços</label>
                                     <table class="table table-hover table-bordered">
                                         <thead>
                                             <tr>
-                                            <th>Endereço</th>
-                                            <th>Editar</th>
-                                            <th>Remover</th>
+                                                <th>Endereço</th>
+                                                <th>Editar</th>
+                                                <th>Remover</th>
                                             </tr>
                                         </thead>
                                         <tbody class="linha_tabela">
                                             <?php foreach($info->enderecos as $item): ?>
                                                 <tr>
                                                     <td><?= $item->cep ."( ".$item->endereco.", ".($item->complemento != "" ? $item->numero." ".$item->complemento : $item->numero ).".".$item->bairro." - ".$item->cidade.", ".$item->estado. " )" ?></td>
-                                                    <td class='text-center'><a href="<?= base_url("Usuario/edita_endereco") ?>" class='btn btn-warning'><i class='fas fa-edit'></i></a></td>
-                                                    <td class='text-center'><a href="<?= base_url("Usuario/remove_endereco") ?>" class='btn btn-danger'><i class='fas fa-minus-circle'></i></a></td>
-                                                "</tr>
+                                                    <td class='text-center'><a href="<?= base_url("Usuario/geren_endereco/".$item->id) ?>" class='btn btn-warning'><i class='fas fa-edit'></i></a></td>
+                                                    <td class='text-center'><a href="<?= base_url("Usuario/remove_endereco/$item->id") ?>" class='btn btn-danger'><i class='fas fa-minus-circle'></i></a></td>
+                                                </tr>
                                             <?php endforeach; ?>
                                         </tbody>
                                     </table>

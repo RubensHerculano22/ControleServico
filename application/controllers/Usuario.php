@@ -93,12 +93,26 @@ class Usuario extends CI_Controller{
         $this->data["id"] = $id;
         $this->data["endereco"] = $this->m_usuario->get_endereco($id);
 
+        // echo '<pre>';
+        // print_r($this->data["endereco"]);
+        // echo '</pre>';
+        // exit;
+
         $this->data["javascript"] = [
             base_url("assets/js/usuario/endereco.js")
         ];
 
         $this->data["content"] = $this->load->view("usuario/endereco", $this->data, true);
         $this->load->view("template/content", $this->data);
+    }
+
+    public function remove_endereco($id)
+    {
+        $rst = $this->m_usuario->remove_endereco($id);
+        if($rst == true)
+        {
+            redirect(base_url("Usuario/perfil/dados"));
+        }
     }
 
     public function logout()

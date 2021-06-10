@@ -11,7 +11,7 @@
                             <div class="col-md-3 col-sm-3 col-xs-12">
                                 <div class="form-group">
                                     <label for="endereco">CEP</label><small class="text-danger"> *</small>
-                                    <input type="text" class="form-control" name="cep" id="cep" value="" placeholder="CEP" required>
+                                    <input type="text" class="form-control" name="cep" id="cep" value="<?= set_value('cep', @$endereco->cep); ?>" placeholder="CEP" required>
                                 </div>
                             </div>
                             <div class="col-md-9 col-sm-9 col-xs-12">
@@ -23,37 +23,37 @@
                             <div class="col-md-4 col-sm-4 col-xs-12">
                                 <div class="form-group">
                                     <label for="estado">Estado</label>
-                                    <input type="text" class="form-control" name="estado" id="estado" value="" placeholder="Estado" readonly>
+                                    <input type="text" class="form-control" name="estado" id="estado" value="<?= set_value('estado', @$endereco->estado); ?>"" placeholder="Estado" readonly>
                                 </div>
                             </div>
                             <div class="col-md-4 col-sm-4 col-xs-12">
                                 <div class="form-group">
                                     <label for="cidade">Cidade</label>
-                                    <input type="text" class="form-control" name="cidade" id="cidade" value="" placeholder="Cidade" readonly>
+                                    <input type="text" class="form-control" name="cidade" id="cidade" value="<?= set_value('cidade', @$endereco->cidade); ?>"" placeholder="Cidade" readonly>
                                 </div>
                             </div>
                             <div class="col-md-4 col-sm-4 col-xs-12">
                                 <div class="form-group">
                                     <label for="bairro">Bairro</label>
-                                    <input type="text" class="form-control" name="bairro" id="bairro" value="" placeholder="Bairro" readonly>
+                                    <input type="text" class="form-control" name="bairro" id="bairro" value="<?= set_value('bairro', @$endereco->bairro); ?>"" placeholder="Bairro" readonly>
                                 </div>
                             </div>
                             <div class="col-md-6 col-sm-6 col-xs-12">
                                 <div class="form-group">
                                     <label for="endereco">Endereço</label>
-                                    <input type="text" class="form-control" name="endereco" id="endereco" value="" placeholder="Endereço" readonly>
+                                    <input type="text" class="form-control" name="endereco" id="endereco" value="<?= set_value('endereco', @$endereco->endereco); ?>"" placeholder="Endereço" readonly>
                                 </div>
                             </div>
                             <div class="col-md-2 col-sm-2 col-xs-12">
                                 <div class="form-group">
                                     <label for="numero">Numero</label><small class="text-danger"> *</small>
-                                    <input type="number" class="form-control" name="numero" id="numero" value="" placeholder="Numero" required>
+                                    <input type="number" class="form-control" name="numero" id="numero" value="<?= set_value('numero', @$endereco->numero); ?>"" placeholder="Numero" required>
                                 </div>
                             </div>
                             <div class="col-md-4 col-sm-4 col-xs-12">
                                 <div class="form-group">
                                     <label for="complemento">Complemento</label>
-                                    <input type="text" class="form-control" name="complemento" id="complemento" value="" placeholder="Complemento">
+                                    <input type="text" class="form-control" name="complemento" id="complemento" value="<?= set_value('complemento', @$endereco->complemento); ?>"" placeholder="Complemento">
                                 </div>
                             </div>
                         </div>
