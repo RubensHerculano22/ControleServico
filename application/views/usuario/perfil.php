@@ -131,7 +131,9 @@
                                         <p class="text-justify pt-2"><?= $item->servico->descricao_curta ?></p>
                                     </div>
                                     <div class="col-md-2 col-sm-2 col-xs-12 align-self-center text-center">
-                                        <a href="<?= base_url("Servico/detalhes/".$item->servico->nome."/".$item->id_servico) ?>" class="btn btn-warning btn-block">Ver mais</a>
+                                        <a href="<?= base_url("Servico/detalhes/".$item->servico->nome."/".$item->id_servico) ?>" class="btn btn-block" style="background-color: <?= $colores->color2 ?>; color: <?= $colores->color5 ?>">Ver mais</a>
+                                        <button type="button" data-id="<?= $item->id ?>" class="btn btn-danger btn-block remove_favorito" >Remover do Favoritos</button>
+                                        <!-- style="background-color: <?= $colores->color2 ?>; color: <?= $colores->color5 ?>" -->
                                     </div>
                                 </div>
                                 <?php if($key < (count($favoritos) - 1)): ?>
@@ -156,7 +158,7 @@
                                     <div class="col-md-3 col-sm-12 col-xs-12">
                                         <div class="row">
                                             <div class="col-md-12 col-sm-12 col-xs-12 align-self-center text-center mt-2">
-                                                <button type="button" class="btn btn-warning btn-block orcamento_m" data-toggle="modal" data-target="#modal_orcamento" data-id="<?= $item->status->id_orcamento ?>">Historico Orçamento</button>
+                                                <a href="<?= base_url("Usuario/controle_pedido/".$item->status->id_orcamento) ?>" class="btn btn-warning btn-block">Acompanhar Contratação</a>
                                             </div>
                                             <!-- <div class="col-md-6 col-sm-6 col-xs-12 align-self-center text-center mt-2">
                                                 <a href="<?= base_url("Servico/gerenciar_servico/".$item->id) ?>" class="btn btn-warning btn-block">Mensagens</a>
@@ -182,7 +184,7 @@
                                     </div> -->
 
                                 </div>
-                                <?php if($key < (count($cadastrados) - 1)): ?>
+                                <?php if($key < (count($contratados) - 1)): ?>
                                     <hr>
                                 <?php endif; ?>
                             <?php endforeach; ?>

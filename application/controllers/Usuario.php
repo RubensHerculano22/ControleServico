@@ -97,16 +97,31 @@ class Usuario extends CI_Controller{
         $this->data["id"] = $id;
         $this->data["endereco"] = $this->m_usuario->get_endereco($id);
 
-        // echo '<pre>';
-        // print_r($this->data["endereco"]);
-        // echo '</pre>';
-        // exit;
-
         $this->data["javascript"] = [
             base_url("assets/js/usuario/endereco.js")
         ];
 
         $this->data["content"] = $this->load->view("usuario/endereco", $this->data, true);
+        $this->load->view("template/content", $this->data);
+    }
+
+    public function controle_pedido($id)
+    {
+        $this->data["breadcrumb"] = (object)array("titulo" => "Movimentação de Contratação de Serviço", "before" => array((object)array("nome" => "Home", "link" => "Home"), (object)array("nome" => "Perfil", "link" => "Usuario/perfil/pedidos")), "current" => "Movimentação de Contratação de Serviço");
+        $this->data["id"] = $id;
+
+        $this->data["info"] = $this->m_usuario->get_orcamentos($id);
+
+        echo '<pre>';
+        print_r($this->data["info"]);
+        echo '</pre>';
+        exit;
+
+        $this->data["javascript"] = [
+            base_url("assets/js/usuario/movimentacao.js")
+        ];
+
+        $this->data["content"] = $this->load->view("usuario/movimentacao", $this->data, true);
         $this->load->view("template/content", $this->data);
     }
 
@@ -165,6 +180,12 @@ class Usuario extends CI_Controller{
     public function cancela_servico($id)
     {
         $rst = $this->m_usuario->cancela_servico($id);
+        echo json_encode($rst, JSON_UNESCAPED_UNICODE);
+    }
+
+    public function desfavoritar($id)
+    {
+        $rst = $this->m_usuario->desfavoritar($id);
         echo json_encode($rst, JSON_UNESCAPED_UNICODE);
     }
 

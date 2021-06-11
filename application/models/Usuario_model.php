@@ -361,7 +361,7 @@ class Usuario_model extends CI_Model{
         return $query;
     }
 
-    public function resposta_orcamento()
+    public function resposta_orcamento()//Colocar a data do serviço e hora no status 4
     {
         $rst = (object)array("rst" => false, "msg" => "");
         $data = (object)$this->input->post();
@@ -466,6 +466,21 @@ class Usuario_model extends CI_Model{
     {
         $this->db->where("id = $id");
         if($this->db->delete("Enderecos"))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public function desfavoritar($id)
+    {
+        $this->db->set("ativo", 0);
+
+        $this->db->where("id", $id);
+        if($this->db->update("Favoritos"))
         {
             return true;
         }

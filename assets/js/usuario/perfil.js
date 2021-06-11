@@ -282,4 +282,43 @@ $(document).ready(function(){
             }
         });
     });
+
+    $(".remove_favorito").on("click", function(){
+        var id =  $(".remove_favorito").data("id");
+
+        Swal.fire({
+            title: 'Aviso',
+            text: "Deseja realmente desfavoritar esse serviço?",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: `Sim`,
+            cancelButtonText: `Não`,
+            }).then((result) => {
+            if (result.isConfirmed)
+            {
+                $.ajax({
+                    type: "post",
+                    url: BASE_URL+"Usuario/desfavoritar/"+id,
+                    dataType: "json",
+                    success: function(data)
+                    {
+                        if(data === true)
+                        {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Sucesso',
+                                text: "Serviço retirado dos favoritos!"
+                            }).then((result) => {
+                                window.location.href = BASE_URL+"Usuario/perfil/favoritos";
+                            });
+                        }
+                        else if(data.rst === false)
+                        {
+                            showNotification("warning", "Erro ao tentar remover do favoritos", "Tente novamente daqui a alguns minutos", "toast-top-center");
+                        }
+                    }
+                });
+            }
+        });
+    });
 });
