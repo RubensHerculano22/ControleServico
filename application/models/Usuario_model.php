@@ -310,6 +310,7 @@ class Usuario_model extends CI_Model{
 
     public function get_servicos_contratos()
     {
+        $rst = (object)array("andamento" => array(), "concluido" => array());
         $dados = $this->session->userdata("dados" . APPNAME);
 
         $contrato = $this->db->get_where("Orcamento", "id_usuario = $dados->usuario_id")->result();
@@ -331,23 +332,40 @@ class Usuario_model extends CI_Model{
             $this->db->select("O.*, C.id_orcamento");
             $this->db->join("OrcamentoStatus O", "O.id = C.status");
             $item->status = $this->db->get_where("ContrataServico C", "C.id_orcamento = $item->id AND C.ativo = 1")->row();
+
+            $feedback = $this->db->get_where("Feedback", "id_orcamento = '$item->id'")->row();
+
+            if($item->status == "7" && empty($feedback))//verificar se tem feedback
+                $item->realizarFeedback = true;
+            else
+                $item->realizarFeedback = false;
+
+            if($item->status->id == 1 || $item->status->id == 2 || $item->status->id == 4 || $item->status->id == 5)
+                $rst->andamento[] = $item;
+            else
+                $rst->concluido[] = $item;
         }
 
-        // echo '<pre>';
-        // print_r($contrato);
-        // echo '</pre>';
-        // exit;
-
-        return $contrato;
+        return $rst;
     }
 
     public function get_orcamentos($id)
     {
+        $this->db->order_by("id", "desc");
         $query = $this->db->get_where("ContrataServico", "id_orcamento = $id")->result();
 
         foreach($query as $item)
         {
             $item->status = $this->db->get_where("OrcamentoStatus", "id = $item->status")->row();
+
+            if($item->status->id == 4)
+            {
+                $this->db->order_by("id", "desc");
+                $queryInfo = $this->db->get_where("ContrataServico", "id_orcamento = '$id' AND status = 1")->row();
+
+                $item->data_servico = $queryInfo->data_servico;
+                $item->hora_servico = $queryInfo->hora_servico;
+            }
 
             if(isset($item->data_servico) && !empty($item->data_servico))
                 $item->data_servico = formatar($item->data_servico, "bd2dt");
@@ -358,6 +376,11 @@ class Usuario_model extends CI_Model{
             $item->usuario = $this->db->get_where("Usuario", "id = $item->id_usuario")->row();
         }
         
+        // echo '<pre>';
+        // print_r($query);
+        // echo '</pre>';
+        // exit;
+
         return $query;
     }
 

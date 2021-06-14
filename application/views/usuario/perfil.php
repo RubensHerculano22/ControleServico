@@ -117,77 +117,127 @@
                             </div>
                         </div>
                         <div class="tab-pane fade <?= $identificador == "favoritos" ? "show active" : "" ?>" id="favoritos_tab" role="tabpanel">
-                            <?php foreach($favoritos as $key => $item): ?>
-                                <div class="row">
-                                    <div class="col-md-3 col-sm-3 col-xs-12">
-                                        <?php if($item->img): ?>
-                                            <img src="data:<?= $item->img->tipo_imagem ?>;base64,<?= $item->img->img ?>" class="img-fluid mb-2" alt="white sample" style="max-width: 170px; max-height: 120px">
-                                        <?php else: ?>
-                                            <img src="https://levecrock.com.br/wp-content/uploads/2020/05/Produto-sem-Imagem-por-Enquanto.jpg" class="img-fluid mb-2" alt="white sample" style="max-width: 170px; max-height: 120px">
-                                        <?php endif; ?>
-                                    </div>
-                                    <div class="col-md-7 col-sm-7 col-xs-12 p-3">
-                                        <h4 class="text-center"><?= $item->usuario->nome." - ".$item->servico->nome." - ".$item->categoria->nome ?></h4>
-                                        <p class="text-justify pt-2"><?= $item->servico->descricao_curta ?></p>
-                                    </div>
-                                    <div class="col-md-2 col-sm-2 col-xs-12 align-self-center text-center">
-                                        <a href="<?= base_url("Servico/detalhes/".$item->servico->nome."/".$item->id_servico) ?>" class="btn btn-block" style="background-color: <?= $colores->color2 ?>; color: <?= $colores->color5 ?>">Ver mais</a>
-                                        <button type="button" data-id="<?= $item->id ?>" class="btn btn-danger btn-block remove_favorito" >Remover do Favoritos</button>
-                                        <!-- style="background-color: <?= $colores->color2 ?>; color: <?= $colores->color5 ?>" -->
-                                    </div>
-                                </div>
-                                <?php if($key < (count($favoritos) - 1)): ?>
-                                    <hr>
-                                <?php endif; ?>
-                            <?php endforeach; ?>
-                        </div>
-                        <div class="tab-pane fade <?= $identificador == "pedidos" ? "show active" : "" ?>" id="pedidos_tab" role="tabpanel">
-                            <?php foreach($contratados as $key => $item): ?>
-                                <div class="row mb-2">
-                                    <div class="col-xl-2 col-lg-6 col-md-4 col-sm-12 col-xs-12">
-                                        <?php if($item->img): ?>
-                                            <img src="data:<?= $item->img->tipo_imagem ?>;base64,<?= $item->img->img ?>" class="img-fluid mb-2" alt="white sample" style="max-width: 170px; max-height: 120px">
-                                        <?php else: ?>
-                                            <img src="https://levecrock.com.br/wp-content/uploads/2020/05/Produto-sem-Imagem-por-Enquanto.jpg" class="img-fluid mb-2" alt="white sample" style="max-width: 170px; max-height: 120px">
-                                        <?php endif; ?>
-                                    </div>
-                                    <div class="col-xl-7 col-lg-6 col-md-8 col-sm-12 col-xs-12 p-3">
-                                        <h4 class="text-center"><?= $item->usuario->nome." - ".$item->servico->nome." - ".$item->categoria->nome ?></h4>
-                                        <p class="text-justify pt-2"><?= $item->servico->descricao_curta ?></p>
-                                    </div>
-                                    <div class="col-md-3 col-sm-12 col-xs-12">
-                                        <div class="row">
-                                            <div class="col-md-12 col-sm-12 col-xs-12 align-self-center text-center mt-2">
-                                                <a href="<?= base_url("Usuario/controle_pedido/".$item->status->id_orcamento) ?>" class="btn btn-warning btn-block">Acompanhar Contratação</a>
-                                            </div>
-                                            <!-- <div class="col-md-6 col-sm-6 col-xs-12 align-self-center text-center mt-2">
-                                                <a href="<?= base_url("Servico/gerenciar_servico/".$item->id) ?>" class="btn btn-warning btn-block">Mensagens</a>
-                                            </div> -->
-                                            <div class="col-md-12 col-sm-12 col-xs-12 align-self-center text-center mt-2">
-                                                <button type="button" class="btn btn-danger btn-block cancela_servico" data-id="<?= $item->status->id_orcamento ?>" <?= ($item->status->id != 6 && $item->status->id != 3) ? "" : "disabled" ?>>Cancelar</button>
-                                            </div>
-                                            <?php if($item->status->id == 7): ?>
-                                            <div class="col-md-12 col-sm-12 col-xs-12 align-self-center text-center mt-2">
-                                                <a href="<?= base_url("Feedback/index/".$item->id) ?>" class="btn btn-info btn-block">Realizar Feedback</a>
-                                            </div>
+                            <?php if($favoritos): ?>
+                                <?php foreach($favoritos as $key => $item): ?>
+                                    <div class="row">
+                                        <div class="col-md-3 col-sm-3 col-xs-12">
+                                            <?php if($item->img): ?>
+                                                <img src="data:<?= $item->img->tipo_imagem ?>;base64,<?= $item->img->img ?>" class="img-fluid mb-2" alt="white sample" style="max-width: 170px; max-height: 120px">
+                                            <?php else: ?>
+                                                <img src="https://levecrock.com.br/wp-content/uploads/2020/05/Produto-sem-Imagem-por-Enquanto.jpg" class="img-fluid mb-2" alt="white sample" style="max-width: 170px; max-height: 120px">
                                             <?php endif; ?>
                                         </div>
+                                        <div class="col-md-7 col-sm-7 col-xs-12 p-3">
+                                            <h4 class="text-center"><?= $item->usuario->nome." - ".$item->servico->nome." - ".$item->categoria->nome ?></h4>
+                                            <p class="text-justify pt-2"><?= $item->servico->descricao_curta ?></p>
+                                        </div>
+                                        <div class="col-md-2 col-sm-2 col-xs-12 align-self-center text-center">
+                                            <a href="<?= base_url("Servico/detalhes/".$item->servico->nome."/".$item->id_servico) ?>" class="btn btn-block" style="background-color: <?= $colores->color2 ?>; color: <?= $colores->color5 ?>">Ver mais</a>
+                                            <button type="button" data-id="<?= $item->id ?>" class="btn btn-danger btn-block remove_favorito" >Remover do Favoritos</button>
+                                            <!-- style="background-color: <?= $colores->color2 ?>; color: <?= $colores->color5 ?>" -->
+                                        </div>
                                     </div>
-                                    <!-- <div class="col-xl-2 col-lg-2 col-md-4 col-sm-12 col-xs-12 align-self-center text-center">
-                                        <button type="button" class="btn btn-warning btn-block orcamento_m" data-toggle="modal" data-target="#modal_orcamento" data-id="<?= $item->status->id_orcamento ?>">Historico Orçamento</button>
+                                    <?php if($key < (count($favoritos) - 1)): ?>
+                                        <hr>
+                                    <?php endif; ?>
+                                <?php endforeach; ?>
+                            <?php else:?>
+                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="alert alert-dismissible" style="background-color: <?= $colores->color4 ?>">
+                                        Você não possui nenhum serviço favoritado!
                                     </div>
-                                    <div class="col-xl-2 col-lg-2 col-md-4 col-sm-12 col-xs-12 align-self-center text-center">
-                                        <a href="<?= base_url("Servico/gerenciar_servico/".$item->id) ?>" class="btn btn-warning btn-block">Mensagens</a>
-                                    </div>
-                                    <div class="col-xl-1 col-lg-2 col-md-4 col-sm-12 col-xs-12 align-self-center text-center">
-                                        <button type="button" class="btn btn-danger btn-block cancela_servico" data-id="<?= $item->status->id_orcamento ?>" <?= ($item->status->id != 6 && $item->status->id != 3) ? "" : "disabled" ?>>Cancelar</button>
-                                    </div> -->
-
                                 </div>
-                                <?php if($key < (count($contratados) - 1)): ?>
-                                    <hr>
-                                <?php endif; ?>
-                            <?php endforeach; ?>
+                            <?php endif; ?>
+                        </div>
+                        <div class="tab-pane fade <?= $identificador == "pedidos" ? "show active" : "" ?>" id="pedidos_tab" role="tabpanel">
+                            <div id="accordion">
+                                <div class="card">
+                                    <div class="card-header" style="background-color: <?= $colores->color2 ?>">
+                                        <h4 class="card-title w-100">
+                                            <a class="d-block w-100" data-toggle="collapse" href="#emandamento" style="color: <?= $colores->color5 ?>">
+                                                Em Andamento
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    <div id="emandamento" class="collapse show">
+                                        <div class="card-body">
+                                        <?php foreach($contratados->andamento as $key => $item): ?>
+                                            <div class="row mb-2">
+                                                <div class="col-xl-2 col-lg-6 col-md-4 col-sm-12 col-xs-12">
+                                                    <?php if($item->img): ?>
+                                                        <img src="data:<?= $item->img->tipo_imagem ?>;base64,<?= $item->img->img ?>" class="img-fluid mb-2" alt="white sample" style="max-width: 170px; max-height: 120px">
+                                                    <?php else: ?>
+                                                        <img src="https://levecrock.com.br/wp-content/uploads/2020/05/Produto-sem-Imagem-por-Enquanto.jpg" class="img-fluid mb-2" alt="white sample" style="max-width: 170px; max-height: 120px">
+                                                    <?php endif; ?>
+                                                </div>
+                                                <div class="col-xl-7 col-lg-6 col-md-8 col-sm-12 col-xs-12 p-3">
+                                                    <h4 class="text-center"><?= $item->usuario->nome." - ".$item->servico->nome." - ".$item->categoria->nome ?></h4>
+                                                    <p class="text-justify pt-2"><?= $item->servico->descricao_curta ?></p>
+                                                </div>
+                                                <div class="col-md-3 col-sm-12 col-xs-12">
+                                                    <div class="row">
+                                                        <div class="col-md-12 col-sm-12 col-xs-12 align-self-center text-center mt-2">
+                                                            <a href="<?= base_url("Usuario/controle_pedido/".$item->status->id_orcamento) ?>" class="btn btn-block"  style="background-color: <?= $colores->color2 ?>; color: <?= $colores->color5 ?>">Acompanhar Contratação</a>
+                                                        </div>
+                                                        <div class="col-md-12 col-sm-12 col-xs-12 align-self-center text-center mt-2">
+                                                            <button type="button" class="btn btn-danger btn-block cancela_servico" data-id="<?= $item->status->id_orcamento ?>" <?= ($item->status->id != 6 && $item->status->id != 3) ? "" : "disabled" ?>>Cancelar</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <?php if($key < (count($contratados->andamento) - 1)): ?>
+                                                <hr>
+                                            <?php endif; ?>
+                                        <?php endforeach; ?>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-header" style="background-color: <?= $colores->color2 ?>">
+                                        <h4 class="card-title w-100">
+                                            <a class="d-block w-100" data-toggle="collapse" href="#concluidas" style="color: <?= $colores->color5 ?>">
+                                                Concluidas
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    <div id="concluidas" class="collapse show">
+                                        <div class="card-body">
+                                        <?php foreach($contratados->concluido as $key => $item): ?>
+                                            <div class="row mb-2">
+                                                <div class="col-xl-2 col-lg-6 col-md-4 col-sm-12 col-xs-12">
+                                                    <?php if($item->img): ?>
+                                                        <img src="data:<?= $item->img->tipo_imagem ?>;base64,<?= $item->img->img ?>" class="img-fluid mb-2" alt="white sample" style="max-width: 170px; max-height: 120px">
+                                                    <?php else: ?>
+                                                        <img src="https://levecrock.com.br/wp-content/uploads/2020/05/Produto-sem-Imagem-por-Enquanto.jpg" class="img-fluid mb-2" alt="white sample" style="max-width: 170px; max-height: 120px">
+                                                    <?php endif; ?>
+                                                </div>
+                                                <div class="col-xl-7 col-lg-6 col-md-8 col-sm-12 col-xs-12 p-3">
+                                                    <h4 class="text-center"><?= $item->usuario->nome." - ".$item->servico->nome." - ".$item->categoria->nome ?></h4>
+                                                    <p class="text-justify pt-2"><?= $item->servico->descricao_curta ?></p>
+                                                </div>
+                                                <div class="col-md-3 col-sm-12 col-xs-12">
+                                                    <div class="row">
+                                                        <div class="col-md-12 col-sm-12 col-xs-12 align-self-center text-center mt-2">
+                                                            <a href="<?= base_url("Usuario/controle_pedido/".$item->status->id_orcamento) ?>" class="btn btn-block" style="background-color: <?= $colores->color2 ?>; color: <?= $colores->color5 ?>">Histórico de Contratação</a>
+                                                        </div>
+                                                        <?php if($item->realizarFeedback == true): ?>
+                                                        <div class="col-md-12 col-sm-12 col-xs-12 align-self-center text-center mt-2">
+                                                            <a href="<?= base_url("Feedback/index/".$item->id) ?>" class="btn btn-block" style="background-color: <?= $colores->color2 ?>; color: <?= $colores->color5 ?>">Realizar Feedback</a>
+                                                        </div>
+                                                        <?php endif; ?>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <?php if($key < (count($contratados->concluido) - 1)): ?>
+                                                <hr>
+                                            <?php endif; ?>
+                                        <?php endforeach; ?>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="tab-pane fade <?= $identificador == "cadastrado" ? "show active" : "" ?>" id="cadastrado_tab" role="tabpanel"> <!-- eu -->
                             <?php foreach($cadastrados as $key => $item): ?>
@@ -204,7 +254,7 @@
                                         <p class="text-justify pt-2"><?= $item->descricao_curta ?></p>
                                     </div>
                                     <div class="col-md-2 col-sm-2 col-xs-12 align-self-center text-center">
-                                        <a href="<?= base_url("Servico/gerenciar_servico/".$item->id) ?>" class="btn btn-warning btn-block">Gerenciar</a>
+                                        <a href="<?= base_url("Servico/gerenciar_servico/".$item->id) ?>" class="btn btn-block" style="background-color: <?= $colores->color2 ?>; color: <?= $colores->color5 ?>">Gerenciar</a>
                                     </div>
                                 </div>
                                 <?php if($key < (count($cadastrados) - 1)): ?>

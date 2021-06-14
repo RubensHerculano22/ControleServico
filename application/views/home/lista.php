@@ -119,7 +119,7 @@
                         <?php endforeach; ?>
                     <?php else: ?>
                         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                            <div class="alert alert-warning alert-dismissible">
+                            <div class="alert alert-dismissible" style="background-color: <?= $colores->color4 ?>">
                                 <h5><i class="icon fas fa-exclamation-triangle"></i> Nenhum serviço encontrado!</h5>
                                 Você é um prestador de Serviço? Cadastre-se em nosso sistema, totalmente gratuitamente.
                             </div>

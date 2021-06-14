@@ -1,6 +1,6 @@
-<div class="container">
+<div class="<?= ($info[0])->status->id == 2 ? "container-fluid" : "container" ?>">
     <div class="row">
-        <div class="col-md-12 col-sm-12 col-xs-12 pt-5">
+        <div class="<?= ($info[0])->status->id == 2 ? "col-md-8 col-sm-8" : "col-md-12 col-sm-12" ?> col-xs-12 pt-5">
             <div class="card">
                 <div class="card-header" style="background-color: <?= $colores->color2 ?>">
                     <h3 class="card-title" style="color: <?= $colores->color5 ?>"">Acompanhamento de Pedido de Serviço</h3>
@@ -10,6 +10,11 @@
                         <div class="col-md-12 col-sm-12 col-xs-12">
                                 <?php foreach($info as $key => $item): ?>
                                     <div class="row">
+                                        <div class="col-md-12 col-sm-12 col-xs-12">
+                                            <div class="float-right">
+                                                <small><i class="far fa-clock"></i> &nbsp;<?= $item->data_alteracao ?></small>
+                                            </div>
+                                        </div>
                                     <?php if($item->status->id == 1): ?>
                                         <div class="col-md-6 col-sm-6 col-xs-12">
                                             <div class="form-group">
@@ -49,12 +54,14 @@
                                                 <input type="text" class="form-control" value="<?= $item->orcamento ?>" readonly/>
                                             </div>
                                         </div>
+                                        <?php if($item->descricao): ?>
                                         <div class="col-md-12 col-sm-12 col-xs-12">
                                             <div class="form-group">
                                                 <label>Descrição do Orçamento</label>
                                                 <textarea class="form-control" rows="3" readonly><?= $item->descricao ?></textarea>
                                             </div>
                                         </div>
+                                        <?php endif; ?>
                                     <?php endif; ?>
                                     <?php if($item->status->id == 3): ?>
                                         <div class="col-md-6 col-sm-6 col-xs-12">
@@ -112,7 +119,7 @@
 
                                     </div>
                                     <?php if($key < (count($info) - 1)): ?>
-                                        <hr class="m-3">
+                                        <hr class="m-3" style="background-color: #C9EEF2">
                                     <?php endif; ?>
                                 <?php endforeach; ?>
                         </div>
@@ -125,6 +132,45 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-4 col-xs-12 pt-5 <?= ($info[0])->status->id == 2 ? "" : "d-none" ?>">
+            <div class="card">
+                <div class="card-header" style="background-color: <?= $colores->color2 ?>">
+                    <h3 class="card-title" style="color: <?= $colores->color5 ?>"">Resposta ao pedido</h3>
+                </div>
+                <form id="submit">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class="form-group">
+                                    <div class="custom-control custom-radio d-inline">
+                                        <input class="custom-control-input custom-control-input-danger" value="1" type="radio" id="aceitar" name="aceite_orcamento" required>
+                                        <label for="aceitar" class="custom-control-label">Aceitar Orçamento </label>
+                                    </div>
+                                    <div class="custom-control custom-radio d-inline">
+                                        <input class="custom-control-input custom-control-input-danger" value="0" type="radio" id="recusar" name="aceite_orcamento" required>
+                                        <label for="recusar" class="custom-control-label">Recusar Orçamento</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class="form-group">
+                                    <label for="nome">Descrição <small>(Opcional)</small></label>
+                                    <textarea class="form-control" name="descricao_aceite" rows="3" id="descricao_aceite" placeholder="Descrição sobre a decisão"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="hidden" name="id_orcamento" id="id_orcamento" value="<?= $id ?>"/>
+                    </div>
+                    <div class="card-footer">
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <button type="submit" class="btn float-right" style="background-color: <?= $colores->color2 ?>; color: <?= $colores->color5 ?>">Salvar</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
