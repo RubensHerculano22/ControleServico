@@ -1,14 +1,14 @@
 <div class="container">
     <div class="row">
         <div class="col-sm-12 col-xs-12 col-xs-12">
-            <div class="card card-default">
-                <div class="card-header">
+            <div class="card">
+                <div class="card-header" style="background-color: <?= $colores->color2 ?>; color: <?= $colores->color5 ?>">
                     <h3 class="card-title">Formulário de Edição de Imagens do Serviço</h3>
                 </div>
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-12 col-sm-12 col-xs-12 mb-5">
-                            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modalImagem">Adicionar nova Imagem</button>
+                            <button type="button" class="btn" data-toggle="modal" data-target="#modalImagem" style="background-color: <?= $colores->color2 ?>; color: <?= $colores->color5 ?>">Adicionar nova Imagem</button>
                         </div>
                         <?php foreach($imagem as $key => $item): ?>
                             <div class="col-md-4 col-sm-4 col-xs-12 text-center pb-4">
@@ -19,12 +19,14 @@
                                 <div class="form-group">
                                     <input type="checkbox" name="ativo_switch" id="ativo<?= $key ?>" <?= $item->ativo == 1 ? "checked" : "" ?> data-id="<?= $item->principal ?>" data-imagem="<?= $item->id ?>" data-bootstrap-switch data-off-color="danger" data-on-text="Ativo" data-on-color="success" data-off-text="Desativado">
                                 </div>
-                                <button type="button" class="btn btn-warning" onclick="editaImagem(<?= $item->id ?>)"><i class="fas fa-edit"></i></button>
-                                <button type="button" class="btn btn-danger" onclick="removeImagem(<?= $item->id ?>)"><i class="fas fa-trash-alt"></i></button>
+                                <button type="button" class="btn btn-outline-secondary" onclick="editaImagem(<?= $item->id ?>)"><i class="fas fa-edit"></i></button>
+                                <button type="button" class="btn btn-outline-danger" onclick="removeImagem(<?= $item->id ?>)"><i class="fas fa-trash-alt"></i></button>
                             </div>
                         <?php endforeach; ?>
-                        <small>Talvez com o estilo outline</small>
                     </div>
+                </div>
+                <div class="card-footer">
+                    <a href="<?= base_url("Servico/gerenciar_servico/".$id) ?>" class="btn" style="background-color: <?= $colores->color2 ?>; color: <?= $colores->color5 ?>">Voltar</a>
                 </div>
             </div>
         </div>
@@ -33,7 +35,7 @@
 <div class="modal fade" id="modalImagem" style="display: none;" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header" style="background-color: <?= $colores->color2 ?>; color: <?= $colores->color5 ?>">
                 <h4 class="modal-title" id="titulo_modal">Cadastrar nova Imagem</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
@@ -63,7 +65,7 @@
                     </div>
                 </div>
                 <div class="modal-footer justify-content-between">
-                    <button type="submit" class="btn btn-info">Salvar</button>
+                    <button type="submit" class="btn" style="background-color: <?= $colores->color2 ?>; color: <?= $colores->color5 ?>">Salvar</button>
                 </div>
             </form>
         </div>

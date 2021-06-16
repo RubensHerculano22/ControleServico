@@ -2,12 +2,17 @@ var cont = 0;
 
 $(document).ready(function(){
 
+    $('#cep').inputmask({
+        mask: ['99999-999'],
+        keepStatic: true
+    });
+
     $(".tipo_servico").on("change", function(){
         var valor = $("input[name=tipo_servico]")[1];
         if(valor.checked == true)
-            $("#aluguel_equipamentos").removeClass("d-none");
+            $(".aluguel_equipamentos").removeClass("d-none");
         else
-            $("#aluguel_equipamentos").addClass("d-none");
+            $(".aluguel_equipamentos").addClass("d-none");
     });
 
     $("#categoria_principal").on("change", function(){
@@ -66,11 +71,22 @@ $(document).ready(function(){
     $("#local_servico").on("click", function(){
         var valor = $("input[name=local]")[0];
         if(valor.checked == true)
-            $("#endereco_input").removeClass("d-none");
+        {
+            $(".area_servico").addClass("d-none")
+            $(".local_especifico").removeClass("d-none");
+        }
         else
         {
-            $("#endereco").val("");
-            $("#endereco_input").addClass("d-none");
+            $(".local_especifico").addClass("d-none")
+            $(".area_servico").removeClass("d-none");
+
+            $("#cep").val("");
+            $("#estado_input").val("");
+            $("#cidade_input").val("");
+            $("#bairro_input").val("");
+            $("#endereco_input").val("");
+            $("#numero_input").val("");
+            $("#complemento_input").val("");
         }
     });
     
@@ -199,7 +215,93 @@ $(document).ready(function(){
             }, 2000);
         }
     })
+
+    $(".proximo").on("click", function(){
+        var id = $(this).data("id");
+        var acao = $(this).data("acao");
+        if(id == 1)
+        {
+            var verif = 0;
+            if($("#nome").val() != "")
+            {
+                if($("#descricao_curta").val() != "")
+                {
+                    if($("#categoria_principal").val() > 0)
+                    {
+                        if($("#categoria_especifica").val() > 0)
+                        {
+                            if($("#lista_pagamento")[0].childElementCount > 0)
+                            {
+                                verif = 1;
+                            }
+                            else
+                            {
+                                showNotification("error", "Erro", "Nenhuma forma de pagamento foi cadastrada", "toast-top-center", "15000");
+                            }
+                        }
+                        else
+                        {
+                            showNotification("error", "Erro", "O campo 'Categoria Especifica' deve ser preenchido", "toast-top-center", "15000");
+                        }
+                    }
+                    else
+                    {
+                        showNotification("error", "Erro", "O campo 'Categoria Principal' deve ser preenchido", "toast-top-center", "15000");
+                    }
+                }
+                else
+                {
+                    showNotification("error", "Erro", "O campo 'Descrição curta' deve ser preenchido", "toast-top-center", "15000");    
+                }
+            }
+            else
+            {
+                showNotification("error", "Erro", "O campo 'nome' deve ser preenchido", "toast-top-center", "15000");
+            }
+
+            if(verif == 1)
+            {
+                nextForm();
+            }
+        }
+        
+    })
 });
+
+function pesquisa_cep()
+{
+    var cep = $("#cep").val();
+    if(cep.length > 8)
+    {
+            $(".bloc_pesquisa").replaceWith('<div class="bloc_pesquisa"><br/><button type="button" class="btn mt-2" style="background-color: #254B59; color: #F0F2F0"><span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>&nbsp;Carregando</button></div>');
+            setTimeout(() => {        
+                
+                cep_tratado = cep.split("").filter(n => (Number(n) || n == 0)).join("");
+
+                var data = {"cep": cep_tratado};
+                $.post(BASE_URL+"Servico/get_cep", data, function(data) {
+                    if(data.estado == null)
+                    {
+                        showNotification("error", "Erro no campo CEP", "Valores invalidos foram cadastrados no campo CEP.", "toast-top-center");                
+                    }
+                    else
+                    {
+                        $("#endereco_input").val(data.logradouro)
+                        $("#bairro_input").val(data.bairro)
+                        $("#cidade_input").val(data.localidade)
+                        $("#estado_input").val(data.estado.nome)
+                    }
+
+                    $(".bloc_pesquisa").replaceWith('<div class="bloc_pesquisa"><br/><button type="button" onclick="pesquisa_cep()" class="btn mt-2" style="background-color: #254B59; color: #F0F2F0"><i class="fas fa-search-location"></i> Pesquisar</button></div>');
+                }, "json");
+
+            }, 1000);
+    }
+    else
+    {
+        showNotification("error", "Erro no campo CEP", "Valores invalidos foram cadastrados no campo CEP.", "toast-top-center");
+    }
+}
 
 function exclui_meio_pagamento(id){$("#"+id).remove()}
 

@@ -3,50 +3,50 @@
         <div class="col-md-12 col-sm-12 col-xs-12">
             <div class="row mb-5">
                 <div class="col-md-3 col-sm-3 col-xs-12">
-                    <div class="small-box bg-info">
-                        <div class="inner">
+                    <div class="small-box" style="background-color: <?= $colores->color2 ?>">
+                        <div class="inner" style="color: <?= $colores->color5 ?>">
                             <h3><?= $info_card->visualizacao ?></h3>
 
                             <p>Visualização do Mês</p>
                         </div>
                         <div class="icon">
-                            <i class="fas fa-chart-line"></i>
+                            <i class="fas fa-chart-line" style="color: <?= $colores->color3 ?>"></i>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-3 col-sm-3 col-xs-12">
-                    <div class="small-box bg-info">
-                        <div class="inner">
+                    <div class="small-box" style="background-color: <?= $colores->color2 ?>">
+                        <div class="inner" style="color: <?= $colores->color5 ?>">
                             <h3><?= $info_card->contratacoes ?></h3>
 
                             <p>Contratações</p>
                         </div>
                         <div class="icon">
-                            <i class="fas fa-handshake"></i>
+                            <i class="fas fa-handshake" style="color: <?= $colores->color3 ?>"></i>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-3 col-sm-3 col-xs-12">
-                    <div class="small-box bg-info">
-                        <div class="inner">
+                    <div class="small-box" style="background-color: <?= $colores->color2 ?>">
+                        <div class="inner" style="color: <?= $colores->color5 ?>">
                             <h3><?= $info_card->andamento ?></h3>
 
                             <p>Em andamento</p>
                         </div>
                         <div class="icon">
-                            <i class="fas fa-running"></i>
+                            <i class="fas fa-running" style="color: <?= $colores->color3 ?>"></i>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-3 col-sm-3 col-xs-12">
-                    <div class="small-box bg-info">
-                        <div class="inner">
+                    <div class="small-box "style="background-color: <?= $colores->color2 ?>">
+                        <div class="inner" style="color: <?= $colores->color5 ?>">
                             <h3><?= $info_card->orcamentos ?></h3>
 
                             <p>Orçamentos em aberto</p>
                         </div>
                         <div class="icon">
-                            <i class="fas fa-comments-dollar"></i>
+                            <i class="fas fa-comments-dollar" style="color: <?= $colores->color3 ?>"></i>
                         </div>
                     </div>
                 </div>
@@ -54,7 +54,7 @@
             <div class="row">
                 <div class="col-md-12 col-sm-12 col-xs-12">
                     <div class="card card-tabs">
-                        <div class="card-header p-0 pt-1" style="background-color: #e36802">
+                        <div class="card-header p-0 pt-1" style="background-color: <?= $colores->color2 ?>">
                             <ul class="nav nav-tabs" id="custom-tabs-one-tab" role="tablist">
                                 <li class="nav-item">
                                     <a class="tabs_link nav-link text-dark active" id="custom-tabs-one-geral-tab" data-toggle="pill" href="#custom-tabs-one-geral" role="tab" aria-controls="custom-tabs-one-geral" aria-selected="true">Gerenciamento Geral</a>
@@ -75,9 +75,8 @@
                             <div class="tab-pane fade show active" id="custom-tabs-one-geral" role="tabpanel" aria-labelledby="custom-tabs-one-geral-tab">
                                 <div class="row">
                                     <div class="col-md-12 col-sm-12 col-xs-12">
-                                        <a href="<?= base_url("Servico/edita_servico/".$id) ?>" class="btn btn-outline-info mr-4">Editar</a>
-                                        <a href="<?= base_url("Servico/editar_imagens/".$id) ?>" class="btn btn-outline-info mr-4">Editar Imagens</a>
-                                        <button type="button" class="btn btn-outline-info mr-4">Pré Visualizar</button>
+                                        <a href="<?= base_url("Servico/edita_servico/".$id) ?>" class="btn btn-outline-secondary mr-4">Editar</a>
+                                        <a href="<?= base_url("Servico/editar_imagens/".$id) ?>" class="btn btn-outline-secondary mr-4">Editar Imagens</a>
                                         <span class="float-right"><input type="checkbox" name="my-checkbox" checked data-bootstrap-switch data-off-color="danger" data-on-text="Visivel" data-off-text="Invisivel" data-on-color="success"></span>
                                     </div>
                                 </div>

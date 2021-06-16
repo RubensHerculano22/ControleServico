@@ -96,6 +96,8 @@ class Servico extends CI_Controller{
         $this->data["pagamento"] = $this->m_servico->get_pagamento();
         $this->data["estados"] = $this->m_servico->get_estados();
 
+        $this->data["lista_cidade"] = $this->m_servico->get_cidades($this->data["cidade"]->id_estado);
+        
         $this->data["breadcrumb"] = (object)array("titulo" => "Cadastro de Produtos/Serviços", "before" => array((object)array("nome" => "Home", "link" => "Servico")), "current" => "Cadastrando novo Serviço");
         $this->data["javascript"] = [
             base_url("assets/js/produto/formulario.js"),
