@@ -477,6 +477,11 @@ class Servico_model extends CI_Model{
         }
     }
 
+    public function lista_horarios()
+    {
+        return $this->db->get("ListaHorario")->result();
+    }
+
     public function cadastro_servico()
     {
         $rst = (object)array("rst" => true, "msg" => "", "id" => 0);

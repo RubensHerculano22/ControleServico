@@ -93,8 +93,6 @@ $(document).ready(function(){
     $("#adicionar_meio_pagamento").on("click", function(e){
         e.preventDefault();
 
-        $("#lista_pag").removeClass("d-none");
-
         var id_pagamento = $("#pagamento").val();
         var pagamento = document.getElementById("pagamento")[id_pagamento - 1].innerText;
 
@@ -115,9 +113,38 @@ $(document).ready(function(){
             juros = 0;
         }
 
-        var html = '<li class="list-group-item list_group_pagamento" id="li_meio_'+cont+'" data-id="'+id_pagamento+'/'+vezes_ini+'/'+juros+'">'+ pagamento + " - " + vezes + " " + juro + '<span class="float-right"><button class="btn btn-danger" type="button" onclick="exclui_meio_pagamento(\'li_meio_'+cont+'\')"><i class="fas fa-times"></i></button></span></li>';
-        $("#lista_pagamento").append(html);
-        cont++;
+        var verif = 0;
+        if(id_pagamento == "")
+        {
+            showNotification("error", "Erro", "Nenhum tipo de pagamento selecionado", "toast-top-center", "15000");
+        }
+        else
+        {
+            if(vezes_ini == "")
+            {
+                showNotification("error", "Erro", "Nenhum quantidade de vezes foi selecionado", "toast-top-center", "15000");
+            }
+            else
+            {
+                if(juros1.checked == false && juros2.checked == false)
+                {
+                    showNotification("error", "Erro", "Nenhum tipo de juros foi selecionado", "toast-top-center", "15000");
+                }
+                else
+                {
+                    verif = 1;
+                }
+            }
+        }
+
+        if(verif == 1)
+        {
+            $("#lista_pag").removeClass("d-none");
+
+            var html = '<li class="list-group-item list_group_pagamento" id="li_meio_'+cont+'" data-id="'+id_pagamento+'/'+vezes_ini+'/'+juros+'">'+ pagamento + " - " + vezes + " " + juro + '<span class="float-right"><button class="btn btn-danger" type="button" onclick="exclui_meio_pagamento(\'li_meio_'+cont+'\')"><i class="fas fa-times"></i></button></span></li>';
+            $("#lista_pagamento").append(html);
+            cont++;
+        }
     })
 
     $("#adicionar_horario").on("click", function(e){
@@ -146,18 +173,27 @@ $(document).ready(function(){
         files = myDropzone.files;
         
         var erro = "";
-        for(i=0;i<files.length;i++)
+        var empty = 1;
+        if(files.length > 0)
         {
-            tipo = files[i].name.split(".").pop().toLowerCase();
-            if(jQuery.inArray(tipo, ['gif','png','jpg','jpeg']) == -1)
+            for(i=0;i<files.length;i++)
             {
-                if(erro != "")
-                    erro += ", ";
-                
-                erro += files[i].name + "";
+                tipo = files[i].name.split(".").pop().toLowerCase();
+                if(jQuery.inArray(tipo, ['gif','png','jpg','jpeg']) == -1)
+                {
+                    if(erro != "")
+                        erro += ", ";
+                    
+                    erro += files[i].name + "";
+                }
             }
         }
+        else
+        {
+            empty = 0;
+        }
 
+        debugger;
         lista_pagamento = [];
         $('.list_group_pagamento').each(function () {
             lista_pagamento.push($(this).data('id'));
@@ -172,10 +208,10 @@ $(document).ready(function(){
         });
 
         $("#lista_horario_input").val(lista_horario.toString());
-
-        if(erro)
+        console.log(erro)
+        if(erro != "" || empty == 0)
         {
-            showNotification("error", "Erro nas imagens cadastradas", "Tipo do arquivo não permitido. Por favor troque os seguintes arquivos: "+ erro, "toast-top-center", "15000");
+            showNotification("error", "Erro", (erro != "" ? "Tipo do arquivo não permitido. Por favor troque os seguintes arquivos:"+erro : "Nenhuma imagem foi inserida"), "toast-top-center", "15000");
         }
         else
         {
@@ -218,7 +254,6 @@ $(document).ready(function(){
 
     $(".proximo").on("click", function(){
         var id = $(this).data("id");
-        var acao = $(this).data("acao");
         if(id == 1)
         {
             var verif = 0;
@@ -257,6 +292,40 @@ $(document).ready(function(){
             else
             {
                 showNotification("error", "Erro", "O campo 'nome' deve ser preenchido", "toast-top-center", "15000");
+            }
+
+            if(verif == 1)
+            {
+                nextForm();
+            }
+        }
+        else if(id == 2)
+        {
+            var verif = 0;
+            if($("#summernote").length <= 0)
+            {
+                showNotification("error", "Erro", "O campo 'Descrição completa' deve ser preenchido", "toast-top-center", "15000");
+            }
+            else
+            {
+                verif = 1;
+            }
+
+            if(verif == 1)
+            {
+                nextForm();
+            }
+        }
+        else if(id == 3)
+        {
+            var verif = 0;
+            if($("#lista_horario")[0].childElementCount > 0)
+            {
+                verif = 1;
+            }
+            else
+            {
+                showNotification("error", "Erro", "Nenhuma horario de atendimento foi cadastrada", "toast-top-center", "15000");
             }
 
             if(verif == 1)
@@ -303,6 +372,18 @@ function pesquisa_cep()
     }
 }
 
-function exclui_meio_pagamento(id){$("#"+id).remove()}
+function exclui_meio_pagamento(id){
+    $("#"+id).remove()
+    if($("#lista_pagamento")[0].childElementCount <= 0)
+    {
+        $("#lista_pag").addClass("d-none");
+    }
+}
 
-function exclui_horario(id){$("#"+id).remove()}
+function exclui_horario(id){
+    $("#"+id).remove()
+    if($("#lista_horario")[0].childElementCount <= 0)
+    {
+        $("#lista_de_horario").addClass("d-none");
+    }
+}

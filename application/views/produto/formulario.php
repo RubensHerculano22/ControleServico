@@ -205,17 +205,17 @@
                                                 <label>Quantidade de Vezes que realiza</label>
                                                 <select class="form-control select2bs4" name="vezes" id="vezes" data-placeholder="Quantidade de Vezes" style="width: 100%;">
                                                     <option value="1">À vista</option>
-                                                    <option value="2">2</option>
-                                                    <option value="3">3</option>
-                                                    <option value="4">4</option>
-                                                    <option value="5">5</option>
-                                                    <option value="6">6</option>
-                                                    <option value="7">7</option>
-                                                    <option value="8">8</option>
-                                                    <option value="9">9</option>
-                                                    <option value="10">10</option>
-                                                    <option value="11">11</option>
-                                                    <option value="12">12</option>
+                                                    <option value="2">2x vezes</option>
+                                                    <option value="3">3x vezes</option>
+                                                    <option value="4">4x vezes</option>
+                                                    <option value="5">5x vezes</option>
+                                                    <option value="6">6x vezes</option>
+                                                    <option value="7">7x vezes</option>
+                                                    <option value="8">8x vezes</option>
+                                                    <option value="9">9x vezes</option>
+                                                    <option value="10">10x vezes</option>
+                                                    <option value="11">11x vezes</option>
+                                                    <option value="12">12x vezes</option>
                                                 </select>
                                             </div>               
                                         </div>
@@ -244,7 +244,7 @@
                                         </div>
                                         <input type="hidden" value="" id="lista_pagamento_input" name="lista_tipo_pagamento"/>
                                         <div class="col-md-12 col-sm-12 col-xs-12 mt-4">
-                                            <button type="button" class="btn proximo" style="background-color: <?= $colores->color2 ?>; color: <?= $colores->color5 ?>" data-id="1" data-acao="prox">Proximo</button>
+                                            <button type="button" class="btn proximo" style="background-color: <?= $colores->color2 ?>; color: <?= $colores->color5 ?>" data-id="1">Proximo</button>
                                         </div>
                                     </div>
                                 </div>
@@ -253,12 +253,12 @@
                                         <div class="col-md-12 col-sm-12 col-xs-12">
                                             <label for="valor">Descrição Completa do serviço <small>(Serviço que possuem maior descrição com muito recursos visuais costumam ter maior contratação)</small></label>
                                             <textarea id="summernote" name="descricao_completa">
-                                                Place <em>some</em> <u>text</u> <strong>here</strong>
+                                                Realize <em>uma</em> <u>descrição</u> <strong>aqui</strong>
                                             </textarea>
                                         </div>
                                         <div class="col-md-12 col-sm-12 col-xs-12 mt-4">
-                                            <button type="button" class="btn btn-info" onclick="previousForm()">Anterior</button>
-                                            <button type="button" class="btn btn-info" onclick="nextForm()">Proximo</button>
+                                            <button type="button" class="btn" style="background-color: <?= $colores->color2 ?>; color: <?= $colores->color5 ?>" onclick="previousForm()">Anterior</button>
+                                            <button type="button" class="btn proximo" style="background-color: <?= $colores->color2 ?>; color: <?= $colores->color5 ?>" data-id="2">Proximo</button>
                                         </div>
                                     </div>
                                 </div>
@@ -282,18 +282,26 @@
                                         <div class="col-md-3 col-sm-3 col-xs-12">
                                             <div class="form-group">
                                                 <label for="valor">Inicio do Funcionamento</label>
-                                                <input type="text" class="form-control" name="horario_inicio" id="horario_inicio" placeholder="Inicio do Funcionamento" data-inputmask='"mask": "99:99"' data-mask>
+                                                <select class="form-control select2bs4" name="horario_inicio" id="horario_inicio" data-placeholder="Inicio do Funcionamento">
+                                                    <?php foreach($horarios as $item): ?>
+                                                        <option value="<?= $item->horario ?>"><?= $item->horario ?></option>
+                                                        <?php endforeach; ?>
+                                                </select>
                                             </div>
                                         </div>
                                         <div class="col-md-3 col-sm-3 col-xs-12">
                                             <div class="form-group">
                                                 <label for="valor">Final do Funcionamento</label>
-                                                <input type="text" class="form-control" name="horario_fim" id="horario_fim" placeholder="Final do Funcionamento" data-inputmask='"mask": "99:99"' data-mask>
+                                                <select class="form-control select2bs4" name="horario_fim" id="horario_fim" data-placeholder="Final do Funcionamento">
+                                                    <?php foreach($horarios as $item): ?>
+                                                        <option value="<?= $item->horario ?>"><?= $item->horario ?></option>
+                                                    <?php endforeach; ?>
+                                                </select>
                                             </div>
                                         </div>
                                         <div class="col-md-4 co-sm-4 col-xs-12">
                                             <br/>
-                                            <button class="btn btn-info" id="adicionar_horario">Adicionar Horario</button>
+                                            <button class="btn" id="adicionar_horario" style="background-color: <?= $colores->color2 ?>; color: <?= $colores->color5 ?>">Adicionar Horario</button>
                                         </div>
                                         <div class="col-md-12 col-sm-12 col-xs-12 d-none" id="lista_de_horario">
                                             <h4>Lista de Horario</h4>
@@ -302,8 +310,8 @@
                                         </div>
                                         <input type="hidden" value="" id="lista_horario_input" name="lista_tipo_horario"/>
                                         <div class="col-md-12 col-sm-12 col-xs-12 mt-4">
-                                            <button type="button" class="btn btn-info" onclick="previousForm()">Anterior</button>
-                                            <button type="button" class="btn btn-info" onclick="nextForm()">Proximo</button>
+                                            <button type="button" class="btn" style="background-color: <?= $colores->color2 ?>; color: <?= $colores->color5 ?>" onclick="previousForm()">Anterior</button>
+                                            <button type="button" class="btn proximo" style="background-color: <?= $colores->color2 ?>; color: <?= $colores->color5 ?>" data-id="3">Proximo</button>
                                         </div>
                                     </div>
                                 </div>
@@ -313,11 +321,11 @@
                                             <div id="actions" class="row">
                                                 <div class="col-lg-12">
                                                     <div class="btn-group">
-                                                        <span class="btn btn-info fileinput-button">
+                                                        <span class="btn fileinput-button" style="background-color: <?= $colores->color2 ?>; color: <?= $colores->color5 ?>">
                                                             <i class="fas fa-plus"></i>
                                                             <span>Adicionar Imagem</span>
                                                         </span>
-                                                        <button type="reset" class="btn btn-warning cancel">
+                                                        <button type="reset" class="btn btn-danger cancel">
                                                             <i class="fas fa-times-circle"></i>
                                                             <span>Cancelar todas as Imagens</span>
                                                         </button>
@@ -353,8 +361,8 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <button type="button" class="btn btn-info" onclick="previousForm()">Anterior</button>
-                                    <button type="submit" class="btn btn-info">Salvar</button>
+                                    <button type="button" class="btn" style="background-color: <?= $colores->color2 ?>; color: <?= $colores->color5 ?>" onclick="previousForm()">Anterior</button>
+                                    <button type="submit" class="btn" style="background-color: <?= $colores->color2 ?>; color: <?= $colores->color5 ?>">Salvar</button>
                                 </div>
                             </div>
                         </div>
