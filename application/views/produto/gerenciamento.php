@@ -63,9 +63,6 @@
                                     <a class="tabs_link nav-link text-white" id="custom-tabs-one-perguntas-tab" data-toggle="pill" href="#custom-tabs-one-perguntas" role="tab" aria-controls="custom-tabs-one-perguntas" aria-selected="false">Perguntas no Serviço</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="tabs_link nav-link text-white" id="custom-tabs-one-mensagem-tab" data-toggle="pill" href="#custom-tabs-one-mensagem" role="tab" aria-controls="custom-tabs-one-mensagem" aria-selected="false">Mensagens</a>
-                                </li>
-                                <li class="nav-item">
                                     <a class="tabs_link nav-link text-white" id="custom-tabs-one-orcamento-tab" data-toggle="pill" href="#custom-tabs-one-orcamento" role="tab" aria-controls="custom-tabs-one-orcamento" aria-selected="false">Orçamento</a>
                                 </li>
                             </ul>
@@ -83,23 +80,23 @@
                             </div>
                             <div class="tab-pane fade" id="custom-tabs-one-perguntas" role="tabpanel" aria-labelledby="custom-tabs-one-perguntas-tab">
                                 <h3 class="card-title ">Lista de Perguntas sem Resposta</h3><br/><br/>
-                                <div class="row mb-4" id="lista_pergunta">
-                                    
+                                <div class="row mb-4">
+                                    <div class="col-md-12 col-sm-12 col-xs-12">
+                                        <table class="table table-striped" style="width:100%">
+                                            <thead>
+                                                <th width="80%">Texto</th>
+                                                <th width="20%">Responder</th>
+                                            </thead>
+                                            <tbody id="lista_pergunta">
+                                                
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                                 <h3 class="card-title ">Lista Completa de Perguntas</h3><br/>
                                 <div class="row">
                                     <div class="col-md-12 co-sm-12 col-xs-12">
                                         <table class="table" id="lista_pergunta_completa" style="width: 100%">
-                                            <thead></thead>
-                                            <tbody></tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="tab-pane fade" id="custom-tabs-one-mensagem" role="tabpanel" aria-labelledby="custom-tabs-one-mensagem-tab">
-                                <div class="row">
-                                    <div class="col-md-12 co-sm-12 col-xs-12">
-                                        <table class="table" id="lista_mensagem" style="width: 100%">
                                             <thead></thead>
                                             <tbody></tbody>
                                         </table>
@@ -119,7 +116,6 @@
                             </div>
                         </div>
                     </div>
-                    <!-- /.card -->
                 </div>
             </div>
         </div>
@@ -130,10 +126,10 @@
 <div class="modal fade" id="modal_resposta">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header" style="background-color: <?= $colores->color2 ?>; color: <?= $colores->color5 ?>">
                 <h4 class="modal-title">Responder pergunta</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color: <?= $colores->color5 ?>">
+                    <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <form id="submit_pergunta">
@@ -154,8 +150,8 @@
                     </div>
                 </div>
                 <input type="hidden" name="id_pergunta" id="id_pergunta" value="" />
-                <div class="modal-footer justify-content-between">
-                    <button type="submit" class="btn btn-primary">Salvar</button>
+                <div class="modal-footer">
+                    <button type="submit" class="btn float-right" style="background-color: <?= $colores->color2 ?>; color: <?= $colores->color5 ?>">Salvar</button>
                 </div>
             </form>
         </div>

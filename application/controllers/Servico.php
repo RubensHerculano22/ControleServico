@@ -126,6 +126,22 @@ class Servico extends CI_Controller{
         $this->data["content"] = $this->load->view("produto/gerenciamento", $this->data, true);
         $this->load->view("template/content", $this->data);
     }
+
+    public function movimentacao($id)
+    {
+        $this->data["id"] = $id;
+        $this->data["info"] = $this->m_servico->get_info_orcamentos($id);
+
+        // echo '<pre>';
+        // print_r($this->data["info"]);
+        // echo '</pre>';
+        // exit;
+
+        $this->data["breadcrumb"] = (object)array("titulo" => "Acompanhamento do Pedido do Serviço", "before" => array((object)array("nome" => "Home", "link" => "Servico"), (object)array("nome" => "Gerenciamento de Serviço", "link" => "Servico/gerenciar_servico/".$this->data["info"][0]->id_servico)), "current" => "Acompanhamento do Pedido do Serviço");
+
+        $this->data["content"] = $this->load->view("produto/movimentacao", $this->data, true);
+        $this->load->view("template/content", $this->data);
+    }
     
     public function edita_servico($id)
     {
@@ -136,6 +152,12 @@ class Servico extends CI_Controller{
         $this->data["pagamento"] = $this->m_servico->get_pagamento();
         $this->data["estados"] = $this->m_servico->get_estados();
         $this->data["cidade"] = $this->m_servico->get_cidades($this->data["info"]->estado->id);
+        $this->data["horarios"] = $this->m_servico->lista_horarios();
+
+        // echo '<pre>';
+        // print_r($this->data["info"]);
+        // echo '</pre>';
+        // exit;
 
         $this->data["breadcrumb"] = (object)array("titulo" => "Editar Informações do Serviço", "before" => array((object)array("nome" => "Home", "link" => "Servico")), "current" => "Editar Informações do Serviço");
         $this->data["javascript"] = [
@@ -225,12 +247,6 @@ class Servico extends CI_Controller{
     public function responder_pergunta()
     {
         $rst = $this->m_servico->responder_pergunta();
-        echo json_encode($rst, JSON_UNESCAPED_UNICODE);
-    }
-
-    public function get_mensangens($id)
-    {
-        $rst = $this->m_servico->get_mensangens($id);
         echo json_encode($rst, JSON_UNESCAPED_UNICODE);
     }
 

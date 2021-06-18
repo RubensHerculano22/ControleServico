@@ -1,5 +1,5 @@
 var tableOrcamento, tableTodasPergunta;
-var i = 0, contPergunta = 0;
+var contPergunta = 0;
 
 $(document).ready(function(){
 
@@ -67,95 +67,6 @@ $(document).ready(function(){
         $(this).removeClass("text-white").addClass("text-dark");
     });
 
-    var tableMensagem = $("#lista_mensagem").DataTable({
-        language: {
-            url: BASE_URL+"assets/plugins/datatables/portugues-brasil.json",
-            select: { rows: { _: "%d linhas selecionadas", 1: "1 linha selecionada", 0: "" } }
-        },
-        ajax: {
-            url: BASE_URL+"Servico/get_mensangens/"+id,
-            dataSrc: "",
-            type: "post",
-            dataType: "json",
-        },
-        order: [[5, "asc"],[4,"desc"],[3, "desc"]],
-        columns: [
-            {data: "id_tipo_movimentacao.nome", title: "Tipo de Movimentação"},
-            {data: "id_emitente.nome", title: "Emitente"},
-            {data: "status.nome", title: "Status"},
-            {data: "data_movimentacao", title: "Data de Solicitação"},
-            {data: "data_modificacao", title: "Ultima Modificação"},
-            {
-                data: null,
-                title: "Opções",
-                render: function(data, x, row){
-
-                    var edita = '<a href="<?= base_url("Movimentacao/") ?>'+row.tipo_movimentacao+'/'+row.id+'" class="btn bg-amber waves-effect"><p class="hide">1</p><i class="material-icons">edit</i></a>';
-                    var exibe = '<a href="<?= base_url("Movimentacao/exibeMovimentacao") ?>'+'/'+row.id+'" class="btn bg-indigo waves-effect"><p class="hide">3</p><i class="material-icons">info</i></a>';
-                    var exibe_finalizada = '<a href="<?= base_url("Movimentacao/exibeMovimentacao") ?>'+'/'+row.id+'" class="btn bg-green waves-effect"><p class="hide">2</p><i class="material-icons">check</i></a>';
-                    var responder = '<a href="<?= base_url("Movimentacao/exibeMovimentacao") ?>'+'/'+row.id+'" class="btn bg-red waves-effect"><p class="hide">1</p><i class="material-icons">create</i></a>';
-                    if(row.depart.id_departamento === '13' || row.depart.id_departamento === '35')
-                    {
-                        if(row.id_empregado == '<?= $dados->user_id ?>')
-                        {
-                            if(row.status.id == '4')
-                                return edita;
-                            else if(row.status.id == '9')
-                                return exibe_finalizada;
-                            else
-                                return exibe;
-                        }
-                        else
-                        {
-                            if(row.status.id == '2' || row.status.id == '4')
-                                return responder;
-                            else if(row.status.id == '9')
-                                return exibe_finalizada;
-                            else
-                                return exibe;
-                        }
-                    }
-                    else if(row.depart.id_departamento === '28')
-                    {
-                        if(row.status.id == '3')
-                            return responder;
-                        else
-                            return exibe
-                    }
-                    else if(row.id_empregado == '<?= $dados->user_id ?>')
-                    {
-                        if(row.status.id == '5' || row.status.id == '6' || row.status.id == '12')
-                            return edita;
-                        else if(row.status.id == '1' || row.status.id == '7' || row.status.id == '8')
-                            return exibe;
-                        else
-                            return exibe;
-                    }
-                    else if(row.status.id == '11')
-                    {
-                        if(row.p_logado === '434' || row.p_logado === '300')
-                            return responder;
-                        else
-                            return exibe;
-                    }
-                    else if(row.id_supervisor == '<?= $dados->user_id ?>')
-                    {
-                        if(row.status.id == '1')
-                            return responder;
-                        else
-                            return exibe;
-                    }
-                    else
-                        return exibe;
-                }
-            }
-        ],
-        "columnDefs": [
-            {"type": 'date-uk', "targets": [3, 4]},
-            {"className": "text-center", "targets": "_all"},
-        ],
-    });
-
     tableTodasPergunta = $("#lista_pergunta_completa").DataTable({
         language: {
             url: BASE_URL+"assets/plugins/datatables/portugues-brasil.json",
@@ -177,15 +88,42 @@ $(document).ready(function(){
                     return row.usuario_pergunta.nome + " " +row.usuario_pergunta.sobrenome
                 }
             },
-            {data: "data_inclusao_br", title: "Data da Pergunta"},
-            {data: "resposta", title: "Resposta"},
-            {data: "data_resposta_br", title: "Data da Resposta"},
+            {
+                data: null, 
+                title: "Data da Pergunta",
+                render: function(data, x, row){
+                    if(row.data_inclusao_br != false)
+                        return row.data_inclusao_br;
+                    else
+                        return "-";
+                }
+            },
+            {
+                data: "resposta", 
+                title: "Resposta",
+                render: function(data, x, row){
+                    if(row.resposta != null && row.resposta != "")
+                        return row.resposta;
+                    else
+                        return "-";
+                }
+            },
+            {
+                data: null, 
+                title: "Data da Resposta",
+                render: function(data, x, row){
+                    if(row.data_resposta_br != false)
+                        return row.data_resposta_br;
+                    else
+                        return "-";
+                }
+            },
             {
                 data:null,
                 title: "Ação",
                 render: function(data, x, row){
                     contPergunta++;
-                    return '<button type="button" class="btn btn-outline-info" onclick="editaResposta('+contPergunta+')"><i class="fas fa-edit"></i></button>';
+                    return '<button type="button" class="btn btn-outline-secondary" onclick="editaResposta('+contPergunta+')"><i class="fas fa-edit"></i></button>';
                 }
             },
         ],
@@ -205,49 +143,45 @@ $(document).ready(function(){
             type: "post",
             dataType: "json",
         },
+        order: [[4, "asc"]],
         columns: [
             {data: "usuario.nome", title: "Nome do Solicitante"},
             {
                 data:null,
                 title: "Descrição de Solicitação",
                 render: function(data, x, row){
-                    return row.solicitacao[0].descricao;
+                    return row.descricao;
                 }
             },
             {
                 data:null,
                 title: "Ultima Modificação",
                 render: function(data, x, row){
-                    return row.solicitacao[0].data_alteracao;
+                    return row.solicitacao.data_alteracao;
                 }
             },
             {
                 data:null,
                 title: "Status do Orçamento",
                 render: function(data, x, row){
-                    return row.solicitacao[row.solicitacao.length - 1].status.nome;
+                    return row.solicitacao.status.nome;
                 }
             },
             {
                 data:null,
                 title: "Ação",
                 render: function(data, x, row){
-                    i++;
-                    var realizado = '';
-                    if(row.solicitacao[row.solicitacao.length - 1].status.id == 4)
-                        realizado = '<span class="fade">1</span><button type="button" class="btn btn-outline-success mr-2" title="Definir como realizado" onclick="servicoRealizado('+row.id+')"><i class="fas fa-check-circle"></i></button>';
-
-                    if(row.solicitacao[row.solicitacao.length - 1].status.id == 1 || row.solicitacao[row.solicitacao.length - 1].status.id == 5)
-                        return '<span class="fade">1</span>'+realizado+'<button type="button" class="btn btn-outline-warning" onclick="abriOrcamento('+i+')"><i class="fas fa-edit"></i></button>';
+                    if(row.solicitacao.status.id == 1 || row.solicitacao.status.id == 5 || row.solicitacao.status.id == 4)
+                        return '<span class="fade">1</span><a href="'+BASE_URL+"Servico/movimentacao/"+row.id+'" class="btn btn-outline-secondary"><i class="fas fa-edit"></i></a>';
                     else
-                        return '<span class="fade">2</span>'+realizado+'<button type="button" class="btn btn-outline-info" onclick="abriOrcamento('+i+')"><i class="fas fa-info-circle"></i></button>';
+                        return '<span class="fade">2</span><a href="'+BASE_URL+"Servico/movimentacao/"+row.id+'" class="btn btn-outline-secondary"><i class="fas fa-info-circle"></i></a>';
                 }
             },
             {
                 data:null,
                 title: "Cancelar",
                 render: function(data, x, row){                    
-                    if(row.solicitacao[row.solicitacao.length - 1].status.id == 1 || row.solicitacao[row.solicitacao.length - 1].status.id == 2)
+                    if(row.solicitacao.status.id != 3 || row.solicitacao.status.id != 6 || row.solicitacao.status.id != 7)
                         return '<button type="button" class="btn btn-outline-danger" onclick="cancelaServico('+row.id+')"><i class="fas fa-times"></i></button>';
                     else
                         return '<button type="button" class="btn btn-outline-danger disabled"><i class="fas fa-times"></i></button>';
@@ -259,11 +193,8 @@ $(document).ready(function(){
             {"className": "text-center", "targets": "_all"},
         ],
         rowCallback: function (row, data){
-            for(cont=0;cont<data.solicitacao.length;cont++)
-            {
-                if(data.solicitacao[cont].status.id == 1 && data.solicitacao[cont].ativo == 1)
-                    $(row).prop('class','bg-light');
-            }
+            if(data.solicitacao.status.id == 1 || data.solicitacao.status.id == 5 || data.solicitacao.status.id == 4)
+                $(row).prop('style','background-color: #F0F2F0;');
         }
     });
 
@@ -344,7 +275,7 @@ $(document).ready(function(){
 
 function abrirResposta(id)
 {
-    var pergunta = $("#pergunta"+id)[0].innerHTML;
+    var pergunta = $("#pergunta"+id).val();
     var resposta = $("#resposta"+id);
     $("#id_pergunta").val(id);
     $("#pergunta_input").val(pergunta);
@@ -376,35 +307,24 @@ function atualiza_perguntas(id)
         dataType: "json",
         success: function(data)
         {
-            $(".lista_pergunta").remove();
+
+            $(".item_pergunta").remove();
 
             if(data.length > 0)
             {
                 $.each( data, function( key, value ) {
-                    var html = '<div class="col-md-12 col-sm-12 col-xs-12 lista_pergunta">' +
-                                    '<div class="callout callout-info">' +
-                                        '<div class="row">' +
-                                            '<div class="col-md-10 col-sm-12 col-xs-12">' +
-                                                '<p id="pergunta'+value.id+'">'+value.pergunta+'</p>' +
-                                                '<small class="float-right">'+value.data_inclusao_br+'</small>' +
-                                            '</div>' +
-                                            '<div class="col-md-2 col-sm-12 col-xs-12 align-self-center text-center">' +
-                                                '<button type="button" class="btn btn-info mr-4" onclick="abrirResposta('+value.id+')">Responder</button>' +
-                                            '</div>' +
-                                        '</div>' +
-                                    '</div>' +
-                                '</div>';    
-
+                    var html = '<tr class="item_pergunta">' +
+                                    '<td>'+value.pergunta+'  <small>('+value.data_inclusao_br+')</small><input type="hidden" id="pergunta'+value.id+'" value="'+value.pergunta+'" /></td>' +
+                                    '<td><button type="button" class="btn mr-4" style="background-color: #254B59; color: #F0F2F0;" onclick="abrirResposta('+value.id+')">Responder</button></td>' +
+                                '</tr>';
                     $("#lista_pergunta").append(html);
                 });
             }
             else
             {
-                var html = '<div class="col-md-12 col-sm-12 col-xs-12 lista_pergunta">' +
-                            '<div class="callout callout-info">' +
-                                '<p>Este Serviço ainda não possui perguntas pedentes.</p>' +
-                            '</div>' +
-                        '</div>';
+                var html = '<tr class="item_pergunta">' +
+                                '<td colspan="2">Nenhuma pergunta pendente</td>' +
+                            '</tr>';
                         
                 $("#lista_pergunta").append(html);
             }

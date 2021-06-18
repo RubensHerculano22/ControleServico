@@ -193,7 +193,6 @@ $(document).ready(function(){
             empty = 0;
         }
 
-        debugger;
         lista_pagamento = [];
         $('.list_group_pagamento').each(function () {
             lista_pagamento.push($(this).data('id'));
@@ -261,15 +260,36 @@ $(document).ready(function(){
             {
                 if($("#descricao_curta").val() != "")
                 {
-                    if($("input[name=tipo_servico]")[1].checked == true || $("input[name=tipo_servico]")[0] == true)
+                    if($("#categoria_principal").val() > 0)
                     {
-                        if($("#categoria_principal").val() > 0)
+                        if($("#categoria_especifica").val() > 0)
                         {
-                            if($("#categoria_especifica").val() > 0)
+                            if($("input[name=tipo_servico]")[1].checked == true || $("input[name=tipo_servico]")[0].checked == true)
                             {
                                 if($("#lista_pagamento")[0].childElementCount > 0)
                                 {
-                                    verif = 1;
+                                    if($("#local_servico")[0].checked == true)
+                                    {
+                                        if($("#estado_input").val() != "")   
+                                        {
+                                            verif = 1;
+                                        }
+                                        else
+                                        {
+                                            showNotification("error", "Erro", "O campo 'CEP' deve ser preenchido", "toast-top-center", "15000");
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if($("#estado").val() != "")
+                                        {
+                                            verif = 1;
+                                        }
+                                        else
+                                        {
+                                            showNotification("error", "Erro", "O campo 'Estado' deve ser preenchido'", "toast-top-center", "15000");
+                                        }
+                                    }
                                 }
                                 else
                                 {
@@ -278,17 +298,17 @@ $(document).ready(function(){
                             }
                             else
                             {
-                                showNotification("error", "Erro", "O campo 'Categoria Especifica' deve ser preenchido", "toast-top-center", "15000");
+                                showNotification("error", "Erro", "O campo 'Tipo de Serviço' deve ser preenchido", "toast-top-center", "15000");
                             }
                         }
                         else
                         {
-                            showNotification("error", "Erro", "O campo 'Categoria Principal' deve ser preenchido", "toast-top-center", "15000");
+                            showNotification("error", "Erro", "O campo 'Categoria Especifica' deve ser preenchido", "toast-top-center", "15000");
                         }
                     }
                     else
                     {
-                        showNotification("error", "Erro", "O campo 'Tipo de Serviço' deve ser preenchido", "toast-top-center", "15000");
+                        showNotification("error", "Erro", "O campo 'Categoria Principal' deve ser preenchido", "toast-top-center", "15000");
                     }
                 }
                 else

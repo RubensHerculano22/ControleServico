@@ -119,7 +119,7 @@
                                         <div class="col-md-3 col-sm-6 col-xs-12 area_servico">
                                             <div class="form-group">
                                                 <label for="estado">Estado</label><small class="text-danger"> *</small>
-                                                <select class="form-control select2bs4" id="estado" name="estado">
+                                                <select class="form-control select2bs4" id="estado" name="estado_select">
                                                     <?php foreach($estados as $item): ?>
                                                         <option value="<?= $item->id ?>" <?= $item->id == $cidade->id_estado ? "selected" : false ?>><?= $item->nome." - ".$item->sigla ?></option>
                                                     <?php endforeach; ?>
@@ -129,7 +129,7 @@
                                         <div class="col-md-3 col-sm-6 col-xs-12 area_servico">
                                             <div class="form-group">
                                                 <label for="estado">Cidade</label><small class="text-danger"> *</small>
-                                                <select class="form-control select2bs4" id="cidade" name="cidade">
+                                                <select class="form-control select2bs4" id="cidade" name="cidade_select">
                                                     <?php foreach($lista_cidade as $item): ?>
                                                         <option class="option_cidades" value="<?= $item->ID ?>" <?= $item->ID == $cidade->id_cidade ? "selected" : false ?>><?= $item->Nome ?></option>
                                                     <?php endforeach; ?>
@@ -139,7 +139,7 @@
                                         <div class="col-md-3 col-sm-3 col-xs-12 d-none local_especifico">
                                             <div class="form-group">
                                                 <label for="endereco">CEP</label><small class="text-danger"> *</small>
-                                                <input type="text" class="form-control endereco_input" id="cep" value="" placeholder="CEP">
+                                                <input type="text" class="form-control endereco_input" name="cep" id="cep" value="" placeholder="CEP">
                                             </div>
                                         </div>
                                         <div class="col-md-9 col-sm-9 col-xs-12 d-none local_especifico">
@@ -251,7 +251,7 @@
                                 <div id="descricao-part" class="content" role="tabpanel" aria-labelledby="descricao-part-trigger">
                                     <div class="row">
                                         <div class="col-md-12 col-sm-12 col-xs-12">
-                                            <label for="valor">Descrição Completa do serviço <small>(Serviço que possuem maior descrição com muito recursos visuais costumam ter maior contratação)</small></label>
+                                            <label for="valor">Descrição Completa do serviço <small>(Serviço que possuem maior descrição com muito recursos visuais costumam ter maior contratação)</small></label><small class="text-danger"> *</small>
                                             <textarea id="summernote" name="descricao_completa">
                                                 Realize <em>uma</em> <u>descrição</u> <strong>aqui</strong>
                                             </textarea>

@@ -180,7 +180,7 @@
                                                             <a href="<?= base_url("Usuario/controle_pedido/".$item->status->id_orcamento) ?>" class="btn btn-block"  style="background-color: <?= $colores->color2 ?>; color: <?= $colores->color5 ?>">Acompanhar Contratação</a>
                                                         </div>
                                                         <div class="col-md-12 col-sm-12 col-xs-12 align-self-center text-center mt-2">
-                                                            <button type="button" class="btn btn-danger btn-block cancela_servico" data-id="<?= $item->status->id_orcamento ?>" <?= ($item->status->id != 6 && $item->status->id != 3) ? "" : "disabled" ?>>Cancelar</button>
+                                                            <button type="button" class="btn btn-danger btn-block cancela_servico" data-id="<?= $item->status->id_orcamento ?>" <?= ($item->status->id != 7 && $item->status->id != 6 && $item->status->id != 3) ? "" : "disabled" ?>>Cancelar</button>
                                                         </div>
                                                     </div>
                                                 </div>

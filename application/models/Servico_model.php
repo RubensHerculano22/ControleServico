@@ -273,7 +273,7 @@ class Servico_model extends CI_Model{
         }
 
         $this->db->set("pergunta", $data->pergunta);
-        $this->db->set("data_inclusao", "date('now')", false);
+        $this->db->set("data_inclusao", date('Y-m-d H:i:s'));
         $this->db->set("id_servico", $data->id_servico);
         $this->db->set("id_usuario", $this->dados->usuario_id);
         $this->db->set("id_usuario_servico", $data->id_usuario);
@@ -495,10 +495,23 @@ class Servico_model extends CI_Model{
         $this->db->set("data_atualizacao", date("Y-m-d H:i:s"));
         $this->db->set("id_tipo_servico", $data->tipo_servico);
         $this->db->set("id_categoria", $data->categoria_especifica);
-        $this->db->set("estado", $data->estado);
-        $this->db->set("cidade", $data->cidade);
-        if($data->local)
+
+        if(isset($data->local) && $data->local == "on")
+        {
+            $this->db->set("cep", $data->cep);
+            $this->db->set("estado", $this->get_estado_nome($data->estado));
+            $this->db->set("cidade", $this->get_cidade_nome($data->cidade));
+            $this->db->set("bairro", $data->bairro);
             $this->db->set("endereco", $data->endereco);
+            $this->db->set("numero", somente_numeros($data->numero));
+            $this->db->set("complemento", $data->complemento);
+        }
+        else
+        {
+            $this->db->set("estado", $data->estado_select);
+            $this->db->set("cidade", $data->cidade_select);
+        }
+        
         if($data->valor)
         {
             $valor_T = explode(" ", $data->valor);
@@ -629,6 +642,7 @@ class Servico_model extends CI_Model{
         if($resposta == "false")
             $this->db->where("resposta IS NULL");
 
+        $this->db->order_by("data_inclusao", "desc");
         $query = $this->db->get_where("Perguntas", "id_servico = $id")->result();
 
         foreach($query as $item)
@@ -649,7 +663,7 @@ class Servico_model extends CI_Model{
         $data = (object)$this->input->post();
 
         $this->db->set("resposta", $data->resposta);
-        $this->db->set("data_resposta", date("Y-m-d"));
+        $this->db->set("data_resposta", date('Y-m-d H:i:s'));
         
         $this->db->where("id = $data->id_pergunta");
         if($this->db->update("Perguntas"))
@@ -663,20 +677,6 @@ class Servico_model extends CI_Model{
         return $rst;
     }
 
-    /**
-     * Consulta as ultimas mensagens do Serviço.
-     * @access public
-     * @param  int   $id   Identificador do Serviço.
-     * @return object;
-    */
-    public function get_mensangens($id)
-    {
-        //$query = $this->db->get_where("");
-
-        //return $query;
-        return (object)array();
-    }
-
     public function get_orcamentos($id)
     {
         $this->db->select("O.*");
@@ -684,24 +684,53 @@ class Servico_model extends CI_Model{
         $rst = $this->db->get_where("Orcamento O", "O.id_servico = $id")->result();
         foreach($rst as $item)
         {
-            $item->solicitacao = $this->db->get_where("ContrataServico", "id_orcamento = '$item->id'")->result();
-            $item->usuario = $this->db->get_where("Usuario", "id = $item->id_usuario")->row();
-            
-            if(isset($item->data_servico) && !empty($item->data_servico))
-                $item->data_servico = formatar($item->data_servico, "bd2dt");
 
-            foreach($item->solicitacao as $value)
-            {
-                $value->status = $this->db->get_where("OrcamentoStatus", "id = ".$value->status)->row();
-                if($value->data_servico)
-                    $value->data_servico = formatar($value->data_servico, "bd2dt");    
-                $value->data_alteracao = formatar($value->data_alteracao, "bd2dt");
-                $this->db->select("id, nome");
-                $value->usuario = $this->db->get_where("Usuario", "id = $value->id_usuario")->row();
-            }
+            $this->db->order_by("id", "desc");
+            $queryInicialStatus = $this->db->get_where("ContrataServico", "id_orcamento = '$item->id' AND status = 1")->row();
+            $item->descricao = $queryInicialStatus->descricao;
+            $item->data_servico = formatar($queryInicialStatus->data_servico, "bd2dt");
+            $item->hora_servico = $queryInicialStatus->hora_servico;
+
+            $item->usuario = $this->db->get_where("Usuario", "id = $item->id_usuario")->row();
+
+            $item->solicitacao = $this->db->get_where("ContrataServico", "id_orcamento = '$item->id' AND ativo = 1")->row();
+            $item->solicitacao->data_alteracao = formatar($item->solicitacao->data_alteracao, "bd2dt");
+            $item->solicitacao->status = $this->db->get_where("OrcamentoStatus", "id = ".$item->solicitacao->status)->row();
         }
 
         return $rst;
+    }
+
+    public function get_info_orcamentos($id)
+    {
+        $this->db->order_by("id", "desc");
+        $query = $this->db->get_where("ContrataServico", "id_orcamento = $id")->result();
+
+        foreach($query as $item)
+        {
+            $this->db->select("id_servico");
+            $item->id_servico = $this->db->get_where("Orcamento", "id = $id")->row()->id_servico;
+            $item->status = $this->db->get_where("OrcamentoStatus", "id = $item->status")->row();
+
+            if($item->status->id == 4)
+            {
+                $this->db->order_by("id", "desc");
+                $queryInfo = $this->db->get_where("ContrataServico", "id_orcamento = '$id' AND status = 1")->row();
+
+                $item->data_servico = $queryInfo->data_servico;
+                $item->hora_servico = $queryInfo->hora_servico;
+            }
+
+            if(isset($item->data_servico) && !empty($item->data_servico))
+                $item->data_servico = formatar($item->data_servico, "bd2dt");
+
+            $item->data_alteracao = formatar($item->data_alteracao, "bd2dt");
+            
+            $this->db->select("id, nome");
+            $item->usuario = $this->db->get_where("Usuario", "id = $item->id_usuario")->row();
+        }
+
+        return $query;
     }
 
     public function resposta_orcamento()
@@ -821,9 +850,26 @@ class Servico_model extends CI_Model{
         $this->db->set("estado", $data->estado);
         $this->db->set("cidade", $data->cidade);
         if(isset($data->local) && $data->local)
+        {
+            $this->db->set("cep", $data->cep);
+            $this->db->set("estado", $this->get_estado_nome($data->estado));
+            $this->db->set("cidade", $this->get_cidade_nome($data->cidade));
+            $this->db->set("bairro", $data->bairro);
             $this->db->set("endereco", $data->endereco);
+            $this->db->set("numero", somente_numeros($data->numero));
+            $this->db->set("complemento", $data->complemento);
+        }
         else
+        {
+            $this->db->set("estado", $data->estado_select);
+            $this->db->set("cidade", $data->cidade_select);
+            $this->db->set("cep", "");
+            $this->db->set("bairro", "");
             $this->db->set("endereco", "");
+            $this->db->set("numero", "");
+            $this->db->set("complemento", "");
+            $this->db->set("endereco", "");
+        }
 
         if($data->valor)
         {
@@ -1182,6 +1228,25 @@ class Servico_model extends CI_Model{
         }
         
         return $count;
+    }
+
+    public function get_estado_nome($nome)
+    {
+        $query = $this->db->get_where("Estados", "nome = '$nome'")->row();
+
+        return $query->id;
+    }
+
+    public function get_cidade_nome($nome)
+    {
+        $json = file_get_contents(base_url("assets/Cidades.json"));
+        $data = json_decode($json);
+
+        foreach($data as $item)
+        {
+            if($item->Nome == $nome)
+                return $item->ID;
+        }
     }
 
     /**
