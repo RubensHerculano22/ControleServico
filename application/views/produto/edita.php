@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col-sm-12 col-xs-12 col-xs-12">
             <div class="card card-default">
-                <div class="card-header">
+                <div class="card-header" style="background-color: <?= $colores->color2 ?>; color: <?= $colores->color5 ?>">
                     <h3 class="card-title">Formulário de Edição de Serviço</h3>
                 </div>
                 <form id="submit">
@@ -17,7 +17,7 @@
                             <div class="col-md-12 col-sm-12 col-xs-12">
                                 <div class="form-group">
                                     <label>Descrição Curta(Atrativa)</label>
-                                    <textarea class="form-control" rows="2" name="descricao_curta" placeholder="Descrição Curta (Atrativa)"><?= $info->descricao_curta ?></textarea>
+                                    <textarea class="form-control" rows="2" id="descricao_curta" name="descricao_curta" placeholder="Descrição Curta (Atrativa)"><?= $info->descricao_curta ?></textarea>
                                 </div>
                             </div>
                             <div class="col-md-4 col-sm-4 col-xs-12">
@@ -30,7 +30,7 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-md-8 col-sm-8 col-xs-12 categoria_especifica">
+                            <div class="col-md-4 col-sm-4 col-xs-12 categoria_especifica">
                                 <div class="form-group">
                                     <label>Categoria Especifica</label>
                                     <select class="custom-select" name="categoria_especifica" id="categoria_especifica">
@@ -42,6 +42,12 @@
                                             </optgroup>
                                         <?php endforeach; ?>
                                     </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-3 col-xs-12">
+                                <div class="form-group">
+                                    <label for="valor">Valor</label>
+                                    <input type="text" class="form-control preco" name="valor" value="<?= $info->valor_D ?>" id="valor" placeholder="Valor">
                                 </div>
                             </div>
                             <div class="col-md-4 col-sm-6 col-xs-12">
@@ -65,12 +71,6 @@
                                     </select>
                                 </div>
                                 <input type="hidden" value="<?= $info->cidade->ID ?>" id="id_cidade" />
-                            </div>
-                            <div class="col-md-4 col-sm-3 col-xs-12">
-                                <div class="form-group">
-                                    <label for="valor">Valor</label>
-                                    <input type="text" class="form-control preco" name="valor" value="<?= $info->valor_D ?>" id="valor" placeholder="Valor">
-                                </div>
                             </div>
                             <div class="col-md-3 col-sm-3 col-xs-12">
                                 <div class="form-group tipo_servico">
@@ -161,7 +161,7 @@
                                     </div>
                                     <div class="col-md-12 co-sm-12 col-xs-12 pl-5 pr-5">
                                         <br/>
-                                        <button class="btn btn-info btn-block" id="adicionar_meio_pagamento">Adicionar Meio de Pagamento</button>
+                                        <button class="btn btn-block" id="adicionar_meio_pagamento" style="background-color: <?= $colores->color2 ?>; color: <?= $colores->color5 ?>">Adicionar Meio de Pagamento</button>
                                     </div>
                                     <div class="col-md-12 col-sm-12 col-xs-12 pt-4" id="lista_pag">
                                         <ol class="list-group list-group-numbered" id="lista_pagamento">
@@ -204,7 +204,7 @@
                                     </div>
                                     <div class="col-md-12 co-sm-12 col-xs-12 pl-5 pr-5">
                                         <br/>
-                                        <button class="btn btn-info btn-block" id="adicionar_horario">Adicionar Horario</button>
+                                        <button class="btn btn-block" id="adicionar_horario" style="background-color: <?= $colores->color2 ?>; color: <?= $colores->color5 ?>">Adicionar Horario</button>
                                     </div>
                                     <div class="col-md-12 col-sm-12 col-xs-12 pt-4" id="lista_de_horario">
                                         <ol class="list-group list-group-numbered" id="lista_horario">
@@ -229,8 +229,8 @@
                         <input type="hidden" name="id_servico" value="<?= $info->id ?>" id="id_servico" />
                     </div>
                     <div class="card-footer justify-content-between">
-                        <a href="<?= base_url("Servico/gerenciar_servico/$id") ?>" class="btn btn-info float-left">Voltar</a>
-                        <button type="submit" class="btn btn-info float-right">Salvar</button>
+                        <a href="<?= base_url("Servico/gerenciar_servico/$id") ?>" class="btn float-left" style="background-color: <?= $colores->color2 ?>; color: <?= $colores->color5 ?>">Voltar</a>
+                        <button type="submit" class="btn float-right" style="background-color: <?= $colores->color2 ?>; color: <?= $colores->color5 ?>">Salvar</button>
                     </div>
                 </form>
             </div>

@@ -42,8 +42,6 @@ $(document).ready(function(){
     $("#adicionar_meio_pagamento").on("click", function(e){
         e.preventDefault();
 
-        $("#lista_pag").removeClass("d-none");
-
         var id_pagamento = $("#pagamento").val();
         var pagamento = document.getElementById("pagamento")[id_pagamento - 1].innerText;
 
@@ -64,9 +62,37 @@ $(document).ready(function(){
             juros = 0;
         }
 
-        var html = '<li class="list-group-item list_group_pagamento" id="li_meio_'+meio_pagamento+'" data-id="'+id_pagamento+'/'+vezes_ini+'/'+juros+'">'+ pagamento + " - " + vezes + " " + juro + '<span class="float-right"><button class="btn btn-danger" type="button" onclick="exclui_meio_pagamento(\'li_meio_'+meio_pagamento+'\')"><i class="fas fa-times"></i></button></span></li>';
-        $("#lista_pagamento").append(html);
-        meio_pagamento++;
+        if(id_pagamento == "")
+        {
+            showNotification("error", "Erro", "Nenhum tipo de pagamento selecionado", "toast-top-center", "15000");
+        }
+        else
+        {
+            if(vezes_ini == "")
+            {
+                showNotification("error", "Erro", "Nenhum quantidade de vezes foi selecionado", "toast-top-center", "15000");
+            }
+            else
+            {
+                if(juros1.checked == false && juros2.checked == false)
+                {
+                    showNotification("error", "Erro", "Nenhum tipo de juros foi selecionado", "toast-top-center", "15000");
+                }
+                else
+                {
+                    verif = 1;
+                }
+            }
+        }
+
+        if(verif == 1)
+        {
+            $("#lista_pag").removeClass("d-none");
+
+            var html = '<li class="list-group-item list_group_pagamento" id="li_meio_'+meio_pagamento+'" data-id="'+id_pagamento+'/'+vezes_ini+'/'+juros+'">'+ pagamento + " - " + vezes + " " + juro + '<span class="float-right"><button class="btn btn-danger" type="button" onclick="exclui_meio_pagamento(\'li_meio_'+meio_pagamento+'\')"><i class="fas fa-times"></i></button></span></li>';
+            $("#lista_pagamento").append(html);
+            meio_pagamento++;
+        }
     })
 
     $("#adicionar_horario").on("click", function(e){
@@ -123,6 +149,8 @@ $(document).ready(function(){
     $("#submit").submit(function(e){
         e.preventDefault();
         var data = $(this).serialize();
+
+        
 
         lista_pagamento = [];
         $('.list_group_pagamento').each(function () {

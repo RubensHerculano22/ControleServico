@@ -261,27 +261,34 @@ $(document).ready(function(){
             {
                 if($("#descricao_curta").val() != "")
                 {
-                    if($("#categoria_principal").val() > 0)
+                    if($("input[name=tipo_servico]")[1].checked == true || $("input[name=tipo_servico]")[0] == true)
                     {
-                        if($("#categoria_especifica").val() > 0)
+                        if($("#categoria_principal").val() > 0)
                         {
-                            if($("#lista_pagamento")[0].childElementCount > 0)
+                            if($("#categoria_especifica").val() > 0)
                             {
-                                verif = 1;
+                                if($("#lista_pagamento")[0].childElementCount > 0)
+                                {
+                                    verif = 1;
+                                }
+                                else
+                                {
+                                    showNotification("error", "Erro", "Nenhuma forma de pagamento foi cadastrada", "toast-top-center", "15000");
+                                }
                             }
                             else
                             {
-                                showNotification("error", "Erro", "Nenhuma forma de pagamento foi cadastrada", "toast-top-center", "15000");
+                                showNotification("error", "Erro", "O campo 'Categoria Especifica' deve ser preenchido", "toast-top-center", "15000");
                             }
                         }
                         else
                         {
-                            showNotification("error", "Erro", "O campo 'Categoria Especifica' deve ser preenchido", "toast-top-center", "15000");
+                            showNotification("error", "Erro", "O campo 'Categoria Principal' deve ser preenchido", "toast-top-center", "15000");
                         }
                     }
                     else
                     {
-                        showNotification("error", "Erro", "O campo 'Categoria Principal' deve ser preenchido", "toast-top-center", "15000");
+                        showNotification("error", "Erro", "O campo 'Tipo de Serviço' deve ser preenchido", "toast-top-center", "15000");
                     }
                 }
                 else
