@@ -37,7 +37,7 @@
         <div class="modal-content">
             <div class="modal-header" style="background-color: <?= $colores->color2 ?>; color: <?= $colores->color5 ?>">
                 <h4 class="modal-title" id="titulo_modal">Cadastrar nova Imagem</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="background-color: <?= $colores->color2 ?>; color: <?= $colores->color5 ?>">
                     <span aria-hidden="true">×</span>
                 </button>
             </div>

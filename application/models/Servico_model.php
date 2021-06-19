@@ -742,16 +742,18 @@ class Servico_model extends CI_Model{
         $this->db->where("id_orcamento", $data->id_orcamento);
         if($this->db->update("ContrataServico"))
         {
-            if($data->solicitacao_pedido == 1)
+            if($data->aceite_orcamento == 1)
                 $this->db->set("status", 2);
-            elseif($data->solicitacao_pedido == 0)
+            elseif($data->aceite_orcamento == 0)
                 $this->db->set("status", 3);
 
             $this->db->set("id_orcamento", $data->id_orcamento);
             $this->db->set("id_usuario", $this->dados->usuario_id);
             $this->db->set("ativo", 1);
+
             if($data->orcamento)
-            $this->db->set("orcamento", $data->orcamento);
+                $this->db->set("orcamento", $data->orcamento);
+
             $this->db->set("data_alteracao", date("Y-m-d H:i:s"));
             if($data->descricao_orcamento)
                 $this->db->set("descricao", $data->descricao_orcamento);

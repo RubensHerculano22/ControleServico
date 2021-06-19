@@ -1,9 +1,21 @@
 <div class="<?= ($info[0]->status->id == 1 || $info[0]->status->id == 5) ? "container-fluid" : "container" ?>">
     <div class="row">
-        <div class="col-md-12 col-sm-12 col-xs-12">
-            Colocar aqui informações sobre o usuario que está solicitando o serviço
+        <div class="col-md-12 col-sm-12 col-xs-12 pt-5">
+            <div class="card">
+                <div class="card-header" style="background-color: <?= $colores->color2 ?>">
+                    <h3 class="card-title" style="color: <?= $colores->color5 ?>"">Informações do Solicitante</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            Colocar a data de cadastro dela no site.
+                            <br/> colocar a quantidade de serviços contratos pelo cliente
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="<?= ($info[0]->status->id == 1 || $info[0]->status->id == 5) ? "col-md-8 col-sm-8" : "col-md-12 col-sm-12" ?> col-xs-12 pt-5">
+        <div class="<?= ($info[0]->status->id == 1 || $info[0]->status->id == 5) ? "col-md-8 col-sm-8" : "col-md-12 col-sm-12" ?> col-xs-12 pt-2">
             <div class="card">
                 <div class="card-header" style="background-color: <?= $colores->color2 ?>">
                     <h3 class="card-title" style="color: <?= $colores->color5 ?>"">Acompanhamento de Pedido de Serviço</h3>
@@ -89,7 +101,7 @@
                                         </div>
                                         <?php if($key == 0): ?>
                                         <div class="col-md-12 col-sm-12 col-xs-12">
-                                            <button type="button" class="btn float-right " style="background-color: <?= $colores->color2 ?>; color: <?= $colores->color5 ?>">Definir serviço como realizado</button>
+                                            <button type="button" class="btn float-right finalizado" style="background-color: <?= $colores->color2 ?>; color: <?= $colores->color5 ?>">Definir serviço como realizado</button>
                                         </div>
                                         <?php endif; ?>
                                     <?php endif; ?>
@@ -141,7 +153,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-4 col-sm-4 col-xs-12 pt-5 <?= ($info[0]->status->id == 1 || $info[0]->status->id == 5) ? "" : "d-none" ?>">
+        <div class="col-md-4 col-sm-4 col-xs-12 pt-2 <?= ($info[0]->status->id == 1 || $info[0]->status->id == 5) ? "" : "d-none" ?>">
             <div class="card">
                 <div class="card-header" style="background-color: <?= $colores->color2 ?>">
                     <h3 class="card-title" style="color: <?= $colores->color5 ?>"">Resposta ao pedido</h3>
@@ -150,7 +162,7 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-12 col-sm-12 col-xs-12">
-                                <div class="form-group">
+                                <div class="form-group text-center">
                                     <div class="custom-control custom-radio d-inline">
                                         <input class="custom-control-input custom-control-input-danger" value="1" type="radio" id="aceitar" name="aceite_orcamento" required>
                                         <label for="aceitar" class="custom-control-label">Aceitar Orçamento </label>

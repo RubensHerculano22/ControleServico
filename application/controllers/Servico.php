@@ -136,6 +136,9 @@ class Servico extends CI_Controller{
         // print_r($this->data["info"]);
         // echo '</pre>';
         // exit;
+        $this->data["javascript"] = [
+            base_url("assets/js/produto/movimentacao.js")
+        ];
 
         $this->data["breadcrumb"] = (object)array("titulo" => "Acompanhamento do Pedido do Serviço", "before" => array((object)array("nome" => "Home", "link" => "Servico"), (object)array("nome" => "Gerenciamento de Serviço", "link" => "Servico/gerenciar_servico/".$this->data["info"][0]->id_servico)), "current" => "Acompanhamento do Pedido do Serviço");
 

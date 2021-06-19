@@ -384,7 +384,7 @@ class Usuario_model extends CI_Model{
         return $query;
     }
 
-    public function resposta_orcamento()//Colocar a data do serviço e hora no status 4
+    public function resposta_orcamento()
     {
         $rst = (object)array("rst" => false, "msg" => "");
         $data = (object)$this->input->post();
