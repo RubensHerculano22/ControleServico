@@ -29,13 +29,7 @@
                                         </div>
                                     </div>
                                     <div class="col-md-4 col-sm-12">
-                                        <div class="float-right">
-                                            <h5 class="mb-0">
-                                            <?= $info->cidade->Nome." ".$info->estado->nome." - ".$info->estado->sigla ?>
-                                            </h5>
-                                        </div>
-                                        <br/>
-                                        <h3 class="my-3"><?= $info->nome ?></h3>
+                                        <hr>
                                         <div class="row">
                                             <div class="col-md-6 col-sm-12 col-xs-12">
                                             <?php if($info->media_feedback): ?>
@@ -60,30 +54,39 @@
                                             </div>
                                         </div>
                                         <hr>
+                                        <div class="row">
+                                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                                <h3 class="my-3"><?= $info->nome ?></h3>
+                                                <?php if($info->endereco): ?>
+                                                    <h6><?= $info->endereco.", ".$info->numero.", ".$info->bairro." - ".$info->cidade->Nome.", ".$info->estado->nome."(".$info->estado->sigla.")" ?></h6>
+                                                <?php else: ?>
+                                                    <h6><?= $info->cidade->Nome.", ".$info->estado->nome."(".$info->estado->sigla.")" ?></h6>
+                                                <?php endif; ?>
+                                            </div>
+                                        </div>
 
+                                        <?php if($info->caucao && $info->quantidade_disponivel): ?>
+                                        <hr>
+                                        <div class="row">
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <div class="mt-2">
+                                                    <h6><b>Quantidade:</b> <?= $info->quantidade_disponivel ?></h6>
+                                                </div>    
+                                            </div>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <div class="mt-2">
+                                                    <h6><b>Caução:</b> <?= "R$: ".$info->caucao ?></h6>
+                                                </div>    
+                                            </div>
+                                        </div>
+                                        <?php endif; ?>
+                                        <hr>
                                         <div class="mt-4">
                                             <h2 class="mb-0">
                                             <?= $info->valor ? "R$: ".$info->valor : "A Combinar" ?>
                                             </h2>
                                         </div>
-
-                                        <?php if($info->quantidade_disponivel): ?>
-                                        <div class="mt-2">
-                                            <h6><b>Quantidade:</b> <?= $info->quantidade_disponivel ?></h6>
-                                        </div>
-                                        <?php endif; ?>
-                                        <?php if($info->caucao): ?>
-                                        <div class="mt-2">
-                                            <h5><b>Caução:</b> <?= "R$: ".$info->caucao ?></h5>
-                                        </div>
-                                        <?php endif; ?>
-
-                                        <div class="mt-4">
-                                            <button type="button" id="contratar" class="btn btn-warning btn-block btn-lg" data-toggle="modal" data-target="#modal_contratacao">
-                                                <i class="fas fa-handshake"></i>
-                                                Contratar
-                                            </button>
-                                        </div>
+                                        <hr>
                                         <div class="mt-4">
                                             <h6><b>Horários de Funcionamento:</b></h6>
                                             <div class="table-responsive">
@@ -99,13 +102,12 @@
                                                 </table>
                                             </div>
                                         </div>
-                                        <?php if($info->endereco): ?>
                                         <div class="mt-4">
-                                            <h6 class="mb-0">
-                                                <b>Endereço:</b> <?= $info->endereco ?>
-                                            </h6>
+                                            <button type="button" id="contratar" class="btn btn-warning btn-block btn-lg" data-toggle="modal" data-target="#modal_contratacao">
+                                                <i class="fas fa-handshake"></i>
+                                                Contratar
+                                            </button>
                                         </div>
-                                        <?php endif; ?>
                                     </div>
                                 </div>
                             </div>

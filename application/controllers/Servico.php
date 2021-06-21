@@ -81,6 +81,11 @@ class Servico extends CI_Controller{
         $this->m_servico->insere_acesso($id_servico);
         $this->data["info"] = $this->m_servico->get_info_servico($id_servico);
 
+        // echo '<pre>';
+        // print_r($this->data["info"]);
+        // echo '</pre>';
+        // exit;
+
         $this->data["breadcrumb"] = (object)array("titulo" => "Detalhes de Produtos/Serviços", "before" => array((object)array("nome" => "Home", "link" => "Servico"), (object)array("nome" => "".$this->data["info"]->subcategoria->nome, "link" => "Servico/lista/".$this->data["info"]->categoria->nome."/".$this->data["info"]->subcategoria->nome)), "current" => "".$this->data["info"]->nome);
         $this->data["javascript"] = [
             base_url("assets/js/home/detalhes.js")
@@ -132,10 +137,6 @@ class Servico extends CI_Controller{
         $this->data["id"] = $id;
         $this->data["info"] = $this->m_servico->get_info_orcamentos($id);
 
-        // echo '<pre>';
-        // print_r($this->data["info"]);
-        // echo '</pre>';
-        // exit;
         $this->data["javascript"] = [
             base_url("assets/js/produto/movimentacao.js")
         ];
