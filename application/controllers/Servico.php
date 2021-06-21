@@ -81,11 +81,6 @@ class Servico extends CI_Controller{
         $this->m_servico->insere_acesso($id_servico);
         $this->data["info"] = $this->m_servico->get_info_servico($id_servico);
 
-        // echo '<pre>';
-        // print_r($this->data["info"]);
-        // echo '</pre>';
-        // exit;
-
         $this->data["breadcrumb"] = (object)array("titulo" => "Detalhes de Produtos/Serviços", "before" => array((object)array("nome" => "Home", "link" => "Servico"), (object)array("nome" => "".$this->data["info"]->subcategoria->nome, "link" => "Servico/lista/".$this->data["info"]->categoria->nome."/".$this->data["info"]->subcategoria->nome)), "current" => "".$this->data["info"]->nome);
         $this->data["javascript"] = [
             base_url("assets/js/home/detalhes.js")
@@ -215,6 +210,12 @@ class Servico extends CI_Controller{
     public function cadastrar_pergunta()
     {
         $rst = $this->m_servico->cadastrar_pergunta();
+        echo json_encode($rst, JSON_UNESCAPED_UNICODE);
+    }
+
+    public function avise_me()
+    {
+        $rst = $this->m_servico->avise_me();
         echo json_encode($rst, JSON_UNESCAPED_UNICODE);
     }
 

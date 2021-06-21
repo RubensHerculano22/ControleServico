@@ -18,7 +18,7 @@ class Servico_model extends CI_Model{
 
     public function insere_acesso($id)
     {
-        $data = date("Y-m-d H:i:00", strtotime("-1 minutes"));
+        $data = date("Y-m-d H:i:00", strtotime("-5 minutes"));
 
         if(isset($this->dados->usuario_id) && $this->dados->usuario_id != null)
         {
@@ -42,6 +42,34 @@ class Servico_model extends CI_Model{
 
             $this->db->insert("ControleVisualizacao");   
         }
+    }
+
+    public function avise_me()
+    {
+        $rst = (object)array("rst" => false, "msg" => "");
+        $data = (object)$this->input->post();
+
+        $query = $this->db->get_where("AviseMe", "id_servico = '$data->id_servico' AND email = '$data->email' AND avisado = 0")->row();
+        if($query)
+        {
+            $rst->msg = "Seu email já está cadastrado para ser avisado neste serviço";
+        }
+        else
+        {
+            $this->db->set("email", $data->email);
+            $this->db->set("id_servico", $data->id_servico);
+    
+            if($this->db->insert("AviseMe"))
+            {
+                $rst->rst = true;
+            }
+            else
+            {
+                $rst->msg = "Erro ao salvar o email";
+            }
+        }
+
+        return $rst;
     }
 
     /**
@@ -167,9 +195,18 @@ class Servico_model extends CI_Model{
         //Consulta todas as formas de pagamento cadastradas no serviço.
         $query->pagamento = $this->db->get_where("PagamentoServico", "id_servico = '$query->id'")->result();
 
+        $query->tipo_pagamento = (object)array("credito" => 0, "debito" => 0, "transferencia" => 0, "boleto" => 0);
         foreach($query->pagamento as $item)
         {
             $item->tipo_pagamento = $this->db->get_where("TipoPagamento", "id = $item->id_tipo_pagamento")->row();
+            if($item->tipo_pagamento->forma_pagamento == "Crédito")
+                $query->tipo_pagamento->credito = 1;
+            elseif($item->tipo_pagamento->forma_pagamento == "Débito")
+                $query->tipo_pagamento->debito = 1;
+            elseif($item->tipo_pagamento->forma_pagamento == "Transferência/Pix")
+                $query->tipo_pagamento->transferencia = 1;
+            elseif($item->tipo_pagamento->forma_pagamento == "Outros")
+                $query->tipo_pagamento->boleto = 1;
         }
 
         //Consulta todas as perguntas cadastradas naquele serviço.
@@ -202,6 +239,7 @@ class Servico_model extends CI_Model{
         $this->db->order_by("principal", "desc");
         $query->imagens = $this->db->get_where("Imagens", "id_servico = '$query->id' and ativo = 1")->result();
 
+        //Formata o valor para o formato br
         if($query->valor)
         {
             $valor_V = explode(",", $query->valor);
@@ -209,6 +247,7 @@ class Servico_model extends CI_Model{
             $query->valor_D = $valor.".".$valor_V[1];
         }
 
+        //Formata o valor para o formato br
         if($query->caucao)
         {
             $valor_V = explode(",", $query->caucao);
@@ -216,8 +255,10 @@ class Servico_model extends CI_Model{
             $query->caucao_D = $valor.".".$valor_V[1];
         }
 
+
+        //consulta a lista de Orçamentos daquele serviço
         $lista_orcamento = $this->db->get_where("Orcamento", "id_servico = $id_servico")->result();
-        // $media_feedback = 0;
+        
         $lista_feedback = array();
         foreach($lista_orcamento as $item)
         {
@@ -232,14 +273,33 @@ class Servico_model extends CI_Model{
             }
         }
 
+        if($query->id_tipo_servico == 2)
+        {
+            $quant_contrata_servico = 0;
+            
+            foreach($lista_orcamento as $item)
+            {
+                $contrata_servico = $this->db->get_where("ContrataServico", "id_orcamento = '$item->id' AND ativo = 1 AND status NOT IN ('3', '6', '7')")->result();
+
+                if($contrata_servico)
+                    $quant_contrata_servico++;
+            }
+
+            $query->quantidade_contratada = $quant_contrata_servico;
+
+            if($quant_contrata_servico >= $query->quantidade_disponivel)
+                $query->disponibilidade = 0;
+            else
+                $query->disponibilidade = 1;
+        }
+
+        //consulta a media de feedback do serviço
         $query->media_feedback = $this->media_feedback($id_servico);
 
+        //Montagem da Quantidade de estrela por nivel
         $query->estrelas_feedback = array("0" => 0, "1" => 0, "2" => 0, "3" => 0, "4" => 0, "5" => 0);
-        $query->estrelas_feedback[0] += $query->estrelas_feedback[1] = $this->quantidade_estrelas($id_servico, 2);
-        $query->estrelas_feedback[0] += $query->estrelas_feedback[2] = $this->quantidade_estrelas($id_servico, 4);
-        $query->estrelas_feedback[0] += $query->estrelas_feedback[3] = $this->quantidade_estrelas($id_servico, 6);
-        $query->estrelas_feedback[0] += $query->estrelas_feedback[4] = $this->quantidade_estrelas($id_servico, 8);
-        $query->estrelas_feedback[0] += $query->estrelas_feedback[5] = $this->quantidade_estrelas($id_servico, 10);
+        for($i=1;$i<=5;$i++)
+            $query->estrelas_feedback[0] += $query->estrelas_feedback[$i] = $this->quantidade_estrelas($id_servico, ($i*2));
     
 
         //Pagina de detalhes
@@ -250,6 +310,11 @@ class Servico_model extends CI_Model{
             $query->favorito = $this->db->get_where("Favoritos", "id_servico = '$query->id' AND id_usuario = '".$this->dados->usuario_id."'")->row();
         else
             $query->favorito = array();
+
+        // echo '<pre>';
+        // print_r($query);
+        // echo '</pre>';
+        // exit;
 
         return $query;
     }

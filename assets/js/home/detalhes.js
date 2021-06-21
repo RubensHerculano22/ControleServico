@@ -15,8 +15,9 @@ $(document).ready(function(){
     var todos = $("#vert-tabs-todos");
     if(negativos[0].children.length <= 0)
     {
-        html = '<div class="callout callout-warning">'+
-                    '<p>Nenhum feedback negativo cadastrado a este serviço!</p>'+
+        
+        html = '<div class="alert mt-3" style="background-color: #254B59; color: #F0F2F0">' +
+                    '<p>Nenhum feedback negativo cadastrado a este serviço!</p>' +
                 '</div>';
 
         $(negativos).append(html);
@@ -24,7 +25,7 @@ $(document).ready(function(){
 
     if(positivos[0].children.length <= 0)
     {
-        html = '<div class="callout callout-warning">'+
+        html = '<div class="alert mt-3" style="background-color: #254B59; color: #F0F2F0">'+
                     '<p>Nenhum feedback positivos cadastrado a este serviço!</p>'+
                 '</div>';
 
@@ -33,16 +34,12 @@ $(document).ready(function(){
 
     if(todos[0].children.length <= 0)
     {
-        html = '<div class="callout callout-warning">'+
+        html = '<div class="alert mt-3" style="background-color: #254B59; color: #F0F2F0">'+
                     '<p>Nenhum feedback cadastrado a este serviço!</p>'+
                 '</div>';
 
         $(todos).append(html);
     }
-
-
-    //validador de hora
-    //const validHHMMstring = (str) => /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/.test(str);
 
     //Cadastra uma pergunta.
     $("#perguntar").on("click", function(e){
@@ -206,6 +203,43 @@ $(document).ready(function(){
         $("#endereco_cadastrado")[0].checked = false;
         $("#endereco").val("");
         $("#endereco").attr("disabled", false);
+    });
+
+    $("#submit_avise_me").submit(function(e){
+        e.preventDefault();
+        var data = $(this).serialize();
+        data = new FormData($("#submit_avise_me").get(0));
+
+        $.ajax({
+            type: "post",
+            url: BASE_URL+"Servico/avise_me",
+            cache: false,
+            contentType: false,
+            processData: false,
+            dataType: "json",
+            data: data,
+            success: function(data)
+            {
+                console.log(data);
+                if(data.rst === true)
+                {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Sucesso',
+                        text: 'Email salvo com sucesso, quando o serviço estiver disponivel você será notificado.'
+                    });
+                    $("#modal_avise_me").modal("hide");
+                }
+                else if(data.rst === false)
+                {
+                    showNotification("error", data.msg, "Tente novamente mais tarde", "toast-top-center");
+                }
+            }
+        });
+    });
+
+    $("#modal_avise_me").on('hidden.bs.modal', function (e) {
+        $("#email").val("");
     });
 
 });
