@@ -1297,6 +1297,13 @@ class Servico_model extends CI_Model{
         return $count;
     }
 
+    public function get_data_disponiveis($id_servico)
+    {
+        $query = $this->db->get_where("HorarioServico", "id_servico = $id_servico")->result();
+
+        return $query;
+    }
+
     public function get_estado_nome($nome)
     {
         $query = $this->db->get_where("Estados", "nome = '$nome'")->row();

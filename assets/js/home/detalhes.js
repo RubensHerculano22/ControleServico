@@ -4,11 +4,10 @@ $(document).ready(function(){
         mask: ['99:99'],
         keepStatic: true    
     });
-    $('[data-mask]').inputmask();
 
-    $("#data_servico").on("change", function(){
-        console.log(isValidDate($("#data_servico").val()))
-    })
+    // $("#data_servico").on("change", function(){
+    //     console.log(isValidDate($("#data_servico").val()))
+    // })
 
     var negativos = $("#vert-tabs-negativos");
     var positivos = $("#vert-tabs-positivos");
@@ -126,7 +125,6 @@ $(document).ready(function(){
     });
 
     $("#modal_contratacao").on("show.bs.modal", function(){
-
         var id = $("#id_servico").val();
         $.ajax({
             type: "post",
@@ -138,7 +136,63 @@ $(document).ready(function(){
             // data: data,
             success: function(data)
             {
-                //montar função para colocar as datas que serão utilizadas.
+                console.log(data);
+                $('#data_servico').daterangepicker({
+                    singleDatePicker: true,
+                    minDate: "21/06/2021",
+                    "locale": {
+                        "format": "DD/MM/YYYY",
+                        "applyLabel": "Selecionar",
+                        "cancelLabel": "Cancelar",
+                        "daysOfWeek": [
+                            "Dom",
+                            "Seg",
+                            "Ter",
+                            "Qua",
+                            "Qui",
+                            "Sex",
+                            "Sab"
+                        ],
+                        "monthNames": [
+                            "Janeiro",
+                            "Fevereiro",
+                            "Março",
+                            "Abril",
+                            "Maio",
+                            "Junho",
+                            "Julho",
+                            "Agosto",
+                            "Setembro",
+                            "Outubro",
+                            "Novembro",
+                            "Decembro"
+                        ],
+                        "firstDay": 1
+                    },
+                    isInvalidDate: function(date) {
+                        var rst = false;
+                        $.each(data, function(index, value) {
+                            if(date.day() == 0 && value.dia_semana == 1)
+                                rst = false;
+                            else if(date.day() == 1 && value.dia_semana == 2)
+                                rst =  false;
+                            else if(date.day() == 2 && value.dia_semana == 3)
+                                rst =  false;
+                            else if(date.day() == 3 && value.dia_semana == 4)
+                                rst = false;
+                            else if(date.day() == 4 && value.dia_semana == 5)
+                                rst =  false;
+                            else if(date.day() == 5 && value.dia_semana == 6)
+                                rst = false;
+                            else if(date.day() == 6 && value.dia_semana == 7)
+                                rst = false;
+                            else
+                                rst = true;
+                        });
+
+                        return rst;
+                    }
+                });
             }
         });
     })

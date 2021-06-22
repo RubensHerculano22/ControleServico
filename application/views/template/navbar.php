@@ -132,7 +132,7 @@
         <div class="row">
           <div class="col-md-12 col-sm-12 col-xs-12">
             <?php if(empty($cidade)): ?>
-              <div class="alert alert-dismissible" style="background-color: <?= $colores->color4 ?>">
+              <div class="alert alert-dismissible" style="background-color: <?= $colores->color2 ?>; color: <?= $colores->color5 ?>">
                 Por favor, selecione uma cidade para filtrar os serviços no sistema.
               </div>
             <?php endif; ?>

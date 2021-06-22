@@ -335,6 +335,12 @@ class Servico extends CI_Controller{
         echo json_encode($rst, JSON_UNESCAPED_UNICODE);
     }
 
+    public function datas_disponiveis($id)
+    {
+        $rst = $this->m_servico->get_data_disponiveis($id);
+        echo json_encode($rst, JSON_UNESCAPED_UNICODE);
+    }
+
     public function set_files()
     {
 
