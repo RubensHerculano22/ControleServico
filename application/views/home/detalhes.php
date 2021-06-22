@@ -73,7 +73,7 @@
                                             <div class="col-md-12 col-sm-12 col-xs-12">
                                                 <h3 class="my-3"><?= $info->nome ?><span class="h6"><?= " - ".($info->id_tipo_servico == 1 ? "Prestador de Serviço" : "Aluguel de Equipamento" ) ?></span></h3>
                                                 <?php if($info->endereco): ?>
-                                                    <h6><?= $info->endereco.", ".$info->numero.", ".$info->bairro." - ".$info->cidade->Nome.", ".$info->estado->nome."(".$info->estado->sigla.")" ?></h6>
+                                                    <h6><?= $info->endereco.($info->complemento ? ", ".$info->complemento : "").", ".$info->numero.", ".$info->bairro." - ".$info->cidade->Nome.", ".$info->estado->nome."(".$info->estado->sigla.")" ?></h6>
                                                 <?php else: ?>
                                                     <h6><?= $info->cidade->Nome.", ".$info->estado->nome."(".$info->estado->sigla.")" ?></h6>
                                                 <?php endif; ?>
@@ -529,7 +529,7 @@
 </div>
 
 <div class="modal fade" id="modal_contratacao">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header" style="background-color: <?= $colores->color2 ?>; color: <?= $colores->color5 ?>">
                 <h4 class="modal-title">Contratação</h4>
@@ -543,13 +543,14 @@
                         <div class="col-md-6 col-sm-3 col-xs-12">
                             <div class="form-group">
                                 <label for="nome">Data para o Serviço</label>
-                                <input type="text" class="form-control data" name="data_servico" id="data_servico" placeholder="Data para o serviço" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask autofocus>
+                                <input type="text" class="form-control data" name="data_servico" id="data_servico" placeholder="Data para o serviço">
                             </div>
                         </div>
                         <div class="col-md-6 col-sm-6 col-xs-12">
                             <div class="form-group">
                                 <label for="nome">Hora para o Serviço</label>
-                                <input type="text" class="form-control data" name="hora_servico" id="hora_servico" placeholder="Hora para o serviço">
+                                <select class="form-control select2bs4" name="horario_servico" id="horario_servico" data-placeholder="Horario do Serviço">
+                                </select>
                             </div>
                         </div>
                         <div class="col-md-12 col-sm-12 col-xs-12">
@@ -560,15 +561,67 @@
                         </div>
                         <div class="col-md-12 col-sm-12 col-xs-12">
                             <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="endereco_cadastrado">
-                                <label class="form-check-label" for="exampleCheck1">Usar endereço cadastrado</label>
+                                <input type="checkbox" class="form-check-input" name="endereco_cadastrado" id="endereco_cadastrado">
+                                <label class="form-check-label" for="exampleCheck1">Usar um endereço diferente</label>
                             </div>
                         </div>
-                        <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="col-md-12 col-sm-12 col-xs-12 endereco_cadastro">
                             <div class="form-group">
-                                <label for="nome">Endereço</label><small>(Sem o número residencial)</small>
-                                <input type="text" class="form-control" name="endereco" id="endereco" placeholder="Endereço">
+                                <label for="nome">Endereço</label><small></small>
+                                <select class="form-control select2bs4" name="endereco_select" id="endereco" data-placeholder="Endereço">
+                                    <?php foreach($endereco as $item): ?>
+                                        <option value="<?= $item->endereco_completo ?>"><?= $item->endereco_completo ?></option>
+                                    <?php endforeach; ?>
+                                </select>
                             </div>     
+                        </div>
+                        <div class="col-md-3 col-sm-3 col-xs-12 d-none local_especifico">
+                            <div class="form-group">
+                                <label for="endereco">CEP</label><small class="text-danger"> *</small>
+                                <input type="text" class="form-control endereco_input" name="cep" id="cep" value="" placeholder="CEP">
+                            </div>
+                        </div>
+                        <div class="col-md-9 col-sm-9 col-xs-12 d-none local_especifico">
+                            <div class="bloc_pesquisa">
+                                <br/>
+                                <button type="button" class="btn mt-2" onclick="pesquisa_cep()" style="background-color: <?= $colores->color2 ?>; color: <?= $colores->color5 ?>"><i class="fas fa-search-location"></i> Pesquisar</button>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-12 d-none local_especifico">
+                            <div class="form-group">
+                                <label for="estado">Estado</label>
+                                <input type="text" class="form-control endereco_input" id="estado_input" name="estado" value="" placeholder="Estado" readonly>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-12 d-none local_especifico">
+                            <div class="form-group">
+                                <label for="cidade">Cidade</label>
+                                <input type="text" class="form-control" id="cidade_input" value="" name="cidade" placeholder="Cidade" readonly>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-12 d-none local_especifico">
+                            <div class="form-group">
+                                <label for="bairro">Bairro</label>
+                                <input type="text" class="form-control" id="bairro_input" value="" name="bairro" placeholder="Bairro" readonly>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-xs-12 d-none local_especifico">
+                            <div class="form-group">
+                                <label for="endereco">Endereço</label>
+                                <input type="text" class="form-control" id="endereco_input" value="" name="endereco" placeholder="Endereço" readonly>
+                            </div>
+                        </div>
+                        <div class="col-md-2 col-sm-2 col-xs-12 d-none local_especifico">
+                            <div class="form-group">
+                                <label for="numero">Numero</label><small class="text-danger"> *</small>
+                                <input type="number" class="form-control endereco_input" id="numero_input" value="" name="numero" placeholder="Numero">
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-12 d-none local_especifico">
+                            <div class="form-group">
+                                <label for="complemento">Complemento</label>
+                                <input type="text" class="form-control" id="complemento_input" value="" name="complemento" placeholder="Complemento">
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -1,8 +1,8 @@
 $(document).ready(function(){
 
-    $('#hora_servico').inputmask({
-        mask: ['99:99'],
-        keepStatic: true    
+    $('#cep').inputmask({
+        mask: ['99999-999'],
+        keepStatic: true
     });
 
     // $("#data_servico").on("change", function(){
@@ -116,11 +116,13 @@ $(document).ready(function(){
         checked = $("#endereco_cadastrado")[0].checked;
         if(checked == true)
         {
-            $("#endereco").attr("disabled", true);
+            $(".local_especifico").removeClass("d-none");
+            $(".endereco_cadastro").addClass("d-none");
         }
         else
         {
-            $("#endereco").attr("disabled", false);
+            $(".endereco_cadastro").removeClass("d-none");
+            $(".local_especifico").addClass("d-none");
         }
     });
 
@@ -136,10 +138,10 @@ $(document).ready(function(){
             // data: data,
             success: function(data)
             {
-                console.log(data);
+                dia_atual = new Date();
                 $('#data_servico').daterangepicker({
                     singleDatePicker: true,
-                    minDate: "21/06/2021",
+                    minDate: get_data_atual(),
                     "locale": {
                         "format": "DD/MM/YYYY",
                         "applyLabel": "Selecionar",
@@ -170,32 +172,75 @@ $(document).ready(function(){
                         "firstDay": 1
                     },
                     isInvalidDate: function(date) {
-                        var rst = false;
-                        $.each(data, function(index, value) {
-                            if(date.day() == 0 && value.dia_semana == 1)
-                                rst = false;
-                            else if(date.day() == 1 && value.dia_semana == 2)
-                                rst =  false;
-                            else if(date.day() == 2 && value.dia_semana == 3)
-                                rst =  false;
-                            else if(date.day() == 3 && value.dia_semana == 4)
-                                rst = false;
-                            else if(date.day() == 4 && value.dia_semana == 5)
-                                rst =  false;
-                            else if(date.day() == 5 && value.dia_semana == 6)
-                                rst = false;
-                            else if(date.day() == 6 && value.dia_semana == 7)
-                                rst = false;
-                            else
-                                rst = true;
-                        });
+                        for(i=0;i<data.length;i++)
+                        {
+                            if(date.day() == 0 && data[i].dia_semana == 1)
+                            {
+                                return false;
+                            }   
+                            else if(date.day() == 1 && data[i].dia_semana == 2)
+                            {
+                                return false;
+                            }
+                            else if(date.day() == 2 && data[i].dia_semana == 3)
+                            {
+                                return false;
+                            }
+                            else if(date.day() == 3 && data[i].dia_semana == 4)
+                            {
+                                return false;
+                            }
+                            else if(date.day() == 4 && data[i].dia_semana == 5)
+                            {
+                                return false;
+                            }
+                            else if(date.day() == 5 && data[i].dia_semana == 6)
+                            {
+                                return false;
+                            }
+                            else if(date.day() == 6 && data[i].dia_semana == 7)
+                            {
+                                return false;
+                            }
+                        }
 
-                        return rst;
+                        return true;
                     }
                 });
             }
         });
-    })
+    });
+
+    $("#data_servico").on("apply.daterangepicker", function(){
+
+        var data_string = $("#data_servico").val();
+        data = data_string.split("/");
+        date = new Date(data[2], data[1], data[0]);
+
+        var post = {"data": data_string, "dia_semana": trocaDiaSemana(date.getDay()), "id_servico": $("#id_servico").val()};
+
+        $.ajax({
+            type: "post",
+            url: BASE_URL+"Servico/get_horarios_disponiveis/",
+            dataType: "json",
+            data: post,
+            success: function(data)
+            {
+                $(".item_horario").remove();
+                if(data != null)
+                {
+                    var html = "";
+                    $.each(data, function(index, value) {
+                        $("#horario_servico").append("<option class='item_horario' value='"+value.horario+"'>"+value.horario+"</option>");
+                    });
+                }
+                else
+                {
+                    showNotification("error", "Nenhum horario encontrado", "Tente novamente em outra data", "toast-top-center");
+                }
+            }
+        });
+    });
 
     $("#submit").submit(function(e){
         e.preventDefault();
@@ -238,8 +283,12 @@ $(document).ready(function(){
                             icon: 'success',
                             title: 'Sucesso',
                             text: 'Pedido de contratação enviado para o Prestador, você será notificado quando houver retorno'
+                        }).then((result) => {
+                            if (result.isConfirmed)
+                            {
+                                window.location.reload();
+                            };
                         });
-                        $("#modal_contratacao").modal("hide");
                     }
                     else if(data.rst === false)
                     {
@@ -255,8 +304,16 @@ $(document).ready(function(){
         $("#hora_servico").val("");
         $("#descricao").val("");
         $("#endereco_cadastrado")[0].checked = false;
+        $(".local_especifico").addClass("d-none");
+        $(".endereco_cadastro").removeClass("d-none");
         $("#endereco").val("");
-        $("#endereco").attr("disabled", false);
+        $("#cep").val("");
+        $("#estado_input").val("");
+        $("#cidade_input").val("");
+        $("#bairro_input").val("");
+        $("#endereco_input").val("");
+        $("#numero_input").val("");
+        $("#complemento_input").val("");
     });
 
     $("#submit_avise_me").submit(function(e){
@@ -297,3 +354,66 @@ $(document).ready(function(){
     });
 
 });
+
+function pesquisa_cep()
+{
+    var cep = $("#cep").val();
+    if(cep.length > 8)
+    {
+            $(".bloc_pesquisa").replaceWith('<div class="bloc_pesquisa"><br/><button type="button" class="btn mt-2" style="background-color: #254B59; color: #F0F2F0"><span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>&nbsp;Carregando</button></div>');
+            setTimeout(() => {        
+                
+                cep_tratado = cep.split("").filter(n => (Number(n) || n == 0)).join("");
+
+                var data = {"cep": cep_tratado};
+                $.post(BASE_URL+"Servico/get_cep", data, function(data) {
+                    if(data.estado == null)
+                    {
+                        showNotification("error", "Erro no campo CEP", "Valores invalidos foram cadastrados no campo CEP.", "toast-top-center");                
+                    }
+                    else
+                    {
+                        $("#endereco_input").val(data.logradouro)
+                        $("#bairro_input").val(data.bairro)
+                        $("#cidade_input").val(data.localidade)
+                        $("#estado_input").val(data.estado.nome)
+                    }
+
+                    $(".bloc_pesquisa").replaceWith('<div class="bloc_pesquisa"><br/><button type="button" onclick="pesquisa_cep()" class="btn mt-2" style="background-color: #254B59; color: #F0F2F0"><i class="fas fa-search-location"></i> Pesquisar</button></div>');
+                }, "json");
+
+            }, 1000);
+    }
+    else
+    {
+        showNotification("error", "Erro no campo CEP", "Valores invalidos foram cadastrados no campo CEP.", "toast-top-center");
+    }
+}
+
+function get_data_atual()
+{
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
+
+    return dd+"/"+mm+"/"+yyyy;
+}
+
+function trocaDiaSemana(semana)
+{
+    if(semana == 0)
+        return 5
+    else if(semana == 1)
+        return 6    
+    else if(semana == 2)
+        return 7
+    else if(semana == 3)
+        return 1
+    else if(semana == 4)
+        return 2
+    else if(semana == 5)
+        return 3
+    else if(semana == 6)
+        return 4
+}

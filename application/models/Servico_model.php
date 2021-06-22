@@ -428,16 +428,12 @@ class Servico_model extends CI_Model{
             $id_orcamento = $this->db->insert_id();
 
             //verifica se o campo de utilizar o endereço cadastrado, está selecionado
-            if(!isset($data->endereco))
+            if(!isset($data->endereco_cadastrado))
+                $this->db->set("endereco", $data->endereco_select);
+            else
             {
-                //Consulta os dados de endereço do usuario.
-                $this->db->select("endereco, bairro, cidade, estado");
-                $query = $this->db->get_where("Usuario", "id = ".$this->dados->usuario_id)->row();
-
-                //Consulta o nome do estado, a partir de seu id.
-                $estado = get_estados_id($query->estado);
-
-                $data->endereco = $query->endereco.", ".$query->bairro." - ".$query->cidade.", ".$estado->nome."";
+                $endereco = $data->cep." - ".$data->endereco.($data->complemento ? ", ".$data->complemento : "").", ".$data->numero.", ".$data->bairro." - ".$data->cidade.", ".$data->estado;
+                $this->db->set("endereco", $endereco);
             }
 
             $this->db->set("id_orcamento", $id_orcamento);
@@ -445,9 +441,8 @@ class Servico_model extends CI_Model{
             $this->db->set("ativo", 1);
             $this->db->set("id_usuario", $this->dados->usuario_id);
             $this->db->set("data_servico", formatar($data->data_servico, "dt2bd"));
-            $this->db->set("hora_servico", $data->hora_servico);
+            $this->db->set("hora_servico", $data->horario_servico);
             $this->db->set("descricao", $data->descricao);
-            $this->db->set("endereco", $data->endereco);
             $this->db->set("data_alteracao", date("Y-m-d H:i:s"));
 
             if($this->db->insert("ContrataServico"))
@@ -835,6 +830,23 @@ class Servico_model extends CI_Model{
         }
 
         return $rst;
+    }
+
+    public function get_endereco()
+    {
+        $query = $this->db->get_where("Enderecos", "id_usuario = ".$this->dados->usuario_id)->result();
+        
+        foreach($query as $item)
+        {
+            //Consulta o estado
+            $item->estado = $this->db->get_where("Estados", "id = '$item->estado'")->row();
+
+            //Consulta a cidade
+            $item->cidade = $this->get_cidades_id($item->cidade);
+            $item->endereco_completo = $item->cep." - ".$item->endereco.($item->complemento ? ", ".$item->complemento : "").", ".$item->numero.", ".$item->bairro." - ".$item->cidade->Nome.", ".$item->estado->nome."(".$item->estado->sigla.")";
+        }
+
+        return $query;
     }
 
     public function visibilidade()
@@ -1302,6 +1314,97 @@ class Servico_model extends CI_Model{
         $query = $this->db->get_where("HorarioServico", "id_servico = $id_servico")->result();
 
         return $query;
+    }
+
+    public function get_horarios_disponiveis()
+    {
+        $data = (object)$this->input->post();
+
+        $query_horarios = $this->db->get_where("HorarioServico", "id_servico = '$data->id_servico' AND dia_semana = '$data->dia_semana'")->row();
+
+        if($query_horarios)
+        {
+            $horarios_ocupados = array();
+
+            $id_orcamento = $this->db->get_where("Orcamento", "id_servico = '$data->id_servico'")->result();
+            foreach($id_orcamento as $item)
+            {
+                $valor = $this->get_horarios_indisponiveis($item->id, $data->data);
+                if($valor)
+                    $horarios_ocupados[] = $valor;
+            }
+            $where = "";
+            if($horarios_ocupados)
+            {
+                $where = "(";
+
+                foreach($horarios_ocupados as $key => $item)
+                {
+                    if($key > 0)
+                        $where .= " AND ";
+
+                    $where .= $item;
+                }
+
+                $where .= ")";
+            }
+
+            $horario_split = explode(" às ", $query_horarios->texto);
+
+            $this->db->where("horario BETWEEN '$horario_split[0]' AND '$horario_split[1]'");
+
+            if($where)
+                $this->db->where($where, null, false);
+
+            $query_select_horario = $this->db->get("ListaHorario")->result();
+
+            return $query_select_horario;
+        }
+
+        return (object)array();
+    }
+
+    private function get_horarios_indisponiveis($id_orcamento, $data)
+    {
+
+        $query = $this->db->get_where("ContrataServico", "id_orcamento = $id_orcamento AND ativo = 1")->row();
+        
+        if(($query->status == 1 || $query->status == 2 || $query->status == 4 || $query->status == 5))
+        {
+            $this->db->order_by("id", "desc");
+            $queryOcupado = $this->db->get_where("ContrataServico", "id_orcamento = $id_orcamento AND status = 1 AND data_servico = '".formatar($data, "dt2bd")."'")->row();
+
+            if($queryOcupado)
+            {
+                $split = explode(":", $queryOcupado->hora_servico);
+                if($split[0] + 2 >23)
+                {
+                    if($split[0] + 1 == 24)
+                        $novo_horario_final =  "00:".$split[1];
+                    else
+                        $novo_horario_final =  "01:".$split[1];
+                }
+                else
+                {
+                    $novo_horario_final =  ($split[0] + 2).":".$split[1];
+                }
+                if($split[0] - 2 < 0)
+                {
+                    if($split[0] - 1 == -1)
+                        $novo_horario_comeco =  "23:".$split[1];
+                    else
+                        $novo_horario_comeco =  "22:".$split[1];
+                }
+                else
+                {
+                    $novo_horario_comeco =  ($split[0] - 2).":".$split[1];
+                }
+                
+                return " horario NOT BETWEEN '$novo_horario_comeco' AND '$novo_horario_final' ";
+            }
+        }
+
+        return null;
     }
 
     public function get_estado_nome($nome)
