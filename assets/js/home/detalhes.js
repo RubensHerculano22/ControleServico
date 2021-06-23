@@ -39,7 +39,88 @@ $(document).ready(function(){
 
         $(todos).append(html);
     }
+    
+    var id = $("#id_servico").val();
+    $.ajax({
+        type: "post",
+        url: BASE_URL+"Servico/datas_disponiveis/"+id,
+        cache: false,
+        contentType: false,
+        processData: false,
+        dataType: "json",
+        // data: data,
+        success: function(data)
+        {
+            $('#data_servico').daterangepicker({
+                singleDatePicker: true,
+                minDate: get_data_atual(),
+                "locale": {
+                    "format": "DD/MM/YYYY",
+                    "applyLabel": "Selecionar",
+                    "cancelLabel": "Cancelar",
+                    "daysOfWeek": [
+                        "Dom",
+                        "Seg",
+                        "Ter",
+                        "Qua",
+                        "Qui",
+                        "Sex",
+                        "Sab"
+                    ],
+                    "monthNames": [
+                        "Janeiro",
+                        "Fevereiro",
+                        "Março",
+                        "Abril",
+                        "Maio",
+                        "Junho",
+                        "Julho",
+                        "Agosto",
+                        "Setembro",
+                        "Outubro",
+                        "Novembro",
+                        "Decembro"
+                    ],
+                    "firstDay": 1
+                },
+                isInvalidDate: function(date) {
+                    for(i=0;i<data.length;i++)
+                    {
+                        if(date.day() == 0 && data[i].dia_semana == 1)
+                        {
+                            return false;
+                        }   
+                        else if(date.day() == 1 && data[i].dia_semana == 2)
+                        {
+                            return false;
+                        }
+                        else if(date.day() == 2 && data[i].dia_semana == 3)
+                        {
+                            return false;
+                        }
+                        else if(date.day() == 3 && data[i].dia_semana == 4)
+                        {
+                            return false;
+                        }
+                        else if(date.day() == 4 && data[i].dia_semana == 5)
+                        {
+                            return false;
+                        }
+                        else if(date.day() == 5 && data[i].dia_semana == 6)
+                        {
+                            return false;
+                        }
+                        else if(date.day() == 6 && data[i].dia_semana == 7)
+                        {
+                            return false;
+                        }
+                    }
 
+                    return true;
+                }
+            });
+        }
+    });
     //Cadastra uma pergunta.
     $("#perguntar").on("click", function(e){
         e.preventDefault();
@@ -126,97 +207,16 @@ $(document).ready(function(){
         }
     });
 
-    $("#modal_contratacao").on("show.bs.modal", function(){
-        var id = $("#id_servico").val();
-        $.ajax({
-            type: "post",
-            url: BASE_URL+"Servico/datas_disponiveis/"+id,
-            cache: false,
-            contentType: false,
-            processData: false,
-            dataType: "json",
-            // data: data,
-            success: function(data)
-            {
-                dia_atual = new Date();
-                $('#data_servico').daterangepicker({
-                    singleDatePicker: true,
-                    minDate: get_data_atual(),
-                    "locale": {
-                        "format": "DD/MM/YYYY",
-                        "applyLabel": "Selecionar",
-                        "cancelLabel": "Cancelar",
-                        "daysOfWeek": [
-                            "Dom",
-                            "Seg",
-                            "Ter",
-                            "Qua",
-                            "Qui",
-                            "Sex",
-                            "Sab"
-                        ],
-                        "monthNames": [
-                            "Janeiro",
-                            "Fevereiro",
-                            "Março",
-                            "Abril",
-                            "Maio",
-                            "Junho",
-                            "Julho",
-                            "Agosto",
-                            "Setembro",
-                            "Outubro",
-                            "Novembro",
-                            "Decembro"
-                        ],
-                        "firstDay": 1
-                    },
-                    isInvalidDate: function(date) {
-                        for(i=0;i<data.length;i++)
-                        {
-                            if(date.day() == 0 && data[i].dia_semana == 1)
-                            {
-                                return false;
-                            }   
-                            else if(date.day() == 1 && data[i].dia_semana == 2)
-                            {
-                                return false;
-                            }
-                            else if(date.day() == 2 && data[i].dia_semana == 3)
-                            {
-                                return false;
-                            }
-                            else if(date.day() == 3 && data[i].dia_semana == 4)
-                            {
-                                return false;
-                            }
-                            else if(date.day() == 4 && data[i].dia_semana == 5)
-                            {
-                                return false;
-                            }
-                            else if(date.day() == 5 && data[i].dia_semana == 6)
-                            {
-                                return false;
-                            }
-                            else if(date.day() == 6 && data[i].dia_semana == 7)
-                            {
-                                return false;
-                            }
-                        }
-
-                        return true;
-                    }
-                });
-            }
-        });
-    });
+    // $("#modal_contratacao").on("show.bs.modal", function(){
+    // });
 
     $("#data_servico").on("apply.daterangepicker", function(){
 
         var data_string = $("#data_servico").val();
         data = data_string.split("/");
         date = new Date(data[2], data[1], data[0]);
-
+        console.log(date.getDay());
+        console.log(date);
         var post = {"data": data_string, "dia_semana": trocaDiaSemana(date.getDay()), "id_servico": $("#id_servico").val()};
 
         $.ajax({
@@ -402,18 +402,20 @@ function get_data_atual()
 
 function trocaDiaSemana(semana)
 {
-    if(semana == 0)
-        return 5
-    else if(semana == 1)
-        return 6    
-    else if(semana == 2)
-        return 7
-    else if(semana == 3)
-        return 1
-    else if(semana == 4)
-        return 2
-    else if(semana == 5)
-        return 3
-    else if(semana == 6)
-        return 4
+    if(semana == "0")
+        valor =  6
+    else if(semana == "1")
+        valor =  7    
+    else if(semana == "2")
+        valor =  1
+    else if(semana == "3")
+        valor =  2
+    else if(semana == "4")
+        valor =  3
+    else if(semana == "5")
+        valor =  4
+    else if(semana == "6")
+        valor =  5
+    
+    return valor;
 }

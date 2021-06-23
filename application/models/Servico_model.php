@@ -834,19 +834,27 @@ class Servico_model extends CI_Model{
 
     public function get_endereco()
     {
-        $query = $this->db->get_where("Enderecos", "id_usuario = ".$this->dados->usuario_id)->result();
-        
-        foreach($query as $item)
+        if($this->dados)
         {
-            //Consulta o estado
-            $item->estado = $this->db->get_where("Estados", "id = '$item->estado'")->row();
+            $query = $this->db->get_where("Enderecos", "id_usuario = ".$this->dados->usuario_id)->result();
+        
+            foreach($query as $item)
+            {
+                //Consulta o estado
+                $item->estado = $this->db->get_where("Estados", "id = '$item->estado'")->row();
+    
+                //Consulta a cidade
+                $item->cidade = $this->get_cidades_id($item->cidade);
+                $item->endereco_completo = $item->cep." - ".$item->endereco.($item->complemento ? ", ".$item->complemento : "").", ".$item->numero.", ".$item->bairro." - ".$item->cidade->Nome.", ".$item->estado->nome."(".$item->estado->sigla.")";
+            }
 
-            //Consulta a cidade
-            $item->cidade = $this->get_cidades_id($item->cidade);
-            $item->endereco_completo = $item->cep." - ".$item->endereco.($item->complemento ? ", ".$item->complemento : "").", ".$item->numero.", ".$item->bairro." - ".$item->cidade->Nome.", ".$item->estado->nome."(".$item->estado->sigla.")";
+            return $query;
+        }
+        else
+        {
+            return (object)array();
         }
 
-        return $query;
     }
 
     public function visibilidade()
