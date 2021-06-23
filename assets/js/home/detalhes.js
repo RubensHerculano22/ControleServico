@@ -262,7 +262,6 @@ $(document).ready(function(){
             var data_servico = $("#data_servico").val();
             var hora_servico = $("#horario_servico").val();
             var descricao = $("#descricao").val();
-            console.log(descricao);
             var endereco = $("#endereco").val();
             var cep = $("#cep").val();
             var estado = $("#estado_input").val();
