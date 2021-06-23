@@ -207,16 +207,12 @@ $(document).ready(function(){
         }
     });
 
-    // $("#modal_contratacao").on("show.bs.modal", function(){
-    // });
-
     $("#data_servico").on("apply.daterangepicker", function(){
 
         var data_string = $("#data_servico").val();
         data = data_string.split("/");
         date = new Date(data[2], data[1], data[0]);
-        console.log(date.getDay());
-        console.log(date);
+
         var post = {"data": data_string, "dia_semana": trocaDiaSemana(date.getDay()), "id_servico": $("#id_servico").val()};
 
         $.ajax({
@@ -263,39 +259,85 @@ $(document).ready(function(){
         }
         else
         {
-            var data = $(this).serialize();
-            data = new FormData($("#submit").get(0));
-    
-            $.ajax({
-                type: "post",
-                url: BASE_URL+"Servico/contrata_servico",
-                cache: false,
-                contentType: false,
-                processData: false,
-                dataType: "json",
-                data: data,
-                success: function(data)
+            var data_servico = $("#data_servico").val();
+            var hora_servico = $("#horario_servico").val();
+            var descricao = $("#descricao").val();
+            console.log(descricao);
+            var endereco = $("#endereco").val();
+            var cep = $("#cep").val();
+            var estado = $("#estado_input").val();
+
+            var verif = 0;
+            if(data_servico != null)
+            {
+                if(hora_servico != null)
                 {
-                    console.log(data);
-                    if(data.rst === true)
+                    if(descricao != "")
                     {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Sucesso',
-                            text: 'Pedido de contratação enviado para o Prestador, você será notificado quando houver retorno'
-                        }).then((result) => {
-                            if (result.isConfirmed)
-                            {
-                                window.location.reload();
-                            };
-                        });
+                        if($("#endereco_cadastrado")[0].checked == false && endereco != "")
+                        {
+                            verif = 1;
+                        }
+                        else if($("#endereco_cadastrado")[0].checked == true  && cep != "" && estado != "")
+                        {
+                            verif = 1;
+                        }
+                        else
+                        {
+                            showNotification("error", "Erro", "Um endereço deve ser selecionado", "toast-top-center", "15000");    
+                        }
                     }
-                    else if(data.rst === false)
+                    else
                     {
-                        showNotification("warning", "Erro ao pedir contratação ", data.msg, "toast-top-center");
+                        showNotification("error", "Erro", "O campo 'Descrição' deve ser preenchido", "toast-top-center", "15000");        
                     }
                 }
-            });
+                else
+                {
+                    showNotification("error", "Erro", "O campo 'Hora para o Serviço' deve ser preenchido", "toast-top-center", "15000");    
+                }
+            }
+            else
+            {
+                showNotification("error", "Erro", "O campo 'Data para o Serviço' deve ser preenchido", "toast-top-center", "15000");
+            }
+
+            if(verif == 1)
+            {
+                var data = $(this).serialize();
+                data = new FormData($("#submit").get(0));
+        
+                $.ajax({
+                    type: "post",
+                    url: BASE_URL+"Servico/contrata_servico",
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    dataType: "json",
+                    data: data,
+                    success: function(data)
+                    {
+                        console.log(data);
+                        if(data.rst === true)
+                        {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Sucesso',
+                                text: 'Pedido de contratação enviado para o Prestador, você será notificado quando houver retorno'
+                            }).then((result) => {
+                                if (result.isConfirmed)
+                                {
+                                    window.location.reload();
+                                };
+                            });
+                        }
+                        else if(data.rst === false)
+                        {
+                            showNotification("warning", "Erro ao pedir contratação ", data.msg, "toast-top-center");
+                        }
+                    }
+                });
+            }
         }
     });
 
