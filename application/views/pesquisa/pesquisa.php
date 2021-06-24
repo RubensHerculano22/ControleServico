@@ -3,6 +3,43 @@
     <div class="row">
         <div class="col-md-12 col-sm-12 col-xs-12">
             <h4>Resultados a partir da pesquisa: <b><?= $pesquisa ?></b></h4>https://coolors.co/091b26-254b59-54828c-c9eef2-f0f2f0
+            <pre>
+Lista
+                
+Arrumar a logo
+
+Arrumar banner tela inicial
+
+Corrigir o nome para NextoYou
+
+Area de Notificação.
+
+Adicionar os termos para cadastro. (n deixar aparecer no editar)
+
+Fazer o esqueci a senha
+
+Fazer o ativador de conta (quando cadastra).
+
+Banner, lista de serviço
+
+Texto de curiosidade sobre o serviço
+
+Imagens meio de pagamento, pagina de detalhes
+
+Acompanhar contratação, colocar informações do serviço contratado.
+
+Verificar se a visibilidade do serviço está funcionando.
+
+Tentar adicionar o calendario para ilustratar para o prestador os serviços que ele possui
+
+Relatorio de visualização
+
+Card em andamento.
+
+Corrigir as cores da pagina de feedback.
+
+Colocar restreições ao tentar enviar
+            </pre>
             <?php if($cards): ?>
                 <?php foreach($cards as $value): ?>
                     <h3><?= $value->nome ?></h3>

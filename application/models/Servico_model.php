@@ -244,7 +244,14 @@ class Servico_model extends CI_Model{
         {
             $valor_V = explode(",", $query->valor);
             $valor = str_replace(".", ",", $valor_V[0]);
-            $query->valor_D = $valor.".".$valor_V[1];
+            if(isset($valor_V[1]))
+                $query->valor_D = $valor.".".$valor_V[1];
+            else
+            {
+                $query->valor = $valor.",00";
+                $query->valor_D = $valor.".00";
+            }
+                
         }
 
         //Formata o valor para o formato br
@@ -252,7 +259,13 @@ class Servico_model extends CI_Model{
         {
             $valor_V = explode(",", $query->caucao);
             $valor = str_replace(".", ",", $valor_V[0]);
-            $query->caucao_D = $valor.".".$valor_V[1];
+            if(isset($valor_V[1]))
+                $query->caucao_D = $valor.".".$valor_V[1];
+            else
+            {
+                $query->caucao = $valor.",00";
+                $query->caucao_D = $valor.".00";
+            }
         }
 
 
