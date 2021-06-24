@@ -3,7 +3,7 @@
         <div class="col-md-auto">
             <div class="card">
                 <div class="card-header text-center" style="background-color: <?= $colores->color2 ?>">
-                    <a href="<?= base_url() ?>" class="h3" style="color: <?= $colores->color5 ?>;">NexToYou</a>
+                    <a href="<?= base_url() ?>" class="h3" style="color: <?= $colores->color5 ?>;">NextoYou</a>
                 </div>
                 <div class="card-body">
                     <p class="login-box-msg">Autentifique-se para melhorar sua navegação &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>

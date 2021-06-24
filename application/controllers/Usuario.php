@@ -59,11 +59,6 @@ class Usuario extends CI_Controller{
         $this->data["favoritos"] = $this->m_usuario->get_favoritos();
         $this->data["cadastrados"] = $this->m_usuario->get_servicos_cadastrados();
         $this->data["contratados"] = $this->m_usuario->get_servicos_contratos();
-        
-        // echo '<pre>';
-        // print_r($this->data["contratados"]);
-        // echo '</pre>';
-        // exit;
 
         $this->troca_local($id);
 
@@ -112,11 +107,6 @@ class Usuario extends CI_Controller{
 
         $this->data["info"] = $this->m_usuario->get_orcamentos($id);
 
-        // echo '<pre>';
-        // print_r($this->data["info"]);
-        // echo '</pre>';
-        // exit;
-
         $this->data["javascript"] = [
             base_url("assets/js/usuario/movimentacao.js")
         ];
@@ -131,6 +121,39 @@ class Usuario extends CI_Controller{
         if($rst == true)
         {
             redirect(base_url("Usuario/perfil/dados"));
+        }
+    }
+
+    public function esqueci_senha()
+    {
+        $this->data["breadcrumb"] = (object)array("titulo" => "Esqueci a Senha", "before" => array((object)array("nome" => "Home", "link" => "Home")), "current" => "Esqueci a senha");
+
+        $this->data["javascript"] = [
+            base_url("assets/js/usuario/esqueci_senha.js")
+        ];
+
+        $this->data["content"] = $this->load->view("usuario/esqueci_senha", $this->data, true);
+        $this->load->view("template/content", $this->data);
+    }
+
+    public function nova_senha()
+    {
+        $this->data["breadcrumb"] = (object)array("titulo" => "Definição de Nova Senha", "before" => array((object)array("nome" => "Home", "link" => "Home")), "current" => "Definição de Nova Senha");
+
+        $this->data["javascript"] = [
+            base_url("assets/js/usuario/nova_senha.js")
+        ];
+
+        $this->data["content"] = $this->load->view("usuario/nova_senha", $this->data, true);
+        $this->load->view("template/content", $this->data);
+    }
+
+    public function ativa_conta($id)
+    {
+        $rst = $this->m_usuario->ativa_conta($id);
+        if($rst == true)
+        {
+            redirect(base_url());
         }
     }
 
@@ -186,6 +209,18 @@ class Usuario extends CI_Controller{
     public function desfavoritar($id)
     {
         $rst = $this->m_usuario->desfavoritar($id);
+        echo json_encode($rst, JSON_UNESCAPED_UNICODE);
+    }
+
+    public function troca_senha()
+    {
+        $rst = $this->m_usuario->troca_senha();
+        echo json_encode($rst, JSON_UNESCAPED_UNICODE);
+    }
+
+    public function verifica_codigo()
+    {
+        $rst = $this->m_usuario->verifica_codigo();
         echo json_encode($rst, JSON_UNESCAPED_UNICODE);
     }
 

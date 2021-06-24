@@ -64,6 +64,7 @@
 <script type="text/javascript">
     var BASE_URL = "<?= base_url() ?>";
     var LOGGED = "<?= isset($dados) && $dados->logged == true ? 1 : 0 ?>";
+    var ATIVACAO = "<?= isset($dados) && $dados->ativacao == true ? 1 : 0  ?>";
 
     $(document).ready(function(){
         $(".select2").select2();
@@ -193,6 +194,10 @@
                     }
                         
                 })
+            }
+            else if(ATIVACAO == 0)
+            {
+                showNotification("error", "Erro", "É necessário realizar a ativação da conta.", "toast-top-center", "15000");
             }
             else
             {

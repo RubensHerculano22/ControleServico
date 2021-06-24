@@ -17,6 +17,7 @@ class Usuario_model extends CI_Model{
         "email" => "", 
         "data_criacao" => "",
         "usuario_id" => 0,
+        "ativacao" => 0,
     );
 
     /**
@@ -85,10 +86,11 @@ class Usuario_model extends CI_Model{
             $loginData->usuario_id = $query->id;
             $loginData->nome = $query->nome;
             $loginData->sobrenome = $query->sobrenome;
-            $loginData->email = $query->email;
+            $loginData->email = strtolower($query->email);
             $loginData->data_criacao = formatar($query->data_insercao, "bd2dt");
             $loginData->data_autentificacao = date("d-m-Y h:i:s");
             $loginData->logged = true;
+            $loginData->ativacao = $query->ativar_conta;
         }
 
         return $loginData;
@@ -178,7 +180,7 @@ class Usuario_model extends CI_Model{
                             $erro = 0;
                         }
                     }
-                    
+                    //Enviar email de ativação da conta
                     if($erro == 1)
                     {
                         $rst->rst = 1;
@@ -504,6 +506,110 @@ class Usuario_model extends CI_Model{
 
         $this->db->where("id", $id);
         if($this->db->update("Favoritos"))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public function troca_senha()
+    {
+        $rst = (object)array("rst" => false, "msg" => "");
+        $data = (object)$this->input->post();
+
+        $query = $this->db->get_where("Usuario", "email = '".strtolower($data->email)."'")->row();
+
+        if($query)
+        {
+            $codigo = $this->sistema->gerar_senha();
+
+            $this->db->set("id_usuario", $query->id);
+            $this->db->set("ativo", 1);
+            $this->db->set("codigo", $codigo);
+
+            if($this->db->insert("EsqueciSenha"))
+            {
+                //Enviar email aqui
+                $rst->rst = true;
+                $rst->msg = "Um codigo para realizar a recuperação da senha, foi enviado para seu email.".$codigo;
+            }
+            else
+            {
+                $rst->msg = "Erro ao tentar recuperar a senha, tente novamente mais tarde";
+            }
+        }
+        else
+        {
+            $rst->msg = "Este email não foi registrado no sistema";
+        }
+
+        return $rst;
+    }
+
+    public function verifica_codigo()
+    {
+        $data = (object)$this->input->post();
+
+        // echo '<pre>';
+        // print_r($data);
+        // echo '</pre>';
+        // exit;
+
+        if($data->id_usuario)
+        {
+            $rst = (object)array("rst" => false, "msg" => "");
+            $this->db->set("senha", md5($data->senha));
+
+            $this->db->where("id", $data->id_usuario);
+            if($this->db->update("Usuario"))
+            {
+                $this->db->set("ativo", 0);
+                $this->db->set("data_troca", date("Y-m-d h:i:s"));
+
+                $this->db->where("id_usuario = $data->id_usuario AND ativo = 1");
+                if($this->db->update("EsqueciSenha"))
+                {
+                    $rst->rst = true;
+                    $rst->msg = "Senha atualizada com sucesso";
+                }
+                else
+                {
+                    $rst->msg = "Erro ao tentar atualizar a senha";
+                }
+            }
+            else
+            {
+                $rst->msg = "Erro ao tentar atualizar a senha";
+            }
+
+            return  $rst;
+        }
+        else
+        {
+            $query = $this->db->get_where("EsqueciSenha", "codigo = '$data->codigo' AND ativo = 1")->row();
+
+            if($query)
+            {
+                $query->rst = null;
+                return $query;
+            }
+            else
+            {
+                return null;
+            }
+        }
+    }
+
+    public function ativa_conta($id)
+    {
+        $this->db->set("ativar_conta", 1);
+        $this->db->set("data_ativacao", date("Y-m-d h:i:s"));
+
+        $this->db->where("id", $id);
+        if($this->db->update("Usuario"))
         {
             return true;
         }

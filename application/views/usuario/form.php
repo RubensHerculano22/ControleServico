@@ -144,16 +144,18 @@
                                 </table>
                             </div>
                         </div>
+                        <?php if($usuario == null): ?>
                         <div class="row">
                             <div class="col-md-12 col-sm-12 col-xs-12">
                                 <div class="form-group">
                                     <div class="custom-control custom-checkbox">
                                         <input class="custom-control-input" type="checkbox" id="customCheckbox2" required>
-                                        <label for="customCheckbox2" class="custom-control-label">Concordar com <a href="javascript:void(0)" data-toggle="modal" data-target="#termos">termos<a> (Fazer modal)</label>
+                                        <label for="customCheckbox2" class="custom-control-label">Li e concordar com os <a href="javascript:void(0)" class="links_categorias" data-toggle="modal" data-target="#termos">termos<a></label>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        <?php endif; ?>
                     </div>
                     <input type="hidden" name="id_usuario" id="id_usuario" value="<?= @$usuario->id ?>" />
                     <div class="card-footer">
@@ -171,19 +173,34 @@
 </div>
 
 <div class="modal fade" id="termos">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">Default Modal</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <div class="modal-header" style="background-color: <?= $colores->color2 ?>; color: <?= $colores->color5 ?>">
+                <h4 class="modal-title">Termos para utilização e cadastro no sistema</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="background-color: <?= $colores->color2 ?>; color: <?= $colores->color5 ?>">
                 <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <p>One fine body&hellip;</p>
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12" id="modal_termos">
+                        <p>One fine body&hellip;</p>
+                        <p>One fine body&hellip;</p>
+                        <p>One fine body&hellip;</p><p>One fine body&hellip;</p>
+                        <p>One fine body&hellip;</p>
+                        <p>One fine body&hellip;</p><p>One fine body&hellip;</p><p>One fine body&hellip;</p><p>One fine body&hellip;</p>
+                        <p>One fine body&hellip;</p>
+                        <p>One fine body&hellip;</p>
+                        <p>One fine body&hellip;</p>
+                        <p>One fine body&hellip;</p><p>One fine body&hellip;</p>
+                        <p>One fine body&hellip;</p>
+                        <p>One fine body&hellip;</p><p>One fine body&hellip;</p>
+                        <p>One fine body&hellip;</p>
+                    </div>
+                </div>
             </div>
-            <div class="modal-footer justify-content-between">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <div class="modal-footer float-right">
+                <button type="button" class="btn" data-dismiss="modal" style="background-color: <?= $colores->color2 ?>; color: <?= $colores->color5 ?>">Fechar</button>
             </div>
         </div>
         <!-- /.modal-content -->

@@ -26,6 +26,8 @@ $(document).ready(function(){
     });
     $('[data-mask]').inputmask();
 
+    $('body').scrollspy({ target: '#modal_termos' })
+
     $(".endereco_input").on("change", function(){
         var cep     = $("#cep").val();
         var estado  = $("#estado").val();

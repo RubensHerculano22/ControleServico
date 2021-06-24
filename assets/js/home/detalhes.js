@@ -142,6 +142,11 @@ $(document).ready(function(){
                     
             })
         }
+        
+        else if(ATIVACAO == 0)
+        {
+            showNotification("error", "Erro", "É necessário realizar a ativação da conta.", "toast-top-center", "15000");
+        }
         else
         {
             var pergunta = $("#pergunta").val();
@@ -256,6 +261,10 @@ $(document).ready(function(){
                 }
                     
             })
+        }
+        else if(ATIVACAO == 0)
+        {
+            showNotification("error", "Erro", "É necessário realizar a ativação da conta.", "toast-top-center", "15000");
         }
         else
         {

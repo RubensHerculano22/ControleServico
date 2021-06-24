@@ -119,7 +119,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>NexToYou - Sistema para cadastro e contratação de Serviço</title>
+	<title>NextoYou - Sistema para cadastro e contratação de Serviço</title>
     </head>
     <body style="margin: 0; padding: 0;">
         <table border="0" cellpadding="0" cellspacing="0" width="100%">
@@ -136,7 +136,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 <table border="0" cellpadding="0" cellspacing="0" width="100%">
                                     <tr>
                                         <td style="color: #091B26; font-family: Arial, sans-serif; font-size: 20px; line-height: 20px;">
-                                            <b>Cadastro de Usuario - NexToYou</b>
+                                            <b>Cadastro de Usuario - NextoYou</b>
                                         </td>
                                     </tr>
                                     <tr>

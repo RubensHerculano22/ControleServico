@@ -10,13 +10,13 @@ Arrumar a logo
 
 Arrumar banner tela inicial
 
-Corrigir o nome para NextoYou
+Corrigir o nome para NextoYou - feito
 
 Area de Notificação.
 
-Adicionar os termos para cadastro. (n deixar aparecer no editar)
+Adicionar os termos para cadastro. (n deixar aparecer no editar) - feito
 
-Fazer o esqueci a senha
+Fazer o esqueci a senha - feito
 
 Fazer o ativador de conta (quando cadastra).
 
