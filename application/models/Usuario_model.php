@@ -180,7 +180,16 @@ class Usuario_model extends CI_Model{
                             $erro = 0;
                         }
                     }
-                    //Enviar email de ativação da conta
+                    
+                    $texto = (object)array();
+
+                    $texto->email = strtolower($data->email);
+                    $texto->titulo = "Novo cadastro de usuario";
+                    $texto->link = base_url("Usuario/ativa_conta/$id_usuario");
+                    $texto->msg = "Opa, tudo certo? <br/> Você acaba de realizar o cadastro.";
+
+                    $erro = $this->envia_email($texto);
+
                     if($erro == 1)
                     {
                         $rst->rst = 1;
@@ -376,12 +385,9 @@ class Usuario_model extends CI_Model{
             
             $this->db->select("id, nome");
             $item->usuario = $this->db->get_where("Usuario", "id = $item->id_usuario")->row();
+
+            $item->id_servico = $this->db->get_where("Orcamento", "id = $id")->row()->id_servico;
         }
-        
-        // echo '<pre>';
-        // print_r($query);
-        // echo '</pre>';
-        // exit;
 
         return $query;
     }
@@ -619,6 +625,30 @@ class Usuario_model extends CI_Model{
         }
     }
 
+    public function reeviar_email($id)
+    {
+        $rst = (object)array("rst" => false, "msg" => "");
+        $query = $this->db->get_where("Usuario", "id = $id")->row();
+
+        if($query)
+        {
+            //Reenviar email
+
+            $dados = $this->session->userdata("dados" . APPNAME);
+            $dados->ativacao = 1;
+            $this->session->set_userdata(array("is_logged" => true, "dados" . APPNAME => $dados));
+
+            $rst->rst = true;
+            $rst->msg = "Email de ativação reenviado com sucesso";
+        }
+        else
+        {
+            $rst->msg = "Erro ao reenviar email de ativação";
+        }
+
+        return $rst;
+    }
+
 /**
      * Realiza a verificação se o email já está cadastrado no sistema.
      * @access private
@@ -636,6 +666,27 @@ class Usuario_model extends CI_Model{
         else
         {
             return true;
+        }
+    }
+
+    public function envia_email($texto)
+    {
+        $remetente["email"] = "nextoyou@nextoyou.com.br";
+        $remetente["nome"] = "NextoYou";
+        $destinatario["email"] = $texto->email;
+        $destinatario["assunto"] = $texto->titulo;
+        $destinatario["mensagem"]["mensagem"] = $texto->msg;
+        $destinatario["mensagem"]["link"] = $texto->link;
+        
+        $mail = $this->sistema->enviar_email((object)$remetente, (object)$destinatario); 
+        //  $mail = true;
+        if($mail)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
 

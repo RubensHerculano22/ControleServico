@@ -1,5 +1,44 @@
 <div class="<?= ($info[0])->status->id == 2 ? "container-fluid" : "container" ?>">
     <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="card">
+                <div class="card-header" style="background-color: <?= $colores->color2 ?>">
+                    <h3 class="card-title" style="color: <?= $colores->color5 ?>">Informações sobre o Serviço</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4 col-sm-4 col-xs-12">
+                            <img src="data:<?= $servico->imagens[0]->tipo_imagem ?>;base64,<?= $servico->imagens[0]->img ?>" class="product-image" alt="Product Image" style="max-height: 500px;">
+                        </div>
+                        <div class="col-md-8 col-sm-8 col-xs-12">
+                            <div class="row">
+                                <div class="col-md-8 col-sm-8 col-xs-12">
+                                    <p><b>Nome: </b> <?= $servico->nome ?></p>
+                                </div>
+                                <div class="col-md-4 col-sm-4 col-xs-12">
+                                    <?php if($servico->media_feedback): ?>
+                                        <?php for($i=0;$i<intval($servico->media_feedback);$i++): ?>
+                                            <i class="fas fa-star fa-1x" style="color: Gold"></i>
+                                        <?php endfor; ?>
+                                        <?php if(($servico->media_feedback*2)%2 != 0): ?>
+                                            <i class="fas fa-star-half-alt fa-1x" style="color: Gold"></i>
+                                        <?php endif; ?>
+                                    <?php else: ?>
+                                        <small>Sem Classficação de Feedback</small>
+                                    <?php endif; ?>
+                                </div>
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <p><b>Descrição: </b> <?= $servico->descricao_curta ?></p>
+                                </div>
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <a href="<?= base_url("Servico/detalhes/$servico->nome/$servico->id") ?>" class="btn float-right" style="background-color: <?= $colores->color2 ?>; color: <?= $colores->color5 ?>">Ver Serviço</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="<?= ($info[0])->status->id == 2 ? "col-md-8 col-sm-8" : "col-md-12 col-sm-12" ?> col-xs-12 pt-5">
             <div class="card">
                 <div class="card-header" style="background-color: <?= $colores->color2 ?>">

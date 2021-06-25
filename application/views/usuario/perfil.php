@@ -87,7 +87,9 @@
                                 <div class="col-md-12 col-sm-12 col-xs-12">
                                     <div class="row">
                                         <div class="col-md-12 col-sm-12 col-xs-12">
-                                            <button class="btn float-left" id="ativar_conta" style="background-color: <?= $colores->color2 ?>; color: <?= $colores->color5 ?>"> Reenviar email de ativação de conta</button>
+                                            <?php if($info->ativar_conta == 0): ?>
+                                            <button class="btn float-left" id="reenviar_email" data-id="<?= $info->id ?>" style="background-color: <?= $colores->color2 ?>; color: <?= $colores->color5 ?>"> Reenviar email de ativação de conta</button>
+                                            <?php endif; ?>
                                             <a href="<?= base_url("Usuario/index/".$info->id) ?>" class="btn float-right" style="background-color: <?= $colores->color2 ?>; color: <?= $colores->color5 ?>"><i class="fas fa-edit"></i> Editar Dados</a>
                                         </div>
                                     </div>

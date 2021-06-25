@@ -6,9 +6,9 @@
             <pre>
 Lista
                 
-Arrumar a logo
+Arrumar a logo - Lie
 
-Arrumar banner tela inicial
+Arrumar banner tela inicial - Lie
 
 Corrigir o nome para NextoYou - feito
 
@@ -18,25 +18,25 @@ Adicionar os termos para cadastro. (n deixar aparecer no editar) - feito
 
 Fazer o esqueci a senha - feito
 
-Fazer o ativador de conta (quando cadastra).
+Fazer o ativador de conta (quando cadastra). - feito
 
-Banner, lista de serviço
+Banner, lista de serviço - Lie
 
-Texto de curiosidade sobre o serviço
+Texto de curiosidade sobre o serviço - Lie
 
 Imagens meio de pagamento, pagina de detalhes
 
-Acompanhar contratação, colocar informações do serviço contratado.
+Acompanhar contratação, colocar informações do serviço contratado. - feito
 
-Verificar se a visibilidade do serviço está funcionando.
+Verificar se a visibilidade do serviço está funcionando. - feito
 
 Tentar adicionar o calendario para ilustratar para o prestador os serviços que ele possui
 
 Relatorio de visualização
 
-Card em andamento.
+Card em andamento. - feito
 
-Corrigir as cores da pagina de feedback.
+Corrigir as cores da pagina de feedback. - feito
 
 Colocar restreições ao tentar enviar
             </pre>

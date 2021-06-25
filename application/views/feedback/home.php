@@ -2,8 +2,8 @@
     <div class="row">
         <div class="col-md-8 col-sm-8 col-xs-12">
             <div class="card">
-                <div class="card-header" style="background-color: #e36802">
-                    <h3 class="card-title text-white">Feedback do Serviço</h3>
+                <div class="card-header" style="background-color: <?= $colores->color2 ?>">
+                    <h3 class="card-title" style="color: <?= $colores->color5 ?>">Feedback do Serviço</h3>
                 </div>
                 <form id="submit">
                     <div class="card-body">
@@ -37,7 +37,7 @@
                     <div class="card-footer">
                         <div class="row">
                             <div class="col-md-12 col-sm-12 col-xs-12">
-                                <button type="submit" class="btn btn-info float-right">Salvar</button>
+                                <button type="submit" class="btn float-right" style="background-color: <?= $colores->color2 ?>; color: <?= $colores->color5 ?>">Salvar</button>
                             </div>
                         </div>
                     </div>
@@ -46,8 +46,8 @@
         </div>
         <div class="col-md-4 col-sm-4 col-xs-12">
             <div class="card">
-                <div class="card-header" style="background-color: #e36802">
-                    <h3 class="card-title text-white">Serviço</h3>
+                <div class="card-header" style="background-color: <?= $colores->color2 ?>">
+                    <h3 class="card-title" style="color: <?= $colores->color5 ?>">Serviço</h3>
                 </div>
                 <div class="card-body">
                     <div class="row">

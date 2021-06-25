@@ -47,15 +47,15 @@ $(document).ready(function(){
         id_orcamento = $(this).data("id");
     });
 
-    $("#ativar_conta").on("click", function(){
+    $("#reenviar_email").on("click", function(){
+        var id = $(this).data("id");
         $.ajax({
             type: "post",
-            url: BASE_URL+"Usuario/reeviar_email",
+            url: BASE_URL+"Usuario/reeviar_email/"+id,
             cache: false,
             contentType: false,
             processData: false,
             dataType: "json",
-            data: data,
             success: function(data)
             {
                 if(data.rst === true)

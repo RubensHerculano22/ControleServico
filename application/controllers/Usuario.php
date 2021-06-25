@@ -106,6 +106,7 @@ class Usuario extends CI_Controller{
         $this->data["id"] = $id;
 
         $this->data["info"] = $this->m_usuario->get_orcamentos($id);
+        $this->data["servico"] = $this->m_servico->get_info_servico($this->data["info"][0]->id_servico);
 
         $this->data["javascript"] = [
             base_url("assets/js/usuario/movimentacao.js")
@@ -215,6 +216,12 @@ class Usuario extends CI_Controller{
     public function troca_senha()
     {
         $rst = $this->m_usuario->troca_senha();
+        echo json_encode($rst, JSON_UNESCAPED_UNICODE);
+    }
+
+    public function reeviar_email($id)
+    {
+        $rst = $this->m_usuario->reeviar_email($id);
         echo json_encode($rst, JSON_UNESCAPED_UNICODE);
     }
 

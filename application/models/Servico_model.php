@@ -896,12 +896,12 @@ class Servico_model extends CI_Model{
         $rst->visualizacao = count($visualizacao);
 
         $this->db->select("O.id");
-        $this->db->join("ContrataServico C", "O.id = C.id_orcamento AND C.ativo = 1 AND C.status = 4");
+        $this->db->join("ContrataServico C", "O.id = C.id_orcamento AND C.status = 7");
         $contratacoes = $this->db->get_where("Orcamento O", "O.id_servico = $id")->result();
         $rst->contratacoes = count($contratacoes);
 
         $this->db->select("O.id");
-        $this->db->join("ContrataServico C", "O.id = C.id_orcamento AND C.ativo = 1 AND (C.status != 4 OR C.status != 5 AND C.status != 3)");
+        $this->db->join("ContrataServico C", "O.id = C.id_orcamento AND C.ativo = 1 AND (C.status != 7 OR C.status != 3)");
         $andamento = $this->db->get_where("Orcamento O", "O.id_servico = $id")->result();
         $rst->andamento = count($andamento);
 
@@ -1444,6 +1444,31 @@ class Servico_model extends CI_Model{
         {
             if($item->Nome == $nome)
                 return $item->ID;
+        }
+    }
+
+    public function envia_email($texto)
+    {
+        $remetente["email"] = "@nextoyou.com.br";
+        $remetente["nome"] = "RH - Movimentação";
+        $destinatario["email"] = $texto->email;
+        $destinatario["assunto"] = "Titulo do email";
+        $destinatario["mensagem"]["solicitante"] = $texto->solicitante;
+        $destinatario["mensagem"]["cargo"] = $texto->cargo;
+        $destinatario["mensagem"]["status"] = $texto->status;
+        $destinatario["mensagem"]["tipo_movimentacao"] = $texto->tipo_movimentacao;
+        $destinatario["mensagem"]["mensagem"] = $texto->msg;
+        $destinatario["mensagem"]["link"] = $texto->link;
+        
+        $mail = $this->sistema->enviar_email((object)$remetente, (object)$destinatario); 
+        //  $mail = true;
+        if($mail)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
 
