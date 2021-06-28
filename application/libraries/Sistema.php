@@ -41,12 +41,17 @@ class Sistema {
     public function enviar_email($remetente, $destinatario) {
        
         $this->CI->load->library('email');
-        
-        $mail_config["protocol"] = "smtp";
+
+        $this->CI->email->clear(TRUE);
+
+        $mail_config['smtp_crypto'] = 'tls';
+        $mail_config['protocol'] = 'smtp';
+        $mail_config['_smtp_auth'] = TRUE;
         $mail_config["smtp_host"] = "smtp.gmail.com";
         $mail_config["smtp_user"] = "rubens.herculano04@gmail.com";
         $mail_config["smtp_pass"] = "ifspsmtp";
         $mail_config["smtp_port"] = "587";
+        $mail_config['charset'] = 'utf-8';
         $mail_config["mailtype"] = "html";
         $mail_config['crlf'] = "\r\n";
         $mail_config['newline'] = "\r\n";
@@ -56,20 +61,18 @@ class Sistema {
         $this->CI->email->to($destinatario->email);
         
         $this->CI->email->subject(html_entity_decode($destinatario->assunto));
+        $this->CI->email->attach(base_url("assets/img/logo.png"));
+        $destinatario->mensagem["cid"] = $this->CI->email->attachment_cid(base_url("assets/img/logo.png"));
         $msg = $this->CI->load->view("email", $destinatario->mensagem, TRUE);
         $this->CI->email->message($msg);
-        if (isset($destinatario->anexos)) {
-            foreach ($destinatario->anexos as $anexo)
-                $this->CI->email->attach($anexo);
-        }
+        
+        $resposta = $this->CI->email->send();
 
-        if ($this->CI->email->send(false)) {
-            //echo $this->CI->email->print_debugger();
-            //exit;
+        if ($resposta) {
+            // echo $this->CI->email->print_debugger();
             return TRUE;
         } else {
-            //echo $this->CI->email->print_debugger();
-            //exit;
+            // echo $this->CI->email->print_debugger();
             return FALSE;
         }
     }

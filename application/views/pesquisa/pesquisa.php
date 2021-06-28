@@ -6,7 +6,7 @@
             <pre>
 Lista
                 
-Arrumar a logo - Lie
+Arrumar a logo - Lie - feito
 
 Arrumar banner tela inicial - Lie
 
@@ -38,7 +38,7 @@ Card em andamento. - feito
 
 Corrigir as cores da pagina de feedback. - feito
 
-Colocar restreições ao tentar enviar
+Colocar restreições ao tentar enviar - feito
             </pre>
             <?php if($cards): ?>
                 <?php foreach($cards as $value): ?>

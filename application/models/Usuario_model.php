@@ -106,11 +106,11 @@ class Usuario_model extends CI_Model{
         $data = (object)$this->input->post();
         $rst = (object)array("rst" => 0, "msg" => "");
 
-        $enderecos = explode(" - ", $data->enderecos);
+        $json_enderecos = explode(" - ", $data->enderecos);
         
-        for($i=0;$i<count($enderecos);$i++)
+        for($i=0;$i<count($json_enderecos);$i++)
         {
-            $enderecos[$i] = json_decode($enderecos[$i]);
+            $enderecos[$i] = json_decode($json_enderecos[$i]);
         }
 
         //verifica se possui um usuario para ser editado e verifica se o email já não está sendo utilizado quando for realizar o cadastro.
@@ -180,20 +180,29 @@ class Usuario_model extends CI_Model{
                             $erro = 0;
                         }
                     }
-                    
-                    $texto = (object)array();
-
-                    $texto->email = strtolower($data->email);
-                    $texto->titulo = "Novo cadastro de usuario";
-                    $texto->link = base_url("Usuario/ativa_conta/$id_usuario");
-                    $texto->msg = "Opa, tudo certo? <br/> Você acaba de realizar o cadastro.";
-
-                    $erro = $this->envia_email($texto);
 
                     if($erro == 1)
                     {
-                        $rst->rst = 1;
-                        $rst->msg = "Cadastro realizado com sucesso";
+                        $texto = (object)array();
+
+                        $texto->email = strtolower($data->email);
+                        $texto->titulo = "Novo cadastro de usuario";
+                        $texto->link = base_url("Usuario/ativa_conta/$id_usuario");
+                        $texto->texto_link = "Ativar Conta";
+                        $texto->msg = "Opa, tudo certo? <br/> Você acaba de realizar o cadastro em nosso sistema. <br/> Para uma utilização mais completa de nosso sistema, ative sua conta.";
+                        $texto->cid = "";
+
+                        $erro = $this->envia_email($texto);
+
+                        if($erro == true)
+                        {
+                            $rst->rst = 1;
+                            $rst->msg = "Cadastro realizado com sucesso";
+                        }
+                        else
+                        {
+                            $rst->msg = "Erro ao enviar o email, para ativação da conta, tente novamente mais tarde, ou acesse seu perfil e solicite novamente o envio do email.";
+                        }
                     }
                     else
                     {
@@ -535,12 +544,24 @@ class Usuario_model extends CI_Model{
             $this->db->set("id_usuario", $query->id);
             $this->db->set("ativo", 1);
             $this->db->set("codigo", $codigo);
+            $this->db->set("data_solicitacao", date("Y-m-d h:i:s"));
 
             if($this->db->insert("EsqueciSenha"))
             {
                 //Enviar email aqui
+
+                $texto = (object)array();
+                $texto->email = strtolower($data->email);
+                $texto->titulo = "Recuperação de Senha";
+                $texto->link = "";
+                $texto->texto_link = "";
+                $texto->msg = "Opa, tudo certo? <br/> Aqui está seu codigo de verificação para recuperar sua senha: <br/> <h3>$codigo</h3>";
+                $texto->cid = "";
+    
+                $erro = $this->envia_email($texto);
+
                 $rst->rst = true;
-                $rst->msg = "Um codigo para realizar a recuperação da senha, foi enviado para seu email.".$codigo;
+                $rst->msg = "Um codigo para realizar a recuperação da senha, foi enviado para seu email.";
             }
             else
             {
@@ -617,6 +638,10 @@ class Usuario_model extends CI_Model{
         $this->db->where("id", $id);
         if($this->db->update("Usuario"))
         {
+            $dados = $this->session->userdata("dados" . APPNAME);
+            $dados->ativacao = 1;
+            $this->session->set_userdata(array("is_logged" => true, "dados" . APPNAME => $dados));
+
             return true;
         }
         else
@@ -632,14 +657,24 @@ class Usuario_model extends CI_Model{
 
         if($query)
         {
-            //Reenviar email
+            $texto = (object)array();
+            $texto->email = strtolower($query->email);
+            $texto->titulo = "Novo cadastro de usuario";
+            $texto->link = base_url("Usuario/ativa_conta/$query->id");
+            $texto->texto_link = "Ativar Conta";
+            $texto->msg = "Opa, tudo certo? <br/> Você solicitou que o envio do email para ativação da conta seja realizada, aqui estamos nos ;D";
+            $texto->cid = "";
 
-            $dados = $this->session->userdata("dados" . APPNAME);
-            $dados->ativacao = 1;
-            $this->session->set_userdata(array("is_logged" => true, "dados" . APPNAME => $dados));
-
-            $rst->rst = true;
-            $rst->msg = "Email de ativação reenviado com sucesso";
+            $erro = $this->envia_email($texto);
+            if($erro == 1)
+            {
+                $rst->rst = true;
+                $rst->msg = "Email de ativação reenviado com sucesso";
+            }
+            else
+            {
+                $rst->msg = "Erro ao reenviar email de ativação";    
+            }
         }
         else
         {
@@ -675,8 +710,11 @@ class Usuario_model extends CI_Model{
         $remetente["nome"] = "NextoYou";
         $destinatario["email"] = $texto->email;
         $destinatario["assunto"] = $texto->titulo;
+        $destinatario["mensagem"]["titulo"] = $texto->titulo;
         $destinatario["mensagem"]["mensagem"] = $texto->msg;
         $destinatario["mensagem"]["link"] = $texto->link;
+        $destinatario["mensagem"]["texto_link"] = $texto->texto_link;
+        $destinatario["mensagem"]["cid"] = $texto->cid;
         
         $mail = $this->sistema->enviar_email((object)$remetente, (object)$destinatario); 
         //  $mail = true;

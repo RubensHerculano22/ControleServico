@@ -230,6 +230,7 @@ function pesquisa_cep()
                     }
                     else
                     {
+                        console.log(data);
                         $("#endereco").val(data.logradouro)
                         $("#bairro").val(data.bairro)
                         $("#cidade").val(data.localidade)

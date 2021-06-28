@@ -150,7 +150,7 @@
                                 <div class="form-group">
                                     <div class="custom-control custom-checkbox">
                                         <input class="custom-control-input" type="checkbox" id="customCheckbox2" required>
-                                        <label for="customCheckbox2" class="custom-control-label">Li e concordar com os <a href="javascript:void(0)" class="links_categorias" data-toggle="modal" data-target="#termos">termos<a></label>
+                                        <label for="customCheckbox2" class="custom-control-label">Li e concordo com os <a href="javascript:void(0)" class="links_categorias" data-toggle="modal" data-target="#termos">termos<a></label>
                                     </div>
                                 </div>
                             </div>

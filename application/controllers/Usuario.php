@@ -70,9 +70,11 @@ class Usuario extends CI_Controller{
         $this->load->view("template/content", $this->data);
     }
 
-    public function login()
+    public function login($hash = null)
     {
         $this->data["breadcrumb"] = (object)array("titulo" => "Autentificação", "before" => array((object)array("nome" => "Home", "link" => "Home")), "current" => "Autentificação");
+
+        $this->data["hash"] = $hash;
 
         $this->data["javascript"] = [
             base_url("assets/js/usuario/autentificacao.js")
@@ -151,10 +153,25 @@ class Usuario extends CI_Controller{
 
     public function ativa_conta($id)
     {
-        $rst = $this->m_usuario->ativa_conta($id);
-        if($rst == true)
+        $this->data["breadcrumb"] = (object)array("titulo" => "Definição de Nova Senha", "before" => array((object)array("nome" => "Home", "link" => "Home")), "current" => "Definição de Nova Senha");
+
+        $this->m_usuario->ativa_conta($id);
+
+        $this->data["content"] = $this->load->view("usuario/ativa_conta", $this->data, true);
+        $this->load->view("template/content", $this->data);
+    }
+
+    public function page_redirect($hash)
+    {
+        $link = $this->sistema->encrypt_decrypt("decrypt", $hash);        
+
+        if($this->dados)
         {
-            redirect(base_url());
+            redirect(base_url($link));
+        }
+        else
+        {
+            $this->login($hash);
         }
     }
 

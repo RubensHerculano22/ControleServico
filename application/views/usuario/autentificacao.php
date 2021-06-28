@@ -30,6 +30,7 @@
                             </div>
                         </div>
                     </form>
+                    <input type="hidden" id="hash" value="<?= $hash ?>" />
                     <p class="mb-1">
                         <a href="<?= base_url("Usuario/esqueci_senha") ?>" style="color: <?= $colores->color3 ?>;">Esqueci a senha</a>
                     </p>

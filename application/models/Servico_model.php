@@ -358,6 +358,21 @@ class Servico_model extends CI_Model{
 
         if($this->db->insert("Perguntas"))
         {
+            $query = $this->db->get_where("Servico", "id = '$data->id_servico'")->row();
+            $queryUsuario = $this->db->get_where("Usuario", "id = $data->id_usuario")->row();
+
+            $texto = (object)array();
+
+            $hash = $this->sistema->encrypt_decrypt("encrypt", "Servico/gerenciar_servico/$data->id_servico");
+
+            $texto->email = strtolower($queryUsuario->email);
+            $texto->titulo = "Nova pergunta cadastrada";
+            $texto->link = base_url("Usuario/page_redirect/$hash");
+            $texto->texto_link = "Responder pergunta";
+            $texto->msg = "Opa, tudo certo? <br/> Uma nova pergunta foi cadastrar em seu serviço: $query->nome. <br/> Caso queira responder agora clique no botão abaixo.";
+            $texto->cid = "";
+            $this->envia_email($texto);
+
             $rst->rst = true;
             $rst->msg = "Pergunta registrada com sucesso, quando houver uma resposta, você será notificado!";
         }
@@ -741,6 +756,21 @@ class Servico_model extends CI_Model{
         $this->db->where("id = $data->id_pergunta");
         if($this->db->update("Perguntas"))
         {
+            $queryPergunta = $this->db->get_where("Perguntas", "id = '$data->id_pergunta'")->row();
+            $query = $this->db->get_where("Servico", "id = '$queryPergunta->id_servico'")->row();
+            $queryUsuario = $this->db->get_where("Usuario", "id = $queryPergunta->id_usuario")->row();
+
+            $texto = (object)array();
+
+            $texto->email = strtolower($queryUsuario->email);
+            $texto->titulo = "Resposta a sua Pergunta";
+            $texto->link = base_url("Servico/detalhes/$query->nome/$query->id");
+            $texto->texto_link = "Ver Serviço";
+            $texto->msg = "Opa, tudo certo? <br/> Uma resposta a sua pergunta no serviço: $query->nome, foi cadastrada <br/> Caso queira ver diretamente no serviço clique no botão abaixo.";
+            $texto->cid = "";
+
+            $this->envia_email($texto);
+
             $rst->rst = true;
             $rst->msg = "Resposta realizada com sucesso!";
         }
@@ -1449,16 +1479,15 @@ class Servico_model extends CI_Model{
 
     public function envia_email($texto)
     {
-        $remetente["email"] = "@nextoyou.com.br";
-        $remetente["nome"] = "RH - Movimentação";
+        $remetente["email"] = "nextoyou@nextoyou.com.br";
+        $remetente["nome"] = "NextoYou";
         $destinatario["email"] = $texto->email;
-        $destinatario["assunto"] = "Titulo do email";
-        $destinatario["mensagem"]["solicitante"] = $texto->solicitante;
-        $destinatario["mensagem"]["cargo"] = $texto->cargo;
-        $destinatario["mensagem"]["status"] = $texto->status;
-        $destinatario["mensagem"]["tipo_movimentacao"] = $texto->tipo_movimentacao;
+        $destinatario["assunto"] = $texto->titulo;
+        $destinatario["mensagem"]["titulo"] = $texto->titulo;
         $destinatario["mensagem"]["mensagem"] = $texto->msg;
         $destinatario["mensagem"]["link"] = $texto->link;
+        $destinatario["mensagem"]["texto_link"] = $texto->texto_link;
+        $destinatario["mensagem"]["cid"] = $texto->cid;
         
         $mail = $this->sistema->enviar_email((object)$remetente, (object)$destinatario); 
         //  $mail = true;

@@ -8,6 +8,7 @@ $(document).ready(function(){
         data = new FormData($("#submit").get(0));
         var email = $("#email").val();
         var senha = $("#senha").val();
+        var hash = $("#hash").val();
         
         if(email.search("@") > 0 && email.search(".com") > 0)
         {
@@ -25,7 +26,14 @@ $(document).ready(function(){
                     {
                         if(data.logged === true)
                         {
-                            window.location.href = BASE_URL+data.local;
+                            if(hash != "")
+                            {
+                                window.location.href = BASE_URL+"Usuario/page_redirect/"+hash;
+                            }
+                            else
+                            {
+                                window.location.href = BASE_URL+data.local;
+                            }
                         }
                         else if(data.logged === false)
                         {

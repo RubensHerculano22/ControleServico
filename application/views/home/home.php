@@ -82,6 +82,7 @@
         <div class="col-md-12 col-sm-12 col-xs-12" style="background-color: <?= $colores->color5 ?>;">
             <div class="container pb-5">
                 <p class="text-center pt-5" style="font-size: 32px;">O que é <span style="color: <?= $colores->color3 ?>;">NextoYou?</span></p>
+                <img src="<?= base_url("assets/img/logo_fundo.jpg") ?>" alt="AdminLTE Logo" class="img-circle elevation-3" style="max-height: 180px;display: block; margin-left: auto; margin-right: auto"><br/>
                 <p class="text-center pl-5 pr-5"><span style="color: <?= $colores->color3 ?>;">NextoYou</span> tem como objetivo tornar confortável a relação cliente x prestador e que nossos clientes tenham tudo que necessita em um único 
                 sistema, e o melhor de tudo: Tudo bem perto de Você!</p>
                 <div class="row pb-5 pt-5">

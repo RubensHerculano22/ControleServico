@@ -2,7 +2,7 @@
 <aside class="main-sidebar elevation-4 sidebar-light-navy">
     <!-- Brand Logo -->
     <a href="<?= base_url("Servico") ?>" class="brand-link" style="background-color: <?= $colores->color1 ?>">
-      <img src="<?= base_url("assets/img/logo_transparent.png") ?>" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+      <img src="<?= base_url("assets/img/logo_fundo.jpg") ?>" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
       <span class="brand-text font-weight-light" style="color: <?= $colores->color4 ?>">NEXTOYOU</span>
     </a>
 
