@@ -125,28 +125,6 @@
                                         <?php endif; ?>
                                     </div>
                                 </div>
-                                <!-- 
-                                    https://latinoscassinos.com/wp-content/uploads/2019/01/62.png
-                                    https://i.pinimg.com/originals/dd/65/f3/dd65f3c6a80e7bb059d3f2630399826b.jpg
-                                    https://logospng.org/download/cartao-elo/logo-cartao-elo-colorido-fundo-preto-256.png
-                                    https://i2.wp.com/goldlinebrow.com/wp-content/uploads/2018/02/American-Express-icon.png?ssl=1
-                                    https://logospng.org/download/hipercard/logo-hipercard-256.png
-                                    https://latinoscassinos.com/wp-content/uploads/2019/01/62.png
-                                    https://i.pinimg.com/originals/dd/65/f3/dd65f3c6a80e7bb059d3f2630399826b.jpg
-                                    https://logospng.org/download/cartao-elo/logo-cartao-elo-colorido-fundo-preto-256.png
-                                    https://i2.wp.com/goldlinebrow.com/wp-content/uploads/2018/02/American-Express-icon.png?ssl=1
-                                    https://logospng.org/download/hipercard/logo-hipercard-256.png
-                                    https://logospng.org/download/itau/logo-itau-256.png
-                                    https://logospng.org/download/nubank/logo-nu-nubank-roxo-icon-256.png
-                                    https://logospng.org/download/santander/logo-santander-icon-256.png
-                                    https://banco.bradesco/favicon.ico
-                                    https://logospng.org/download/caixa-economica-federal/logo-caixa-economica-federal-256.png
-                                    https://logospng.org/download/mercado-pago/logo-mercado-pago-icone-256.png
-                                    https://logospng.org/download/picpay/logo-picpay-256.png
-                                    https://cdn.iconscout.com/icon/free/png-256/paypal-5-226456.png
-                                    https://logospng.org/download/banco-do-brasil/logo-banco-do-brasil-icon-256.png
-                                    https://www.autoimportsweb.com.br/wp-content/uploads/2019/02/ico_boleto.svg
-                                -->
                                 <div class="row mt-3 mb-3">
                                     <div class="col-md-12 col-sm-12 col-xs-12">
                                         <hr>
@@ -163,31 +141,31 @@
                                                 <?php foreach($info->pagamento as $item): ?>
                                                     <?php if($item->id_tipo_pagamento == 1): ?>
                                                         <div class="col-md-3 col-sm-4">
-                                                            <img class="img-fluid mb-2" src="https://latinoscassinos.com/wp-content/uploads/2019/01/62.png" style="max-width: 150px; max-height: 40px;" />
+                                                            <img class="img-fluid mb-2" src="<?= base_url("assets/img/visa.png") ?>" style="max-width: 150px; max-height: 40px;" />
                                                             <span class="text-muted"><?= ($item->vezes != 1 ? $item->vezes."x" : "à vista").($item->juros == 1 ? " com juros" : " sem juros") ?></span>
                                                         </div>        
                                                     <?php endif; ?>
                                                     <?php if($item->id_tipo_pagamento == 2): ?>
                                                         <div class="col-md-3 col-sm-4">
-                                                            <img class="img-fluid mb-2" src="https://latinoscassinos.com/wp-content/uploads/2019/01/62.png" style="max-width: 150px; max-height: 40px;" />
+                                                            <img class="img-fluid mb-2" src="<?= base_url("assets/img/mastercard.jpg") ?>" style="max-width: 150px; max-height: 40px;" />
                                                             <span class="text-muted"><?= ($item->vezes != 1 ? $item->vezes."x" : "à vista").($item->juros == 1 ? " com juros" : " sem juros") ?></span>
                                                         </div> 
                                                     <?php endif; ?>
                                                     <?php if($item->id_tipo_pagamento == 3): ?>
                                                         <div class="col-md-3 col-sm-4">
-                                                            <img class="img-fluid mb-2" src="https://latinoscassinos.com/wp-content/uploads/2019/01/62.png" style="max-width: 150px; max-height: 40px;" />
+                                                            <img class="img-fluid mb-2" src="<?= base_url("assets/img/elo.png") ?>" style="max-width: 150px; max-height: 40px;" />
                                                             <span class="text-muted"><?= ($item->vezes != 1 ? $item->vezes."x" : "à vista").($item->juros == 1 ? " com juros" : " sem juros") ?></span>
                                                         </div>     
                                                     <?php endif; ?>
                                                     <?php if($item->id_tipo_pagamento == 4): ?>
                                                         <div class="col-md-3 col-sm-4">
-                                                            <img class="img-fluid mb-2" src="https://latinoscassinos.com/wp-content/uploads/2019/01/62.png" style="max-width: 150px; max-height: 40px;" />
+                                                            <img class="img-fluid mb-2" src="<?= base_url("assets/img/american_express.png") ?>" style="max-width: 150px; max-height: 40px;" />
                                                             <span class="text-muted"><?= ($item->vezes != 1 ? $item->vezes."x" : "à vista").($item->juros == 1 ? " com juros" : " sem juros") ?></span>
                                                         </div>
                                                     <?php endif; ?>
                                                     <?php if($item->id_tipo_pagamento == 5): ?>
                                                         <div class="col-md-3 col-sm-4">
-                                                            <img class="img-fluid mb-2" src="https://latinoscassinos.com/wp-content/uploads/2019/01/62.png" style="max-width: 150px; max-height: 40px;" />
+                                                            <img class="img-fluid mb-2" src="<?= base_url("assets/img/hipercard.png") ?>" style="max-width: 150px; max-height: 40px;" />
                                                             <span class="text-muted"><?= ($item->vezes != 1 ? $item->vezes."x" : "à vista").($item->juros == 1 ? " com juros" : " sem juros") ?></span>
                                                         </div>    
                                                     <?php endif; ?>
@@ -202,31 +180,31 @@
                                                 <?php foreach($info->pagamento as $item): ?>
                                                     <?php if($item->id_tipo_pagamento == 6): ?>
                                                         <div class="col-md-3 col-sm-4">
-                                                            <img class="img-fluid mb-2" src="https://latinoscassinos.com/wp-content/uploads/2019/01/62.png" style="max-width: 150px; max-height: 40px;" />
+                                                            <img class="img-fluid mb-2" src="<?= base_url("assets/img/visa.png") ?>" style="max-width: 150px; max-height: 40px;" />
                                                             <span class="text-muted"><?= ($item->vezes != 1 ? $item->vezes."x" : "à vista").($item->juros == 1 ? " com juros" : " sem juros") ?></span>
                                                         </div>
                                                     <?php endif; ?>
                                                     <?php if($item->id_tipo_pagamento == 7): ?>
                                                         <div class="col-md-3 col-sm-4">
-                                                            <img class="img-fluid mb-2" src="https://latinoscassinos.com/wp-content/uploads/2019/01/62.png" style="max-width: 150px; max-height: 40px;" />
+                                                            <img class="img-fluid mb-2" src="<?= base_url("assets/img/mastercard.jpg") ?>" style="max-width: 150px; max-height: 40px;" />
                                                             <span class="text-muted"><?= ($item->vezes != 1 ? $item->vezes."x" : "à vista").($item->juros == 1 ? " com juros" : " sem juros") ?></span>
                                                         </div>
                                                     <?php endif; ?>
                                                     <?php if($item->id_tipo_pagamento == 8): ?>
                                                         <div class="col-md-3 col-sm-4">
-                                                            <img class="img-fluid mb-2" src="https://latinoscassinos.com/wp-content/uploads/2019/01/62.png" style="max-width: 150px; max-height: 40px;" />
+                                                            <img class="img-fluid mb-2" src="<?= base_url("assets/img/elo.png") ?>" style="max-width: 150px; max-height: 40px;" />
                                                             <span class="text-muted"><?= ($item->vezes != 1 ? $item->vezes."x" : "à vista").($item->juros == 1 ? " com juros" : " sem juros") ?></span>
                                                         </div>
                                                     <?php endif; ?>
                                                     <?php if($item->id_tipo_pagamento == 9): ?>
                                                         <div class="col-md-3 col-sm-4">
-                                                            <img class="img-fluid mb-2" src="https://latinoscassinos.com/wp-content/uploads/2019/01/62.png" style="max-width: 150px; max-height: 40px;" />
+                                                            <img class="img-fluid mb-2" src="<?= base_url("assets/img/american_express.png") ?>" style="max-width: 150px; max-height: 40px;" />
                                                             <span class="text-muted"><?= ($item->vezes != 1 ? $item->vezes."x" : "à vista").($item->juros == 1 ? " com juros" : " sem juros") ?></span>
                                                         </div>
                                                     <?php endif; ?>
                                                     <?php if($item->id_tipo_pagamento == 10): ?>
                                                         <div class="col-md-3 col-sm-4">
-                                                            <img class="img-fluid mb-2" src="https://latinoscassinos.com/wp-content/uploads/2019/01/62.png" style="max-width: 150px; max-height: 40px;" />
+                                                            <img class="img-fluid mb-2" src="<?= base_url("assets/img/hipercard.png") ?>" style="max-width: 150px; max-height: 40px;" />
                                                             <span class="text-muted"><?= ($item->vezes != 1 ? $item->vezes."x" : "à vista").($item->juros == 1 ? " com juros" : " sem juros") ?></span>
                                                         </div>
                                                     <?php endif; ?>
@@ -241,55 +219,55 @@
                                                 <?php foreach($info->pagamento as $item): ?>
                                                     <?php if($item->id_tipo_pagamento == 11): ?>
                                                         <div class="col-lg-3 col-md-3 col-sm-4">
-                                                            <img class="img-fluid mb-2" src="https://latinoscassinos.com/wp-content/uploads/2019/01/62.png" style="max-width: 150px; max-height: 40px;" />
+                                                            <img class="img-fluid mb-2" src="<?= base_url("assets/img/itau.png") ?>" style="max-width: 150px; max-height: 40px;" />
                                                             <span class="text-muted">Itau <?= ($item->vezes != 1 ? $item->vezes."x" : "à vista").($item->juros == 1 ? " com juros" : " sem juros") ?></span>
                                                         </div>
                                                     <?php endif; ?>
                                                     <?php if($item->id_tipo_pagamento == 12): ?>
                                                         <div class="col-lg-3 col-md-3 col-sm-4">
-                                                            <img class="img-fluid mb-2" src="https://latinoscassinos.com/wp-content/uploads/2019/01/62.png" style="max-width: 150px; max-height: 40px;" />
+                                                            <img class="img-fluid mb-2" src="<?= base_url("assets/img/nubank.png") ?>" style="max-width: 150px; max-height: 40px;" />
                                                             <span class="text-muted">Nubank <?= ($item->vezes != 1 ? $item->vezes."x" : "à vista").($item->juros == 1 ? " com juros" : " sem juros") ?></span>
                                                         </div>
                                                     <?php endif; ?>
                                                     <?php if($item->id_tipo_pagamento == 13): ?>
                                                         <div class="col-lg-3 col-md-3 col-sm-4">
-                                                            <img class="img-fluid mb-2" src="https://latinoscassinos.com/wp-content/uploads/2019/01/62.png" style="max-width: 150px; max-height: 40px;" />
+                                                            <img class="img-fluid mb-2" src="<?= base_url("assets/img/santander.png") ?>" style="max-width: 150px; max-height: 40px;" />
                                                             <span class="text-muted">Santander <?= ($item->vezes != 1 ? $item->vezes."x" : "à vista").($item->juros == 1 ? " com juros" : " sem juros") ?></span>
                                                         </div>
                                                     <?php endif; ?>
                                                     <?php if($item->id_tipo_pagamento == 14): ?>
                                                         <div class="col-lg-3 col-md-3 col-sm-4">
-                                                            <img class="img-fluid mb-2" src="https://latinoscassinos.com/wp-content/uploads/2019/01/62.png" style="max-width: 150px; max-height: 40px;" />
+                                                            <img class="img-fluid mb-2" src="<?= base_url("assets/img/bradesco.ico") ?>" style="max-width: 150px; max-height: 40px;" />
                                                             <span class="text-muted">Bradesco <?= ($item->vezes != 1 ? $item->vezes."x" : "à vista").($item->juros == 1 ? " com juros" : " sem juros") ?></span>
                                                         </div>
                                                     <?php endif; ?>
                                                     <?php if($item->id_tipo_pagamento == 15): ?>
                                                         <div class="col-lg-3 col-md-3 col-sm-4">
-                                                            <img class="img-fluid mb-2" src="https://latinoscassinos.com/wp-content/uploads/2019/01/62.png" style="max-width: 150px; max-height: 40px;" />
+                                                            <img class="img-fluid mb-2" src="<?= base_url("assets/img/caixa.png") ?>" style="max-width: 150px; max-height: 40px;" />
                                                             <span class="text-muted">Caixa <?= ($item->vezes != 1 ? $item->vezes."x" : "à vista").($item->juros == 1 ? " com juros" : " sem juros") ?></span>
                                                         </div>
                                                     <?php endif; ?>
                                                     <?php if($item->id_tipo_pagamento == 16): ?>
                                                         <div class="col-lg-3 col-md-3 col-sm-4">
-                                                            <img class="img-fluid mb-2" src="https://latinoscassinos.com/wp-content/uploads/2019/01/62.png" style="max-width: 150px; max-height: 40px;" />
+                                                            <img class="img-fluid mb-2" src="<?= base_url("assets/img/mercado_pago.png") ?>" style="max-width: 150px; max-height: 40px;" />
                                                             <span class="text-muted">Mercado pago <?= ($item->vezes != 1 ? $item->vezes."x" : "à vista").($item->juros == 1 ? " com juros" : " sem juros") ?></span>
                                                         </div>
                                                     <?php endif; ?>
                                                     <?php if($item->id_tipo_pagamento == 17): ?>
                                                         <div class="col-lg-3 col-md-3 col-sm-4">
-                                                            <img class="img-fluid mb-2" src="https://latinoscassinos.com/wp-content/uploads/2019/01/62.png" style="max-width: 150px; max-height: 40px;" />
+                                                            <img class="img-fluid mb-2" src="<?= base_url("assets/img/picpay.png") ?>" style="max-width: 150px; max-height: 40px;" />
                                                             <span class="text-muted">PicPay <?= ($item->vezes != 1 ? $item->vezes."x" : "à vista").($item->juros == 1 ? " com juros" : " sem juros") ?></span>
                                                         </div>
                                                     <?php endif; ?>
                                                     <?php if($item->id_tipo_pagamento == 18): ?>
                                                         <div class="col-lg-3 col-md-3 col-sm-4">
-                                                            <img class="img-fluid mb-2" src="https://latinoscassinos.com/wp-content/uploads/2019/01/62.png" style="max-width: 150px; max-height: 40px;" />
+                                                            <img class="img-fluid mb-2" src="<?= base_url("assets/img/paypal.png") ?>" style="max-width: 150px; max-height: 40px;" />
                                                             <span class="text-muted">PayPal <?= ($item->vezes != 1 ? $item->vezes."x" : "à vista").($item->juros == 1 ? " com juros" : " sem juros") ?></span>
                                                         </div>
                                                     <?php endif; ?>
                                                     <?php if($item->id_tipo_pagamento == 19): ?>
                                                         <div class="col-lg-3  col-md-3 col-sm-4">
-                                                            <img class="img-fluid mb-2" src="https://latinoscassinos.com/wp-content/uploads/2019/01/62.png" style="max-width: 150px; max-height: 40px;" />
+                                                            <img class="img-fluid mb-2" src="<?= base_url("assets/img/banco_brasil.png") ?>" style="max-width: 150px; max-height: 40px;" />
                                                             <span class="text-muted">Banco do Brasil <?= ($item->vezes != 1 ? $item->vezes."x" : "à vista").($item->juros == 1 ? " com juros" : " sem juros") ?></span>
                                                         </div>
                                                     <?php endif; ?>
@@ -304,7 +282,7 @@
                                                 <?php foreach($info->pagamento as $item): ?>
                                                     <?php if($item->id_tipo_pagamento == 20): ?>
                                                         <div class="col-md-2 col-sm-4">
-                                                            <img class="img-fluid mb-2" src="https://latinoscassinos.com/wp-content/uploads/2019/01/62.png" style="max-width: 150px; max-height: 40px;" />
+                                                            <img class="img-fluid mb-2" src="<?= base_url("assets/img/boleto.png") ?>" style="max-width: 150px; max-height: 40px;" />
                                                             <span class="text-muted">Boleto <?= ($item->vezes != 1 ? $item->vezes."x" : "à vista").($item->juros == 1 ? " com juros" : " sem juros") ?></span>
                                                         </div>
                                                     <?php endif; ?>

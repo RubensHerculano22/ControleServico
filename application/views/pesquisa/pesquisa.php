@@ -8,7 +8,7 @@ Lista
                 
 Arrumar a logo - Lie - feito
 
-Arrumar banner tela inicial - Lie
+Arrumar banner tela inicial - Lie - feito
 
 Corrigir o nome para NextoYou - feito
 
@@ -20,7 +20,7 @@ Fazer o esqueci a senha - feito
 
 Fazer o ativador de conta (quando cadastra). - feito
 
-Banner, lista de serviço - Lie
+Banner, lista de serviço - Lie - feito
 
 Texto de curiosidade sobre o serviço - Lie
 
