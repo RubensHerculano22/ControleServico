@@ -78,10 +78,10 @@ class Servico extends CI_Controller{
         $this->session->set_userdata(array("local" => $local));
         $this->data["local"] = $local;
 
-        $this->m_servico->insere_acesso($id_servico);
+        $this->m_sistema->insere_acesso($id_servico);
         $this->data["info"] = $this->m_servico->get_info_servico($id_servico);
 
-        $this->data["endereco"] = $this->m_servico->get_endereco();
+        $this->data["endereco"] = $this->m_servico->get_endereco($id_servico);
 
         $this->data["breadcrumb"] = (object)array("titulo" => "Detalhes de Produtos/Serviços", "before" => array((object)array("nome" => "Home", "link" => "Servico"), (object)array("nome" => "".$this->data["info"]->subcategoria->nome, "link" => "Servico/lista/".$this->data["info"]->categoria->nome."/".$this->data["info"]->subcategoria->nome)), "current" => "".$this->data["info"]->nome);
         $this->data["javascript"] = [
@@ -155,11 +155,6 @@ class Servico extends CI_Controller{
         $this->data["cidade"] = $this->m_servico->get_cidades($this->data["info"]->estado->id);
         $this->data["horarios"] = $this->m_servico->lista_horarios();
 
-        // echo '<pre>';
-        // print_r($this->data["info"]);
-        // echo '</pre>';
-        // exit;
-
         $this->data["breadcrumb"] = (object)array("titulo" => "Editar Informações do Serviço", "before" => array((object)array("nome" => "Home", "link" => "Servico")), "current" => "Editar Informações do Serviço");
         $this->data["javascript"] = [
             base_url("assets/js/produto/edita.js")
@@ -223,7 +218,7 @@ class Servico extends CI_Controller{
 
     public function favorita_servico()
     {
-        $rst = $this->m_servico->favorita_servico();
+        $rst = $this->m_sistema->favorita_servico();
         echo json_encode($rst, JSON_UNESCAPED_UNICODE);
     }
 

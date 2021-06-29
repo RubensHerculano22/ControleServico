@@ -431,6 +431,24 @@ class Usuario_model extends CI_Model{
                     $rst->msg = "Serviço fechado com sucesso!";
                 else
                     $rst->msg = "Orçamento recusado com sucesso, aviso foi enviado ao Prestador.";
+
+                $this->db->select("U.email");
+                $this->db->join("Servico S", "S.id = O.id_servico");
+                $this->db->join("Usuario U", "U.id = S.id_usuario");
+                $query = $this->db->get_where("Orcamento O", "O.id = $data->id_orcamento");
+
+                $texto = (object)array();
+
+                $hash = $this->sistema->encrypt_decrypt("encrypt", "Servico/movimentacao/$data->id_orcamento");
+
+                $texto->email = strtolower($query->email);
+                $texto->titulo = "Contratação do Serviço";
+                $texto->link = base_url("Usuario/page_redirect/$hash");
+                $texto->texto_link = "Ver Pedido";
+                $texto->msg = "Opa, tudo certo? <br/> O serviço que você solicitou lhe enviou uma resposta.<br/> Caso queira ver diretamente o andamento, clique no botão abaixo.";
+                $texto->cid = "";
+
+                $this->envia_email($texto);
             }
             else
             {
@@ -457,6 +475,24 @@ class Usuario_model extends CI_Model{
 
             if($this->db->insert("ContrataServico"))
             {
+                $this->db->select("U.email");
+                $this->db->join("Servico S", "S.id = O.id_servico");
+                $this->db->join("Usuario U", "U.id = S.id_usuario");
+                $query = $this->db->get_where("Orcamento O", "O.id = $id");
+
+                $texto = (object)array();
+
+                $hash = $this->sistema->encrypt_decrypt("encrypt", "Servico/movimentacao/$id");
+
+                $texto->email = strtolower($query->email);
+                $texto->titulo = "Contratação do Serviço";
+                $texto->link = base_url("Usuario/page_redirect/$hash");
+                $texto->texto_link = "Ver Pedido";
+                $texto->msg = "Opa, tudo certo? <br/> O serviço que havia sido solicitado foi cancelado pelo Usuario<br/> Caso queira ver diretamente o mais informações, clique no botão abaixo.";
+                $texto->cid = "";
+
+                $this->envia_email($texto);
+
                 return true;
             }
         }

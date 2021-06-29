@@ -9,896 +9,1000 @@ class Servico_model extends CI_Model{
         $this->dados = $this->session->userdata("dados" . APPNAME);
     }
 
-    public function get_visibilidade($id)
-    {
-        $query = $this->db->get_where("Servico", "id = $id")->row();
+    /** Consultas basicas */
 
-        return $query->ativo;
-    }
-
-    public function insere_acesso($id)
-    {
-        $data = date("Y-m-d H:i:00", strtotime("-5 minutes"));
-
-        if(isset($this->dados->usuario_id) && $this->dados->usuario_id != null)
+        /**
+         * Consulta todas as categorias principais.
+         * @access public
+         * @return object;
+        */
+        public function get_categorias_principais()
         {
-            $this->db->where("id_usuario = ".$this->dados->usuario_id);
-            $this->db->where("data_acesso BETWEEN '".$data."' AND '".date("Y-m-d H:i:s")."'");
-            $query = $this->db->get("ControleVisualizacao")->result();
+            $query = $this->db->get_where("Categoria", "id_pai = 0")->result();
 
-            if(!$query)
-            {
-                $this->db->set("id_servico", $id);
-                $this->db->set("id_usuario", $this->dados->usuario_id);    
-                $this->db->set("data_acesso", date("Y-m-d H:i:s"));
-    
-                $this->db->insert("ControleVisualizacao");
-            }
-        }
-        else
-        {
-            $this->db->set("id_servico", $id);                
-            $this->db->set("data_acesso", date("Y-m-d H:i:s"));
-
-            $this->db->insert("ControleVisualizacao");   
-        }
-    }
-
-    public function avise_me()
-    {
-        $rst = (object)array("rst" => false, "msg" => "");
-        $data = (object)$this->input->post();
-
-        $query = $this->db->get_where("AviseMe", "id_servico = '$data->id_servico' AND email = '$data->email' AND avisado = 0")->row();
-        if($query)
-        {
-            $rst->msg = "Seu email já está cadastrado para ser avisado neste serviço";
-        }
-        else
-        {
-            $this->db->set("email", $data->email);
-            $this->db->set("id_servico", $data->id_servico);
-    
-            if($this->db->insert("AviseMe"))
-            {
-                $rst->rst = true;
-            }
-            else
-            {
-                $rst->msg = "Erro ao salvar o email";
-            }
+            return $query;
         }
 
-        return $rst;
-    }
-
-    /**
-     * Consulta todos os dados para o card.
-     * @access private
-     * @param  object   $servico   Dados da Tabela de Serviço.
-     * @return object;
-    */
-    private function get_card($servico)
-    {
-        //Consulta os dados do usuario que cadastrou aquele serviço.
-        $this->db->select("nome, sobrenome");
-        $servico->usuario = $this->db->get_where("Usuario", "id = '$servico->id_usuario'")->row();
-
-        //Consulta os dados de feedback para montar o nivel.
-        $servico->feedback = $this->media_feedback($servico->id);
-
-        //Consulta do Ultimo feedaback
-        $this->db->select("F.*");
-        $this->db->join("Orcamento O", "O.id_servico = '$servico->id'");
-        $this->db->order_by("data_inclusao", "desc");
-        $query_ult_feedback = $this->db->get_where("Feedback F", "F.id_orcamento = O.id")->row();     
-        if($query_ult_feedback)           
-            $servico->ult_feedback = strlen ($query_ult_feedback->descricao) > 100 ? substr($query_ult_feedback->descricao, 0, 100)." ..." : $query_ult_feedback->descricao;
-        else
+        /**
+         * Consulta todas as subscategorias de uma categoria especifica.
+         * @access public
+         * @param  int $id identificador da categoria
+         * @return object;
+        */
+        public function get_subcategorias($id)
         {
-            $servico->ult_feedback = "";
-        }
-
-        //Verifica se está logado para realizar a consulta se o servico está no favoritos do usuario.
-        if(!empty($this->dados))
-            $servico->favorito = $this->db->get_where("Favoritos", "id_servico = '$servico->id' AND id_usuario = '".$this->dados->usuario_id."'")->row();
-        else
-            $servico->favorito = array();
-
-        return $servico;
-    }
-
-    //Faz a função que ele lista apenas a categoria se necessário.
-    /**
-     * Realiza a consulta de todos os servico que estão naquela subcategoria.
-     * @access public
-     * @param  string   $subcategoria   Nome da subcategoria.
-     * @return object;
-    */
-    public function servico_categoria($subcategoria)
-    {
-        $cidade = $this->session->userdata("cidade");
-        $rst = array();
-        if($subcategoria && $cidade)
-        {
-            //Consulta o id que corresponde aquela subcategoria
-            $query = $this->db->get_where("Categoria", "nome = '$subcategoria'")->row();
-
-            //Consulta todos os serviço que são daquela subcategoria
-            $rst = $this->db->get_where("Servico", "ativo = 1 AND id_categoria = '$query->id' AND cidade = '$cidade->id_cidade'")->result();
-            foreach($rst as $item)
-            {
-                $item = $this->get_card($item);
-            }
-        }
-
-        return $rst;
-    }
-
-    public function get_ult_feedbacks()
-    {
-        $query_servico = $this->db->get_where("Servico", "ativo = 1")->result();
-
-        $lista_feedback = array();
-        foreach($query_servico as $item)
-        {
-            $lista_feedback[] = array($this->media_feedback($item->id), $item);
-        }
-
-        arsort($lista_feedback);
-        $lista_feedback = array_values($lista_feedback);        
-
-        $result = array();
-        for($i=0; $i<6;$i++)
-        {
-            $servico = $lista_feedback[$i][1];
-            $servico = $this->db->get_where("Servico", "id = $servico->id")->row();
-
-            $result[] = $this->get_card($servico);
-        }
-
-        return $result;
-    }
-
-    /**
-     * Realiza a consulta de todas as subcategorias que estão dentro da categoria, com excecão do subcategoria que já está sendo acessada.
-     * @access public
-     * @param  string   $categoria   Nome da categoria.
-     * @param  string   $subcategoria   Nome da subcategoria.
-     * @return object;
-    */
-    public function get_subcategoria($categoria, $subcategoria = null)
-    {
-        //consulta o id da categoria.
-        $query = $this->db->get_where("Categoria", "nome = '$categoria'")->row();
-
-        if($subcategoria != null)
-            //Verifica ignora a subcategoria que já está sendo acessada.
-            $this->db->where("nome != '$subcategoria'");
-        
-        $rst = $this->db->get_where("Categoria", "id_pai = '$query->id'")->result();
-
-        return $rst;
-    }
-
-    /**
-     * Consulta todas as informações de um serviço especifico.
-     * @access public
-     * @param  int   $id_servico   identificador do Serviço.
-     * @return object;
-    */
-    public function get_info_servico($id_servico)
-    {
-        //Consulta os dados do Serviço
-        $query = $this->db->get_where("Servico", "id = '$id_servico'")->row();
-
-        //Consulta todas as formas de pagamento cadastradas no serviço.
-        $query->pagamento = $this->db->get_where("PagamentoServico", "id_servico = '$query->id'")->result();
-
-        $query->tipo_pagamento = (object)array("credito" => 0, "debito" => 0, "transferencia" => 0, "boleto" => 0);
-        foreach($query->pagamento as $item)
-        {
-            $item->tipo_pagamento = $this->db->get_where("TipoPagamento", "id = $item->id_tipo_pagamento")->row();
-            if($item->tipo_pagamento->forma_pagamento == "Crédito")
-                $query->tipo_pagamento->credito = 1;
-            elseif($item->tipo_pagamento->forma_pagamento == "Débito")
-                $query->tipo_pagamento->debito = 1;
-            elseif($item->tipo_pagamento->forma_pagamento == "Transferência/Pix")
-                $query->tipo_pagamento->transferencia = 1;
-            elseif($item->tipo_pagamento->forma_pagamento == "Outros")
-                $query->tipo_pagamento->boleto = 1;
-        }
-
-        //Consulta todas as perguntas cadastradas naquele serviço.
-        $query->perguntas = $this->db->get_where("Perguntas", "id_servico = '$query->id'")->result();
-
-        //Consulta a sub da subcategoria do serviço.
-        $query->subcategoria = $this->db->get_where("Categoria", "id = $query->id_categoria")->row();
-
-        //Consulta a subcategoria do serviço.
-        $query->categoria = $this->db->get_where("Categoria", "id = ".$query->subcategoria->id_pai)->row();
-
-        //Consulta a categoria do serviço.
-        $query->categoria_pai = $this->db->get_where("Categoria", "id = ".$query->categoria->id_pai)->row();
-
-        //Consulta os horarios
-        $this->db->order_by("dia_semana", "asc");
-        $query->horario = $this->db->get_where("HorarioServico", "id_servico = '$query->id'")->result();
-        foreach($query->horario as $item)
-        {
-            $item->dia_semana = $this->db->get_where("Horario", "id = $item->dia_semana")->row();
-        }
-
-        //Consulta o estado
-        $query->estado = $this->db->get_where("Estados", "id = '$query->estado'")->row();
-
-        //Consulta a cidade
-        $query->cidade = $this->get_cidades_id($query->cidade);
-
-        //Consulta todas as imagens cadastradas no serviço.
-        $this->db->order_by("principal", "desc");
-        $query->imagens = $this->db->get_where("Imagens", "id_servico = '$query->id' and ativo = 1")->result();
-
-        //Formata o valor para o formato br
-        if($query->valor)
-        {
-            $valor_V = explode(",", $query->valor);
-            $valor = str_replace(".", ",", $valor_V[0]);
-            if(isset($valor_V[1]))
-                $query->valor_D = $valor.".".$valor_V[1];
-            else
-            {
-                $query->valor = $valor.",00";
-                $query->valor_D = $valor.".00";
-            }
-                
-        }
-
-        //Formata o valor para o formato br
-        if($query->caucao)
-        {
-            $valor_V = explode(",", $query->caucao);
-            $valor = str_replace(".", ",", $valor_V[0]);
-            if(isset($valor_V[1]))
-                $query->caucao_D = $valor.".".$valor_V[1];
-            else
-            {
-                $query->caucao = $valor.",00";
-                $query->caucao_D = $valor.".00";
-            }
-        }
-
-
-        //consulta a lista de Orçamentos daquele serviço
-        $lista_orcamento = $this->db->get_where("Orcamento", "id_servico = $id_servico")->result();
-        
-        $lista_feedback = array();
-        foreach($lista_orcamento as $item)
-        {
-            $usuario = $this->db->get_where("Usuario", "id = $item->id_usuario")->row();
-            $feedback = $this->db->get_where("Feedback", "id_orcamento = $item->id")->row();
-            if($feedback != null && $usuario != null)
-            {
-                // $media_feedback += $feedback->quantidade_estrelas;
-                list($data, $hora) = explode(" ", $feedback->data_inclusao);
-                $feedback->data_br = formatar($data, "bd2dt");
-                $lista_feedback[] = array($usuario, $feedback);
-            }
-        }
-
-        if($query->id_tipo_servico == 2)
-        {
-            $quant_contrata_servico = 0;
+            $lista_categoria = array();
             
-            foreach($lista_orcamento as $item)
-            {
-                $contrata_servico = $this->db->get_where("ContrataServico", "id_orcamento = '$item->id' AND ativo = 1 AND status NOT IN ('3', '6', '7')")->result();
+            $query = $this->db->get_where("Categoria", "id_pai = '$id'")->result();
 
-                if($contrata_servico)
-                    $quant_contrata_servico++;
+            foreach($query as $item)
+            {
+                $lista = (object)array("id" => $item->id, "nome" => $item->nome, "filhos");
+                $lista->filhos = $this->db->get_where("Categoria", "id_pai = '$item->id'")->result();
+
+                $lista_categoria[] = $lista;
             }
 
-            $query->quantidade_contratada = $quant_contrata_servico;
-
-            if($quant_contrata_servico >= $query->quantidade_disponivel)
-                $query->disponibilidade = 0;
-            else
-                $query->disponibilidade = 1;
+            return $lista_categoria;
         }
 
-        //consulta a media de feedback do serviço
-        $query->media_feedback = $this->media_feedback($id_servico);
-
-        //Montagem da Quantidade de estrela por nivel
-        $query->estrelas_feedback = array("0" => 0, "1" => 0, "2" => 0, "3" => 0, "4" => 0, "5" => 0);
-        for($i=1;$i<=5;$i++)
-            $query->estrelas_feedback[0] += $query->estrelas_feedback[$i] = $this->quantidade_estrelas($id_servico, ($i*2));
-    
-
-        //Pagina de detalhes
-        $query->feedback = $lista_feedback;
-
-        //Verifica se está logado para realizar a consulta se o servico está no favoritos do usuario.
-        if(!empty($this->dados))
-            $query->favorito = $this->db->get_where("Favoritos", "id_servico = '$query->id' AND id_usuario = '".$this->dados->usuario_id."'")->row();
-        else
-            $query->favorito = array();
-
-        // echo '<pre>';
-        // print_r($query);
-        // echo '</pre>';
-        // exit;
-
-        return $query;
-    }
-
-    /**
-     * Realiza o cadastrado de perguntas no serviço.
-     * @access public
-     * @return object;
-    */
-    public function cadastrar_pergunta()
-    {
-        //post da pergunta, o identificador do servico e do usuario que realizou.
-        $data = (object)$this->input->post();
-        $rst = (object)array("rst" => false, "msg" => "", "pergunta" => "");
-
-        if($this->verifica_seguranca($data->pergunta))
+        /**
+         * Consulta todos os tipos de forma de pagamento.
+         * @access public
+         * @return object;
+        */
+        public function get_pagamento()
         {
-            $rst->msg = "Palavra utilizada para o acesso é proibida!";
+            $result = $this->db->query('SELECT DISTINCT forma_pagamento FROM TipoPagamento')->result();
+
+            foreach($result as $item)
+            {
+                $item->tipos = $this->db->get_where("TipoPagamento", "forma_pagamento = '$item->forma_pagamento'")->result();
+            }
+
+            return $result;
+        }
+
+        /**
+         * Consulta todos os estados brasileiros.
+         * @access public
+         * @return object;
+        */
+        public function get_estados()
+        {
+            $query = $this->db->get("Estados")->result();
+
+            return $query;
+        }
+
+        /**
+         * Consulta o estado a partir da sigla.
+         * @access public
+         * @param  string $sigla  Sigla do Estado
+         * @return object;
+        */
+        public function get_estado_sigla($sigla)
+        {
+            $query = $this->db->get_where("Estados", "sigla = $sigla")->row();
+
+            return $query;
+        }
+
+        /**
+         * Consulta todas as cidades de um estado
+         * @access public
+         * @param  int $id Identificador de um Estado
+         * @return array;
+        */
+        public function get_cidades($id)
+        {
+            $json = file_get_contents(base_url("assets/Cidades.json"));
+            $data = json_decode($json);
+
+            $lista = array();
+            foreach($data as $item)
+            {
+                if($item->Estado == $id)
+                    $lista[] = $item;
+            }
+
+            return $lista;
+        }
+
+        /**
+         * Consulta uma cidade.
+         * @access public
+         * @param  int $id_cidade Idenficador de Cidade
+         * @return object;
+        */
+        public function get_cidades_id($id_cidade)
+        {
+            $json = file_get_contents(base_url("assets/Cidades.json"));
+            $data = json_decode($json);
+
+            foreach($data as $item)
+            {
+                if($item->ID == $id_cidade)
+                    return $item;
+            }
+        }
+
+        /**
+         * Lista todos os horarios.
+         * @access public
+         * @return object;
+        */
+        public function lista_horarios()
+        {
+            return $this->db->get("ListaHorario")->result();
+        }
+
+    /** Fim Consultas basicas */
+
+    /** Card */
+
+        /**
+         * Consulta todos os dados para o card.
+         * @access private
+         * @param  object   $servico   Dados da Tabela de Serviço.
+         * @return object;
+        */
+        private function get_card($servico)
+        {
+            //Consulta os dados do usuario que cadastrou aquele serviço.
+            $this->db->select("nome, sobrenome");
+            $servico->usuario = $this->db->get_where("Usuario", "id = '$servico->id_usuario'")->row();
+
+            //Consulta os dados de feedback para montar o nivel.
+            $servico->feedback = $this->media_feedback($servico->id);
+
+            //Consulta do Ultimo feedaback
+            $this->db->select("F.*");
+            $this->db->join("Orcamento O", "O.id_servico = '$servico->id'");
+            $this->db->order_by("data_inclusao", "desc");
+            $query_ult_feedback = $this->db->get_where("Feedback F", "F.id_orcamento = O.id")->row();     
+            if($query_ult_feedback)           
+                $servico->ult_feedback = strlen ($query_ult_feedback->descricao) > 100 ? substr($query_ult_feedback->descricao, 0, 100)." ..." : $query_ult_feedback->descricao;
+            else
+            {
+                $servico->ult_feedback = "";
+            }
+
+            //Verifica se está logado para realizar a consulta se o servico está no favoritos do usuario.
+            if(!empty($this->dados))
+                $servico->favorito = $this->db->get_where("Favoritos", "id_servico = '$servico->id' AND id_usuario = '".$this->dados->usuario_id."'")->row();
+            else
+                $servico->favorito = array();
+
+            return $servico;
+        }
+
+        /**
+         * Realiza a consulta de todos os servico que estão naquela subcategoria.
+         * @access public
+         * @param  string   $subcategoria   Nome da subcategoria.
+         * @return object;
+        */
+        public function servico_categoria($subcategoria)
+        {
+            $cidade = $this->session->userdata("cidade");
+            $rst = array();
+            if($subcategoria && $cidade)
+            {
+                //Consulta o id que corresponde aquela subcategoria
+                $query = $this->db->get_where("Categoria", "nome = '$subcategoria'")->row();
+
+                //Consulta todos os serviço que são daquela subcategoria
+                $rst = $this->db->get_where("Servico", "ativo = 1 AND id_categoria = '$query->id' AND cidade = '$cidade->id_cidade'")->result();
+                foreach($rst as $item)
+                {
+                    $item = $this->get_card($item);
+                }
+            }
 
             return $rst;
         }
 
-        $this->db->set("pergunta", $data->pergunta);
-        $this->db->set("data_inclusao", date('Y-m-d H:i:s'));
-        $this->db->set("id_servico", $data->id_servico);
-        $this->db->set("id_usuario", $this->dados->usuario_id);
-        $this->db->set("id_usuario_servico", $data->id_usuario);
-
-        if($this->db->insert("Perguntas"))
+        /**
+         * Realiza a consulta de todas as subcategorias que estão dentro da categoria, com excecão do subcategoria que já está sendo acessada.
+         * @access public
+         * @param  string   $categoria   Nome da categoria.
+         * @param  string   $subcategoria   Nome da subcategoria.
+         * @return object;
+        */
+        public function get_subcategoria($categoria, $subcategoria = null)
         {
-            $query = $this->db->get_where("Servico", "id = '$data->id_servico'")->row();
-            $queryUsuario = $this->db->get_where("Usuario", "id = $data->id_usuario")->row();
+            //consulta o id da categoria.
+            $query = $this->db->get_where("Categoria", "nome = '$categoria'")->row();
 
-            $texto = (object)array();
+            if($subcategoria != null)
+                //Verifica ignora a subcategoria que já está sendo acessada.
+                $this->db->where("nome != '$subcategoria'");
+            
+            $rst = $this->db->get_where("Categoria", "id_pai = '$query->id'")->result();
 
-            $hash = $this->sistema->encrypt_decrypt("encrypt", "Servico/gerenciar_servico/$data->id_servico");
-
-            $texto->email = strtolower($queryUsuario->email);
-            $texto->titulo = "Nova pergunta cadastrada";
-            $texto->link = base_url("Usuario/page_redirect/$hash");
-            $texto->texto_link = "Responder pergunta";
-            $texto->msg = "Opa, tudo certo? <br/> Uma nova pergunta foi cadastrar em seu serviço: $query->nome. <br/> Caso queira responder agora clique no botão abaixo.";
-            $texto->cid = "";
-            $this->envia_email($texto);
-
-            $rst->rst = true;
-            $rst->msg = "Pergunta registrada com sucesso, quando houver uma resposta, você será notificado!";
-        }
-        else
-        {
-            $rst->msg = "Erro ao registrar a pergunta, tente novamente mais tarde.";
+            return $rst;
         }
 
-        return $rst;
-    }
-
-    /**
-     * Realiza o cadastro de favorito do servico ao usuario/realiza o desativamento do favorito para aquele usuario.
-     * @access public
-     * @return object;
-    */
-    public function favorita_servico()
-    {
-        $data = (object)$this->input->post();
-        $rst = (object)array("rst" => 0);
-        
-        //Verifica qual o tipo de ação que será tomada.
-        if($data->tipo == "preenchido")
+        /**
+         * Retorna os serviços com os ultimos 6 feedbacks.
+         * @access public
+         * @return array;
+        */
+        public function get_ult_feedbacks()
         {
-            //Desabilita o favorito naquele serviço.
-            $this->db->set("ativo", 0);
+            $query_servico = $this->db->get_where("Servico", "ativo = 1")->result();
 
-            $this->db->where("id_servico = '$data->id_servico' AND '".$this->dados->usuario_id."'");
-            if($this->db->update("Favoritos"))
-                $rst->rst = 2;
-            else
-                $rst->rst = 0;
+            $lista_feedback = array();
+            foreach($query_servico as $item)
+            {
+                $lista_feedback[] = array($this->media_feedback($item->id), $item);
+            }
+
+            //ordena o array em ordem descrescente
+            arsort($lista_feedback);
+            $lista_feedback = array_values($lista_feedback);        
+
+            $result = array();
+            for($i=0; $i<6;$i++)
+            {
+                $servico = $lista_feedback[$i][1];
+                $servico = $this->db->get_where("Servico", "id = $servico->id")->row();
+
+                $result[] = $this->get_card($servico);
+            }
+
+            return $result;
         }
-        else if($data->tipo == "vazio")
-        {
-            //Consulta se o aquele usuario ja havia favoritado aquele serviço antes.
-            $query = $this->db->get_where("Favoritos", "id_servico = '$data->id_servico' AND id_usuario = '".$this->dados->usuario_id."'")->row();
 
+    /** Fim Card */
+
+    /** Detalhes do Serviço */
+
+        /**
+         * Registra o email da pessoa para ser avisada quando o serviço estiver disponivel.
+         * @access public
+         * @return object;
+        */
+        public function avise_me()
+        {
+            $rst = (object)array("rst" => false, "msg" => "");
+            $data = (object)$this->input->post();
+
+            $query = $this->db->get_where("AviseMe", "id_servico = '$data->id_servico' AND email = '$data->email' AND avisado = 0")->row();
             if($query)
             {
-                $this->db->set("ativo", 1);
-
-                $this->db->where("id = '$query->id'");
-                if($this->db->update("Favoritos"))
-                    $rst->rst = 1;
-                else
-                    $rst->rst = 0;
+                $rst->msg = "Seu email já está cadastrado para ser avisado neste serviço";
             }
             else
             {
-                $this->db->set("data_inclusao", "date('now')", false);
-                $this->db->set("ativo", 1);
+                $this->db->set("email", $data->email);
                 $this->db->set("id_servico", $data->id_servico);
-                $this->db->set("id_usuario", $this->dados->usuario_id);
-
-                if($this->db->insert("Favoritos"))
-                    $rst->rst = 1;
+        
+                if($this->db->insert("AviseMe"))
+                {
+                    $rst->rst = true;
+                }
                 else
-                    $rst->rst = 0;
+                {
+                    $rst->msg = "Erro ao salvar o email";
+                }
+            }
+
+            return $rst;
+        }
+
+        /**
+         * Consulta todas as informações de um serviço especifico.
+         * @access public
+         * @param  int   $id_servico   identificador do Serviço.
+         * @return object;
+        */
+        public function get_info_servico($id_servico)
+        {
+            //Consulta os dados do Serviço
+            $query = $this->db->get_where("Servico", "id = '$id_servico'")->row();
+
+            //Consulta todas as formas de pagamento cadastradas no serviço.
+            $query->pagamento = $this->db->get_where("PagamentoServico", "id_servico = '$query->id'")->result();
+
+            $query->tipo_pagamento = (object)array("credito" => 0, "debito" => 0, "transferencia" => 0, "boleto" => 0);
+            foreach($query->pagamento as $item)
+            {
+                $item->tipo_pagamento = $this->db->get_where("TipoPagamento", "id = $item->id_tipo_pagamento")->row();
+                if($item->tipo_pagamento->forma_pagamento == "Crédito")
+                    $query->tipo_pagamento->credito = 1;
+                elseif($item->tipo_pagamento->forma_pagamento == "Débito")
+                    $query->tipo_pagamento->debito = 1;
+                elseif($item->tipo_pagamento->forma_pagamento == "Transferência/Pix")
+                    $query->tipo_pagamento->transferencia = 1;
+                elseif($item->tipo_pagamento->forma_pagamento == "Outros")
+                    $query->tipo_pagamento->boleto = 1;
+            }
+
+            //Consulta todas as perguntas cadastradas naquele serviço.
+            $query->perguntas = $this->get_perguntas($query->id, "");
+
+            //Consulta a sub da subcategoria do serviço.
+            $query->subcategoria = $this->db->get_where("Categoria", "id = $query->id_categoria")->row();
+
+            //Consulta a subcategoria do serviço.
+            $query->categoria = $this->db->get_where("Categoria", "id = ".$query->subcategoria->id_pai)->row();
+
+            //Consulta a categoria do serviço.
+            $query->categoria_pai = $this->db->get_where("Categoria", "id = ".$query->categoria->id_pai)->row();
+
+            //Consulta os horarios
+            $this->db->order_by("dia_semana", "asc");
+            $query->horario = $this->db->get_where("HorarioServico", "id_servico = '$query->id'")->result();
+            foreach($query->horario as $item)
+            {
+                $item->dia_semana = $this->db->get_where("Horario", "id = $item->dia_semana")->row();
+            }
+
+            //Consulta o estado
+            $query->estado = $this->db->get_where("Estados", "id = '$query->estado'")->row();
+
+            //Consulta a cidade
+            $query->cidade = $this->get_cidades_id($query->cidade);
+
+            //Consulta todas as imagens cadastradas no serviço.
+            $this->db->order_by("principal", "desc");
+            $query->imagens = $this->db->get_where("Imagens", "id_servico = '$query->id' and ativo = 1")->result();
+
+            //Formata o valor para o formato br
+            if($query->valor)
+            {
+                $valor_V = explode(",", $query->valor);
+                $valor = str_replace(".", ",", $valor_V[0]);
+                if(isset($valor_V[1]))
+                    $query->valor_D = $valor.".".$valor_V[1];
+                else
+                {
+                    $query->valor = $valor.",00";
+                    $query->valor_D = $valor.".00";
+                }
+                    
+            }
+
+            //Formata o valor para o formato br
+            if($query->caucao)
+            {
+                $valor_V = explode(",", $query->caucao);
+                $valor = str_replace(".", ",", $valor_V[0]);
+                if(isset($valor_V[1]))
+                    $query->caucao_D = $valor.".".$valor_V[1];
+                else
+                {
+                    $query->caucao = $valor.",00";
+                    $query->caucao_D = $valor.".00";
+                }
+            }
+
+
+            //consulta a lista de Orçamentos daquele serviço
+            $lista_orcamento = $this->db->get_where("Orcamento", "id_servico = $id_servico")->result();
+            
+            $lista_feedback = array();
+            foreach($lista_orcamento as $item)
+            {
+                $usuario = $this->db->get_where("Usuario", "id = $item->id_usuario")->row();
+                $feedback = $this->db->get_where("Feedback", "id_orcamento = $item->id")->row();
+                if($feedback != null && $usuario != null)
+                {
+                    // $media_feedback += $feedback->quantidade_estrelas;
+                    list($data, $hora) = explode(" ", $feedback->data_inclusao);
+                    $feedback->data_br = formatar($data, "bd2dt");
+                    $lista_feedback[] = array($usuario, $feedback);
+                }
+            }
+
+            if($query->id_tipo_servico == 2)
+            {
+                $quant_contrata_servico = 0;
+                
+                foreach($lista_orcamento as $item)
+                {
+                    $contrata_servico = $this->db->get_where("ContrataServico", "id_orcamento = '$item->id' AND ativo = 1 AND status NOT IN ('3', '6', '7')")->result();
+
+                    if($contrata_servico)
+                        $quant_contrata_servico++;
+                }
+
+                $query->quantidade_contratada = $quant_contrata_servico;
+
+                if($quant_contrata_servico >= $query->quantidade_disponivel)
+                    $query->disponibilidade = 0;
+                else
+                    $query->disponibilidade = 1;
+            }
+
+            //consulta a media de feedback do serviço
+            $query->media_feedback = $this->media_feedback($id_servico);
+
+            //Montagem da Quantidade de estrela por nivel
+            $query->estrelas_feedback = array("0" => 0, "1" => 0, "2" => 0, "3" => 0, "4" => 0, "5" => 0);
+            for($i=1;$i<=5;$i++)
+                $query->estrelas_feedback[0] += $query->estrelas_feedback[$i] = $this->quantidade_estrelas($id_servico, ($i*2));
+        
+
+            //Pagina de detalhes
+            $query->feedback = $lista_feedback;
+
+            //Verifica se está logado para realizar a consulta se o servico está no favoritos do usuario.
+            if(!empty($this->dados))
+                $query->favorito = $this->db->get_where("Favoritos", "id_servico = '$query->id' AND id_usuario = '".$this->dados->usuario_id."'")->row();
+            else
+                $query->favorito = array();
+
+            return $query;
+        }
+
+        /**
+         * Consulta o endereço do Serviço.
+         * @access public
+         * @param  int   $id_servico   identificador do Serviço.
+         * @return object;
+        */
+        public function get_endereco_servico($id_servico)
+        {
+            if($this->dados)
+            {
+                $query = $this->db->get_where("Enderecos", "id_usuario = ".$this->dados->usuario_id)->result();//Corrigir
+            
+                foreach($query as $item)
+                {
+                    //Consulta o estado
+                    $item->estado = $this->db->get_where("Estados", "id = '$item->estado'")->row();
+        
+                    //Consulta a cidade
+                    $item->cidade = $this->get_cidades_id($item->cidade);
+                    $item->endereco_completo = $item->cep." - ".$item->endereco.($item->complemento ? ", ".$item->complemento : "").", ".$item->numero.", ".$item->bairro." - ".$item->cidade->Nome.", ".$item->estado->nome."(".$item->estado->sigla.")";
+                }
+
+                return $query;
+            }
+            else
+            {
+                return (object)array();
             }
         }
 
-        return $rst;
-    }
+    /** Fim Detalhes Serviço */
 
-    /**
-     * Realiza o cadastro da solicitação de contratação de serviço.
-     * @access public
-     * @return object;
-    */
-    public function contrata_servico()
-    {
-        $data = (object)$this->input->post();
-        $rst = (object)array("rst" => false, "msg" => "");
+    /** Gerenciamento do Serviço */
 
-        $this->db->set("id_servico", $data->id_servico);
-        $this->db->set("id_usuario", $this->dados->usuario_id);
-
-        if($this->db->insert("Orcamento"))
+        /**
+         * Consulta o status do serviço.
+         * @access public
+         * @param  int $id Identificador do Serviço
+         * @return int;
+        */
+        public function get_visibilidade($id)
         {
-            $id_orcamento = $this->db->insert_id();
+            $query = $this->db->get_where("Servico", "id = $id")->row();
 
-            //verifica se o campo de utilizar o endereço cadastrado, está selecionado
-            if(!isset($data->endereco_cadastrado))
-                $this->db->set("endereco", $data->endereco_select);
-            else
-            {
-                $endereco = $data->cep." - ".$data->endereco.($data->complemento ? ", ".$data->complemento : "").", ".$data->numero.", ".$data->bairro." - ".$data->cidade.", ".$data->estado;
-                $this->db->set("endereco", $endereco);
-            }
+            return $query->ativo;
+        }
 
-            $this->db->set("id_orcamento", $id_orcamento);
-            $this->db->set("status", 1);
+        /**
+         * Cadastra um Serviço.
+         * @access public
+         * @return object;
+        */
+        public function cadastro_servico()
+        {
+            $rst = (object)array("rst" => true, "msg" => "", "id" => 0);
+            $data = (object)$this->input->post();
+
+            $this->db->set("nome", $data->nome);
+            $this->db->set("descricao_curta", $data->descricao_curta);
+            $this->db->set("descricao", $data->descricao_completa);
             $this->db->set("ativo", 1);
+            $this->db->set("data_inclusao", date("Y-m-d H:i:s"));
+            $this->db->set("data_atualizacao", date("Y-m-d H:i:s"));
+            $this->db->set("id_tipo_servico", $data->tipo_servico);
+            $this->db->set("id_categoria", $data->categoria_especifica);
             $this->db->set("id_usuario", $this->dados->usuario_id);
-            $this->db->set("data_servico", formatar($data->data_servico, "dt2bd"));
-            $this->db->set("hora_servico", $data->horario_servico);
-            $this->db->set("descricao", $data->descricao);
-            $this->db->set("data_alteracao", date("Y-m-d H:i:s"));
 
-            if($this->db->insert("ContrataServico"))
+            //Verifica se a opção de local especifico foi marcada
+            if(isset($data->local) && $data->local == "on")
             {
-                $rst->rst = true;
-                $rst->msg = "Solicitação de serviço enviado para o Prestador";
+                $this->db->set("cep", $data->cep);
+                $this->db->set("estado", $this->get_estado_nome($data->estado));
+                $this->db->set("cidade", $this->get_cidade_nome($data->cidade));
+                $this->db->set("bairro", $data->bairro);
+                $this->db->set("endereco", $data->endereco);
+                $this->db->set("numero", somente_numeros($data->numero));
+                $this->db->set("complemento", $data->complemento);
             }
             else
             {
-                $rst->msg = "Erro ao solicitar o serviço, tente novamente mais tarde.";
+                $this->db->set("estado", $data->estado_select);
+                $this->db->set("cidade", $data->cidade_select);
             }
-        }
-
-        return $rst;
-    }
-
-    public function get_categorias_principais()
-    {
-        $query = $this->db->get_where("Categoria", "id_pai = 0")->result();
-
-        return $query;
-    }
-
-    public function get_subcategorias($id)
-    {
-        $lista_categoria = array();
-        $data = (object)$this->input->post();
-        
-        $query = $this->db->get_where("Categoria", "id_pai = '$id'")->result();
-
-        foreach($query as $item)
-        {
-            $lista = (object)array("id" => $item->id, "nome" => $item->nome, "filhos");
-            $lista->filhos = $this->db->get_where("Categoria", "id_pai = '$item->id'")->result();
-
-            $lista_categoria[] = $lista;
-        }
-
-        return $lista_categoria;
-    }
-
-    public function get_pagamento()
-    {
-        $result = $this->db->query('SELECT DISTINCT forma_pagamento FROM TipoPagamento')->result();
-
-        foreach($result as $item)
-        {
-            $item->tipos = $this->db->get_where("TipoPagamento", "forma_pagamento = '$item->forma_pagamento'")->result();
-        }
-
-        return $result;
-    }
-
-    public function get_estados()
-    {
-        $query = $this->db->get("Estados")->result();
-
-        return $query;
-    }
-
-    public function get_estado_sigla($sigla)
-    {
-        $query = $this->db->get_where("Estados", "sigla = $sigla")->row();
-
-        return $query;
-    }
-
-    public function get_cidades($id)
-    {
-        $json = file_get_contents(base_url("assets/Cidades.json"));
-        $data = json_decode($json);
-
-        $lista = array();
-        foreach($data as $item)
-        {
-            if($item->Estado == $id)
-                $lista[] = $item;
-        }
-
-        return $lista;
-    }
-
-    public function get_cidades_id($id_cidade)
-    {
-        $json = file_get_contents(base_url("assets/Cidades.json"));
-        $data = json_decode($json);
-
-        foreach($data as $item)
-        {
-            if($item->ID == $id_cidade)
-                return $item;
-        }
-    }
-
-    public function lista_horarios()
-    {
-        return $this->db->get("ListaHorario")->result();
-    }
-
-    public function cadastro_servico()
-    {
-        $rst = (object)array("rst" => true, "msg" => "", "id" => 0);
-        $data = (object)$this->input->post();
-
-        $this->db->set("nome", $data->nome);
-        $this->db->set("descricao_curta", $data->descricao_curta);
-        $this->db->set("descricao", $data->descricao_completa);
-        $this->db->set("ativo", 1);
-        $this->db->set("data_inclusao", date("Y-m-d H:i:s"));
-        $this->db->set("data_atualizacao", date("Y-m-d H:i:s"));
-        $this->db->set("id_tipo_servico", $data->tipo_servico);
-        $this->db->set("id_categoria", $data->categoria_especifica);
-
-        if(isset($data->local) && $data->local == "on")
-        {
-            $this->db->set("cep", $data->cep);
-            $this->db->set("estado", $this->get_estado_nome($data->estado));
-            $this->db->set("cidade", $this->get_cidade_nome($data->cidade));
-            $this->db->set("bairro", $data->bairro);
-            $this->db->set("endereco", $data->endereco);
-            $this->db->set("numero", somente_numeros($data->numero));
-            $this->db->set("complemento", $data->complemento);
-        }
-        else
-        {
-            $this->db->set("estado", $data->estado_select);
-            $this->db->set("cidade", $data->cidade_select);
-        }
-        
-        if($data->valor)
-        {
-            $valor_T = explode(" ", $data->valor);
-            $valor_V = explode(".", $valor_T[1]);
-            $valor = str_replace(",", ".", $valor_V[0]);
-            $this->db->set("valor", $valor.",".$valor_V[1]);
-        }
-        if($data->tipo_servico == 2)
-        {
-            $this->db->set("quantidade_disponivel", $data->quantidade);
-            if($data->caucao)
+            
+            //Verifica se algum valor para o serviço foi inserido
+            if($data->valor)
             {
-                $valor_T = explode(" ", $data->caucao);
+                $valor_T = explode(" ", $data->valor);
                 $valor_V = explode(".", $valor_T[1]);
                 $valor = str_replace(",", ".", $valor_V[0]);
-                $this->db->set("caucao", $valor.",".$valor_V[1]);
-            }
-        }
-        $this->db->set("id_usuario", $this->dados->usuario_id);
-
-        if($this->db->insert("Servico"))
-        {
-            $rst->id = $id = $this->db->insert_id();
-
-            $this->set_img($id);
-
-            if($data->lista_tipo_pagamento)
-            {
-                $this->set_pagamento($id);
+                $this->db->set("valor", $valor.",".$valor_V[1]);
             }
 
-            if($data->lista_tipo_horario)
+            //Verifica se o é um Aluguel de Equipamento
+            if($data->tipo_servico == 2)
             {
-                $this->set_horario($id);
+                $this->db->set("quantidade_disponivel", $data->quantidade);
+                if($data->caucao)
+                {
+                    $valor_T = explode(" ", $data->caucao);
+                    $valor_V = explode(".", $valor_T[1]);
+                    $valor = str_replace(",", ".", $valor_V[0]);
+                    $this->db->set("caucao", $valor.",".$valor_V[1]);
+                }
             }
 
-            $rst->rst = true;
-        }
-        else
-        {
-            $rst->rst = false;
-            $rst->msg = "Erro ao inserir o Serviço";
-        }
-
-        return $rst;
-    }
-
-    public function set_img ($id)
-    {
-        $files = $this->session->userdata("files".APPNAME);
-      
-        if($files)
-        {
-            $this->session->set_userdata("files".APPNAME, "");
-            $query = $this->db->get_where("Imagens", "id_servico = $id AND principal = 1")->row();
-            for($count = 0; $count < count($files); $count++)
+            if($this->db->insert("Servico"))
             {
-                if($count == 0 && empty($query))
-                    $this->db->set("principal", 1);
-                else
-                    $this->db->set("principal", 0);
+                $rst->id = $id = $this->db->insert_id();
 
-                $this->db->set("id_servico", $id);
-                $this->db->set("ativo", 1);
-                $this->db->set("nome", $files[$count]["name"]);
-                $this->db->set("tipo_imagem", $files[$count]["type"]);
-                $this->db->set("data_insercao", date("Y-m-d H:i:s"));
-                $this->db->set("img", base64_encode(file_get_contents($files[$count]["path"])));
+                $this->set_img($id);
 
-                $this->db->insert("Imagens");
-            }
+                //Verifica se possui formas de pagamentos
+                if($data->lista_tipo_pagamento)
+                {
+                    $this->set_pagamento($id);
+                }
 
-            limpa_uploads();
-        }
-    }
+                //Verifica se possui horarios de funcionamento
+                if($data->lista_tipo_horario)
+                {
+                    $this->set_horario($id);
+                }
 
-    private function set_pagamento($id)
-    {
-        $data = (object)$this->input->post();
-        
-        $lista_ini = explode(",", $data->lista_tipo_pagamento);
-
-        $lista_c = array();
-
-        foreach($lista_ini as $value)
-        {
-            $lista_c = explode("/", $value);
-
-            if($lista_c)
-            {
-                $this->db->set("id_tipo_pagamento", $lista_c[0]);
-                $this->db->set("vezes", $lista_c[1]);
-                $this->db->set("juros", $lista_c[2]);
-                $this->db->set("id_servico", $id);
-
-                $this->db->insert("PagamentoServico");
-            }
-        }
-        //colocar um log
-    }
-
-    private function set_horario($id)
-    {
-        $data = (object)$this->input->post();
-        
-        $lista_ini = explode(",", $data->lista_tipo_horario);
-        
-        $lista_c = array();
-
-        foreach($lista_ini as $value)
-        {
-            $lista_c = explode("/", $value);
-            
-            if($lista_c)
-            {
-                $this->db->set("dia_semana", $lista_c[0]);
-                $this->db->set("texto", $lista_c[1]." às ".$lista_c[2]);
-                $this->db->set("id_servico", $id);
-
-                $this->db->insert("HorarioServico");
-            }
-        }
-        //colocar um log
-    }
-
-    public function get_perguntas($id, $resposta)
-    {
-        if($resposta == "false")
-            $this->db->where("resposta IS NULL");
-
-        $this->db->order_by("data_inclusao", "desc");
-        $query = $this->db->get_where("Perguntas", "id_servico = $id")->result();
-
-        foreach($query as $item)
-        {
-            $item->data_inclusao_br = formatar($item->data_inclusao, "bd2dt");
-            $item->data_resposta_br = formatar($item->data_resposta, "bd2dt");
-
-            $this->db->select("nome, sobrenome");
-            $item->usuario_pergunta = $this->db->get_where("Usuario", "id = $item->id_usuario")->row();
-        }
-
-        return $query;
-    }
-
-    public function responder_pergunta()
-    {
-        $rst = (object)array("rst" => true, "msg" => "");
-        $data = (object)$this->input->post();
-
-        $this->db->set("resposta", $data->resposta);
-        $this->db->set("data_resposta", date('Y-m-d H:i:s'));
-        
-        $this->db->where("id = $data->id_pergunta");
-        if($this->db->update("Perguntas"))
-        {
-            $queryPergunta = $this->db->get_where("Perguntas", "id = '$data->id_pergunta'")->row();
-            $query = $this->db->get_where("Servico", "id = '$queryPergunta->id_servico'")->row();
-            $queryUsuario = $this->db->get_where("Usuario", "id = $queryPergunta->id_usuario")->row();
-
-            $texto = (object)array();
-
-            $texto->email = strtolower($queryUsuario->email);
-            $texto->titulo = "Resposta a sua Pergunta";
-            $texto->link = base_url("Servico/detalhes/$query->nome/$query->id");
-            $texto->texto_link = "Ver Serviço";
-            $texto->msg = "Opa, tudo certo? <br/> Uma resposta a sua pergunta no serviço: $query->nome, foi cadastrada <br/> Caso queira ver diretamente no serviço clique no botão abaixo.";
-            $texto->cid = "";
-
-            $this->envia_email($texto);
-
-            $rst->rst = true;
-            $rst->msg = "Resposta realizada com sucesso!";
-        }
-        else
-            $rst->msg = "Erro ao realizar resposta ao pergunta";
-
-        return $rst;
-    }
-
-    public function get_orcamentos($id)
-    {
-        $this->db->select("O.*");
-        $this->db->join("ContrataServico C", "C.ativo = 1 AND O.id = C.id_orcamento");
-        $rst = $this->db->get_where("Orcamento O", "O.id_servico = $id")->result();
-        foreach($rst as $item)
-        {
-
-            $this->db->order_by("id", "desc");
-            $queryInicialStatus = $this->db->get_where("ContrataServico", "id_orcamento = '$item->id' AND status = 1")->row();
-            $item->descricao = $queryInicialStatus->descricao;
-            $item->data_servico = formatar($queryInicialStatus->data_servico, "bd2dt");
-            $item->hora_servico = $queryInicialStatus->hora_servico;
-
-            $item->usuario = $this->db->get_where("Usuario", "id = $item->id_usuario")->row();
-
-            $item->solicitacao = $this->db->get_where("ContrataServico", "id_orcamento = '$item->id' AND ativo = 1")->row();
-            $item->solicitacao->data_alteracao = formatar($item->solicitacao->data_alteracao, "bd2dt");
-            $item->solicitacao->status = $this->db->get_where("OrcamentoStatus", "id = ".$item->solicitacao->status)->row();
-        }
-
-        return $rst;
-    }
-
-    public function get_info_orcamentos($id)
-    {
-        $this->db->order_by("id", "desc");
-        $query = $this->db->get_where("ContrataServico", "id_orcamento = $id")->result();
-
-        foreach($query as $item)
-        {
-            $this->db->select("id_servico");
-            $item->id_servico = $this->db->get_where("Orcamento", "id = $id")->row()->id_servico;
-            $item->status = $this->db->get_where("OrcamentoStatus", "id = $item->status")->row();
-
-            if($item->status->id == 4)
-            {
-                $this->db->order_by("id", "desc");
-                $queryInfo = $this->db->get_where("ContrataServico", "id_orcamento = '$id' AND status = 1")->row();
-
-                $item->data_servico = $queryInfo->data_servico;
-                $item->hora_servico = $queryInfo->hora_servico;
-            }
-
-            if(isset($item->data_servico) && !empty($item->data_servico))
-                $item->data_servico = formatar($item->data_servico, "bd2dt");
-
-            $item->data_alteracao = formatar($item->data_alteracao, "bd2dt");
-            
-            $this->db->select("id, nome");
-            $item->usuario = $this->db->get_where("Usuario", "id = $item->id_usuario")->row();
-        }
-
-        return $query;
-    }
-
-    public function resposta_orcamento()
-    {
-        $rst = (object)array("rst" => false, "msg" => "");
-        $data = (object)$this->input->post();
-
-        $this->db->set("ativo", 0);
-        $this->db->where("id_orcamento", $data->id_orcamento);
-        if($this->db->update("ContrataServico"))
-        {
-            if($data->aceite_orcamento == 1)
-                $this->db->set("status", 2);
-            elseif($data->aceite_orcamento == 0)
-                $this->db->set("status", 3);
-
-            $this->db->set("id_orcamento", $data->id_orcamento);
-            $this->db->set("id_usuario", $this->dados->usuario_id);
-            $this->db->set("ativo", 1);
-
-            if($data->orcamento)
-                $this->db->set("orcamento", $data->orcamento);
-
-            $this->db->set("data_alteracao", date("Y-m-d H:i:s"));
-            if($data->descricao_orcamento)
-                $this->db->set("descricao", $data->descricao_orcamento);
-
-            if($this->db->insert("ContrataServico"))
-            {
                 $rst->rst = true;
-                $rst->msg = "Resposta do Orçamento enviado";
             }
             else
             {
-                $rst->msg = "Erro ao enviar resposta do Orçamento";
+                $rst->rst = false;
+                $rst->msg = "Erro ao inserir o Serviço";
+            }
+
+            return $rst;
+        }
+
+        /**
+         * Insere as imagens cadastradas no serviço.
+         * @access private
+         * @param   int $id Identificador do Serviço
+        */
+        private function set_img ($id)
+        {
+            $files = $this->session->userdata("files".APPNAME);
+        
+            //Verifica se possui imagens
+            if($files)
+            {
+                $this->session->set_userdata("files".APPNAME, "");
+                for($count = 0; $count < count($files); $count++)
+                {
+                    $query = $this->db->get_where("Imagens", "id_servico = $id AND principal = 1")->row();
+                    //Verifica se o serviço ja possui imagens
+                    if(empty($query))
+                        $this->db->set("principal", 1);
+                    else
+                        $this->db->set("principal", 0);
+
+                    $this->db->set("id_servico", $id);
+                    $this->db->set("ativo", 1);
+                    $this->db->set("nome", $files[$count]["name"]);
+                    $this->db->set("tipo_imagem", $files[$count]["type"]);
+                    $this->db->set("data_insercao", date("Y-m-d H:i:s"));
+                    $this->db->set("img", base64_encode(file_get_contents($files[$count]["path"])));
+
+                    $this->db->insert("Imagens");
+                }
+
+                //realiza a limpeza da pasta auxiliar
+                limpa_uploads();
             }
         }
 
-        return $rst;
-    }
-
-    public function get_endereco()
-    {
-        if($this->dados)
+        /**
+         * Insere as formas de pagamento
+         * @access private
+         * @param int $id Identificador do Serviço
+        */
+        private function set_pagamento($id)
         {
-            $query = $this->db->get_where("Enderecos", "id_usuario = ".$this->dados->usuario_id)->result();
-        
+            $data = (object)$this->input->post();
+            
+            //Lista as formas de pagamento
+            $lista_ini = explode(",", $data->lista_tipo_pagamento);
+
+            $lista_c = array();
+
+            foreach($lista_ini as $value)
+            {
+                //Lista as informações individuais de pagamento
+                $lista_c = explode("/", $value);
+
+                if($lista_c)
+                {
+                    $this->db->set("id_tipo_pagamento", $lista_c[0]);
+                    $this->db->set("vezes", $lista_c[1]);
+                    $this->db->set("juros", $lista_c[2]);
+                    $this->db->set("id_servico", $id);
+
+                    $this->db->insert("PagamentoServico");
+                }
+            }
+        }
+
+        /**
+         * Insere os horarios de funcionamento
+         * @access private
+         * @param int $id Identificador do Serviço
+        */
+        private function set_horario($id)
+        {
+            $data = (object)$this->input->post();
+            
+            //Lista os horarios de funcionamento
+            $lista_ini = explode(",", $data->lista_tipo_horario);
+            
+            $lista_c = array();
+
+            foreach($lista_ini as $value)
+            {
+                //Lista as informações individuais de horario
+                $lista_c = explode("/", $value);
+                
+                if($lista_c)
+                {
+                    $this->db->set("dia_semana", $lista_c[0]);
+                    $this->db->set("texto", $lista_c[1]." às ".$lista_c[2]);
+                    $this->db->set("id_servico", $id);
+
+                    $this->db->insert("HorarioServico");
+                }
+            }
+        }
+
+    /** Fim Gerenciamento do Serviço */
+
+    /** Perguntas do Serviço */
+        /**
+         * Realiza o cadastrado de perguntas no serviço.
+         * @access public
+         * @return object;
+        */
+        public function cadastrar_pergunta()
+        {
+            //post da pergunta, o identificador do servico e do usuario que realizou.
+            $data = (object)$this->input->post();
+            $rst = (object)array("rst" => false, "msg" => "", "pergunta" => "");
+
+            if($this->verifica_seguranca($data->pergunta))
+            {
+                $rst->msg = "Palavra utilizada para o acesso é proibida!";
+
+                return $rst;
+            }
+
+            $this->db->set("pergunta", $data->pergunta);
+            $this->db->set("data_inclusao", date('Y-m-d H:i:s'));
+            $this->db->set("id_servico", $data->id_servico);
+            $this->db->set("id_usuario", $this->dados->usuario_id);
+            $this->db->set("id_usuario_servico", $data->id_usuario);
+
+            if($this->db->insert("Perguntas"))
+            {
+                $query = $this->db->get_where("Servico", "id = '$data->id_servico'")->row();
+                $queryUsuario = $this->db->get_where("Usuario", "id = $data->id_usuario")->row();
+
+                $texto = (object)array();
+
+                $hash = $this->sistema->encrypt_decrypt("encrypt", "Servico/gerenciar_servico/$data->id_servico");
+
+                $texto->email = strtolower($queryUsuario->email);
+                $texto->titulo = "Nova pergunta cadastrada";
+                $texto->link = base_url("Usuario/page_redirect/$hash");
+                $texto->texto_link = "Responder pergunta";
+                $texto->msg = "Opa, tudo certo? <br/> Uma nova pergunta foi cadastrar em seu serviço: $query->nome. <br/> Caso queira responder agora clique no botão abaixo.";
+                $texto->cid = "";
+                $this->envia_email($texto);
+
+                $rst->rst = true;
+                $rst->msg = "Pergunta registrada com sucesso, quando houver uma resposta, você será notificado!";
+            }
+            else
+            {
+                $rst->msg = "Erro ao registrar a pergunta, tente novamente mais tarde.";
+            }
+
+            return $rst;
+        }
+
+        /**
+         * Realiza o cadastrado de perguntas no serviço.
+         * @access public
+         * @param int $id identificador do serviço
+         * @param string $resposta texto para lista apenas respostas vazias
+         * @return object;
+        */
+        public function get_perguntas($id, $resposta)
+        {
+            if($resposta == "false")
+                $this->db->where("resposta IS NULL");
+
+            $this->db->order_by("data_inclusao", "desc");
+            $query = $this->db->get_where("Perguntas", "id_servico = $id")->result();
+
             foreach($query as $item)
             {
-                //Consulta o estado
-                $item->estado = $this->db->get_where("Estados", "id = '$item->estado'")->row();
-    
-                //Consulta a cidade
-                $item->cidade = $this->get_cidades_id($item->cidade);
-                $item->endereco_completo = $item->cep." - ".$item->endereco.($item->complemento ? ", ".$item->complemento : "").", ".$item->numero.", ".$item->bairro." - ".$item->cidade->Nome.", ".$item->estado->nome."(".$item->estado->sigla.")";
+                $item->data_inclusao_br = formatar($item->data_inclusao, "bd2dt");
+                $item->data_resposta_br = formatar($item->data_resposta, "bd2dt");
+
+                $this->db->select("nome, sobrenome");
+                $item->usuario_pergunta = $this->db->get_where("Usuario", "id = $item->id_usuario")->row();
             }
 
             return $query;
         }
-        else
+
+        /**
+         * Realiza a resposta a perguntas do sistema.
+         * @access public
+         * @return object;
+        */
+        public function responder_pergunta()
         {
-            return (object)array();
+            $rst = (object)array("rst" => true, "msg" => "");
+            $data = (object)$this->input->post();
+
+            $this->db->set("resposta", $data->resposta);
+            $this->db->set("data_resposta", date('Y-m-d H:i:s'));
+            
+            $this->db->where("id = $data->id_pergunta");
+            if($this->db->update("Perguntas"))
+            {
+                $queryPergunta = $this->db->get_where("Perguntas", "id = '$data->id_pergunta'")->row();
+                $query = $this->db->get_where("Servico", "id = '$queryPergunta->id_servico'")->row();
+                $queryUsuario = $this->db->get_where("Usuario", "id = $queryPergunta->id_usuario")->row();
+
+                $texto = (object)array();
+
+                $texto->email = strtolower($queryUsuario->email);
+                $texto->titulo = "Resposta a sua Pergunta";
+                $texto->link = base_url("Servico/detalhes/$query->nome/$query->id");
+                $texto->texto_link = "Ver Serviço";
+                $texto->msg = "Opa, tudo certo? <br/> Uma resposta a sua pergunta no serviço: $query->nome, foi cadastrada <br/> Caso queira ver diretamente no serviço clique no botão abaixo.";
+                $texto->cid = "";
+
+                $this->envia_email($texto);
+
+                $rst->rst = true;
+                $rst->msg = "Resposta realizada com sucesso!";
+            }
+            else
+                $rst->msg = "Erro ao realizar resposta ao pergunta";
+
+            return $rst;
         }
 
-    }
+    /** Fim Perguntas do Serviço */
+
+    /** Contratação do Serviço */
+        /**
+         * Realiza o cadastro da solicitação de contratação de serviço.
+         * @access public
+         * @return object;
+        */
+        public function contrata_servico()
+        {
+            $data = (object)$this->input->post();
+            $rst = (object)array("rst" => false, "msg" => "");
+
+            $this->db->set("id_servico", $data->id_servico);
+            $this->db->set("id_usuario", $this->dados->usuario_id);
+
+            if($this->db->insert("Orcamento"))
+            {
+                $id_orcamento = $this->db->insert_id();
+
+                //verifica se o campo de utilizar o endereço cadastrado, está selecionado
+                if(!isset($data->endereco_cadastrado))
+                    $this->db->set("endereco", $data->endereco_select);
+                else
+                {
+                    $endereco = $data->cep." - ".$data->endereco.($data->complemento ? ", ".$data->complemento : "").", ".$data->numero.", ".$data->bairro." - ".$data->cidade.", ".$data->estado;
+                    $this->db->set("endereco", $endereco);
+                }
+
+                $this->db->set("id_orcamento", $id_orcamento);
+                $this->db->set("status", 1);
+                $this->db->set("ativo", 1);
+                $this->db->set("id_usuario", $this->dados->usuario_id);
+                $this->db->set("data_servico", formatar($data->data_servico, "dt2bd"));
+                $this->db->set("hora_servico", $data->horario_servico);
+                $this->db->set("descricao", $data->descricao);
+                $this->db->set("data_alteracao", date("Y-m-d H:i:s"));
+
+                if($this->db->insert("ContrataServico"))
+                {
+                    $this->db->select("U.email");
+                    $this->db->join("Usuario U", "U.id = S.id_usuario");
+                    $query = $this->db->get_where("Servico S", "S.id = $data->id_servico");
+                    $texto = (object)array();
+
+                    $hash = $this->sistema->encrypt_decrypt("encrypt", "Servico/gerenciar_servico/$data->id_servico");
+
+                    $texto->email = strtolower($query->email);
+                    $texto->titulo = "Contratação do Serviço";
+                    $texto->link = base_url("Usuario/page_redirect/$hash");
+                    $texto->texto_link = "Ver Pedido";
+                    $texto->msg = "Opa, tudo certo? <br/> Seu serviço foi contratado.<br/> O Pedido está esperando por uma resposta <br/> Caso queira ver diretamente o pedido, clique no botão abaixo.";
+                    $texto->cid = "";
+
+                    $this->envia_email($texto);
+
+                    $rst->rst = true;
+                    $rst->msg = "Solicitação de serviço enviado para o Prestador";
+                }
+                else
+                {
+                    $rst->msg = "Erro ao solicitar o serviço, tente novamente mais tarde.";
+                }
+            }
+
+            return $rst;
+        }
+
+        /**
+         * Consulta todos os orçamento de um serviço
+         * @access public
+         * @param int $id Identificador do Serviço
+         * @return object;
+        */
+        public function get_orcamentos($id)
+        {
+            $this->db->select("O.*");
+            $this->db->join("ContrataServico C", "C.ativo = 1 AND O.id = C.id_orcamento");
+            $rst = $this->db->get_where("Orcamento O", "O.id_servico = $id")->result();
+            foreach($rst as $item)
+            {
+                $this->db->order_by("id", "desc");
+                $queryInicialStatus = $this->db->get_where("ContrataServico", "id_orcamento = '$item->id' AND status = 1")->row();
+
+                $item->descricao = $queryInicialStatus->descricao;
+                $item->data_servico = formatar($queryInicialStatus->data_servico, "bd2dt");
+                $item->hora_servico = $queryInicialStatus->hora_servico;
+                $item->usuario = $this->db->get_where("Usuario", "id = $item->id_usuario")->row();
+
+                $item->solicitacao = $this->db->get_where("ContrataServico", "id_orcamento = '$item->id' AND ativo = 1")->row();
+                $item->solicitacao->data_alteracao = formatar($item->solicitacao->data_alteracao, "bd2dt");
+                $item->solicitacao->status = $this->db->get_where("OrcamentoStatus", "id = ".$item->solicitacao->status)->row();
+            }
+
+            return $rst;
+        }
+
+        /**
+         * Consulta todos as movimentações de um Orcamento
+         * @access public
+         * @param int $id Identificador do Orçamento
+         * @return object;
+        */
+        public function get_info_orcamentos($id)
+        {
+            $this->db->order_by("id", "desc");
+            $query = $this->db->get_where("ContrataServico", "id_orcamento = $id")->result();
+
+            foreach($query as $item)
+            {
+                $this->db->select("id_servico");
+                $item->id_servico = $this->db->get_where("Orcamento", "id = $id")->row()->id_servico;
+                $item->status = $this->db->get_where("OrcamentoStatus", "id = $item->status")->row();
+
+                //Verifica se o status é igual a Orçamento aceito
+                if($item->status->id == 4)
+                {
+                    $this->db->order_by("id", "desc");
+                    $queryInfo = $this->db->get_where("ContrataServico", "id_orcamento = '$id' AND status = 1")->row();
+
+                    $item->data_servico = $queryInfo->data_servico;
+                    $item->hora_servico = $queryInfo->hora_servico;
+                }
+
+                if(isset($item->data_servico) && !empty($item->data_servico))
+                    $item->data_servico = formatar($item->data_servico, "bd2dt");
+
+                $item->data_alteracao = formatar($item->data_alteracao, "bd2dt");
+                
+                $this->db->select("id, nome");
+                $item->usuario = $this->db->get_where("Usuario", "id = $item->id_usuario")->row();
+            }
+
+            return $query;
+        }
+
+        /**
+         * Realiza um resposta a movimentação
+         * @access public
+         * @return object;
+        */
+        public function resposta_orcamento()
+        {
+            $rst = (object)array("rst" => false, "msg" => "");
+            $data = (object)$this->input->post();
+
+            $status = 0;
+
+            $this->db->set("ativo", 0);
+            $this->db->where("id_orcamento", $data->id_orcamento);
+            if($this->db->update("ContrataServico"))
+            {
+                //Verifica se foi aceito
+                if($data->aceite_orcamento == 1)
+                {
+                    $this->db->set("status", 2);
+                    $status = 2;
+                }
+                //Verifica se foi recusado
+                elseif($data->aceite_orcamento == 0)
+                {
+                    $this->db->set("status", 3);
+                    $status = 3;
+                }
+
+                $this->db->set("data_alteracao", date("Y-m-d H:i:s"));
+                $this->db->set("id_orcamento", $data->id_orcamento);
+                $this->db->set("id_usuario", $this->dados->usuario_id);
+                $this->db->set("ativo", 1);
+
+                //Verifica se possui valor de orçamento
+                if($data->orcamento)
+                    $this->db->set("orcamento", $data->orcamento);
+
+                //Verifica se possui descrição para orçamento
+                if($data->descricao_orcamento)
+                    $this->db->set("descricao", $data->descricao_orcamento);
+
+                if($this->db->insert("ContrataServico"))
+                {
+                    //Consulta o email do Usuario
+                    $this->db->select("U.email");
+                    $this->db->join("Usuario U", "U.id = O.id_usuario");
+                    $query = $this->db->get_where("Orcamento O", "O.id = $data->id_orcamento");
+
+                    $texto = (object)array();
+
+                    $hash = $this->sistema->encrypt_decrypt("encrypt", "Usuario/controle_pedido/$data->id_orcamento");
+
+                    $texto->email = strtolower($query->email);
+                    $texto->titulo = "Contratação do Serviço";
+                    $texto->link = base_url("Usuario/page_redirect/$hash");
+                    $texto->texto_link = "Ver Pedido";
+                    $texto->msg = "Opa, tudo certo? <br/> O serviço que você solicitou lhe enviou uma resposta.<br/> Caso queira ver diretamente o andamento, clique no botão abaixo.";
+                    $texto->cid = "";
+
+                    $this->envia_email($texto);
+
+                    $rst->rst = true;
+                    $rst->msg = "Resposta do Orçamento enviado";
+                }
+                else
+                {
+                    $rst->msg = "Erro ao enviar resposta do Orçamento";
+                }
+            }
+
+            return $rst;
+        }
+    /** Fim Contratação do Serviço */
 
     public function visibilidade()
     {
@@ -959,6 +1063,24 @@ class Servico_model extends CI_Model{
 
             if($this->db->insert("ContrataServico"))
             {
+
+                $this->db->select("U.email");
+                $this->db->join("Usuario U", "U.id = O.id_usuario");
+                $query = $this->db->get_where("Orcamento O", "O.id = $id");
+
+                $texto = (object)array();
+
+                $hash = $this->sistema->encrypt_decrypt("encrypt", "Usuario/controle_pedido/$id");
+
+                $texto->email = strtolower($query->email);
+                $texto->titulo = "Contratação do Serviço";
+                $texto->link = base_url("Usuario/page_redirect/$hash");
+                $texto->texto_link = "Ver Pedido";
+                $texto->msg = "Opa, tudo certo? <br/> O serviço que você havia solicitado foi cancelado pelo Prestador<br/> Caso queira ver diretamente mais informações, clique no botão abaixo.";
+                $texto->cid = "";
+
+                $this->envia_email($texto);
+
                 return true;
             }
         }
@@ -1301,6 +1423,23 @@ class Servico_model extends CI_Model{
     
             if($this->db->insert("ContrataServico"))
             {
+
+                $this->db->select("U.email");
+                $this->db->join("Usuario U", "U.id = S.id_usuario");
+                $query = $this->db->get_where("Servico S", "S.id = $id");
+                $texto = (object)array();
+
+                $hash = $this->sistema->encrypt_decrypt("encrypt", "Feedback/index/$id");
+
+                $texto->email = strtolower($query->email);
+                $texto->titulo = "Contratação do Serviço";
+                $texto->link = base_url("Usuario/page_redirect/$hash");
+                $texto->texto_link = "Ver Pedido";
+                $texto->msg = "Opa, tudo certo? <br/> Espero que o serviço tenha sido efetuado com satisfação e excelencia.<br/> Bom agora que o serviço foi realizado, você poderia realizar um feedback do serviço para o prestador? <br/> Para realizar o feedback, clique no botão abaixo.";
+                $texto->cid = "";
+
+                $this->envia_email($texto);
+
                 $rst->rst = true;
                 $rst->msg = "Serviço definido como realizado";
             }

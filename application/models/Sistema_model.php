@@ -38,115 +38,103 @@ class Sistema_model extends CI_Model{
         return $rst;
     }
 
+    /**
+     * Lista todos padrões de colores do sistema.
+     * @access public
+     * @return object;
+    */
     public function get_colores()
     {
         return $this->db->get_where("Colores", "id = 1")->row();
     }
 
-    public function inseri_servico()
+    /**
+     * Registra a vista ao serviço.
+     * @access public
+     * @param  $id  int Identificador do Serviço
+     * @return object;
+    */
+    public function insere_acesso($id)
     {
-         //$descricao = "<p>Venha conhecer a confeitaria que serve o seu evento com diversos tipos de doces.</p>
-         //<p>Trabalho com: </p>
-         //<ul> 
-            //<li>Encomendas para Festas;</li>
-            //<li>Encomendas Básicas;</li>
-            //<li>Entre outros!;</li>
-            //<br/>
-        //</ul>
-             //<p>Contrate-nos</p>
-             //<br/>";
-        
-       //$this->db->set("descricao", $descricao);
+        $data = date("Y-m-d H:i:00", strtotime("-5 minutes"));
+        $this->dados = $this->session->userdata("dados" . APPNAME);
 
-        //$this->db->where("id", 1);
-        //$this->db->update("Servico");
+        if(isset($this->dados->usuario_id) && $this->dados->usuario_id != null)
+        {
+            $this->db->where("id_usuario = ".$this->dados->usuario_id);
+            $this->db->where("data_acesso BETWEEN '".$data."' AND '".date("Y-m-d H:i:s")."'");
+            $query = $this->db->get("ControleVisualizacao")->result();
 
-        $descricao = "<p>No ramo há 10 anos, trabalho com fotos de qualidade, books ou quadros inclusos</p>
-        <p>Presto serviços para: </p>
-        <ul> 
-            <li>Eventos;</li>
-            <li>Aniversários;</li>
-            <li>Debutantes;</li>
-            <li>Formaturas.</li>
-            <br/>
-        </ul>
-            <p>Converse conosco para acertar todos os detalhes sobre o serviço, faça o seu orçamento!</p>
-            <br/>";
+            if(!$query)
+            {
+                $this->db->set("id_servico", $id);
+                $this->db->set("id_usuario", $this->dados->usuario_id);    
+                $this->db->set("data_acesso", date("Y-m-d H:i:s"));
+    
+                $this->db->insert("ControleVisualizacao");
+            }
+        }
+        else
+        {
+            $this->db->set("id_servico", $id);                
+            $this->db->set("data_acesso", date("Y-m-d H:i:s"));
 
-        $this->db->set("nome", "Fotográfa");
-        $this->db->set("ativo", 1);
-        $this->db->set("descricao_curta", "Registre os melhores momentos da sua vida, contrate-nos!");
-        $this->db->set("descricao", $descricao);
-        $this->db->set("data_inclusao", "date('now')", false);
-        $this->db->set("id_tipo_servico", 1);
-        $this->db->set("valor", "450,00");
-        $this->db->set("caucao", "");
-        $this->db->set("quantidade_disponivel", );
-        $this->db->set("id_categoria", 13);
-        $this->db->set("id_usuario", 2);
-        $this->db->insert("Servico");
-
-        $this->db->set("id_tipo_pagamento", 8);
-        $this->db->set("id_servico", 17);
-        $this->db->insert("PagamentoServico");
-
-        $this->db->set("id_tipo_pagamento", 3);
-        $this->db->set("id_servico", 17);
-        $this->db->insert("PagamentoServico");
-        
-        $this->db->set("id_tipo_pagamento", 5);
-        $this->db->set("id_servico", 17);
-        $this->db->insert("PagamentoServico");
-
-        $this->db->set("id_tipo_pagamento", 7);
-        $this->db->set("id_servico", 17);
-        $this->db->insert("PagamentoServico");
-
-        $this->db->set("id_tipo_pagamento", 9);
-        $this->db->set("id_servico", 17);
-        $this->db->insert("PagamentoServico");
-
-        $this->db->set("id_tipo_pagamento", 15);
-        $this->db->set("id_servico", 17);
-        $this->db->insert("PagamentoServico");
-
-        $this->db->set("id_tipo_pagamento", 13);
-        $this->db->set("id_servico", 17);
-        $this->db->insert("PagamentoServico");
-
-        $this->db->set("id_tipo_pagamento", 20);
-        $this->db->set("id_servico", 17);
-        $this->db->insert("PagamentoServico");
-
-
-        $this->db->set("img", "https://images.unsplash.com/photo-1563018259-f7bf99f6b1b0?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80");
-        $this->db->set("ativo", 1);
-        $this->db->set("principal", 1);//1 ou 0
-        $this->db->set("data_insercao", "date('now')", false);
-        $this->db->set("id_servico", 17); 
-        $this->db->insert("Imagens");
-
-        $this->db->set("img", "https://images.unsplash.com/photo-1457461027293-311fd5a4a6d6?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80");
-        $this->db->set("ativo", 1);
-        $this->db->set("principal", 0);//1 ou 0
-        $this->db->set("data_insercao", "date('now')", false);
-        $this->db->set("id_servico", 17);
-        $this->db->insert("Imagens");
-
-        //$this->db->set("img", "https://images.unsplash.com/photo-1512099053734-e6767b535838?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=628&q=80");
-        //$this->db->set("ativo", 1);
-        //$this->db->set("principal", 0);//1 ou 0
-        //$this->db->set("data_insercao", "date('now')", false);
-        //$this->db->set("id_servico", 17);
-        //$this->db->insert("Imagens");
-
+            $this->db->insert("ControleVisualizacao");   
+        }
     }
 
-    //<ul> 
-        //<li>Encomendas para eventos;</li>
-        //<li>Encomendas para aniversários;</li>
-        //<li>Entre outros!</li>
-    //<br/>
-    //</ul>
+    /**
+     * Realiza o cadastro de favorito do servico ao usuario/realiza o desativamento do favorito para aquele usuario.
+     * @access public
+     * @return object;
+    */
+    public function favorita_servico()
+    {
+        $data = (object)$this->input->post();
+        $rst = (object)array("rst" => 0);
+        
+        //Verifica qual o tipo de ação que será tomada.
+        if($data->tipo == "preenchido")
+        {
+            //Desabilita o favorito naquele serviço.
+            $this->db->set("ativo", 0);
+
+            $this->db->where("id_servico = '$data->id_servico' AND '".$this->dados->usuario_id."'");
+            if($this->db->update("Favoritos"))
+                $rst->rst = 2;
+            else
+                $rst->rst = 0;
+        }
+        else if($data->tipo == "vazio")
+        {
+            //Consulta se o aquele usuario ja havia favoritado aquele serviço antes.
+            $query = $this->db->get_where("Favoritos", "id_servico = '$data->id_servico' AND id_usuario = '".$this->dados->usuario_id."'")->row();
+
+            if($query)
+            {
+                $this->db->set("ativo", 1);
+
+                $this->db->where("id = '$query->id'");
+                if($this->db->update("Favoritos"))
+                    $rst->rst = 1;
+                else
+                    $rst->rst = 0;
+            }
+            else
+            {
+                $this->db->set("data_inclusao", "date('now')", false);
+                $this->db->set("ativo", 1);
+                $this->db->set("id_servico", $data->id_servico);
+                $this->db->set("id_usuario", $this->dados->usuario_id);
+
+                if($this->db->insert("Favoritos"))
+                    $rst->rst = 1;
+                else
+                    $rst->rst = 0;
+            }
+        }
+
+        return $rst;
+    }
 
 }
