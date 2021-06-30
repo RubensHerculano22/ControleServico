@@ -89,6 +89,19 @@ class Servico_model extends CI_Model{
         }
 
         /**
+         * Consulta o estado a partir do nome.
+         * @access public
+         * @param  string $nome  Nome do Estado
+         * @return object;
+        */
+        public function get_estado_nome($nome)
+        {
+            $query = $this->db->get_where("Estados", "nome = '$nome'")->row();
+
+            return $query->id;
+        }
+
+        /**
          * Consulta todas as cidades de um estado
          * @access public
          * @param  int $id Identificador de um Estado
@@ -124,6 +137,24 @@ class Servico_model extends CI_Model{
             {
                 if($item->ID == $id_cidade)
                     return $item;
+            }
+        }
+
+        /**
+         * Consulta uma cidade.
+         * @access public
+         * @param  string $nome Nome da Cidade
+         * @return object;
+        */
+        public function get_cidade_nome($nome)
+        {
+            $json = file_get_contents(base_url("assets/Cidades.json"));
+            $data = json_decode($json);
+
+            foreach($data as $item)
+            {
+                if($item->Nome == $nome)
+                    return $item->ID;
             }
         }
 
@@ -255,6 +286,63 @@ class Servico_model extends CI_Model{
             return $result;
         }
 
+        /**
+         * Retorna todos os serviços com nome de acordo com o termo digitado
+         * @access public
+         * @param string $pesquisa Termo a ser buscado
+         * @return array;
+        */
+        public function pesquisa_servico($pesquisa)
+        {
+
+            $this->db->where("nome LIKE '%$pesquisa%'");
+            $query = $this->db->get("Servico")->result();
+
+            $result = array();
+
+            foreach($query as $item)
+            {
+                if(count($result) > 0)
+                {
+                    $verif = 0;
+                    foreach($result as $value)
+                    {
+                        if($value->id == $item->id_categoria)
+                        {
+                            $verif = 1;
+                            $value->itens[] = $item;
+                        }
+                    }
+
+                    //Verifica se ja possui essa categoria no array
+                    if($verif == 0)
+                    {
+                        $categoria = $this->db->get_where("Categoria", "id = '$item->id_categoria'")->row();
+                        $categoria->itens = array($item);
+                        $result[] = $categoria;    
+                    }
+                }
+                else
+                {
+                    //Consulta a categoria do serviço
+                    $categoria = $this->db->get_where("Categoria", "id = '$item->id_categoria'")->row();
+                    $categoria->itens = array($item);
+                    $result[] = $categoria;
+                }
+            }
+
+            foreach($result as $item)
+            {
+                foreach($item->itens as $value)
+                {
+                    //Pega as informações do serviço para compor o card
+                    $value = $this->get_card($value);
+                }
+            }
+
+            return $result;
+        }
+
     /** Fim Card */
 
     /** Detalhes do Serviço */
@@ -296,7 +384,7 @@ class Servico_model extends CI_Model{
          * Consulta todas as informações de um serviço especifico.
          * @access public
          * @param  int   $id_servico   identificador do Serviço.
-         * @return object;
+         * @return object
         */
         public function get_info_servico($id_servico)
         {
@@ -439,33 +527,182 @@ class Servico_model extends CI_Model{
         }
 
         /**
-         * Consulta o endereço do Serviço.
+         * Realiza a consulta da media do feedback do serviço
+         * @access private
+         * @param  int   $id_servico   identificador do Serviço.
+         * @return float
+        */
+        private function media_feedback($id_servico)
+        {
+            $orcamentos = $this->db->get_where("Orcamento", "id_servico = $id_servico")->result();
+
+            $feedback = 0;
+            $count = 0;
+
+            foreach($orcamentos as $item)
+            {
+                $query = $this->db->get_where("Feedback", "id_orcamento = $item->id")->row();
+                if($query)
+                {
+                    $feedback += $query->quantidade_estrelas;
+                    $count++;
+                }
+            }
+
+            if($count>0)
+                $media = (($feedback)/$count)/2;
+            else
+                $media = 0;
+            
+            return $media;
+        }
+
+        /**
+         * Realiza a contagem de estrelas
+         * @access private
+         * @param  int   $id_servico   identificador do Serviço.
+         * @param  int   $quantidade   quantidade de estrelas.
+         * @return int
+        */
+        private function quantidade_estrelas($id_servico, $quantidade)
+        {
+            $orcamentos = $this->db->get_where("Orcamento", "id_servico = $id_servico")->result();
+
+            $count = 0;
+
+            foreach($orcamentos as $item)
+            {
+                $query = $this->db->get_where("Feedback", "id_orcamento = $item->id AND (quantidade_estrelas = $quantidade OR quantidade_estrelas = ".($quantidade - 1).")")->row();
+                if($query)
+                {
+                    $count++;
+                }
+            }
+            
+            return $count;
+        }
+
+        /**
+         * Pega todos os horarios disponiveis do serviço
          * @access public
          * @param  int   $id_servico   identificador do Serviço.
-         * @return object;
+         * @return object
         */
-        public function get_endereco_servico($id_servico)
+        public function get_data_disponiveis($id_servico)
         {
-            if($this->dados)
+            $query = $this->db->get_where("HorarioServico", "id_servico = $id_servico")->result();
+
+            return $query;
+        }
+
+        /**
+         * Lista todos os horarios disponiveis do serviço
+         * @access public
+         * @return object
+        */
+        public function get_horarios_disponiveis()
+        {
+            $data = (object)$this->input->post();
+
+            $query_horarios = $this->db->get_where("HorarioServico", "id_servico = '$data->id_servico' AND dia_semana = '$data->dia_semana'")->row();
+
+            if($query_horarios)
             {
-                $query = $this->db->get_where("Enderecos", "id_usuario = ".$this->dados->usuario_id)->result();//Corrigir
-            
-                foreach($query as $item)
+                $horarios_ocupados = array();
+
+                //Consulta todos os horarios que ja está sendo utilizados
+                $id_orcamento = $this->db->get_where("Orcamento", "id_servico = '$data->id_servico'")->result();
+                foreach($id_orcamento as $item)
                 {
-                    //Consulta o estado
-                    $item->estado = $this->db->get_where("Estados", "id = '$item->estado'")->row();
-        
-                    //Consulta a cidade
-                    $item->cidade = $this->get_cidades_id($item->cidade);
-                    $item->endereco_completo = $item->cep." - ".$item->endereco.($item->complemento ? ", ".$item->complemento : "").", ".$item->numero.", ".$item->bairro." - ".$item->cidade->Nome.", ".$item->estado->nome."(".$item->estado->sigla.")";
+                    $valor = $this->get_horarios_indisponiveis($item->id, $data->data);
+                    if($valor)
+                        $horarios_ocupados[] = $valor;
                 }
 
-                return $query;
+                //Monta o where para excluir os horarios que ja está sendo utilizados
+                $where = "";
+                if($horarios_ocupados)
+                {
+                    $where = "(";
+
+                    foreach($horarios_ocupados as $key => $item)
+                    {
+                        if($key > 0)
+                            $where .= " AND ";
+
+                        $where .= $item;
+                    }
+
+                    $where .= ")";
+                }
+
+                $horario_split = explode(" às ", $query_horarios->texto);
+
+                $this->db->where("horario BETWEEN '$horario_split[0]' AND '$horario_split[1]'");
+
+                if($where)
+                    $this->db->where($where, null, false);
+
+                $query_select_horario = $this->db->get("ListaHorario")->result();
+
+                return $query_select_horario;
             }
-            else
+
+            return (object)array();
+        }
+
+        /**
+         * Lista todos os horarios disponiveis do serviço
+         * @access public
+         * @param int $id_orcamento Identificador do Orçamento
+         * @param string $data data no formato d/m/y
+         * @return string
+        */
+        private function get_horarios_indisponiveis($id_orcamento, $data)
+        {
+
+            $query = $this->db->get_where("ContrataServico", "id_orcamento = $id_orcamento AND ativo = 1")->row();
+            
+            //Verifica se são os status de em andamento
+            if(($query->status == 1 || $query->status == 2 || $query->status == 4 || $query->status == 5))
             {
-                return (object)array();
+                $this->db->order_by("id", "desc");
+                $queryOcupado = $this->db->get_where("ContrataServico", "id_orcamento = $id_orcamento AND status = 1 AND data_servico = '".formatar($data, "dt2bd")."'")->row();
+
+                if($queryOcupado)
+                {
+                    $split = explode(":", $queryOcupado->hora_servico);
+                    //Verifica se é depois das 23h para corrigir as horas
+                    if($split[0] + 2 >23)
+                    {
+                        if($split[0] + 1 == 24)
+                            $novo_horario_final =  "00:".$split[1];
+                        else
+                            $novo_horario_final =  "01:".$split[1];
+                    }
+                    else
+                    {
+                        $novo_horario_final =  ($split[0] + 2).":".$split[1];
+                    }
+
+                    //Verifica se é antes das 00h para corrigir as horas
+                    if($split[0] - 2 < 0)
+                    {
+                        if($split[0] - 1 == -1)
+                            $novo_horario_comeco =  "23:".$split[1];
+                        else
+                            $novo_horario_comeco =  "22:".$split[1];
+                    }
+                    else
+                    {
+                        $novo_horario_comeco =  ($split[0] - 2).":".$split[1];
+                    }
+                    
+                    return " horario NOT BETWEEN '$novo_horario_comeco' AND '$novo_horario_final' ";
+                }
             }
+
+            return null;
         }
 
     /** Fim Detalhes Serviço */
@@ -483,6 +720,24 @@ class Servico_model extends CI_Model{
             $query = $this->db->get_where("Servico", "id = $id")->row();
 
             return $query->ativo;
+        }
+
+        /**
+         * Realiza troca de status do serviço.
+         * @access public
+         * @return boolean;
+        */
+        public function visibilidade()
+        {
+            $data = (object)$this->input->post();
+
+            $this->db->set("ativo", $data->visivel);
+
+            $this->db->where("id", $data->servico);
+            if($this->db->update("Servico"))
+                return true;
+            else
+                return false;
         }
 
         /**
@@ -669,6 +924,350 @@ class Servico_model extends CI_Model{
                     $this->db->insert("HorarioServico");
                 }
             }
+        }
+
+        /**
+         * Editar as informações do Serviço.
+         * @access public
+         * @return object;
+        */
+        public function editar_servico()
+        {
+            $rst = (object)array("rst" => false, "msg" => "", "id" => 0);
+            $data = (object)$this->input->post();
+
+            $this->db->set("nome", $data->nome);
+            $this->db->set("descricao_curta", $data->descricao_curta);
+            $this->db->set("descricao", $data->descricao_completa);
+            $this->db->set("data_atualizacao", date("Y-m-d H:i:s"));
+            $this->db->set("id_tipo_servico", $data->tipo_servico);
+            $this->db->set("id_categoria", $data->categoria_especifica);
+            $this->db->set("estado", $data->estado);
+            $this->db->set("cidade", $data->cidade);
+
+            //Verifica se a opção de local especifico foi marcada
+            if(isset($data->local) && $data->local)
+            {
+                $this->db->set("cep", $data->cep);
+                $this->db->set("estado", $this->get_estado_nome($data->estado));
+                $this->db->set("cidade", $this->get_cidade_nome($data->cidade));
+                $this->db->set("bairro", $data->bairro);
+                $this->db->set("endereco", $data->endereco);
+                $this->db->set("numero", somente_numeros($data->numero));
+                $this->db->set("complemento", $data->complemento);
+            }
+            else
+            {
+                $this->db->set("estado", $data->estado_select);
+                $this->db->set("cidade", $data->cidade_select);
+                $this->db->set("cep", "");
+                $this->db->set("bairro", "");
+                $this->db->set("endereco", "");
+                $this->db->set("numero", "");
+                $this->db->set("complemento", "");
+                $this->db->set("endereco", "");
+            }
+
+            //Verifica se algum valor para o serviço foi inserido
+            if($data->valor)
+            {
+                $valor_T = explode(" ", $data->valor);
+                $valor_V = explode(".", $valor_T[1]);
+                $valor = str_replace(",", ".", $valor_V[0]);
+                $this->db->set("valor", $valor.",".$valor_V[1]);
+            }
+            else
+            {
+                $this->db->set("valor", "");
+            }
+
+            //Verifica se o é um Aluguel de Equipamento
+            if($data->tipo_servico == 2)
+            {
+                $this->db->set("quantidade_disponivel", $data->quantidade);
+                if($data->caucao)
+                {
+                    $valor_T = explode(" ", $data->caucao);
+                    $valor_V = explode(".", $valor_T[1]);
+                    $valor = str_replace(",", ".", $valor_V[0]);
+                    $this->db->set("caucao", $valor.",".$valor_V[1]);
+                }
+            }
+            else
+            {
+                $this->db->set("quantidade_disponivel", 0);
+                $this->db->set("caucao", "");
+            }
+
+            $this->db->where("id", $data->id_servico);
+            if($this->db->update("Servico"))
+            {
+                $rst->id = $id = $data->id_servico;
+
+                if($data->lista_tipo_pagamento)
+                {
+                    $this->db->where("id_servico", $id);
+                    if($this->db->delete("PagamentoServico"))
+                    {
+                        $this->set_pagamento($id);
+                    }
+                }
+
+                if($data->lista_tipo_horario)
+                {
+                    $this->db->where("id_servico", $id);
+                    if($this->db->delete("HorarioServico"))
+                    {
+                        $this->set_horario($id);
+                    }
+                }
+
+                $rst->rst = true;
+                $rst->msg = "Serviço editado com sucesso!";
+            }
+
+            return $rst;
+        }
+
+        /**
+         * Insere os horarios de funcionamento
+         * @access private
+         * @param int $id identificador do Serviço
+         * @return object;
+        */
+        public function get_info_card($id)
+        {
+            $rst = (object)array("visualizacao" => 0, "contratacoes" => 0, "andamento" => 0, "orcamentos" => 0);
+
+            $ultimo_dia = date('t');
+            $inicio_mes = date('Y-m-01');
+            $fim_mes = date('Y-m-'.$ultimo_dia);
+
+            $this->db->where("DATE(data_acesso) BETWEEN '$inicio_mes' AND '$fim_mes'");
+            $visualizacao = $this->db->get_where("ControleVisualizacao", "id_servico = $id")->result();
+            $rst->visualizacao = count($visualizacao);
+
+            $this->db->select("O.id");
+            $this->db->join("ContrataServico C", "O.id = C.id_orcamento AND C.status = 7");
+            $contratacoes = $this->db->get_where("Orcamento O", "O.id_servico = $id")->result();
+            $rst->contratacoes = count($contratacoes);
+
+            $this->db->select("O.id");
+            $this->db->join("ContrataServico C", "O.id = C.id_orcamento AND C.ativo = 1 AND (C.status != 7 OR C.status != 3)");
+            $andamento = $this->db->get_where("Orcamento O", "O.id_servico = $id")->result();
+            $rst->andamento = count($andamento);
+
+            $this->db->select("O.id");
+            $this->db->join("ContrataServico C", "O.id = C.id_orcamento AND C.ativo = 1 AND (C.status = 1 OR C.status = 5)");
+            $orcamentos = $this->db->get_where("Orcamento O", "O.id_servico = $id")->result();
+            $rst->orcamentos = count($orcamentos);
+            
+            return $rst;
+        }
+
+        /**
+         * Lista todas as imagens daquele serviço
+         * @access public
+         * @param int $id identificador do Serviço
+         * @return object;
+        */
+        public function get_imagens($id)
+        {
+            $query = $this->db->get_where("Imagens", "id_servico = '$id'")->result();
+
+            return $query;
+        }
+
+        /**
+         * Realiza a inserção e alteração de imagens
+         * @access public
+         * @return object;
+        */
+        public function insere_imagem()
+        {
+            $rst = (object)array("rst" => false, "msg" => "");
+            $data = (object)$this->input->post();
+            
+            $files = $this->session->userdata("files".APPNAME);
+
+            $this->session->set_userdata("files".APPNAME, "");
+
+            //Verifica se é update ou insert
+            if($data->id_imagem)
+            {
+                $this->db->set("nome", $files[0]["name"]);
+                $this->db->set("tipo_imagem", $files[0]["type"]);
+                $this->db->set("data_insercao", date("Y-m-d H:i:s"));
+                $this->db->set("img", base64_encode(file_get_contents($files[0]["path"])));
+
+                $this->db->where("id", $data->id_imagem);
+                if($this->db->update("Imagens"))
+                {
+                    $rst->rst = true;
+                    $rst->msg = "Imagem alterada com sucesso";
+                }
+                else
+                {
+                    $rst->msg = "Erro ao alterar a imagem";
+                }
+            }
+            else
+            {
+                if(isset($data->principal) && !empty($data->principal))
+                {
+                    $this->db->set("principal", 0);
+        
+                    $this->db->where("id_servico", $data->id_servico);
+                    $this->db->update("Imagens");
+        
+                    $this->db->set("principal", 1);
+                }
+                else
+                {
+                    $this->db->set("principal", 0);
+                }
+        
+                $this->db->set("ativo", 1);
+                $this->db->set("id_servico", $data->id_servico);
+                $this->db->set("nome", $files[0]["name"]);
+                $this->db->set("tipo_imagem", $files[0]["type"]);
+                $this->db->set("data_insercao", date("Y-m-d H:i:s"));
+                $this->db->set("img", base64_encode(file_get_contents($files[0]["path"])));
+        
+                if($this->db->insert("Imagens"))
+                {
+                    $rst->rst = true;
+                    $rst->msg = "Imagem inserida com sucesso";
+                }
+                else
+                {
+                    $rst->msg = "Erro ao inserir a imagem";
+                }
+            }
+
+            return $rst;
+        }
+
+        /**
+         * Realizar a definição de uma imagem principal
+         * @access public
+         * @return object;
+        */
+        public function troca_principal()
+        {
+            $rst = (object)array("rst" => false, "msg" => "");
+            $data = (object)$this->input->post();
+
+            $this->db->set("principal", 0);
+
+            $this->db->where("id_servico", $data->id_servico);
+            if($this->db->update("Imagens"))
+            {
+                $this->db->set("principal", 1);
+
+                $this->db->where("id", $data->id_imagem);
+                if($this->db->update("Imagens"))
+                {
+                    $rst->rst = true;
+                    $rst->msg = "Imagem definida como principal";
+                }
+                else
+                {
+                    $rst->msg = "Erro ao definir como principal";
+                }
+            }
+            else
+            {
+                $rst->msg = "Erro ao definir como principal";
+            }
+
+            return $rst;
+        }
+
+        /**
+         * Realizar a definição de uma imagem como ativo ou inativo
+         * @access public
+         * @return object;
+        */
+        public function troca_ativo()
+        {
+            $rst = (object)array("rst" => false, "msg" => "");
+            $data = (object)$this->input->post();
+
+            //Verifica se é para definir como ativa
+            if($data->ativo == "true")
+            {
+                $this->db->set("ativo", 1);
+
+                $this->db->where("id", $data->id_imagem);
+                if($this->db->update("Imagens"))
+                {
+                    $rst->rst = true;
+                    $rst->msg = "Imagem definida como ativa";
+                }
+                else
+                {
+                    $rst->msg = "Erro ao definir imagem como ativa";
+                }
+            }
+            else
+            {
+                $query = $this->db->get_where("Imagens", "id = $data->id_imagem")->row();
+
+                //Verifica se a imagem que será desativada é principal
+                if($query->principal == 1)
+                {
+                    $rst->msg = "Erro ao definir imagem como desativada, pois a imagem é a principal do serviço";
+                }
+                else
+                {
+                    $this->db->set("ativo", 0);
+
+                    $this->db->where("id", $data->id_imagem);
+                    if($this->db->update("Imagens"))
+                    {
+                        $rst->rst = true;
+                        $rst->msg = "Imagem definida como desativada";
+                    }
+                    else
+                    {
+                        $rst->msg = "Erro ao definir imagem como desativada";
+                    }
+                }
+            }
+
+            return $rst;
+        }
+
+        /**
+         * Realiza a exclução da imagem
+         * @access public
+         * @return object;
+        */
+        public function exclui_imagem()
+        {
+            $rst = (object)array("rst" => false, "msg" => "", "subtexto" => "");
+            $data = (object)$this->input->post();
+
+            $query = $this->db->get_where("Imagens", "id = $data->id_imagem")->row();
+
+            //Verifica se é principal
+            if($query->principal == 1)
+            {
+                $rst->msg = "Está imagem está definida como principal.";
+                $rst->subtexto = "Altere a imagem principal, antes de tentar excluir está imagem";
+            }
+            else
+            {
+                $this->db->where("id", $data->id_imagem);
+                if($this->db->delete("Imagens"))
+                {
+                    $rst->rst = true;
+                    $rst->msg = "Imagem deletada com sucesso";
+                }
+            }
+
+            return $rst;
         }
 
     /** Fim Gerenciamento do Serviço */
@@ -1002,619 +1601,112 @@ class Servico_model extends CI_Model{
 
             return $rst;
         }
-    /** Fim Contratação do Serviço */
 
-    public function visibilidade()
-    {
-        $data = (object)$this->input->post();
+        /**
+         * Realiza um resposta a movimentação
+         * @access public
+         * @param int $id Identificador do Orçamento
+         * @return object;
+        */
+        public function cancela_servico($id)
+        {
+            $dados = $this->session->userdata("dados" . APPNAME);
 
-        $this->db->set("ativo", $data->visivel);
+            $this->db->set("ativo", 0);
+            $this->db->where("id_orcamento = '$id'");
+            if($this->db->update("ContrataServico"))
+            {
+                $this->db->set("id_orcamento", $id);
+                $this->db->set("status", 6);
+                $this->db->set("ativo", 1);
+                $this->db->set("id_usuario", $dados->usuario_id);
+                $this->db->set("data_alteracao", date("Y-m-d h:i:s"));
 
-        $this->db->where("id", $data->servico);
-        if($this->db->update("Servico"))
-            return true;
-        else
+                if($this->db->insert("ContrataServico"))
+                {
+
+                    $this->db->select("U.email");
+                    $this->db->join("Usuario U", "U.id = O.id_usuario");
+                    $query = $this->db->get_where("Orcamento O", "O.id = $id");
+
+                    $texto = (object)array();
+
+                    $hash = $this->sistema->encrypt_decrypt("encrypt", "Usuario/controle_pedido/$id");
+
+                    $texto->email = strtolower($query->email);
+                    $texto->titulo = "Contratação do Serviço";
+                    $texto->link = base_url("Usuario/page_redirect/$hash");
+                    $texto->texto_link = "Ver Pedido";
+                    $texto->msg = "Opa, tudo certo? <br/> O serviço que você havia solicitado foi cancelado pelo Prestador<br/> Caso queira ver diretamente mais informações, clique no botão abaixo.";
+                    $texto->cid = "";
+
+                    $this->envia_email($texto);
+
+                    return true;
+                }
+            }
+
             return false;
-    }
+        }
 
-    public function get_info_card($id)
-    {
-        $rst = (object)array("visualizacao" => 0, "contratacoes" => 0, "andamento" => 0, "orcamentos" => 0);
-
-        $ultimo_dia = date('t');
-        $inicio_mes = date('Y-m-01');
-        $fim_mes = date('Y-m-'.$ultimo_dia);
-
-        $this->db->where("DATE(data_acesso) BETWEEN '$inicio_mes' AND '$fim_mes'");
-        $visualizacao = $this->db->get_where("ControleVisualizacao", "id_servico = $id")->result();
-        $rst->visualizacao = count($visualizacao);
-
-        $this->db->select("O.id");
-        $this->db->join("ContrataServico C", "O.id = C.id_orcamento AND C.status = 7");
-        $contratacoes = $this->db->get_where("Orcamento O", "O.id_servico = $id")->result();
-        $rst->contratacoes = count($contratacoes);
-
-        $this->db->select("O.id");
-        $this->db->join("ContrataServico C", "O.id = C.id_orcamento AND C.ativo = 1 AND (C.status != 7 OR C.status != 3)");
-        $andamento = $this->db->get_where("Orcamento O", "O.id_servico = $id")->result();
-        $rst->andamento = count($andamento);
-
-        $this->db->select("O.id");
-        $this->db->join("ContrataServico C", "O.id = C.id_orcamento AND C.ativo = 1 AND (C.status = 1 OR C.status = 5)");
-        $orcamentos = $this->db->get_where("Orcamento O", "O.id_servico = $id")->result();
-        $rst->orcamentos = count($orcamentos);
+        /**
+         * Defini o serviço como realizado
+         * @access public
+         * @param int $id Identificador do Orçamento
+         * @return object;
+        */
+        public function servico_realizado($id)
+        {
+            $rst = (object)array("rst" => false, "msg" => "");
+            $dados = $this->session->userdata("dados" . APPNAME);
+            
+            $this->db->set("ativo", 0);
+    
+            $this->db->where("id_orcamento", $id);
+            if($this->db->update("ContrataServico"))
+            {
+                $this->db->set("id_orcamento", $id);
+                $this->db->set("status", 7);
+                $this->db->set("id_usuario", $dados->usuario_id);
+                $this->db->set("ativo", 1);
+                $this->db->set("data_alteracao", date("Y-m-d H:i:s"));
         
-        return $rst;
-    }
-
-    public function cancela_servico($id)
-    {
-        $dados = $this->session->userdata("dados" . APPNAME);
-
-        $this->db->set("ativo", 0);
-        $this->db->where("id_orcamento = '$id'");
-        if($this->db->update("ContrataServico"))
-        {
-            $this->db->set("id_orcamento", $id);
-            $this->db->set("status", 6);
-            $this->db->set("ativo", 1);
-            $this->db->set("id_usuario", $dados->usuario_id);
-            $this->db->set("data_alteracao", date("Y-m-d h:i:s"));
-
-            if($this->db->insert("ContrataServico"))
-            {
-
-                $this->db->select("U.email");
-                $this->db->join("Usuario U", "U.id = O.id_usuario");
-                $query = $this->db->get_where("Orcamento O", "O.id = $id");
-
-                $texto = (object)array();
-
-                $hash = $this->sistema->encrypt_decrypt("encrypt", "Usuario/controle_pedido/$id");
-
-                $texto->email = strtolower($query->email);
-                $texto->titulo = "Contratação do Serviço";
-                $texto->link = base_url("Usuario/page_redirect/$hash");
-                $texto->texto_link = "Ver Pedido";
-                $texto->msg = "Opa, tudo certo? <br/> O serviço que você havia solicitado foi cancelado pelo Prestador<br/> Caso queira ver diretamente mais informações, clique no botão abaixo.";
-                $texto->cid = "";
-
-                $this->envia_email($texto);
-
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    public function editar_servico()
-    {
-        $rst = (object)array("rst" => false, "msg" => "", "id" => 0);
-        $data = (object)$this->input->post();
-
-        $this->db->set("nome", $data->nome);
-        $this->db->set("descricao_curta", $data->descricao_curta);
-        $this->db->set("descricao", $data->descricao_completa);
-        $this->db->set("data_atualizacao", date("Y-m-d H:i:s"));
-        $this->db->set("id_tipo_servico", $data->tipo_servico);
-        $this->db->set("id_categoria", $data->categoria_especifica);
-        $this->db->set("estado", $data->estado);
-        $this->db->set("cidade", $data->cidade);
-        if(isset($data->local) && $data->local)
-        {
-            $this->db->set("cep", $data->cep);
-            $this->db->set("estado", $this->get_estado_nome($data->estado));
-            $this->db->set("cidade", $this->get_cidade_nome($data->cidade));
-            $this->db->set("bairro", $data->bairro);
-            $this->db->set("endereco", $data->endereco);
-            $this->db->set("numero", somente_numeros($data->numero));
-            $this->db->set("complemento", $data->complemento);
-        }
-        else
-        {
-            $this->db->set("estado", $data->estado_select);
-            $this->db->set("cidade", $data->cidade_select);
-            $this->db->set("cep", "");
-            $this->db->set("bairro", "");
-            $this->db->set("endereco", "");
-            $this->db->set("numero", "");
-            $this->db->set("complemento", "");
-            $this->db->set("endereco", "");
-        }
-
-        if($data->valor)
-        {
-            $valor_T = explode(" ", $data->valor);
-            $valor_V = explode(".", $valor_T[1]);
-            $valor = str_replace(",", ".", $valor_V[0]);
-            $this->db->set("valor", $valor.",".$valor_V[1]);
-        }
-        else
-        {
-            $this->db->set("valor", "");
-        }
-
-        if($data->tipo_servico == 2)
-        {
-            $this->db->set("quantidade_disponivel", $data->quantidade);
-            if($data->caucao)
-            {
-                $valor_T = explode(" ", $data->caucao);
-                $valor_V = explode(".", $valor_T[1]);
-                $valor = str_replace(",", ".", $valor_V[0]);
-                $this->db->set("caucao", $valor.",".$valor_V[1]);
-            }
-        }
-        else
-        {
-            $this->db->set("quantidade_disponivel", 0);
-            $this->db->set("caucao", "");
-        }
-
-        $this->db->where("id", $data->id_servico);
-        if($this->db->update("Servico"))
-        {
-            $rst->id = $id = $data->id_servico;
-
-            if($data->lista_tipo_pagamento)
-            {
-                $this->db->where("id_servico", $id);
-                if($this->db->delete("PagamentoServico"))
+                if($this->db->insert("ContrataServico"))
                 {
-                    $this->set_pagamento($id);
-                }
-            }
-
-            if($data->lista_tipo_horario)
-            {
-                $this->db->where("id_servico", $id);
-                if($this->db->delete("HorarioServico"))
-                {
-                    $this->set_horario($id);
-                }
-            }
-
-            $rst->rst = true;
-            $rst->msg = "Serviço editado com sucesso!";
-        }
-
-        return $rst;
-    }
-
-    public function get_imagens($id)
-    {
-        $query = $this->db->get_where("Imagens", "id_servico = '$id'")->result();
-
-        return $query;
-    }
-
-    public function insere_imagem()
-    {
-        $rst = (object)array("rst" => false, "msg" => "");
-        $data = (object)$this->input->post();
-        
-        $files = $this->session->userdata("files".APPNAME);
-
-        $this->session->set_userdata("files".APPNAME, "");
-
-        if($data->id_imagem)
-        {
-            $this->db->set("nome", $files[0]["name"]);
-            $this->db->set("tipo_imagem", $files[0]["type"]);
-            $this->db->set("data_insercao", date("Y-m-d H:i:s"));
-            $this->db->set("img", base64_encode(file_get_contents($files[0]["path"])));
-
-            $this->db->where("id", $data->id_imagem);
-            if($this->db->update("Imagens"))
-            {
-                $rst->rst = true;
-                $rst->msg = "Imagem alterada com sucesso";
-            }
-            else
-            {
-                $rst->msg = "Erro ao alterar a imagem";
-            }
-        }
-        else
-        {
-            if(isset($data->principal) && !empty($data->principal))
-            {
-                $this->db->set("principal", 0);
     
-                $this->db->where("id_servico", $data->id_servico);
-                $this->db->update("Imagens");
+                    $this->db->select("U.email");
+                    $this->db->join("Usuario U", "U.id = S.id_usuario");
+                    $query = $this->db->get_where("Servico S", "S.id = $id");
+                    $texto = (object)array();
     
-                $this->db->set("principal", 1);
-            }
-            else
-            {
-                $this->db->set("principal", 0);
-            }
+                    $hash = $this->sistema->encrypt_decrypt("encrypt", "Feedback/index/$id");
     
-            $this->db->set("ativo", 1);
-            $this->db->set("id_servico", $data->id_servico);
-            $this->db->set("nome", $files[0]["name"]);
-            $this->db->set("tipo_imagem", $files[0]["type"]);
-            $this->db->set("data_insercao", date("Y-m-d H:i:s"));
-            $this->db->set("img", base64_encode(file_get_contents($files[0]["path"])));
+                    $texto->email = strtolower($query->email);
+                    $texto->titulo = "Contratação do Serviço";
+                    $texto->link = base_url("Usuario/page_redirect/$hash");
+                    $texto->texto_link = "Ver Pedido";
+                    $texto->msg = "Opa, tudo certo? <br/> Espero que o serviço tenha sido efetuado com satisfação e excelencia.<br/> Bom agora que o serviço foi realizado, você poderia realizar um feedback do serviço para o prestador? <br/> Para realizar o feedback, clique no botão abaixo.";
+                    $texto->cid = "";
     
-            if($this->db->insert("Imagens"))
-            {
-                $rst->rst = true;
-                $rst->msg = "Imagem inserida com sucesso";
-            }
-            else
-            {
-                $rst->msg = "Erro ao inserir a imagem";
-            }
-        }
-
-        return $rst;
-    }
-
-    public function troca_principal()
-    {
-        $rst = (object)array("rst" => false, "msg" => "");
-        $data = (object)$this->input->post();
-
-        $this->db->set("principal", 0);
-
-        $this->db->where("id_servico", $data->id_servico);
-        if($this->db->update("Imagens"))
-        {
-            $this->db->set("principal", 1);
-
-            $this->db->where("id", $data->id_imagem);
-            if($this->db->update("Imagens"))
-            {
-                $rst->rst = true;
-                $rst->msg = "Imagem definida como principal";
-            }
-            else
-            {
-                $rst->msg = "Erro ao definir como principal";
-            }
-        }
-        else
-        {
-            $rst->msg = "Erro ao definir como principal";
-        }
-
-        return $rst;
-    }
-
-    public function troca_ativo()
-    {
-        $rst = (object)array("rst" => false, "msg" => "");
-        $data = (object)$this->input->post();
-
-        if($data->ativo == "true")
-        {
-            $this->db->set("ativo", 1);
-
-            $this->db->where("id", $data->id_imagem);
-            if($this->db->update("Imagens"))
-            {
-                $rst->rst = true;
-                $rst->msg = "Imagem definida como ativa";
-            }
-            else
-            {
-                $rst->msg = "Erro ao definir imagem como ativa";
-            }
-        }
-        else
-        {
-            $query = $this->db->get_where("Imagens", "id = $data->id_imagem")->row();
-
-            if($query->principal == 1)
-            {
-                $rst->msg = "Erro ao definir imagem como desativada, pois a imagem é a principal do serviço";
-            }
-            else
-            {
-                $this->db->set("ativo", 0);
-
-                $this->db->where("id", $data->id_imagem);
-                if($this->db->update("Imagens"))
-                {
+                    $this->envia_email($texto);
+    
                     $rst->rst = true;
-                    $rst->msg = "Imagem definida como desativada";
+                    $rst->msg = "Serviço definido como realizado";
                 }
                 else
                 {
-                    $rst->msg = "Erro ao definir imagem como desativada";
+                    $rst->msg = "Erro ao definir serviço como realizado";
                 }
-            }
-        }
-
-        return $rst;
-    }
-
-    public function exclui_imagem()
-    {
-        $rst = (object)array("rst" => false, "msg" => "", "subtexto" => "");
-        $data = (object)$this->input->post();
-
-        $query = $this->db->get_where("Imagens", "id = $data->id_imagem")->row();
-
-        if($query->principal == 1)
-        {
-            $rst->msg = "Está imagem está definida como principal.";
-            $rst->subtexto = "Altere a imagem principal, antes de tentar excluir está imagem";
-        }
-        else
-        {
-            $this->db->where("id", $data->id_imagem);
-            if($this->db->delete("Imagens"))
-            {
-                $rst->rst = true;
-                $rst->msg = "Imagem deletada com sucesso";
-            }
-        }
-
-        return $rst;
-    }
-
-    public function pesquisa_servico($pesquisa)
-    {
-
-        $this->db->where("nome LIKE '%$pesquisa%'");
-        $query = $this->db->get("Servico")->result();
-
-        $result = array();
-
-        foreach($query as $item)
-        {
-            if(count($result) > 0)
-            {
-                $verif = 0;
-                foreach($result as $value)
-                {
-                    if($value->id == $item->id_categoria)
-                    {
-                        $verif = 1;
-                        $value->itens[] = $item;
-                    }
-                }
-
-                if($verif == 0)
-                {
-                    $categoria = $this->db->get_where("Categoria", "id = '$item->id_categoria'")->row();
-                    $categoria->itens = array($item);
-                    $result[] = $categoria;    
-                }
-            }
-            else
-            {
-                $categoria = $this->db->get_where("Categoria", "id = '$item->id_categoria'")->row();
-                $categoria->itens = array($item);
-                $result[] = $categoria;
-            }
-        }
-
-        foreach($result as $item)
-        {
-            foreach($item->itens as $value)
-            {
-                $value = $this->get_card($value);
-            }
-        }
-
-        return $result;
-    }
-
-    public function servico_realizado($id)
-    {
-        $rst = (object)array("rst" => false, "msg" => "");
-        $dados = $this->session->userdata("dados" . APPNAME);
-        
-        $this->db->set("ativo", 0);
-
-        $this->db->where("id_orcamento", $id);
-        if($this->db->update("ContrataServico"))
-        {
-            $this->db->set("id_orcamento", $id);
-            $this->db->set("status", 7);
-            $this->db->set("id_usuario", $dados->usuario_id);
-            $this->db->set("ativo", 1);
-            $this->db->set("data_alteracao", date("Y-m-d H:i:s"));
-    
-            if($this->db->insert("ContrataServico"))
-            {
-
-                $this->db->select("U.email");
-                $this->db->join("Usuario U", "U.id = S.id_usuario");
-                $query = $this->db->get_where("Servico S", "S.id = $id");
-                $texto = (object)array();
-
-                $hash = $this->sistema->encrypt_decrypt("encrypt", "Feedback/index/$id");
-
-                $texto->email = strtolower($query->email);
-                $texto->titulo = "Contratação do Serviço";
-                $texto->link = base_url("Usuario/page_redirect/$hash");
-                $texto->texto_link = "Ver Pedido";
-                $texto->msg = "Opa, tudo certo? <br/> Espero que o serviço tenha sido efetuado com satisfação e excelencia.<br/> Bom agora que o serviço foi realizado, você poderia realizar um feedback do serviço para o prestador? <br/> Para realizar o feedback, clique no botão abaixo.";
-                $texto->cid = "";
-
-                $this->envia_email($texto);
-
-                $rst->rst = true;
-                $rst->msg = "Serviço definido como realizado";
             }
             else
             {
                 $rst->msg = "Erro ao definir serviço como realizado";
             }
-        }
-        else
-        {
-            $rst->msg = "Erro ao definir serviço como realizado";
+    
+            return $rst;
         }
 
-        return $rst;
-    }
-
-    private function media_feedback($id_servico)
-    {
-        $orcamentos = $this->db->get_where("Orcamento", "id_servico = $id_servico")->result();
-
-        $feedback = 0;
-        $count = 0;
-
-        foreach($orcamentos as $item)
-        {
-            $query = $this->db->get_where("Feedback", "id_orcamento = $item->id")->row();
-            if($query)
-            {
-                $feedback += $query->quantidade_estrelas;
-                $count++;
-            }
-        }
-
-        if($count>0)
-            $media = (($feedback)/$count)/2;
-        else
-            $media = 0;
-        
-        return $media;
-    }
-
-    private function quantidade_estrelas($id_servico, $quantidade)
-    {
-        $orcamentos = $this->db->get_where("Orcamento", "id_servico = $id_servico")->result();
-
-        $count = 0;
-
-        foreach($orcamentos as $item)
-        {
-            $query = $this->db->get_where("Feedback", "id_orcamento = $item->id AND (quantidade_estrelas = $quantidade OR quantidade_estrelas = ".($quantidade - 1).")")->row();
-            if($query)
-            {
-                $count++;
-            }
-        }
-        
-        return $count;
-    }
-
-    public function get_data_disponiveis($id_servico)
-    {
-        $query = $this->db->get_where("HorarioServico", "id_servico = $id_servico")->result();
-
-        return $query;
-    }
-
-    public function get_horarios_disponiveis()
-    {
-        $data = (object)$this->input->post();
-
-        $query_horarios = $this->db->get_where("HorarioServico", "id_servico = '$data->id_servico' AND dia_semana = '$data->dia_semana'")->row();
-
-        if($query_horarios)
-        {
-            $horarios_ocupados = array();
-
-            $id_orcamento = $this->db->get_where("Orcamento", "id_servico = '$data->id_servico'")->result();
-            foreach($id_orcamento as $item)
-            {
-                $valor = $this->get_horarios_indisponiveis($item->id, $data->data);
-                if($valor)
-                    $horarios_ocupados[] = $valor;
-            }
-            $where = "";
-            if($horarios_ocupados)
-            {
-                $where = "(";
-
-                foreach($horarios_ocupados as $key => $item)
-                {
-                    if($key > 0)
-                        $where .= " AND ";
-
-                    $where .= $item;
-                }
-
-                $where .= ")";
-            }
-
-            $horario_split = explode(" às ", $query_horarios->texto);
-
-            $this->db->where("horario BETWEEN '$horario_split[0]' AND '$horario_split[1]'");
-
-            if($where)
-                $this->db->where($where, null, false);
-
-            $query_select_horario = $this->db->get("ListaHorario")->result();
-
-            return $query_select_horario;
-        }
-
-        return (object)array();
-    }
-
-    private function get_horarios_indisponiveis($id_orcamento, $data)
-    {
-
-        $query = $this->db->get_where("ContrataServico", "id_orcamento = $id_orcamento AND ativo = 1")->row();
-        
-        if(($query->status == 1 || $query->status == 2 || $query->status == 4 || $query->status == 5))
-        {
-            $this->db->order_by("id", "desc");
-            $queryOcupado = $this->db->get_where("ContrataServico", "id_orcamento = $id_orcamento AND status = 1 AND data_servico = '".formatar($data, "dt2bd")."'")->row();
-
-            if($queryOcupado)
-            {
-                $split = explode(":", $queryOcupado->hora_servico);
-                if($split[0] + 2 >23)
-                {
-                    if($split[0] + 1 == 24)
-                        $novo_horario_final =  "00:".$split[1];
-                    else
-                        $novo_horario_final =  "01:".$split[1];
-                }
-                else
-                {
-                    $novo_horario_final =  ($split[0] + 2).":".$split[1];
-                }
-                if($split[0] - 2 < 0)
-                {
-                    if($split[0] - 1 == -1)
-                        $novo_horario_comeco =  "23:".$split[1];
-                    else
-                        $novo_horario_comeco =  "22:".$split[1];
-                }
-                else
-                {
-                    $novo_horario_comeco =  ($split[0] - 2).":".$split[1];
-                }
-                
-                return " horario NOT BETWEEN '$novo_horario_comeco' AND '$novo_horario_final' ";
-            }
-        }
-
-        return null;
-    }
-
-    public function get_estado_nome($nome)
-    {
-        $query = $this->db->get_where("Estados", "nome = '$nome'")->row();
-
-        return $query->id;
-    }
-
-    public function get_cidade_nome($nome)
-    {
-        $json = file_get_contents(base_url("assets/Cidades.json"));
-        $data = json_decode($json);
-
-        foreach($data as $item)
-        {
-            if($item->Nome == $nome)
-                return $item->ID;
-        }
-    }
+    /** Fim Contratação do Serviço */
 
     public function envia_email($texto)
     {
