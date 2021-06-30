@@ -59,14 +59,14 @@ class Usuario_model extends CI_Model{
         $data = (object)$this->input->post();
         $loginData = (object)$this->loginData;
 
-        if($this->verifica_seguranca($data->email))
+        if($this->m_sistema->verifica_seguranca($data->email))
         {
             $loginData->logged = false;
             $loginData->error = "Palavra utilizada para o acesso é proibida!";
 
             return $loginData;
         }
-        if($this->verifica_seguranca($data->senha))
+        if($this->m_sistema->verifica_seguranca($data->senha))
         {
             $loginData->logged = false;
             $loginData->error = "Palavra utilizada para o acesso é proibida!";
@@ -114,13 +114,13 @@ class Usuario_model extends CI_Model{
         }
 
         //verifica se possui um usuario para ser editado e verifica se o email já não está sendo utilizado quando for realizar o cadastro.
-        if($this->verifica_seguranca($data->senha))
+        if($this->m_sistema->verifica_seguranca($data->senha))
         {
             $rst->msg = "Palavra utilizada na senha é proibida!";
             return $rst;
         }
 
-        if($this->verifica_seguranca($data->email))
+        if($this->m_sistema->verifica_seguranca($data->email))
         {
             $rst->msg = "Palavra utilizada no email é proibida!";
             return $rst;
@@ -192,7 +192,7 @@ class Usuario_model extends CI_Model{
                         $texto->msg = "Opa, tudo certo? <br/> Você acaba de realizar o cadastro em nosso sistema. <br/> Para uma utilização mais completa de nosso sistema, ative sua conta.";
                         $texto->cid = "";
 
-                        $erro = $this->envia_email($texto);
+                        $erro = $this->m_sistema->envia_email($texto);
 
                         if($erro == true)
                         {
@@ -448,7 +448,7 @@ class Usuario_model extends CI_Model{
                 $texto->msg = "Opa, tudo certo? <br/> O serviço que você solicitou lhe enviou uma resposta.<br/> Caso queira ver diretamente o andamento, clique no botão abaixo.";
                 $texto->cid = "";
 
-                $this->envia_email($texto);
+                $this->m_sistema->envia_email($texto);
             }
             else
             {
@@ -491,7 +491,7 @@ class Usuario_model extends CI_Model{
                 $texto->msg = "Opa, tudo certo? <br/> O serviço que havia sido solicitado foi cancelado pelo Usuario<br/> Caso queira ver diretamente o mais informações, clique no botão abaixo.";
                 $texto->cid = "";
 
-                $this->envia_email($texto);
+                $this->m_sistema->envia_email($texto);
 
                 return true;
             }
@@ -594,7 +594,7 @@ class Usuario_model extends CI_Model{
                 $texto->msg = "Opa, tudo certo? <br/> Aqui está seu codigo de verificação para recuperar sua senha: <br/> <h3>$codigo</h3>";
                 $texto->cid = "";
     
-                $erro = $this->envia_email($texto);
+                $erro = $this->m_sistema->envia_email($texto);
 
                 $rst->rst = true;
                 $rst->msg = "Um codigo para realizar a recuperação da senha, foi enviado para seu email.";
@@ -701,7 +701,7 @@ class Usuario_model extends CI_Model{
             $texto->msg = "Opa, tudo certo? <br/> Você solicitou que o envio do email para ativação da conta seja realizada, aqui estamos nos ;D";
             $texto->cid = "";
 
-            $erro = $this->envia_email($texto);
+            $erro = $this->m_sistema->envia_email($texto);
             if($erro == 1)
             {
                 $rst->rst = true;
@@ -738,50 +738,6 @@ class Usuario_model extends CI_Model{
         {
             return true;
         }
-    }
-
-    public function envia_email($texto)
-    {
-        $remetente["email"] = "nextoyou@nextoyou.com.br";
-        $remetente["nome"] = "NextoYou";
-        $destinatario["email"] = $texto->email;
-        $destinatario["assunto"] = $texto->titulo;
-        $destinatario["mensagem"]["titulo"] = $texto->titulo;
-        $destinatario["mensagem"]["mensagem"] = $texto->msg;
-        $destinatario["mensagem"]["link"] = $texto->link;
-        $destinatario["mensagem"]["texto_link"] = $texto->texto_link;
-        $destinatario["mensagem"]["cid"] = $texto->cid;
-        
-        $mail = $this->sistema->enviar_email((object)$remetente, (object)$destinatario); 
-        //  $mail = true;
-        if($mail)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-    /**
-     * Realiza a verificação no texto, para maior segurança.
-     * @access private
-     * @param  string   $dado   Texto a ser verificado.
-     * @return boolean;
-    */
-    private function verifica_seguranca($dado)
-    {
-        $palavras = palavra_proibidas();
-        foreach($palavras as $item)
-        {
-            $pattern = '/' . $item . '/';
-
-            if(preg_match($pattern, strtolower($dado)) > 0)
-                return true;
-        }
-
-        return false;
     }
 
 }

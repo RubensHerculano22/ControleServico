@@ -137,4 +137,54 @@ class Sistema_model extends CI_Model{
         return $rst;
     }
 
+    /**
+     * Realiza o cadastro de favorito do servico ao usuario/realiza o desativamento do favorito para aquele usuario.
+     * @access public
+     * @param object $texto texto com todos os itens para montagem do email
+     * @return object;
+    */
+    public function envia_email($texto)
+    {
+        $remetente["email"] = "nextoyou@nextoyou.com.br";
+        $remetente["nome"] = "NextoYou";
+        $destinatario["email"] = $texto->email;
+        $destinatario["assunto"] = $texto->titulo;
+        $destinatario["mensagem"]["titulo"] = $texto->titulo;
+        $destinatario["mensagem"]["mensagem"] = $texto->msg;
+        $destinatario["mensagem"]["link"] = $texto->link;
+        $destinatario["mensagem"]["texto_link"] = $texto->texto_link;
+        $destinatario["mensagem"]["cid"] = $texto->cid;
+        
+        $mail = $this->sistema->enviar_email((object)$remetente, (object)$destinatario); 
+        //  $mail = true;
+        if($mail)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    /**
+     * Realiza a verificação no texto, para maior segurança.
+     * @access public
+     * @param  string   $dado   Texto a ser verificado.
+     * @return boolean;
+    */
+    public function verifica_seguranca($dado)
+    {
+        $palavras = palavra_proibidas();
+        foreach($palavras as $item)
+        {
+            $pattern = '/' . $item . '/';
+
+            if(preg_match($pattern, strtolower($dado)) > 0)
+                return true;
+        }
+
+        return false;
+    }
+
 }

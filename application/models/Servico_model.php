@@ -1284,7 +1284,7 @@ class Servico_model extends CI_Model{
             $data = (object)$this->input->post();
             $rst = (object)array("rst" => false, "msg" => "", "pergunta" => "");
 
-            if($this->verifica_seguranca($data->pergunta))
+            if($this->m_sistema->verifica_seguranca($data->pergunta))
             {
                 $rst->msg = "Palavra utilizada para o acesso é proibida!";
 
@@ -1312,7 +1312,7 @@ class Servico_model extends CI_Model{
                 $texto->texto_link = "Responder pergunta";
                 $texto->msg = "Opa, tudo certo? <br/> Uma nova pergunta foi cadastrar em seu serviço: $query->nome. <br/> Caso queira responder agora clique no botão abaixo.";
                 $texto->cid = "";
-                $this->envia_email($texto);
+                $this->m_sistema->envia_email($texto);
 
                 $rst->rst = true;
                 $rst->msg = "Pergunta registrada com sucesso, quando houver uma resposta, você será notificado!";
@@ -1381,7 +1381,7 @@ class Servico_model extends CI_Model{
                 $texto->msg = "Opa, tudo certo? <br/> Uma resposta a sua pergunta no serviço: $query->nome, foi cadastrada <br/> Caso queira ver diretamente no serviço clique no botão abaixo.";
                 $texto->cid = "";
 
-                $this->envia_email($texto);
+                $this->m_sistema->envia_email($texto);
 
                 $rst->rst = true;
                 $rst->msg = "Resposta realizada com sucesso!";
@@ -1446,7 +1446,7 @@ class Servico_model extends CI_Model{
                     $texto->msg = "Opa, tudo certo? <br/> Seu serviço foi contratado.<br/> O Pedido está esperando por uma resposta <br/> Caso queira ver diretamente o pedido, clique no botão abaixo.";
                     $texto->cid = "";
 
-                    $this->envia_email($texto);
+                    $this->m_sistema->envia_email($texto);
 
                     $rst->rst = true;
                     $rst->msg = "Solicitação de serviço enviado para o Prestador";
@@ -1588,7 +1588,7 @@ class Servico_model extends CI_Model{
                     $texto->msg = "Opa, tudo certo? <br/> O serviço que você solicitou lhe enviou uma resposta.<br/> Caso queira ver diretamente o andamento, clique no botão abaixo.";
                     $texto->cid = "";
 
-                    $this->envia_email($texto);
+                    $this->m_sistema->envia_email($texto);
 
                     $rst->rst = true;
                     $rst->msg = "Resposta do Orçamento enviado";
@@ -1640,7 +1640,7 @@ class Servico_model extends CI_Model{
                     $texto->msg = "Opa, tudo certo? <br/> O serviço que você havia solicitado foi cancelado pelo Prestador<br/> Caso queira ver diretamente mais informações, clique no botão abaixo.";
                     $texto->cid = "";
 
-                    $this->envia_email($texto);
+                    $this->m_sistema->envia_email($texto);
 
                     return true;
                 }
@@ -1688,7 +1688,7 @@ class Servico_model extends CI_Model{
                     $texto->msg = "Opa, tudo certo? <br/> Espero que o serviço tenha sido efetuado com satisfação e excelencia.<br/> Bom agora que o serviço foi realizado, você poderia realizar um feedback do serviço para o prestador? <br/> Para realizar o feedback, clique no botão abaixo.";
                     $texto->cid = "";
     
-                    $this->envia_email($texto);
+                    $this->m_sistema->envia_email($texto);
     
                     $rst->rst = true;
                     $rst->msg = "Serviço definido como realizado";
@@ -1707,49 +1707,4 @@ class Servico_model extends CI_Model{
         }
 
     /** Fim Contratação do Serviço */
-
-    public function envia_email($texto)
-    {
-        $remetente["email"] = "nextoyou@nextoyou.com.br";
-        $remetente["nome"] = "NextoYou";
-        $destinatario["email"] = $texto->email;
-        $destinatario["assunto"] = $texto->titulo;
-        $destinatario["mensagem"]["titulo"] = $texto->titulo;
-        $destinatario["mensagem"]["mensagem"] = $texto->msg;
-        $destinatario["mensagem"]["link"] = $texto->link;
-        $destinatario["mensagem"]["texto_link"] = $texto->texto_link;
-        $destinatario["mensagem"]["cid"] = $texto->cid;
-        
-        $mail = $this->sistema->enviar_email((object)$remetente, (object)$destinatario); 
-        //  $mail = true;
-        if($mail)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-    /**
-     * Realiza a verificação no texto, para maior segurança.
-     * @access private
-     * @param  string   $dado   Texto a ser verificado.
-     * @return boolean;
-    */
-    private function verifica_seguranca($dado)
-    {
-        //Consulta todas as palavras cadastradas que estão proibidas de serem utilizadas.
-        $palavras = palavra_proibidas();
-        foreach($palavras as $item)
-        {
-            $pattern = '/' . $item . '/';
-            //Verifica se as palavras proibidas estão contidas na string.
-            if(preg_match($pattern, strtolower($dado)) > 0)
-                return true;
-        }
-
-        return false;
-    }
 }
