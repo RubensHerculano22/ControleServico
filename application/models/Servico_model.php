@@ -264,25 +264,28 @@ class Servico_model extends CI_Model{
         {
             $query_servico = $this->db->get_where("Servico", "ativo = 1")->result();
 
-            $lista_feedback = array();
-            foreach($query_servico as $item)
-            {
-                $lista_feedback[] = array($this->media_feedback($item->id), $item);
-            }
-
-            //ordena o array em ordem descrescente
-            arsort($lista_feedback);
-            $lista_feedback = array_values($lista_feedback);        
-
             $result = array();
-            for($i=0; $i<6;$i++)
+            if($query_servico)
             {
-                $servico = $lista_feedback[$i][1];
-                $servico = $this->db->get_where("Servico", "id = $servico->id")->row();
-
-                $result[] = $this->get_card($servico);
+                $lista_feedback = array();
+                foreach($query_servico as $item)
+                {
+                    $lista_feedback[] = array($this->media_feedback($item->id), $item);
+                }
+    
+                //ordena o array em ordem descrescente
+                arsort($lista_feedback);
+                $lista_feedback = array_values($lista_feedback);        
+    
+                for($i=0; $i<6;$i++)
+                {
+                    $servico = $lista_feedback[$i][1];
+                    $servico = $this->db->get_where("Servico", "id = $servico->id")->row();
+    
+                    $result[] = $this->get_card($servico);
+                }
             }
-
+            
             return $result;
         }
 

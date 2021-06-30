@@ -184,18 +184,23 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col-md-12 col-sm-12 col-xs-12" id="modal_termos">
-                        <p>One fine body&hellip;</p>
-                        <p>One fine body&hellip;</p>
-                        <p>One fine body&hellip;</p><p>One fine body&hellip;</p>
-                        <p>One fine body&hellip;</p>
-                        <p>One fine body&hellip;</p><p>One fine body&hellip;</p><p>One fine body&hellip;</p><p>One fine body&hellip;</p>
-                        <p>One fine body&hellip;</p>
-                        <p>One fine body&hellip;</p>
-                        <p>One fine body&hellip;</p>
-                        <p>One fine body&hellip;</p><p>One fine body&hellip;</p>
-                        <p>One fine body&hellip;</p>
-                        <p>One fine body&hellip;</p><p>One fine body&hellip;</p>
-                        <p>One fine body&hellip;</p>
+                        <h4 class="text-bold">Termos de Uso</h4>
+                        <p>Ao realizar o cadastro no site NextoYou, você concorda em cumprir este termo e todas as leis e regulamentos aplicáveis, e que é responsável pelo cumprimento de todas as leis locais aplicáveis. Discordando com este termo, você está proibido de usar ou acessar os serviços fornecidos pelo site.</p>
+                        <p>Dentro dos termos legais, o seguinte usuário não poderá:</p>
+                        <ol>
+                            <li>Modificar ou copiar os conteúdos disponibilizados;</li>
+                            <li>Fazer uso dos conteúdos para fins comerciais;</li>
+                            <li>Tentar modificar quaisquer funcionalidades disponibilizados no site;</li>
+                        </ol>
+                        <p>O NextoYou pode revisar estes termos de uso do site a qualquer momento, sem aviso prévio. Ao acessar o site com o seu cadastro, você concorda em ficar vinculado à versão atual deste termo de uso.</p>
+                        <p>Este termo e condições são regidos e interpretados de acordo com as leis do NextoYou e você se submete irrevogavelmente à jurisdição exclusiva dos tribunais naquele estado ou localidade.</p>
+                        <br/>
+                        <h4 class="text-bold">Política de Privacidade</h4>
+                        <p>A sua privacidade é importante para nós. É política do NextoYou respeitar a sua privacidade em relação a qualquer informação sua que possamos coletar no site.</p>
+                        <p>Solicitamos informações pessoais apenas quando realmente precisamos delas, por meios justos e legais, com o seu conhecimento e consentimento. Informamos o motivo do por que coletamos os seus dados e como estes serão utilizados.</p>
+                        <p>Apenas remetemos as informações coletadas pelo tempo necessário para fornecer os serviços do nosso site.</p>
+                        <p>Não compartilhamos informações de identificação pessoal publicamente ou com terceiros, exceto quando exigido por lei.</p>
+                        <p>Esta política é efetiva a partir de junho/2021.</p>
                     </div>
                 </div>
             </div>
@@ -203,7 +208,5 @@
                 <button type="button" class="btn" data-dismiss="modal" style="background-color: <?= $colores->color2 ?>; color: <?= $colores->color5 ?>">Fechar</button>
             </div>
         </div>
-        <!-- /.modal-content -->
     </div>
-<!-- /.modal-dialog -->
 </div>
