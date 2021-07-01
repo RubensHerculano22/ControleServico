@@ -24,7 +24,7 @@ Banner, lista de serviço - Lie - feito
 
 Texto de curiosidade sobre o serviço - Lie
 
-Imagens meio de pagamento, pagina de detalhes
+Imagens meio de pagamento, pagina de detalhes - feito
 
 Acompanhar contratação, colocar informações do serviço contratado. - feito
 

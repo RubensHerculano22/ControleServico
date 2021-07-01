@@ -57,7 +57,7 @@
         </a>
       </li>
       <li class="nav-item dropdown">
-        <a class="nav-link" data-toggle="dropdown" href="#modalLocalizacao">
+        <a class="nav-link" data-toggle="dropdown" href="#">
           <i class="far fa-bell"></i>
           <span class="badge badge-warning navbar-badge">15</span>
         </a>
