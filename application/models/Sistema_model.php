@@ -186,6 +186,11 @@ class Sistema_model extends CI_Model{
         return false;
     }
 
+    /**
+     * Monta os itens para notificação
+     * @access public
+     * @return array;
+    */
     public function monta_notificacao()
     {
         $this->dados = $this->session->userdata("dados" . APPNAME);
@@ -193,20 +198,30 @@ class Sistema_model extends CI_Model{
         $notificacao = array();
         $notificacao = array_merge($this->notificacao_usuario($this->dados->usuario_id), $this->notificacao_prestador($this->dados->usuario_id));
 
+        sort($notificacao);
+
         return $notificacao;
     }
 
+    /**
+     * Realiza a montagem dos itens para notificação para o usuario comum
+     * @access public
+     * @param  int   $id   Identificador do Usuario.
+     * @return array
+    */
     public function notificacao_usuario($id)
     {
         $notificacao = array();
 
-        $item = (object)array("texto" => "", "icon" => "", "link" => "");
+        $item = (object)array("time" => "", "texto" => "", "icon" => "", "link" => "");
 
+        //Verifica se o usuario está ativo no sistema
         $queryAtivacao = $this->db->get_where("Usuario", "id = $id")->row();
         if($queryAtivacao->ativar_conta == 0)
         {
+            $item->time = $queryAtivacao->data_criacao;
             $item->texto = "Você precisa ativar a conta ainda";
-            $item->icon = "";
+            $item->icon = "fas fa-check";
             $item->link = base_url("Usuario/ativa_conta/$id");
             $notificacao[] = $item;
         }
@@ -214,13 +229,15 @@ class Sistema_model extends CI_Model{
         $hoje = date("Y-m-d");
         $anterior = date("Y-m-d", strtotime("-3 days"));
 
+        //Verifica se possui perguntas que foram respondidas nos ultimos 3 dias
         $queryPergunta = $this->db->get_where("Perguntas", "id_usuario = '$id' AND DATE(data_resposta) BETWEEN '$anterior' AND '$hoje'")->result();
         foreach($queryPergunta as $value)
         {
             $query = $this->db->get_where("Servico", "id = $value->id_servico")->row();
 
-            $item->texto = "Sua pergunta no serviço: $query->nome, foi respondida pelo Prestador";
-            $item->icon = "";
+            $item->time = $queryPergunta->data_resposta;
+            $item->texto = "Sua pergunta no serviço: $query->nome foi respondida pelo Prestador";
+            $item->icon = "far fa-comment-dots";
             $item->link = base_url("Servico/detalhes/$query->nome/$query->id");
 
             $notificacao[] = $item;
@@ -234,21 +251,25 @@ class Sistema_model extends CI_Model{
         $queryServico = $this->db->get("Orcamento O")->result();
         foreach($queryServico as $value)
         {
+            //Verifica se o Prestador gerou um Orçamento para o Cliente
             if($value->status == 2)
             {
+                $item->time = $value->data_alteracao;
                 $item->texto = "O prestador gerou o Orçamento para o serviço que você solicitou";
-                $item->icon = "";
+                $item->icon = "fas fa-pen";
                 $item->link = base_url("Usuario/controle_pedido/$value->id_orcamento");
 
                 $notificacao[] = $item;
             }
+            //Verifica realiza aviso para o cliente que já está disponivel para ele realizar feedback
             else
             {
                 $queryFeedback = $this->db->get_where("Feedback", "id_orcamento = $value->id_orcamento")->row();
                 if(!$queryFeedback)
                 {
-                    $item->texto = "O serviço foi realizado, diga para o prestador o que você achou do serviço";
-                    $item->icon = "";
+                    $item->time = $value->data_alteracao;
+                    $item->texto = "O serviço foi realizado, diga para o prestador o que você achou do serviço!";
+                    $item->icon = "fas fa-envelope-open-text";
                     $item->link = base_url("Feedback/index/$query->id_orcamento");
 
                     $notificacao[] = $item;
@@ -259,20 +280,30 @@ class Sistema_model extends CI_Model{
         return $notificacao;
     }
 
+    /**
+     * Realiza a montagem dos itens para notificação para o prestador de serviço comum
+     * @access public
+     * @param  int   $id   Identificador do Usuario.
+     * @return array
+    */
     public function notificacao_prestador($id)
     {
         $notificacao = array();
 
-        $item = (object)array("texto" => "", "icon" => "", "link" => "");
-
+        //Consulta todos os serviços cadastrados pelo usuario
         $servico = $this->db->get_where("Servico", "id_usuario = $id")->result();
+        
         foreach($servico as $value)
         {
-            $queryPergunta = $this->db->get_where("Perguntas", "id_servico = '$value->id' AND resposta IS NULL")->result();
-            foreach($queryPergunta as $value)
+            //Verifica se possui alguma pergunta sem resposta no serviço
+            $queryPergunta = $this->db->get_where("Perguntas", "id_servico = '$value->id' AND resposta IS NULL")->row();
+            if($queryPergunta)
             {
-                $item->texto = "Uma pergunta no serviço: $value->nome, foi realizada";
-                $item->icon = "";
+                $item = (object)array("time" => "", "texto" => "", "icon" => "", "link" => "");
+
+                $item->time = $queryPergunta->data_inclusao;
+                $item->texto = "Uma pergunta no serviço: $value->nome foi realizada";
+                $item->icon = "fas fa-comment-alt";
                 $item->link = base_url("Servico/gerenciar_servico/$value->id");
     
                 $notificacao[] = $item;
@@ -284,37 +315,51 @@ class Sistema_model extends CI_Model{
             $this->db->where("O.id_servico = $value->id");
             $this->db->where("(C.status = 1 OR C.status = 4 OR C.status = 5)");
             $queryServico = $this->db->get("Orcamento O")->result();
-            foreach($queryServico as $value)
+            foreach($queryServico as $row)
             {
-                if($value->status == 1)
+                //Verifica se o Serviço possui algum orçamento em aberto
+                if($row->status == 1)
                 {
+                    $item = (object)array("time" => "", "texto" => "", "icon" => "", "link" => "");
+
+                    $item->time = $row->data_alteracao;
                     $item->texto = "Um cliente solicitou um Orçamento";
-                    $item->icon = "";
-                    $item->link = base_url("Servico/movimentacao/$value->id_orcamento");
+                    $item->icon = "fas fa-comment-dollar";
+                    $item->link = base_url("Servico/movimentacao/$row->id_orcamento");
     
                     $notificacao[] = $item;
                 }
-                elseif($value->status == 4)
+                //Verifica se possui algum serviço disponivel para ser finalizado
+                elseif($row->status == 4)
                 {
+                    $item = (object)array("time" => "", "texto" => "", "icon" => "", "link" => "");
+
+                    $item->time = $row->data_alteracao;
                     $item->texto = "O cliente aceitou o Orçamento, clique para definir como realizado";
-                    $item->icon = "";
-                    $item->link = base_url("Servico/movimentacao/$value->id_orcamento");
+                    $item->icon = "fas fa-clipboard-check";
+                    $item->link = base_url("Servico/movimentacao/$row->id_orcamento");
     
                     $notificacao[] = $item;
                 }
+                //Verifica se o possui algum orçamento que foi recusado
                 else
                 {
-                    $queryFeedback = $this->db->get_where("Feedback", "id_orcamento = $value->id_orcamento")->row();
+                    $queryFeedback = $this->db->get_where("Feedback", "id_orcamento = $row->id_orcamento")->row();
                     if(!$queryFeedback)
                     {
+                        $item = (object)array("time" => "", "texto" => "", "icon" => "", "link" => "");
+
+                        $item->time = $row->data_alteracao;
                         $item->texto = "O cliente recusou o orçamento, acessa para realizar outro";
-                        $item->icon = "";
-                        $item->link = base_url("Servico/movimentacao/$value->id_orcamento");
+                        $item->icon = "fas fa-handshake-alt-slash";
+                        $item->link = base_url("Servico/movimentacao/$row->id_orcamento");
     
                         $notificacao[] = $item;
                     }
                 }
             }
         }
+
+        return $notificacao;
     }
 }

@@ -24,6 +24,7 @@ class Servico extends CI_Controller{
         $this->data["estados"] = $this->m_servico->get_estados();
 
         $this->data["colores"] = $this->m_sistema->get_colores();
+        $this->data["notificacao"] = $this->m_sistema->monta_notificacao();
 
         $this->data["header"] = $this->load->view("template/header", $this->data, true);
         $this->data["navbar"] = $this->load->view("template/navbar", $this->data, true);
