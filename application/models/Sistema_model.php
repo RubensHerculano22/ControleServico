@@ -186,4 +186,135 @@ class Sistema_model extends CI_Model{
         return false;
     }
 
+    public function monta_notificacao()
+    {
+        $this->dados = $this->session->userdata("dados" . APPNAME);
+        
+        $notificacao = array();
+        $notificacao = array_merge($this->notificacao_usuario($this->dados->usuario_id), $this->notificacao_prestador($this->dados->usuario_id));
+
+        return $notificacao;
+    }
+
+    public function notificacao_usuario($id)
+    {
+        $notificacao = array();
+
+        $item = (object)array("texto" => "", "icon" => "", "link" => "");
+
+        $queryAtivacao = $this->db->get_where("Usuario", "id = $id")->row();
+        if($queryAtivacao->ativar_conta == 0)
+        {
+            $item->texto = "Você precisa ativar a conta ainda";
+            $item->icon = "";
+            $item->link = base_url("Usuario/ativa_conta/$id");
+            $notificacao[] = $item;
+        }
+
+        $hoje = date("Y-m-d");
+        $anterior = date("Y-m-d", strtotime("-3 days"));
+
+        $queryPergunta = $this->db->get_where("Perguntas", "id_usuario = '$id' AND DATE(data_resposta) BETWEEN '$anterior' AND '$hoje'")->result();
+        foreach($queryPergunta as $value)
+        {
+            $query = $this->db->get_where("Servico", "id = $value->id_servico")->row();
+
+            $item->texto = "Sua pergunta no serviço: $query->nome, foi respondida pelo Prestador";
+            $item->icon = "";
+            $item->link = base_url("Servico/detalhes/$query->nome/$query->id");
+
+            $notificacao[] = $item;
+        }
+
+        $this->db->select("C.*, S.nome");
+        $this->db->join("Servico S", "S.id = O.id_servico");
+        $this->db->join("ContrataServico C", "C.id_orcamento = O.id AND C.ativo = 1");
+        $this->db->where("O.id_usuario = $id");
+        $this->db->where("(C.status = 2 OR C.status = 7)");
+        $queryServico = $this->db->get("Orcamento O")->result();
+        foreach($queryServico as $value)
+        {
+            if($value->status == 2)
+            {
+                $item->texto = "O prestador gerou o Orçamento para o serviço que você solicitou";
+                $item->icon = "";
+                $item->link = base_url("Usuario/controle_pedido/$value->id_orcamento");
+
+                $notificacao[] = $item;
+            }
+            else
+            {
+                $queryFeedback = $this->db->get_where("Feedback", "id_orcamento = $value->id_orcamento")->row();
+                if(!$queryFeedback)
+                {
+                    $item->texto = "O serviço foi realizado, diga para o prestador o que você achou do serviço";
+                    $item->icon = "";
+                    $item->link = base_url("Feedback/index/$query->id_orcamento");
+
+                    $notificacao[] = $item;
+                }
+            }
+        }
+
+        return $notificacao;
+    }
+
+    public function notificacao_prestador($id)
+    {
+        $notificacao = array();
+
+        $item = (object)array("texto" => "", "icon" => "", "link" => "");
+
+        $servico = $this->db->get_where("Servico", "id_usuario = $id")->result();
+        foreach($servico as $value)
+        {
+            $queryPergunta = $this->db->get_where("Perguntas", "id_servico = '$value->id' AND resposta IS NULL")->result();
+            foreach($queryPergunta as $value)
+            {
+                $item->texto = "Uma pergunta no serviço: $value->nome, foi realizada";
+                $item->icon = "";
+                $item->link = base_url("Servico/gerenciar_servico/$value->id");
+    
+                $notificacao[] = $item;
+            }
+
+            $this->db->select("C.*, S.nome");
+            $this->db->join("Servico S", "S.id = O.id_servico");
+            $this->db->join("ContrataServico C", "C.id_orcamento = O.id AND C.ativo = 1");
+            $this->db->where("O.id_servico = $value->id");
+            $this->db->where("(C.status = 1 OR C.status = 4 OR C.status = 5)");
+            $queryServico = $this->db->get("Orcamento O")->result();
+            foreach($queryServico as $value)
+            {
+                if($value->status == 1)
+                {
+                    $item->texto = "Um cliente solicitou um Orçamento";
+                    $item->icon = "";
+                    $item->link = base_url("Servico/movimentacao/$value->id_orcamento");
+    
+                    $notificacao[] = $item;
+                }
+                elseif($value->status == 4)
+                {
+                    $item->texto = "O cliente aceitou o Orçamento, clique para definir como realizado";
+                    $item->icon = "";
+                    $item->link = base_url("Servico/movimentacao/$value->id_orcamento");
+    
+                    $notificacao[] = $item;
+                }
+                else
+                {
+                    $queryFeedback = $this->db->get_where("Feedback", "id_orcamento = $value->id_orcamento")->row();
+                    if(!$queryFeedback)
+                    {
+                        $item->texto = "O cliente recusou o orçamento, acessa para realizar outro";
+                        $item->icon = "";
+                        $item->link = base_url("Servico/movimentacao/$value->id_orcamento");
+    
+                        $notificacao[] = $item;
+                    }
+                }
+            }
+        }
+    }
 }

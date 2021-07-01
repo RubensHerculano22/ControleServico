@@ -1,45 +1,10 @@
 <nav class="main-header navbar navbar-expand navbar-dark" style="background-color: <?= $colores->color1 ?>">
-    <!-- Left navbar links -->
+
     <ul class="navbar-nav">
       <li class="nav-item">
         <a class="nav-link" data-widget="pushmenu" href="#" role="button" data-enable-remember="true"><i class="fas fa-bars"></i></a>
       </li>
-      <!-- <a href="<?= base_url("") ?>">
-      <li class="d-none d-sm-inline-block">
-        <img src="<?= base_url("assets/img/logo_transparent.png") ?>" style="max-width: 35px; max-height: 35px;"/>
-      </li>
-      <li class="d-none d-sm-inline-block">
-        <span class="h4 brand-text" style="color: #fff1e6">NextoYou</span>
-      </li>
-      </a>
-      <?php foreach($categorias[0]["filho"] as $item): ?>
-        <li class="nav-item dropdown itens-menu user-menu">
-          <a href="#" class="nav-link dropdown-toggle">
-            <?= $item["nome"] ?>
-          </a>
-          <ul class="dropdown-menu">
-            <?php foreach($item["filho"] as $value): ?>
-              <li><a class="dropdown-item" href="<?= base_url("Servico/lista/").$item["nome"]."/".$value->nome ?>"><?= $value->nome ?></a></li>
-            <?php endforeach; ?>
-          </ul>
-        </li>
-      <?php endforeach; ?> -->
     </ul>
-    <!-- <div class="navbar-search-block">
-      <form class="form-inline">
-        <div class="input-group">
-          <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
-          <div class="input-group-append">
-            <button class="btn btn-navbar" type="submit">
-              <i class="fas fa-search"></i>
-            </button>
-            <button class="btn btn-navbar" type="button" data-widget="navbar-search">
-              <i class="fas fa-times"></i>
-            </button>
-          </div>
-        </div>
-      </form>
-    </div> -->
 
       <div class="input-group input-group-sm ml-auto" style="width: 50%">
         <input class="form-control form-control-navbar" type="search" placeholder="Procure por um Serviço, equipamento..." aria-label="Search" id="input_search_bar">
@@ -56,6 +21,10 @@
           <i class="fas fa-exchange-alt"></i>
         </a>
       </li>
+      <?php if(!isset($dados) || empty($dados)): ?>
+        <a href="<?= base_url("Usuario") ?>" class='nav-link dropdown'>Criar conta</a>
+        <a href="<?= base_url("Usuario/login") ?>" class='nav-link dropdown'>Autentificar</a>
+      <?php else: ?>
       <li class="nav-item dropdown">
         <a class="nav-link" data-toggle="dropdown" href="#">
           <i class="far fa-bell"></i>
@@ -82,10 +51,6 @@
           <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
         </div>
       </li>
-      <?php if(!isset($dados) || empty($dados)): ?>
-      <a href="<?= base_url("Usuario") ?>" class='nav-link dropdown'>Criar conta</a>
-      <a href="<?= base_url("Usuario/login") ?>" class='nav-link dropdown'>Autentificar</a>
-      <?php else: ?>
       <li class="nav-item dropdown user-menu">
         <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
           <!-- <img src="https://www.microlins.com.br/galeria/repositorio/images/noticias/como-posicionar-melhor-seu-perfil-no-linkedin/02-Como-posicionar-melhor-seu-perfil-do-Linkedin.png" class="user-image img-circle elevation-2" alt="User Image"> -->
@@ -161,7 +126,5 @@
         <button type="button" class="btn" id="troca_cidade" style="background-color: <?= $colores->color2 ?>"><span style="color: <?= $colores->color5 ?>"><?= empty($cidade) ? "Definir Região" : "Trocar Região" ?></span></button>
       </div>
     </div>
-    <!-- /.modal-content -->
   </div>
-  <!-- /.modal-dialog -->
 </div>
