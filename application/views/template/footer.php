@@ -19,6 +19,7 @@
 <script src="<?= base_url("assets/plugins/jquery-knob/jquery.knob.min.js") ?>"></script>
 <!-- daterangepicker -->
 <script src="<?= base_url("assets/plugins/moment/moment.min.js") ?>"></script>
+<script src="<?= base_url("assets/plugins/fullcalendar/main.js") ?>"></script>
 <script src="<?= base_url("assets/plugins/daterangepicker/daterangepicker.js") ?>"></script>
 <!-- Tempusdominus Bootstrap 4 -->
 <script src="<?= base_url("assets/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js") ?>"></script>
