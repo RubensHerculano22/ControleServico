@@ -1284,13 +1284,20 @@ class Servico_model extends CI_Model{
             $lista = array();
 
             $this->db->select("C.*");
-            $this->db->join("ContrataServico C", "C.id_orcamento = O.id AND C.status = 4 AND ativo = 1");
+            $this->db->join("ContrataServico C", "C.id_orcamento = O.id AND (C.status = 4 OR C.status = 7) AND ativo = 1");
             $query_horarios = $this->db->get_where("Orcamento O", "O.id_servico = '$id'")->result();
 
             foreach($query_horarios as $item)
             {
                 $this->db->order_by("id", "desc");
                 $queryServico = $this->db->get_where("ContrataServico", "id_orcamento = '$item->id_orcamento' AND status = 1")->row();
+
+                $this->db->select("nome");
+                $this->db->join("Orcamento O", "O.id_usuario = U.id");
+                $this->db->where("O.id = $item->id_orcamento");
+                $queryUsuario = $this->db->get("Usuario U")->row();
+
+                $queryServico->solicitante = $queryUsuario->nome;
 
                 $lista[] = $queryServico;
             }
