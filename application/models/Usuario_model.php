@@ -217,7 +217,7 @@ class Usuario_model extends CI_Model{
         }
         else
         {
-            $rst->rst = 2;
+            $rst->rst = 0;
             $rst->msg = "O Email digitado já está cadastrado no sistema.";
         }
 
@@ -675,8 +675,11 @@ class Usuario_model extends CI_Model{
         if($this->db->update("Usuario"))
         {
             $dados = $this->session->userdata("dados" . APPNAME);
-            $dados->ativacao = 1;
-            $this->session->set_userdata(array("is_logged" => true, "dados" . APPNAME => $dados));
+            if($dados)
+            {
+                $dados->ativacao = 1;
+                $this->session->set_userdata(array("is_logged" => true, "dados" . APPNAME => $dados));   
+            }
 
             return true;
         }

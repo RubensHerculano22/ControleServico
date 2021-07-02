@@ -223,7 +223,7 @@ class Sistema_model extends CI_Model{
             $item->time = $queryAtivacao->data_criacao;
             $item->texto = "Você precisa ativar a conta ainda";
             $item->icon = "fas fa-check";
-            $item->link = base_url("Usuario/ativa_conta/$id");
+            $item->link = base_url("Usuario/perfil/$id");
             $notificacao[] = $item;
         }
 
