@@ -58,7 +58,7 @@
                             </div>
                             <div class="col-md-6 col-sm-6 col-xs-12">
                                 <div class="form-group">
-                                    <label for="senha">Senha</label> <?php if(!isset($usuario->id)): ?><small class="text-danger"> *</small> <?php endif; ?><small>(Necessário no minimo conter 8 digitos e no minimo 1 numero)</small>
+                                    <label for="senha">Senha</label> <?php if(!isset($usuario->id)): ?><small class="text-danger"> *</small> <?php endif; ?><small>(Necessário no mínimo conter 8 dígitos e no mínimo 1 número)</small>
                                     <input type="password" class="form-control" name="senha" id="senha" placeholder="Senha" <?php if(!isset($usuario->id)): ?> required <?php endif; ?>>
                                     <?php if(isset($usuario->id)): ?><small>(Caso não deseje trocar a senha apenas deixe em branco)</small><?php endif; ?>
                                 </div>
@@ -115,7 +115,7 @@
                                 </div>
                                 <div class="col-md-2 col-sm-2 col-xs-12">
                                     <div class="form-group">
-                                        <label for="numero">Numero</label><small class="text-danger"> *</small>
+                                        <label for="numero">Número</label><small class="text-danger"> *</small>
                                         <input type="number" class="form-control endereco_input" id="numero" value="" placeholder="Numero">
                                     </div>
                                 </div>

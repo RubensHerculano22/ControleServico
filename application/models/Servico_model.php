@@ -83,7 +83,7 @@ class Servico_model extends CI_Model{
         */
         public function get_estado_sigla($sigla)
         {
-            $query = $this->db->get_where("Estados", "sigla = $sigla")->row();
+            $query = $this->db->get_where("Estados", "sigla = '$sigla'")->row();
 
             return $query;
         }
