@@ -158,7 +158,7 @@ class Usuario_model extends CI_Model{
             }
             else
             {
-                $this->db->set("data_insercao", "date('now')", false);
+                $this->db->set("data_insercao", date("Y-m-d H:i:s"));
                 $this->db->set("data_criacao", date("Y-m-d H:i:s"));
                 if($this->db->insert("Usuario"))
                 {
