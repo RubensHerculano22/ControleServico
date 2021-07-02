@@ -76,6 +76,10 @@
                                         <a href="<?= base_url("Servico/editar_imagens/".$id) ?>" class="btn btn-outline-secondary mr-4">Editar Imagens</a>
                                         <span class="float-right"><input type="checkbox" name="my-checkbox" checked data-bootstrap-switch data-off-color="danger" data-on-text="Visivel" data-off-text="Invisivel" data-on-color="success"></span>
                                     </div>
+                                    <div class="col-md-12 col-sm-12 col-xs-12 mt-5">
+                                        <h4>Calendario de Serviço</h4>
+                                        <div id="calendar"></div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="tab-pane fade" id="custom-tabs-one-perguntas" role="tabpanel" aria-labelledby="custom-tabs-one-perguntas-tab">

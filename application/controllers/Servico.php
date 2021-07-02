@@ -121,7 +121,8 @@ class Servico extends CI_Controller{
 
         $this->data["breadcrumb"] = (object)array("titulo" => "Gerenciamento do Serviço", "before" => array((object)array("nome" => "Home", "link" => "Servico")), "current" => "Gerenciamento do Serviço");
         $this->data["javascript"] = [
-            base_url("assets/js/produto/gerenciamento.js")
+            base_url("assets/js/produto/gerenciamento.js"),
+            base_url("assets/js/produto/calendario.js")
         ];
 
         $this->data["content"] = $this->load->view("produto/gerenciamento", $this->data, true);
@@ -340,6 +341,12 @@ class Servico extends CI_Controller{
     public function get_horarios_disponiveis()
     {
         $rst = $this->m_servico->get_horarios_disponiveis();
+        echo json_encode($rst, JSON_UNESCAPED_UNICODE);
+    }
+
+    public function get_dias_agendados($id)
+    {
+        $rst = $this->m_servico->get_dias_agendados($id);
         echo json_encode($rst, JSON_UNESCAPED_UNICODE);
     }
 

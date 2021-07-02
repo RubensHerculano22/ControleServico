@@ -196,7 +196,8 @@ class Sistema_model extends CI_Model{
         $this->dados = $this->session->userdata("dados" . APPNAME);
         
         $notificacao = array();
-        $notificacao = array_merge($this->notificacao_usuario($this->dados->usuario_id), $this->notificacao_prestador($this->dados->usuario_id));
+        if($this->dados)
+            $notificacao = array_merge($this->notificacao_usuario($this->dados->usuario_id), $this->notificacao_prestador($this->dados->usuario_id));
 
         sort($notificacao);
 

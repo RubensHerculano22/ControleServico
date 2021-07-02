@@ -22,6 +22,7 @@ class Usuario extends CI_Controller{
         $this->data["estados"] = $this->m_servico->get_estados();
 
         $this->data["colores"] = $this->m_sistema->get_colores();
+        $this->data["notificacao"] = $this->m_sistema->monta_notificacao();
 
         $this->load->model("Usuario_model", "m_usuario");
 

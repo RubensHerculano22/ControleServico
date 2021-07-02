@@ -17,6 +17,8 @@
   <link rel="stylesheet" href="<?= base_url("assets/plugins/icheck-bootstrap/icheck-bootstrap.min.css") ?>">
   <!-- JQVMap -->
   <link rel="stylesheet" href="<?= base_url("assets/plugins/jqvmap/jqvmap.min.css") ?>">
+  <!-- fullCalendar -->
+  <link rel="stylesheet" href="<?= base_urL("assets/plugins/fullcalendar/main.css") ?>">
   <!-- Theme style -->
   <link rel="stylesheet" href="<?= base_url("assets/plugins/dist/css/adminlte.css") ?>">
   <!-- overlayScrollbars -->

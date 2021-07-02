@@ -1273,6 +1273,31 @@ class Servico_model extends CI_Model{
             return $rst;
         }
 
+        /**
+         * Consulta todos os serviços pendentes
+         * @access public
+         * @param   int $id Identificador do Serviço
+         * @return array;
+        */
+        public function get_dias_agendados($id)
+        {
+            $lista = array();
+
+            $this->db->select("C.*");
+            $this->db->join("ContrataServico C", "C.id_orcamento = O.id AND C.status = 4 AND ativo = 1");
+            $query_horarios = $this->db->get_where("Orcamento O", "O.id_servico = '$id'")->result();
+
+            foreach($query_horarios as $item)
+            {
+                $this->db->order_by("id", "desc");
+                $queryServico = $this->db->get_where("ContrataServico", "id_orcamento = '$item->id_orcamento' AND status = 1")->row();
+
+                $lista[] = $queryServico;
+            }
+
+            return $lista;
+        }
+
     /** Fim Gerenciamento do Serviço */
 
     /** Perguntas do Serviço */

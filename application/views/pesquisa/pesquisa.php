@@ -12,7 +12,7 @@ Arrumar banner tela inicial - Lie - feito
 
 Corrigir o nome para NextoYou - feito
 
-Area de Notificação.
+Area de Notificação - feito
 
 Adicionar os termos para cadastro. (n deixar aparecer no editar) - feito
 
