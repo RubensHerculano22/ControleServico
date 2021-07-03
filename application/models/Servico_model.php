@@ -277,12 +277,15 @@ class Servico_model extends CI_Model{
                 arsort($lista_feedback);
                 $lista_feedback = array_values($lista_feedback);        
     
-                for($i=0; $i<6;$i++)
+                if($lista_feedback)
                 {
-                    $servico = $lista_feedback[$i][1];
-                    $servico = $this->db->get_where("Servico", "id = $servico->id")->row();
-    
-                    $result[] = $this->get_card($servico);
+                    for($i=0; $i<6;$i++)
+                    {
+                        $servico = $lista_feedback[$i][1];
+                        $servico = $this->db->get_where("Servico", "id = $servico->id")->row();
+        
+                        $result[] = $this->get_card($servico);
+                    }
                 }
             }
             
@@ -1298,6 +1301,7 @@ class Servico_model extends CI_Model{
                 $queryUsuario = $this->db->get("Usuario U")->row();
 
                 $queryServico->solicitante = $queryUsuario->nome;
+                $queryServico->status_atual = $item->status;
 
                 $split = explode(":", $queryServico->hora_servico);
                 //Verifica se é depois das 23h para corrigir as horas
