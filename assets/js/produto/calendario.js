@@ -22,7 +22,14 @@ $(document).ready(function(){
             $.each( data, function( key, value ) {
                 var data_Split = value.data_servico.split('-')
                 var hora_Split = value.hora_servico.split(':')
-                var option = {title: value.solicitante, start: new Date(data_Split[0], data_Split[1], data_Split[2], hora_Split[0], hora_Split[1])};
+                var hora_final_Split = value.hora_final.split(':')
+                
+                var option = {
+                    title: value.solicitante, 
+                    start: new Date(data_Split[0], tira_zero(data_Split[1])-1, tira_zero(data_Split[2]), tira_zero(hora_Split[0]), tira_zero(hora_Split[1], 0)),
+                    end: new Date(data_Split[0], tira_zero(data_Split[1])-1, tira_zero(data_Split[2]), tira_zero(hora_final_Split[0]), tira_zero(hora_final_Split[1], 0)),
+                    allDay: false
+                };
 
                 itens.push(option);
             });
@@ -33,55 +40,18 @@ $(document).ready(function(){
                     right : 'dayGridMonth,timeGridWeek,timeGridDay'
                 },
                 initialView: 'timeGridWeek',
+                contentHeight: "auto",
                 views: {
                     timeGridFourDay: {
                       type: 'timeGrid',
                       duration: { days: 4 }
                     }
                 },
-                timeZone: 'UTC',
                 locale: 'pt-br',
                 themeSystem: 'bootstrap',
                 events: itens,
                 //Random default events
                 // events: [
-                // {
-                //     title          : 'All Day Event',
-                //     start          : new Date(y, m, 1),
-                //     backgroundColor: '#f56954', //red
-                //     borderColor    : '#f56954', //red
-                //     allDay         : true
-                // },
-                // {
-                //     title          : 'Long Event',
-                //     start          : new Date(y, m, d - 5),
-                //     end            : new Date(y, m, d - 2),
-                //     backgroundColor: '#f39c12', //yellow
-                //     borderColor    : '#f39c12' //yellow
-                // },
-                // {
-                //     title          : 'Meeting',
-                //     start          : new Date(y, m, d, 10, 30),
-                //     allDay         : false,
-                //     backgroundColor: '#0073b7', //Blue
-                //     borderColor    : '#0073b7' //Blue
-                // },
-                // {
-                //     title          : 'Lunch',
-                //     start          : new Date(y, m, d, 12, 0),
-                //     end            : new Date(y, m, d, 14, 0),
-                //     allDay         : false,
-                //     backgroundColor: '#00c0ef', //Info (aqua)
-                //     borderColor    : '#00c0ef' //Info (aqua)
-                // },
-                // {
-                //     title          : 'Birthday Party',
-                //     start          : new Date(y, m, d + 1, 19, 0),
-                //     end            : new Date(y, m, d + 1, 22, 30),
-                //     allDay         : false,
-                //     backgroundColor: '#00a65a', //Success (green)
-                //     borderColor    : '#00a65a' //Success (green)
-                // },
                 // {
                 //     title          : 'Click for Google',
                 //     start          : new Date(y, m, 28),
@@ -98,3 +68,12 @@ $(document).ready(function(){
     });
 
 });
+
+function tira_zero(valor)
+{
+    valor = valor.replace(/^0+/, '');
+    if(valor == "")
+        return 0;
+
+    return valor;
+}

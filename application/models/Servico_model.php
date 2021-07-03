@@ -1299,6 +1299,20 @@ class Servico_model extends CI_Model{
 
                 $queryServico->solicitante = $queryUsuario->nome;
 
+                $split = explode(":", $queryServico->hora_servico);
+                //Verifica se é depois das 23h para corrigir as horas
+                if($split[0] + 2 >23)
+                {
+                    if($split[0] + 1 == 24)
+                        $queryServico->hora_final =  "00:".$split[1];
+                    else
+                        $queryServico->hora_final =  "01:".$split[1];
+                }
+                else
+                {
+                    $queryServico->hora_final =  ($split[0] + 2).":".$split[1];
+                }
+
                 $lista[] = $queryServico;
             }
 
