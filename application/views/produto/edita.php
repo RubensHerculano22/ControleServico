@@ -52,7 +52,7 @@
                             <div class="col-md-4 col-sm-3 col-xs-12">
                                 <div class="form-group">
                                     <label for="valor">Valor</label>
-                                    <input type="text" class="form-control preco" name="valor" value="<?= $info->valor_D ?>" id="valor" placeholder="Valor">
+                                    <input type="text" class="form-control preco" name="valor" value="<?= !empty($info->valor_D) ? $info->valor_D : "" ?>" id="valor" placeholder="Valor">
                                 </div>
                             </div>
                             <div class="col-md-4 col-sm-4 col-xs-12">

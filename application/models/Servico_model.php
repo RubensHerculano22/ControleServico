@@ -276,10 +276,11 @@ class Servico_model extends CI_Model{
                 //ordena o array em ordem descrescente
                 arsort($lista_feedback);
                 $lista_feedback = array_values($lista_feedback);        
-    
+
+                $maximo = count($lista_feedback) > 6 ? 6 : count($lista_feedback);
                 if($lista_feedback)
                 {
-                    for($i=0; $i<6;$i++)
+                    for($i=0; $i<$maximo;$i++)
                     {
                         $servico = $lista_feedback[$i][1];
                         $servico = $this->db->get_where("Servico", "id = $servico->id")->row();
@@ -807,7 +808,8 @@ class Servico_model extends CI_Model{
 
             if($this->db->insert("Servico"))
             {
-                $rst->id = $id = $this->db->insert_id();
+                $id = $this->db->insert_id();
+                $rst->id = $id;
 
                 $this->set_img($id);
 

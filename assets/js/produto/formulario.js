@@ -237,7 +237,7 @@ $(document).ready(function(){
                                 confirmButtonText: `Ok`,
                                 }).then((result) => {
                                 if (result.isConfirmed)
-                                    window.location.href = BASE_URL+"Servico/gerenciar_servico/"+data.id_servico;
+                                    window.location.href = BASE_URL+"Servico/gerenciar_servico/"+data.id;
                             })
                         }
                         else if(data.rst === false)
