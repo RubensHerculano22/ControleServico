@@ -13,6 +13,15 @@ $(document).ready(function(){
         }
         else
         {
+            Swal.fire({
+                title: 'Aguarde enquanto processamos a requisição',
+                showConfirmButton: false,
+                allowOutsideClick: false,
+                onBeforeOpen: () => {
+                    Swal.showLoading()
+                },
+            });
+
             $.ajax({
                 type: "post",
                 url: BASE_URL+"Usuario/troca_senha",
@@ -23,6 +32,7 @@ $(document).ready(function(){
                 data: data,
                 success: function(data)
                 {
+                    swal.close();
                     if(data.rst == true)
                     {
                         Swal.fire({

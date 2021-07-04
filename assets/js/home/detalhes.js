@@ -155,6 +155,15 @@ $(document).ready(function(){
             var data = {"pergunta": pergunta, "id_servico": id_servico, "id_usuario": id_usuario};
             if(pergunta)
             {
+                Swal.fire({
+                    title: 'Aguarde enquanto processamos a requisição',
+                    showConfirmButton: false,
+                    allowOutsideClick: false,
+                    onBeforeOpen: () => {
+                        Swal.showLoading()
+                    },
+                });
+
                 $.ajax({
                     type: "post",
                     url: BASE_URL+"Servico/cadastrar_pergunta/",
@@ -162,6 +171,7 @@ $(document).ready(function(){
                     data:  data,
                     success: function(data)
                     {
+                        swal.close();
                         if(data.rst === true)
                         {
                             Swal.fire({
@@ -315,6 +325,15 @@ $(document).ready(function(){
                 var data = $(this).serialize();
                 data = new FormData($("#submit").get(0));
         
+                Swal.fire({
+                    title: 'Aguarde enquanto processamos a requisição',
+                    showConfirmButton: false,
+                    allowOutsideClick: false,
+                    onBeforeOpen: () => {
+                        Swal.showLoading()
+                    },
+                });
+
                 $.ajax({
                     type: "post",
                     url: BASE_URL+"Servico/contrata_servico",
@@ -325,7 +344,7 @@ $(document).ready(function(){
                     data: data,
                     success: function(data)
                     {
-                        console.log(data);
+                        swal.close();
                         if(data.rst === true)
                         {
                             Swal.fire({
@@ -371,6 +390,15 @@ $(document).ready(function(){
         var data = $(this).serialize();
         data = new FormData($("#submit_avise_me").get(0));
 
+        Swal.fire({
+            title: 'Aguarde enquanto processamos a requisição',
+            showConfirmButton: false,
+            allowOutsideClick: false,
+            onBeforeOpen: () => {
+                Swal.showLoading()
+            },
+        });
+
         $.ajax({
             type: "post",
             url: BASE_URL+"Servico/avise_me",
@@ -381,7 +409,7 @@ $(document).ready(function(){
             data: data,
             success: function(data)
             {
-                console.log(data);
+                swal.close();
                 if(data.rst === true)
                 {
                     Swal.fire({

@@ -25,10 +25,10 @@ $(document).ready(function(){
                 var hora_final_Split = value.hora_final.split(':')
                 
                 var color = "";
-                if(value.status == "4")
-                    color = '#fca000';
+                if(value.status_atual == "4")
+                    color = '#f5b600';
                 else
-                    color = '#28a745 ';
+                    color = '#006400 ';
 
                 var option = {
                     title: value.solicitante, 
@@ -36,7 +36,8 @@ $(document).ready(function(){
                     end: new Date(data_Split[0], tira_zero(data_Split[1])-1, tira_zero(data_Split[2]), tira_zero(hora_final_Split[0]), tira_zero(hora_final_Split[1], 0)),
                     allDay: false,
                     backgroundColor: color,
-                    // description: '<b>Descrição: </b>'+value.descricao
+                    description: value.descricao,
+                    url: BASE_URL+'Servico/movimentacao/'+value.id_orcamento,
                 };
 
                 itens.push(option);
@@ -46,31 +47,24 @@ $(document).ready(function(){
                 headerToolbar: {
                     left  : 'prev,next today',
                     center: 'title',
-                    right : 'dayGridMonth,timeGridWeek,timeGridDay'
+                    right : 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
                 },
                 initialView: 'timeGridWeek',
                 contentHeight: "auto",
-                views: {
-                    timeGridFourDay: {
-                      type: 'timeGrid',
-                      duration: { days: 4 }
-                    }
-                },
                 locale: 'pt-br',
                 themeSystem: 'bootstrap',
                 events: itens,
-                //Random default events
-                // events: [
-                // {
-                //     title          : 'Click for Google',
-                //     start          : new Date(y, m, 28),
-                //     end            : new Date(y, m, 29),
-                //     url            : 'https://www.google.com/',
-                //     backgroundColor: '#3c8dbc', //Primary (light-blue)
-                //     borderColor    : '#3c8dbc' //Primary (light-blue)
-                // }
-                // ],
+                eventDidMount: function(info) {
+                    if(info.event.extendedProps.description != '' && typeof info.event.extendedProps.description  !== "undefined")
+                    {  
+                        $(info.el).find(".fc-event-title").append("<br/><b>"+info.event.extendedProps.description+"</b>");
+                    }
+                },
             });
+
+            if ($(window).width() < 514){
+                calendar.changeView('listWeek');
+            }
 
             calendar.render();
         }

@@ -49,6 +49,16 @@ $(document).ready(function(){
 
     $("#reenviar_email").on("click", function(){
         var id = $(this).data("id");
+
+        Swal.fire({
+            title: 'Aguarde enquanto processamos a requisição',
+            showConfirmButton: false,
+            allowOutsideClick: false,
+            onBeforeOpen: () => {
+                Swal.showLoading()
+            },
+        });
+        
         $.ajax({
             type: "post",
             url: BASE_URL+"Usuario/reenviar_email/"+id,
@@ -58,6 +68,7 @@ $(document).ready(function(){
             dataType: "json",
             success: function(data)
             {
+                swal.close();
                 if(data.rst === true)
                 {
                     Swal.fire({
@@ -77,6 +88,7 @@ $(document).ready(function(){
     $(".cancela_servico").on("click", function(e){
         e.preventDefault();
         var id = $(this).data("id");
+        
         Swal.fire({
             title: 'Aviso',
             text: "Deseja realmente cancelar esse serviço?",
@@ -87,12 +99,22 @@ $(document).ready(function(){
             }).then((result) => {
             if (result.isConfirmed)
             {
+                Swal.fire({
+                    title: 'Aguarde enquanto processamos a requisição',
+                    showConfirmButton: false,
+                    allowOutsideClick: false,
+                    onBeforeOpen: () => {
+                        Swal.showLoading()
+                    },
+                });
+
                 $.ajax({
                     type: "post",
                     url: BASE_URL+"Usuario/cancela_servico/"+id,
                     dataType: "json",
                     success: function(data)
                     {
+                        swal.close();
                         if(data === true)
                         {
                             Swal.fire({

@@ -138,6 +138,17 @@ $(document).ready(function(){
         }
         else
         {
+            if(id_usuario == "")
+            {
+                Swal.fire({
+                    title: 'Aguarde enquanto processamos a requisição',
+                    showConfirmButton: false,
+                    allowOutsideClick: false,
+                    onBeforeOpen: () => {
+                        Swal.showLoading()
+                    },
+                });
+            }
             $.ajax({
                 type: "post",
                 url: BASE_URL+"Usuario/salva_usuario",
@@ -150,22 +161,11 @@ $(document).ready(function(){
                 {
                     if(data.rst === 1)
                     {
+                        swal.close();
                         Swal.fire({
                             title: 'Sucesso',
                             text: data.msg,
                             icon: 'success',
-                            confirmButtonText: `Ok`,
-                            }).then((result) => {
-                            if (result.isConfirmed)
-                                window.location.href = BASE_URL+"Usuario/login";
-                        })
-                    }
-                    else if(data.rst === 2)
-                    {
-                        Swal.fire({
-                            title: 'Erro',
-                            text: data.msg,
-                            icon: 'info',
                             confirmButtonText: `Ok`,
                             }).then((result) => {
                             if (result.isConfirmed)

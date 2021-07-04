@@ -28,6 +28,15 @@ $(document).ready(function(){
             var data = $(this).serialize();
             data = new FormData($("#submit").get(0));
     
+            Swal.fire({
+                title: 'Aguarde enquanto processamos a requisição',
+                showConfirmButton: false,
+                allowOutsideClick: false,
+                onBeforeOpen: () => {
+                    Swal.showLoading()
+                },
+            });
+
             $.ajax({
                 type: "post",
                 url: BASE_URL+"Feedback/cadastra_feedback",
@@ -38,6 +47,7 @@ $(document).ready(function(){
                 data: data,
                 success: function(data)
                 {
+                    swal.close();
                     if(data.rst === true)
                     {
                         Swal.fire({

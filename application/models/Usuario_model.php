@@ -876,7 +876,7 @@ class Usuario_model extends CI_Model{
 
                 if($this->db->insert("ContrataServico"))
                 {
-                    $this->db->select("U.email");
+                    $this->db->select("U.email, O.id_servico");
                     $this->db->join("Servico S", "S.id = O.id_servico");
                     $this->db->join("Usuario U", "U.id = S.id_usuario");
                     $query = $this->db->get_where("Orcamento O", "O.id = $id")->row();
@@ -893,6 +893,8 @@ class Usuario_model extends CI_Model{
                     $texto->cid = "";
 
                     $this->m_sistema->envia_email($texto);
+
+                    $this->m_servico->envia_avise_me($query->id_servico);
 
                     return true;
                 }

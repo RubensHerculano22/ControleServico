@@ -723,6 +723,40 @@ class Servico_model extends CI_Model{
             return null;
         }
 
+        /**
+         * Enviar email avisando que o serviço está liberado
+         * @access public
+         * @param int $id_servico Identificador do Serviço
+        */
+        public function envia_avise_me($id_servico)
+        {
+            $query = $this->db->get_where("Servico", "id_tipo_servico = 2 AND id = '$id_servico'")->row();
+
+            if($query)
+            {
+                $queryAvise = $this->db->get_where("AviseMe", "id_servico = '$id_servico' AND avisado = 0")->result();
+
+                foreach($queryAvise as $item)
+                {
+                    $texto = (object)array();
+
+                    $texto->email = strtolower($item->email);
+                    $texto->titulo = "O Serviço se encontra disponivel para realizar a contratação";
+                    $texto->link = base_url("Servico/detalhes/$query->nome/$query->id");
+                    $texto->texto_link = "Ver Serviço";
+                    $texto->msg = "Opa, tudo certo? <br/> Temos uma noticia otima para você!!!.<br/> O Serviço que você está de olho está com disponibilidade para ser contratado<br/> Caso queira contratar o serviço, clique no botão abaixo.";
+                    $texto->cid = "";
+
+                    $this->m_sistema->envia_email($texto);
+
+                    $this->db->set("avisado", 1);
+
+                    $this->db->where("id", $item->id);
+                    $this->db->update("AviseMe");
+                }
+            }
+        }
+
     /** Fim Detalhes Serviço */
 
     /** Gerenciamento do Serviço */
@@ -1313,6 +1347,8 @@ class Servico_model extends CI_Model{
                 $this->db->where("O.id = $item->id_orcamento");
                 $queryUsuario = $this->db->get("Usuario U")->row();
 
+                $queryServico->descricao = strlen ($queryServico->descricao) > 75 ? substr($queryServico->descricao, 0, 75)." ..." : $queryServico->descricao;
+
                 $queryServico->solicitante = $queryUsuario->nome;
                 $queryServico->status_atual = $item->status;
 
@@ -1572,7 +1608,7 @@ class Servico_model extends CI_Model{
                 if($this->db->insert("ContrataServico"))
                 {
 
-                    $this->db->select("U.email");
+                    $this->db->select("U.email, O.id_servico");
                     $this->db->join("Usuario U", "U.id = O.id_usuario");
                     $query = $this->db->get_where("Orcamento O", "O.id = $id")->row();
 
@@ -1588,6 +1624,8 @@ class Servico_model extends CI_Model{
                     $texto->cid = "";
 
                     $this->m_sistema->envia_email($texto);
+
+                    $this->envia_avise_me($query->id_servico);
 
                     return true;
                 }
@@ -1621,11 +1659,10 @@ class Servico_model extends CI_Model{
                 if($this->db->insert("ContrataServico"))
                 {
     
-                    $this->db->select("U.email");
-                    $this->db->join("Usuario U", "U.id = S.id_usuario");
-                    $this->db->join("Orcamento O", "O.id_servico = S.id");
-                    $this->db->where("O.id = $id");
-                    $query = $this->db->get("Servico S")->row();
+                    $this->db->select("U.email, O.id_servico");
+                    $this->db->join("Usuario U", "U.id = O.id_usuario");
+                    $query = $this->db->get_where("Orcamento O", "O.id = $id")->row();
+
                     $texto = (object)array();
     
                     $hash = $this->sistema->encrypt_decrypt("encrypt", "Feedback/index/$id");
@@ -1639,6 +1676,8 @@ class Servico_model extends CI_Model{
     
                     $this->m_sistema->envia_email($texto);
     
+                    $this->envia_avise_me($query->id_servico);
+
                     $rst->rst = true;
                     $rst->msg = "Serviço definido como realizado";
                 }

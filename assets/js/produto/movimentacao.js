@@ -16,6 +16,15 @@ $(document).ready(function(){
         var data = $(this).serialize();
         data = new FormData($("#submit").get(0));
 
+        Swal.fire({
+            title: 'Aguarde enquanto processamos a requisição',
+            showConfirmButton: false,
+            allowOutsideClick: false,
+            onBeforeOpen: () => {
+                Swal.showLoading()
+            },
+        });
+
         $.ajax({
             type: "post",
             url: BASE_URL+"Servico/resposta_orcamento",
@@ -26,7 +35,7 @@ $(document).ready(function(){
             data: data,
             success: function(data)
             {
-                console.log(data);
+                swal.close();
                 if(data.rst === true)
                 {
                     Swal.fire({
@@ -65,12 +74,22 @@ $(document).ready(function(){
             }).then((result) => {
             if (result.isConfirmed)
             {
+                Swal.fire({
+                    title: 'Aguarde enquanto processamos a requisição',
+                    showConfirmButton: false,
+                    allowOutsideClick: false,
+                    onBeforeOpen: () => {
+                        Swal.showLoading()
+                    },
+                });
+
                 $.ajax({
                     type: "post",
                     url: BASE_URL+"Servico/servico_realizado/"+id,
                     dataType: "json",
                     success: function(data)
                     {
+                        swal.close();
                         if(data.rst === true)
                         {
                             Swal.fire({
