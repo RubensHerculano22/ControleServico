@@ -29,6 +29,8 @@ class Servico extends CI_Controller{
         $this->data["footer"] = $this->load->view("template/footer", $this->data, true);
     }
 
+    /** Paginas Views */
+
     public function index()
     {
         $local = str_replace("TCC/", "", $_SERVER["REQUEST_URI"]);
@@ -109,40 +111,6 @@ class Servico extends CI_Controller{
         $this->load->view("template/content", $this->data);
     }
 
-    public function gerenciar_servico($id)
-    {
-        if(!isset($this->dados->usuario_id))
-            redirect(base_url("Servico"));
-
-        $this->data["id"] = $id;
-
-        $this->data["info_card"] = $this->m_servico->get_info_card($id);
-
-        $this->data["breadcrumb"] = (object)array("titulo" => "Gerenciamento do Serviço", "before" => array((object)array("nome" => "Home", "link" => "Servico")), "current" => "Gerenciamento do Serviço");
-        $this->data["javascript"] = [
-            base_url("assets/js/produto/gerenciamento.js"),
-            base_url("assets/js/produto/calendario.js")
-        ];
-
-        $this->data["content"] = $this->load->view("produto/gerenciamento", $this->data, true);
-        $this->load->view("template/content", $this->data);
-    }
-
-    public function movimentacao($id)
-    {
-        $this->data["id"] = $id;
-        $this->data["info"] = $this->m_servico->get_info_orcamentos($id);
-
-        $this->data["javascript"] = [
-            base_url("assets/js/produto/movimentacao.js")
-        ];
-
-        $this->data["breadcrumb"] = (object)array("titulo" => "Acompanhamento do Pedido do Serviço", "before" => array((object)array("nome" => "Home", "link" => "Servico"), (object)array("nome" => "Gerenciamento de Serviço", "link" => "Servico/gerenciar_servico/".$this->data["info"][0]->id_servico)), "current" => "Acompanhamento do Pedido do Serviço");
-
-        $this->data["content"] = $this->load->view("produto/movimentacao", $this->data, true);
-        $this->load->view("template/content", $this->data);
-    }
-    
     public function edita_servico($id)
     {
         $this->data["id"] = $id;
@@ -177,6 +145,40 @@ class Servico extends CI_Controller{
         $this->load->view("template/content", $this->data);
     }
 
+    public function gerenciar_servico($id)
+    {
+        if(!isset($this->dados->usuario_id))
+            redirect(base_url("Servico"));
+
+        $this->data["id"] = $id;
+
+        $this->data["info_card"] = $this->m_servico->get_info_card($id);
+
+        $this->data["breadcrumb"] = (object)array("titulo" => "Gerenciamento do Serviço", "before" => array((object)array("nome" => "Home", "link" => "Servico")), "current" => "Gerenciamento do Serviço");
+        $this->data["javascript"] = [
+            base_url("assets/js/produto/gerenciamento.js"),
+            base_url("assets/js/produto/calendario.js")
+        ];
+
+        $this->data["content"] = $this->load->view("produto/gerenciamento", $this->data, true);
+        $this->load->view("template/content", $this->data);
+    }
+
+    public function movimentacao($id)
+    {
+        $this->data["id"] = $id;
+        $this->data["info"] = $this->m_servico->get_info_orcamentos($id);
+
+        $this->data["javascript"] = [
+            base_url("assets/js/produto/movimentacao.js")
+        ];
+
+        $this->data["breadcrumb"] = (object)array("titulo" => "Acompanhamento do Pedido do Serviço", "before" => array((object)array("nome" => "Home", "link" => "Servico"), (object)array("nome" => "Gerenciamento de Serviço", "link" => "Servico/gerenciar_servico/".$this->data["info"][0]->id_servico)), "current" => "Acompanhamento do Pedido do Serviço");
+
+        $this->data["content"] = $this->load->view("produto/movimentacao", $this->data, true);
+        $this->load->view("template/content", $this->data);
+    }
+
     public function pesquisa($pesquisa)
     {
         $this->data["pesquisa"] = urldecode($pesquisa);
@@ -192,6 +194,10 @@ class Servico extends CI_Controller{
         $this->load->view("template/content", $this->data);
     }
 
+    /** Fim Paginas Views */
+
+    /** Consultas Json */
+
     public function get_cep()
     {
         $rst = $this->sistema->get_cep();
@@ -200,12 +206,6 @@ class Servico extends CI_Controller{
             $rst->estado = $this->m_servico->get_estado_sigla($rst->uf);
         }
 
-        echo json_encode($rst, JSON_UNESCAPED_UNICODE);
-    }
-
-    public function cadastrar_pergunta()
-    {
-        $rst = $this->m_servico->cadastrar_pergunta();
         echo json_encode($rst, JSON_UNESCAPED_UNICODE);
     }
 
@@ -221,116 +221,7 @@ class Servico extends CI_Controller{
         echo json_encode($rst, JSON_UNESCAPED_UNICODE);
     }
 
-    public function contrata_servico()
-    {
-        $rst = $this->m_servico->contrata_servico();
-        echo json_encode($rst, JSON_UNESCAPED_UNICODE);
-    }
-
-    public function get_subcategorias($id)
-    {
-        $rst = $this->m_servico->get_subcategorias($id);
-        echo json_encode($rst, JSON_UNESCAPED_UNICODE);
-    }
-
-    public function cadastro_servico()
-    {
-        $rst = $this->m_servico->cadastro_servico();
-        echo json_encode($rst, JSON_UNESCAPED_UNICODE);
-    }
-
-    public function get_perguntas($id, $resposta = false)
-    {
-        $rst = $this->m_servico->get_perguntas($id, $resposta);
-        echo json_encode($rst, JSON_UNESCAPED_UNICODE);
-    }
-
-    public function responder_pergunta()
-    {
-        $rst = $this->m_servico->responder_pergunta();
-        echo json_encode($rst, JSON_UNESCAPED_UNICODE);
-    }
-
-    public function get_orcamentos($id)
-    {
-        $rst = $this->m_servico->get_orcamentos($id);
-        echo json_encode($rst, JSON_UNESCAPED_UNICODE);
-    }
-
-    public function resposta_orcamento()
-    {
-        $rst = $this->m_servico->resposta_orcamento();
-        echo json_encode($rst, JSON_UNESCAPED_UNICODE);
-    }
-
-    public function visibilidade()
-    {
-        $rst = $this->m_servico->visibilidade();
-        echo json_encode($rst, JSON_UNESCAPED_UNICODE);
-    }
-
-    public function get_visibilidade($id)
-    {
-        $rst = $this->m_servico->get_visibilidade($id);
-        echo json_encode($rst, JSON_UNESCAPED_UNICODE);
-    }
-
-    public function get_cidades($id)
-    {
-        $rst = $this->m_servico->get_cidades($id);
-        echo json_encode($rst, JSON_UNESCAPED_UNICODE);
-    }
-
-    public function cancela_servico($id)
-    {
-        $rst = $this->m_servico->cancela_servico($id);
-        echo json_encode($rst, JSON_UNESCAPED_UNICODE);
-    }
-
-    public function troca_cidade($id_estado, $id_cidade)
-    {
-        $this->session->set_userdata(array("cidade" => (object)array("id_estado" => $id_estado, "id_cidade" => $id_cidade)));
-
-        echo json_encode(true, JSON_UNESCAPED_UNICODE);
-    }
-
-    public function editar_servico()
-    {
-        $rst = $this->m_servico->editar_servico();
-        echo json_encode($rst, JSON_UNESCAPED_UNICODE);
-    }
-
-    public function insere_imagem()
-    {
-        $this->set_files();
-        $rst = $this->m_servico->insere_imagem();
-        echo json_encode($rst, JSON_UNESCAPED_UNICODE);
-    }
-
-    public function troca_principal()
-    {
-        $rst = $this->m_servico->troca_principal();
-        echo json_encode($rst, JSON_UNESCAPED_UNICODE);
-    }
-
-    public function troca_ativo()
-    {
-        $rst = $this->m_servico->troca_ativo();
-        echo json_encode($rst, JSON_UNESCAPED_UNICODE);
-    }
-
-    public function exclui_imagem()
-    {
-        $rst = $this->m_servico->exclui_imagem();
-        echo json_encode($rst, JSON_UNESCAPED_UNICODE);
-    }
-
-    public function servico_realizado($id)
-    {
-        $rst = $this->m_servico->servico_realizado($id);
-        echo json_encode($rst, JSON_UNESCAPED_UNICODE);
-    }
-
+    /** Detalhes Serviço */
     public function datas_disponiveis($id)
     {
         $rst = $this->m_servico->get_data_disponiveis($id);
@@ -347,6 +238,136 @@ class Servico extends CI_Controller{
     {
         $rst = $this->m_servico->get_dias_agendados($id);
         echo json_encode($rst, JSON_UNESCAPED_UNICODE);
+    }
+
+    /** Fim Detalhes Serviço */
+
+    /** Perguntas */
+    public function get_perguntas($id, $resposta = false)
+    {
+        $rst = $this->m_perguntas->get_perguntas($id, $resposta);
+        echo json_encode($rst, JSON_UNESCAPED_UNICODE);
+    }
+
+    public function cadastrar_pergunta()
+    {
+        $rst = $this->m_perguntas->cadastrar_pergunta();
+        echo json_encode($rst, JSON_UNESCAPED_UNICODE);
+    }
+
+    public function responder_pergunta()
+    {
+        $rst = $this->m_perguntas->responder_pergunta();
+        echo json_encode($rst, JSON_UNESCAPED_UNICODE);
+    }
+    /** Fim Perguntas */
+
+    /** Orçamento */
+    public function contrata_servico()
+    {
+        $rst = $this->m_servico->contrata_servico();
+        echo json_encode($rst, JSON_UNESCAPED_UNICODE);
+    }
+
+    public function get_orcamentos($id)
+    {
+        $rst = $this->m_servico->get_orcamentos($id);
+        echo json_encode($rst, JSON_UNESCAPED_UNICODE);
+    }
+
+    public function resposta_orcamento()
+    {
+        $rst = $this->m_servico->resposta_orcamento();
+        echo json_encode($rst, JSON_UNESCAPED_UNICODE);
+    }
+
+    public function cancela_servico($id)
+    {
+        $rst = $this->m_servico->cancela_servico($id);
+        echo json_encode($rst, JSON_UNESCAPED_UNICODE);
+    }
+
+    public function servico_realizado($id)
+    {
+        $rst = $this->m_servico->servico_realizado($id);
+        echo json_encode($rst, JSON_UNESCAPED_UNICODE);
+    }
+    /** Fim Orçamento */
+
+    /** Gerencia Serviço */
+    public function get_visibilidade($id)
+    {
+        $rst = $this->m_servico->get_visibilidade($id);
+        echo json_encode($rst, JSON_UNESCAPED_UNICODE);
+    }
+
+    public function visibilidade()
+    {
+        $rst = $this->m_servico->visibilidade();
+        echo json_encode($rst, JSON_UNESCAPED_UNICODE);
+    }
+    /** Fim Gerencia Serviço */
+
+    /** Cadastra Serviço */
+    public function cadastro_servico()
+    {
+        $rst = $this->m_servico->cadastro_servico();
+        echo json_encode($rst, JSON_UNESCAPED_UNICODE);
+    }
+
+    public function editar_servico()
+    {
+        $rst = $this->m_servico->editar_servico();
+        echo json_encode($rst, JSON_UNESCAPED_UNICODE);
+    }
+
+    public function get_cidades($id)
+    {
+        $rst = $this->m_servico->get_cidades($id);
+        echo json_encode($rst, JSON_UNESCAPED_UNICODE);
+    }
+
+    public function get_subcategorias($id)
+    {
+        $rst = $this->m_servico->get_subcategorias($id);
+        echo json_encode($rst, JSON_UNESCAPED_UNICODE);
+    }
+
+    /** Fim Cadastra Serviço */
+
+    /** Edita Imagem */
+    public function troca_principal()
+    {
+        $rst = $this->m_servico->troca_principal();
+        echo json_encode($rst, JSON_UNESCAPED_UNICODE);
+    }
+
+    public function troca_ativo()
+    {
+        $rst = $this->m_servico->troca_ativo();
+        echo json_encode($rst, JSON_UNESCAPED_UNICODE);
+    }
+
+    public function insere_imagem()
+    {
+        $this->set_files();
+        $rst = $this->m_servico->insere_imagem();
+        echo json_encode($rst, JSON_UNESCAPED_UNICODE);
+    }
+
+    public function exclui_imagem()
+    {
+        $rst = $this->m_servico->exclui_imagem();
+        echo json_encode($rst, JSON_UNESCAPED_UNICODE);
+    }
+
+    /** Fim Edita Imagem */
+
+    public function troca_cidade($id_estado, $id_cidade)
+    {
+        $this->session->set_userdata(array("cidade" => (object)array("id_estado" => $id_estado, "id_cidade" => $id_cidade)));
+
+        echo json_encode(true, JSON_UNESCAPED_UNICODE);
     }
 
     public function set_files()
@@ -374,5 +395,7 @@ class Servico extends CI_Controller{
         $this->session->set_userdata(array("files". APPNAME => $files));
         unset($_FILES["file"]);
     }
+
+    /** Consultas Json */
 
 }
