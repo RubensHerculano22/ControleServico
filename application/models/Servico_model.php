@@ -92,7 +92,7 @@ class Servico_model extends CI_Model{
          * Consulta o estado a partir do nome.
          * @access public
          * @param  string $nome  Nome do Estado
-         * @return object;
+         * @return int;
         */
         public function get_estado_nome($nome)
         {
@@ -144,7 +144,7 @@ class Servico_model extends CI_Model{
          * Consulta uma cidade.
          * @access public
          * @param  string $nome Nome da Cidade
-         * @return object;
+         * @return int;
         */
         public function get_cidade_nome($nome)
         {
@@ -253,6 +253,14 @@ class Servico_model extends CI_Model{
             $rst = $this->db->get_where("Categoria", "id_pai = '$query->id'")->result();
 
             return $rst;
+        }
+
+        public function get_descricao_categoria($categoria)
+        {
+            //consulta o id da categoria.
+            $query = $this->db->get_where("Categoria", "nome = '$categoria'")->row();
+
+            return $query->descricao;
         }
 
         /**

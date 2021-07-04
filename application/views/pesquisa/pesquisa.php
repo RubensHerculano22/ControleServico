@@ -1,45 +1,7 @@
 <div class="container p-5">
-    (Mostrar os card por categoria encontrada, colocar um opção para mostrar as categorias que tenham haver com a pesquisa)
     <div class="row">
         <div class="col-md-12 col-sm-12 col-xs-12">
-            <h4>Resultados a partir da pesquisa: <b><?= $pesquisa ?></b></h4>https://coolors.co/091b26-254b59-54828c-c9eef2-f0f2f0
-            <pre>
-Lista
-                
-Arrumar a logo - Lie - feito
-
-Arrumar banner tela inicial - Lie - feito
-
-Corrigir o nome para NextoYou - feito
-
-Area de Notificação - feito
-
-Adicionar os termos para cadastro. (n deixar aparecer no editar) - feito
-
-Fazer o esqueci a senha - feito
-
-Fazer o ativador de conta (quando cadastra). - feito
-
-Banner, lista de serviço - Lie - feito
-
-Texto de curiosidade sobre o serviço - Lie
-
-Imagens meio de pagamento, pagina de detalhes - feito
-
-Acompanhar contratação, colocar informações do serviço contratado. - feito
-
-Verificar se a visibilidade do serviço está funcionando. - feito
-
-Tentar adicionar o calendario para ilustratar para o prestador os serviços que ele possui
-
-Relatorio de visualização
-
-Card em andamento. - feito
-
-Corrigir as cores da pagina de feedback. - feito
-
-Colocar restreições ao tentar enviar - feito
-            </pre>
+            <h4>Resultados a partir da pesquisa: <b><?= $pesquisa ?></b></h4>
             <?php if($cards): ?>
                 <?php foreach($cards as $value): ?>
                     <h3><?= $value->nome ?></h3>
@@ -84,6 +46,12 @@ Colocar restreições ao tentar enviar - feito
                     <?php endforeach; ?>
                     </div>
                 <?php endforeach; ?>
+            <?php else: ?>
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="alert alert-dismissible" style="background-color: <?= $colores->color2 ?>; color: <?= $colores->color5 ?>">
+                            Nenhum serviço encontrado, para o termo pesquisado
+                        </div>
+                    </div>
             <?php endif; ?>
             </div>
         </div>

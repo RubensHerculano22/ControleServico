@@ -9,6 +9,12 @@ class Feedback_model extends CI_Model{
         $this->dados = $this->session->userdata("dados" . APPNAME);
     }
 
+    /**
+     * Consulta as informações do Serviço para o Feedback
+     * @access public
+     * @param  int   $id   Identificador do Orçamento.
+     * @return object;
+    */
     public function get_servico_info($id)
     {
         $info = $this->db->get_where("Orcamento", "id = $id")->row();
@@ -22,6 +28,11 @@ class Feedback_model extends CI_Model{
         return $info;
     }
 
+    /**
+     * Cadastra um feedback no serviço
+     * @access public
+     * @return object;
+    */
     public function cadastra_feedback()
     {
         $rst = (object)array("rst" => false, "msg" => "");

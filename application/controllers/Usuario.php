@@ -237,9 +237,9 @@ class Usuario extends CI_Controller{
         echo json_encode($rst, JSON_UNESCAPED_UNICODE);
     }
 
-    public function reeviar_email($id)
+    public function reenviar_email($id)
     {
-        $rst = $this->m_usuario->reeviar_email($id);
+        $rst = $this->m_usuario->reenviar_email($id);
         echo json_encode($rst, JSON_UNESCAPED_UNICODE);
     }
 

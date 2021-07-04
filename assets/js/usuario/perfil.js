@@ -51,7 +51,7 @@ $(document).ready(function(){
         var id = $(this).data("id");
         $.ajax({
             type: "post",
-            url: BASE_URL+"Usuario/reeviar_email/"+id,
+            url: BASE_URL+"Usuario/reenviar_email/"+id,
             cache: false,
             contentType: false,
             processData: false,
