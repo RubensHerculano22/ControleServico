@@ -262,7 +262,7 @@ class Sistema_model extends CI_Model{
 
                 $notificacao[] = $item;
             }
-            //Verifica realiza aviso para o cliente que já está disponivel para ele realizar feedback
+            //Realiza aviso para o cliente que já está disponivel para ele realizar feedback
             else
             {
                 $queryFeedback = $this->db->get_where("Feedback", "id_orcamento = $value->id_orcamento")->row();
@@ -271,7 +271,7 @@ class Sistema_model extends CI_Model{
                     $item->time = $value->data_alteracao;
                     $item->texto = "O serviço foi realizado, diga para o prestador o que você achou do serviço!";
                     $item->icon = "fas fa-envelope-open-text";
-                    $item->link = base_url("Feedback/index/$query->id_orcamento");
+                    $item->link = base_url("Feedback/index/$value->id_orcamento");
 
                     $notificacao[] = $item;
                 }

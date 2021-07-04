@@ -47,6 +47,22 @@ class Feedback_model extends CI_Model{
 
         if($this->db->insert("Feedback"))
         {
+            $this->db->select("U.email, S.nome, S.id");
+            $this->db->join("Usuario U", "U.id = S.id_usuario");
+            $this->db->join("Orcamento O", "O.id_servico = S.id");
+            $this->db->where("O.id = '$data->id_orcamento'");
+            $query = $this->db->get("Servico S")->row();
+            $texto = (object)array();
+
+            $texto->email = strtolower($query->email);
+            $texto->titulo = "Contratação do Serviço";
+            $texto->link = base_url("Servico/detalhes/$query->nome/$query->id");
+            $texto->texto_link = "Ver Serviço";
+            $texto->msg = "Opa, tudo certo? <br/> O cliente realizou um feedback em seu serviço.<br/> Para visualizar o feedback, clique no botão abaixo.";
+            $texto->cid = "";
+
+            $this->m_sistema->envia_email($texto);
+
             $rst->rst = true;
             $rst->msg = "Feedback realizado com sucesso";
         }

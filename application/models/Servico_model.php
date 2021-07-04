@@ -676,44 +676,47 @@ class Servico_model extends CI_Model{
         private function get_horarios_indisponiveis($id_orcamento, $data)
         {
 
-            $query = $this->db->get_where("ContrataServico", "id_orcamento = $id_orcamento AND ativo = 1")->row();
-            
-            //Verifica se são os status de em andamento
-            if(($query->status == 1 || $query->status == 2 || $query->status == 4 || $query->status == 5))
+            $query = $this->db->get_where("ContrataServico", "id_orcamento = '$id_orcamento' AND ativo = 1")->row();
+            if($query)
             {
-                $this->db->order_by("id", "desc");
-                $queryOcupado = $this->db->get_where("ContrataServico", "id_orcamento = $id_orcamento AND status = 1 AND data_servico = '".formatar($data, "dt2bd")."'")->row();
 
-                if($queryOcupado)
+                //Verifica se são os status de em andamento
+                if(($query->status == 1 || $query->status == 2 || $query->status == 4 || $query->status == 5))
                 {
-                    $split = explode(":", $queryOcupado->hora_servico);
-                    //Verifica se é depois das 23h para corrigir as horas
-                    if($split[0] + 2 >23)
-                    {
-                        if($split[0] + 1 == 24)
-                            $novo_horario_final =  "00:".$split[1];
-                        else
-                            $novo_horario_final =  "01:".$split[1];
-                    }
-                    else
-                    {
-                        $novo_horario_final =  ($split[0] + 2).":".$split[1];
-                    }
+                    $this->db->order_by("id", "desc");
+                    $queryOcupado = $this->db->get_where("ContrataServico", "id_orcamento = $id_orcamento AND status = 1 AND data_servico = '".formatar($data, "dt2bd")."'")->row();
 
-                    //Verifica se é antes das 00h para corrigir as horas
-                    if($split[0] - 2 < 0)
+                    if($queryOcupado)
                     {
-                        if($split[0] - 1 == -1)
-                            $novo_horario_comeco =  "23:".$split[1];
+                        $split = explode(":", $queryOcupado->hora_servico);
+                        //Verifica se é depois das 23h para corrigir as horas
+                        if($split[0] + 2 >23)
+                        {
+                            if($split[0] + 1 == 24)
+                                $novo_horario_final =  "00:".$split[1];
+                            else
+                                $novo_horario_final =  "01:".$split[1];
+                        }
                         else
-                            $novo_horario_comeco =  "22:".$split[1];
+                        {
+                            $novo_horario_final =  ($split[0] + 2).":".$split[1];
+                        }
+
+                        //Verifica se é antes das 00h para corrigir as horas
+                        if($split[0] - 2 < 0)
+                        {
+                            if($split[0] - 1 == -1)
+                                $novo_horario_comeco =  "23:".$split[1];
+                            else
+                                $novo_horario_comeco =  "22:".$split[1];
+                        }
+                        else
+                        {
+                            $novo_horario_comeco =  ($split[0] - 2).":".$split[1];
+                        }
+                        
+                        return " horario NOT BETWEEN '$novo_horario_comeco' AND '$novo_horario_final' ";
                     }
-                    else
-                    {
-                        $novo_horario_comeco =  ($split[0] - 2).":".$split[1];
-                    }
-                    
-                    return " horario NOT BETWEEN '$novo_horario_comeco' AND '$novo_horario_final' ";
                 }
             }
 
@@ -1377,7 +1380,8 @@ class Servico_model extends CI_Model{
                 {
                     $this->db->select("U.email");
                     $this->db->join("Usuario U", "U.id = S.id_usuario");
-                    $query = $this->db->get_where("Servico S", "S.id = $data->id_servico");
+                    $query = $this->db->get_where("Servico S", "S.id = $data->id_servico")->row();
+
                     $texto = (object)array();
 
                     $hash = $this->sistema->encrypt_decrypt("encrypt", "Servico/gerenciar_servico/$data->id_servico");
@@ -1518,7 +1522,7 @@ class Servico_model extends CI_Model{
                     //Consulta o email do Usuario
                     $this->db->select("U.email");
                     $this->db->join("Usuario U", "U.id = O.id_usuario");
-                    $query = $this->db->get_where("Orcamento O", "O.id = $data->id_orcamento");
+                    $query = $this->db->get_where("Orcamento O", "O.id = $data->id_orcamento")->row();
 
                     $texto = (object)array();
 
@@ -1570,7 +1574,7 @@ class Servico_model extends CI_Model{
 
                     $this->db->select("U.email");
                     $this->db->join("Usuario U", "U.id = O.id_usuario");
-                    $query = $this->db->get_where("Orcamento O", "O.id = $id");
+                    $query = $this->db->get_where("Orcamento O", "O.id = $id")->row();
 
                     $texto = (object)array();
 
@@ -1619,7 +1623,9 @@ class Servico_model extends CI_Model{
     
                     $this->db->select("U.email");
                     $this->db->join("Usuario U", "U.id = S.id_usuario");
-                    $query = $this->db->get_where("Servico S", "S.id = $id");
+                    $this->db->join("Orcamento O", "O.id_servico = S.id");
+                    $this->db->where("O.id = $id");
+                    $query = $this->db->get("Servico S")->row();
                     $texto = (object)array();
     
                     $hash = $this->sistema->encrypt_decrypt("encrypt", "Feedback/index/$id");

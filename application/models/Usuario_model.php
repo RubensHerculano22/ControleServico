@@ -468,6 +468,16 @@ class Usuario_model extends CI_Model{
                     $this->db->where("id", $data->id_usuario);
                     if($this->db->update("Usuario"))
                     {
+                        $dados = $this->session->userdata("dados" . APPNAME);
+                        if($dados)
+                        {
+                            $dados->nome = $data->nome;
+                            $dados->sobrenome = $data->sobrenome;
+                            $dados->email = strtolower($data->email);
+
+                            $this->session->set_userdata(array("is_logged" => true, "dados" . APPNAME => $dados));   
+                        }
+
                         $rst->rst = 4;
                         $rst->msg = "Dados da conta atualizados com sucesso";
                     }
@@ -820,7 +830,7 @@ class Usuario_model extends CI_Model{
                     $this->db->select("U.email");
                     $this->db->join("Servico S", "S.id = O.id_servico");
                     $this->db->join("Usuario U", "U.id = S.id_usuario");
-                    $query = $this->db->get_where("Orcamento O", "O.id = $data->id_orcamento");
+                    $query = $this->db->get_where("Orcamento O", "O.id = $data->id_orcamento")->row();
 
                     $texto = (object)array();
 
@@ -869,7 +879,7 @@ class Usuario_model extends CI_Model{
                     $this->db->select("U.email");
                     $this->db->join("Servico S", "S.id = O.id_servico");
                     $this->db->join("Usuario U", "U.id = S.id_usuario");
-                    $query = $this->db->get_where("Orcamento O", "O.id = $id");
+                    $query = $this->db->get_where("Orcamento O", "O.id = $id")->row();
 
                     $texto = (object)array();
 

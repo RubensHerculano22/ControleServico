@@ -178,7 +178,15 @@ $(document).ready(function(){
                     }
                     else if(data.rst === 4)
                     {
-                        showNotification("success", "Sucesso", data.msg, "toast-top-center");
+                        Swal.fire({
+                            title: "Sucesso",
+                            text: data.msg,
+                            icon: "success",
+                            confirmButtonText: `Ok`,
+                            }).then((result) => {
+                            if (result.isConfirmed)
+                                window.location.reload();
+                        })
                     }
                 }
             });

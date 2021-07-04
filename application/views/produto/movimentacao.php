@@ -94,7 +94,7 @@
                                         <div class="col-md-6 col-sm-6 col-xs-12">
                                             <div class="form-group">
                                                 <label>Status do Pedido</label>
-                                                <br/><i class="fas fa-chevron-right"></i> Serviço Recusado
+                                                <br/><i class="fas fa-chevron-right"></i> Orçamento Recusado
                                                 <small>(No aguardo de uma nova resposta do Prestador)</small>
                                             </div>
                                         </div>
@@ -141,7 +141,7 @@
         <div class="col-md-4 col-sm-4 col-xs-12 pt-2 <?= ($info[0]->status->id == 1 || $info[0]->status->id == 5) ? "" : "d-none" ?>">
             <div class="card">
                 <div class="card-header" style="background-color: <?= $colores->color2 ?>">
-                    <h3 class="card-title" style="color: <?= $colores->color5 ?>"">Resposta ao pedido</h3>
+                    <h3 class="card-title" style="color: <?= $colores->color5 ?>">Resposta ao pedido</h3>
                 </div>
                 <form id="submit">
                     <div class="card-body">
@@ -150,11 +150,11 @@
                                 <div class="form-group text-center">
                                     <div class="custom-control custom-radio d-inline">
                                         <input class="custom-control-input custom-control-input-danger" value="1" type="radio" id="aceitar" name="aceite_orcamento" required>
-                                        <label for="aceitar" class="custom-control-label">Aceitar Orçamento </label>
+                                        <label for="aceitar" class="custom-control-label">Aceitar Serviço </label>
                                     </div>
                                     <div class="custom-control custom-radio d-inline">
                                         <input class="custom-control-input custom-control-input-danger" value="0" type="radio" id="recusar" name="aceite_orcamento" required>
-                                        <label for="recusar" class="custom-control-label">Recusar Orçamento</label>
+                                        <label for="recusar" class="custom-control-label">Recusar Serviço</label>
                                     </div>
                                 </div>
                             </div>

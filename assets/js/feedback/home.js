@@ -25,10 +25,6 @@ $(document).ready(function(){
         }
         else
         {
-            console.log(titulo)
-            console.log(avaliacao)
-            console.log(descricao)
-            debugger;
             var data = $(this).serialize();
             data = new FormData($("#submit").get(0));
     

@@ -20,9 +20,11 @@ $(document).ready(function(){
                         icon: 'success',
                         title: 'Sucesso',
                         text: data.msg
+                    }).then((result) => {
+                        if (result.isConfirmed)
+                            window.location.reload();
                     });
-                    
-                    window.location.reload();
+                
                 }
                 else if(data.rst === false)
                 {

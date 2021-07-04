@@ -128,7 +128,7 @@
                                         <div class="col-md-6 col-sm-6 col-xs-12">
                                             <div class="form-group">
                                                 <label>Status do Pedido</label>
-                                                <br/><i class="fas fa-chevron-right"></i> Serviço Recusado
+                                                <br/><i class="fas fa-chevron-right"></i> Orçamento Recusado pelo Cliente
                                                 <small>(No aguardo de uma nova resposta do Prestador)</small>
                                             </div>
                                         </div>
