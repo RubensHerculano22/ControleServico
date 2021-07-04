@@ -720,6 +720,29 @@ class Servico_model extends CI_Model{
             return null;
         }
 
+        public function get_enderecos()
+        {
+            if($this->dados)
+            {
+                $query = $this->db->get_where("Enderecos", "id_usuario = ".$this->dados->usuario_id)->result();//Corrigir
+                foreach($query as $item)
+                {
+                    //Consulta o estado
+                    $item->estado = $this->db->get_where("Estados", "id = '$item->estado'")->row();
+
+                    //Consulta a cidade
+                    $item->cidade = $this->get_cidades_id($item->cidade);
+                    $item->endereco_completo = $item->cep." - ".$item->endereco.($item->complemento ? ", ".$item->complemento : "").", ".$item->numero.", ".$item->bairro." - ".$item->cidade->Nome.", ".$item->estado->nome."(".$item->estado->sigla.")";
+                }
+
+                return $query;
+            }
+            else
+            {
+                return (object)array();
+            }
+        }
+
     /** Fim Detalhes Serviço */
 
     /** Gerenciamento do Serviço */

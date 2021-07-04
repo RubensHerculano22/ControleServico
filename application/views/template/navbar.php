@@ -44,6 +44,7 @@
         <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
           <!-- <img src="https://www.microlins.com.br/galeria/repositorio/images/noticias/como-posicionar-melhor-seu-perfil-no-linkedin/02-Como-posicionar-melhor-seu-perfil-do-Linkedin.png" class="user-image img-circle elevation-2" alt="User Image"> -->
           <span class="d-none d-md-inline"><?= $dados->nome." ".$dados->sobrenome ?></span>
+          <span class="d-none d-xs-inline"><?= $dados->nome ?></span>
         </a>
         <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
           <li style="background-color: <?= $colores->color1 ?>">

@@ -178,6 +178,28 @@ class Usuario_model extends CI_Model{
 
     /** Endereço */
 
+        public function get_enderecos()
+        {
+            if($this->dados)
+            {
+                $query = $this->db->get_where("Enderecos", "id_usuario = ".$this->dados->usuario_id)->result();
+                foreach($query as $item)
+                {
+                    //Consulta o estado
+                    $item->estado = $this->db->get_where("Estados", "id = '$item->estado'")->row();
+
+                    //Consulta a cidade
+                    $item->cidade = $this->get_cidade_id($item->cidade);
+                    $item->endereco_completo = $item->cep." - ".$item->endereco.($item->complemento ? ", ".$item->complemento : "").", ".$item->numero.", ".$item->bairro." - ".$item->cidade.", ".$item->estado->nome."(".$item->estado->sigla.")";
+                }
+
+                return $query;
+            }
+            else
+            {
+                return (object)array();
+            }
+        }
         /**
          * Consulta as informações do endereço.
          * @access public

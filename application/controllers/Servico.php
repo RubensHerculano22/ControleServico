@@ -17,6 +17,7 @@ class Servico extends CI_Controller{
         $this->data["local"] = $this->session->userdata("local");;
 
         $this->load->model("Servico_model", "m_servico");
+        $this->load->model("Usuario_model", "m_usuario");
 
         $this->data["categorias"] = $this->m_sistema->listar_categorias();
 
@@ -82,6 +83,7 @@ class Servico extends CI_Controller{
 
         $this->m_sistema->insere_acesso($id_servico);
         $this->data["info"] = $this->m_servico->get_info_servico($id_servico);
+        $this->data["endereco"] = $this->m_usuario->get_enderecos();
 
         $this->data["breadcrumb"] = (object)array("titulo" => "Detalhes de Produtos/Serviços", "before" => array((object)array("nome" => "Home", "link" => "Servico"), (object)array("nome" => "".$this->data["info"]->subcategoria->nome, "link" => "Servico/lista/".$this->data["info"]->categoria->nome."/".$this->data["info"]->subcategoria->nome)), "current" => "".$this->data["info"]->nome);
         $this->data["javascript"] = [
