@@ -3,7 +3,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Servico extends CI_Controller{
 
-    //listar_categorias muda no sistema_model
     function __construct()
     {
         parent:: __construct();
@@ -15,9 +14,6 @@ class Servico extends CI_Controller{
         $this->data["dados"] = $this->dados;
         
         $this->data["local"] = $this->session->userdata("local");;
-
-        $this->load->model("Servico_model", "m_servico");
-        $this->load->model("Usuario_model", "m_usuario");
 
         $this->data["categorias"] = $this->m_sistema->listar_categorias();
 

@@ -11,9 +11,6 @@ class Feedback extends CI_Controller{
 
         $this->dados = $this->session->userdata("dados" . APPNAME);
         $this->data["dados"] = $this->dados;
-        
-        $this->load->model("Feedback_model", "m_feedback");
-        $this->load->model("Servico_model", "m_servico");
 
         $local = str_replace("TCC/", "", $_SERVER["REQUEST_URI"]);
         $local = str_replace("tcc/", "", $local);

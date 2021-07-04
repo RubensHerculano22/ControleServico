@@ -20,6 +20,72 @@ class Usuario_model extends CI_Model{
         "ativacao" => 0,
     );
 
+    /** Consultas Basicas */
+
+        /**
+         * Consulta o estado a partir do Identificador.
+         * @access public
+         * @param  int $nome  Identificador do Estado
+         * @return string;
+        */
+        public function get_estado_id($id)
+        {
+            $query = $this->db->get_where("Estados", "id = '$id'")->row();
+
+            return $query->nome;
+        }
+
+        /**
+         * Consulta o estado a partir do nome.
+         * @access public
+         * @param  string $nome  Nome do Estado
+         * @return int;
+        */
+        public function get_estado_nome($nome)
+        {
+            $query = $this->db->get_where("Estados", "nome = '$nome'")->row();
+
+            return $query->id;
+        }
+
+        /**
+         * Consulta uma cidade.
+         * @access public
+         * @param  int $id Identificador da Cidade
+         * @return string;
+        */
+        public function get_cidade_id($id)
+        {
+            $json = file_get_contents(base_url("assets/Cidades.json"));
+            $data = json_decode($json);
+
+            foreach($data as $item)
+            {
+                if($item->ID == $id)
+                    return $item->Nome;
+            }
+        }
+
+        /**
+         * Consulta uma cidade.
+         * @access public
+         * @param  string $nome Nome da Cidade
+         * @return int;
+        */
+        public function get_cidade_nome($nome)
+        {
+            $json = file_get_contents(base_url("assets/Cidades.json"));
+            $data = json_decode($json);
+
+            foreach($data as $item)
+            {
+                if($item->Nome == $nome)
+                    return $item->ID;
+            }
+        }
+
+    /** Fim Consultas Basicas */
+
     /** Perfil */
 
         /**
@@ -178,6 +244,11 @@ class Usuario_model extends CI_Model{
 
     /** Endereço */
 
+        /**
+         * Consulta todos os Endereços do Usuario
+         * @access public
+         * @return object
+        */
         public function get_enderecos()
         {
             if($this->dados)
@@ -821,71 +892,5 @@ class Usuario_model extends CI_Model{
         }
 
     /** Fim Orçamento */
-
-    /** Estados e Cidades */
-
-    /**
-         * Consulta o estado a partir do Identificador.
-         * @access public
-         * @param  int $nome  Identificador do Estado
-         * @return string;
-        */
-        public function get_estado_id($id)
-        {
-            $query = $this->db->get_where("Estados", "id = '$id'")->row();
-
-            return $query->nome;
-        }
-
-        /**
-         * Consulta o estado a partir do nome.
-         * @access public
-         * @param  string $nome  Nome do Estado
-         * @return int;
-        */
-        public function get_estado_nome($nome)
-        {
-            $query = $this->db->get_where("Estados", "nome = '$nome'")->row();
-
-            return $query->id;
-        }
-
-        /**
-         * Consulta uma cidade.
-         * @access public
-         * @param  int $id Identificador da Cidade
-         * @return string;
-        */
-        public function get_cidade_id($id)
-        {
-            $json = file_get_contents(base_url("assets/Cidades.json"));
-            $data = json_decode($json);
-
-            foreach($data as $item)
-            {
-                if($item->ID == $id)
-                    return $item->Nome;
-            }
-        }
-
-        /**
-         * Consulta uma cidade.
-         * @access public
-         * @param  string $nome Nome da Cidade
-         * @return int;
-        */
-        public function get_cidade_nome($nome)
-        {
-            $json = file_get_contents(base_url("assets/Cidades.json"));
-            $data = json_decode($json);
-
-            foreach($data as $item)
-            {
-                if($item->Nome == $nome)
-                    return $item->ID;
-            }
-        }
-
-    /** Fim Estados e Cidades */
 
 }
