@@ -5,7 +5,7 @@
     <?= $header ?>
 </head>
 
-<body class="hold-transition sidebar-mini sidebar-collapse">
+<body class="hold-transition sidebar-mini">
     <div class="wrapper">
         <?= $navbar ?>
 
@@ -16,9 +16,6 @@
                 <div class="content-header">
                     <div class="container-fluid">
                         <div class="row">
-                            <!-- <div class="col-sm-6">
-                                <h1 class="m-0"><?= $breadcrumb->titulo ?></h1>
-                            </div> -->
                             <div class="col-sm-12">
                                 <ol class="breadcrumb float-sm-right">
                                     <?php foreach($breadcrumb->before as $item): ?>
@@ -31,12 +28,9 @@
                     </div>
                 </div>
             <?php endif; ?>
-
-            <!-- Main content -->
             <section class="content">
                 <?= $content ?>
             </section>
-            <!-- /.content -->
         </div>
         <footer class="main-footer">
             <strong>Copyright &copy; 2020 a 2021 <a href="<?= base_url("") ?>">NextoYou</a>.</strong> Todos os direitos reservados.

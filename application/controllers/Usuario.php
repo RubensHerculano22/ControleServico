@@ -7,8 +7,6 @@ class Usuario extends CI_Controller{
     {
         parent:: __construct();
         $this->data = array();
-        
-        cria_pasta();
 
         $this->dados = $this->session->userdata("dados" . APPNAME);
         $this->data["dados"] = $this->dados;
@@ -28,7 +26,6 @@ class Usuario extends CI_Controller{
         $this->data["navbar"] = $this->load->view("template/navbar", $this->data, true);
         $this->data["sidebar"] = $this->load->view("template/sidebar", $this->data, true);
         $this->data["footer"] = $this->load->view("template/footer", $this->data, true);
-        //Não esquecer de fazer o termo para utilizar o endereço e os dados dos clientes.
     }
 
     public function index($id = null)
@@ -43,6 +40,20 @@ class Usuario extends CI_Controller{
         ];
 
         $this->data["content"] = $this->load->view("usuario/form", $this->data, true);
+        $this->load->view("template/content", $this->data);
+    }
+
+    public function login($hash = null)
+    {
+        $this->data["breadcrumb"] = (object)array("titulo" => "Autentificação", "before" => array((object)array("nome" => "Home", "link" => "Home")), "current" => "Autentificação");
+
+        $this->data["hash"] = $hash;
+
+        $this->data["javascript"] = [
+            base_url("assets/js/usuario/autentificacao.js")
+        ];
+
+        $this->data["content"] = $this->load->view("usuario/autentificacao", $this->data, true);
         $this->load->view("template/content", $this->data);
     }
 
@@ -66,20 +77,6 @@ class Usuario extends CI_Controller{
         ];
 
         $this->data["content"] = $this->load->view("usuario/perfil", $this->data, true);
-        $this->load->view("template/content", $this->data);
-    }
-
-    public function login($hash = null)
-    {
-        $this->data["breadcrumb"] = (object)array("titulo" => "Autentificação", "before" => array((object)array("nome" => "Home", "link" => "Home")), "current" => "Autentificação");
-
-        $this->data["hash"] = $hash;
-
-        $this->data["javascript"] = [
-            base_url("assets/js/usuario/autentificacao.js")
-        ];
-
-        $this->data["content"] = $this->load->view("usuario/autentificacao", $this->data, true);
         $this->load->view("template/content", $this->data);
     }
 
@@ -181,17 +178,7 @@ class Usuario extends CI_Controller{
         redirect(base_url());
     }
 
-    public function salva_usuario()
-    {
-        $rst = $this->m_usuario->salva_usuario();
-        echo json_encode($rst, JSON_UNESCAPED_UNICODE);
-    }
-
-    public function salva_endereco()
-    {
-        $rst = $this->m_usuario->salva_endereco();
-        echo json_encode($rst, JSON_UNESCAPED_UNICODE);
-    }
+    /** Login */
 
     public function autentifica()
     {
@@ -202,30 +189,6 @@ class Usuario extends CI_Controller{
             $this->session->set_userdata(array("is_logged" => true, "dados" . APPNAME => $rst));
             $rst->local = $this->session->userdata("local");
         }
-        echo json_encode($rst, JSON_UNESCAPED_UNICODE);
-    }
-
-    public function resposta_orcamento()
-    {
-        $rst = $this->m_usuario->resposta_orcamento();
-        echo json_encode($rst, JSON_UNESCAPED_UNICODE);
-    }
-
-    public function get_orcamentos($id)
-    {
-        $rst = $this->m_usuario->get_orcamentos($id);
-        echo json_encode($rst, JSON_UNESCAPED_UNICODE);
-    }
-
-    public function cancela_servico($id)
-    {
-        $rst = $this->m_usuario->cancela_servico($id);
-        echo json_encode($rst, JSON_UNESCAPED_UNICODE);
-    }
-
-    public function desfavoritar($id)
-    {
-        $rst = $this->m_usuario->desfavoritar($id);
         echo json_encode($rst, JSON_UNESCAPED_UNICODE);
     }
 
@@ -247,11 +210,57 @@ class Usuario extends CI_Controller{
         echo json_encode($rst, JSON_UNESCAPED_UNICODE);
     }
 
+    /** Fim Login */
+
+    /** Perfil */
+
     public function troca_local($id)
     {
         $local = "Usuario/perfil/".$id;
         $this->session->set_userdata(array("local" => $local));
         $this->data["local"] = $local;
     }
+
+    public function salva_usuario()
+    {
+        $rst = $this->m_usuario->salva_usuario();
+        echo json_encode($rst, JSON_UNESCAPED_UNICODE);
+    }
+
+    public function salva_endereco()
+    {
+        $rst = $this->m_usuario->salva_endereco();
+        echo json_encode($rst, JSON_UNESCAPED_UNICODE);
+    }
+
+    public function desfavoritar($id)
+    {
+        $rst = $this->m_usuario->desfavoritar($id);
+        echo json_encode($rst, JSON_UNESCAPED_UNICODE);
+    }
+
+    /** Fim Perfil */
+
+    /** Orçamento */
+
+    public function get_orcamentos($id)
+    {
+        $rst = $this->m_usuario->get_orcamentos($id);
+        echo json_encode($rst, JSON_UNESCAPED_UNICODE);
+    }
+
+    public function resposta_orcamento()
+    {
+        $rst = $this->m_usuario->resposta_orcamento();
+        echo json_encode($rst, JSON_UNESCAPED_UNICODE);
+    }
+
+    public function cancela_servico($id)
+    {
+        $rst = $this->m_usuario->cancela_servico($id);
+        echo json_encode($rst, JSON_UNESCAPED_UNICODE);
+    }
+
+    /** Fim Orçamento */
 
 }
