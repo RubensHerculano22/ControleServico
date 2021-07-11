@@ -4,7 +4,7 @@
             <div class="card card-outline card-secondary">
                 <div class="card-body box-profile">
                     <div class="text-center">
-                        <img class="profile-user-img img-fluid img-circle" src="https://i.pinimg.com/736x/6f/1e/fb/6f1efb3e2f7ddb6f6b9a3dbefabe0c67.jpg" alt="User profile picture">
+                        <img class="profile-user-img img-fluid img-circle" src="http://www.conectasa.com.br/wp-content/uploads/2020/07/CentralServicos_996x640_servicos.png" alt="User profile picture">
                     </div>
 
                     <h3 class="profile-username text-center"><?= $info->nome." ".$info->sobrenome ?></h3>

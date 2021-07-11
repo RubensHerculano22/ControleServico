@@ -48,7 +48,7 @@
         <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
           <li style="background-color: <?= $colores->color1 ?>">
             <div class="text-center pt-3">
-              <img src="https://i.pinimg.com/736x/6f/1e/fb/6f1efb3e2f7ddb6f6b9a3dbefabe0c67.jpg" class="img-circle elevation-2" alt="User Image" style="max-width: 75px;">
+              <img src="http://www.conectasa.com.br/wp-content/uploads/2020/07/CentralServicos_996x640_servicos.png" class="img-circle elevation-2" alt="User Image" style="max-width: 75px;">
             </div>
             <div class="row">
               <div class="col-md-12 col-sm-12 col-xs-12 p-4">
