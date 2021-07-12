@@ -1,6 +1,6 @@
     <div class="container-fluid">
     <div class="row">
-        <div class="col-md-3 col-sm-2 col-xs-12">
+        <div class="col-md-3 col-sm-4 col-xs-12">
             <div class="card card-outline card-secondary">
                 <div class="card-body box-profile">
                     <div class="text-center">
@@ -33,7 +33,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-9 col-sm-10 col-xs-12">
+        <div class="col-md-9 col-sm-8 col-xs-12">
             <div class="card card-secondary card-outline">
                 <div class="card-body box-profile">
                     <div class="tab-content" id="vert-tabs-tabContent">
@@ -266,18 +266,18 @@
                             <?php if($cadastrados): ?>
                                 <?php foreach($cadastrados as $key => $item): ?>
                                     <div class="row">
-                                        <div class="col-md-3 col-sm-3 col-xs-12">
+                                        <div class="col-xl-2 col-lg-6 col-md-4 col-sm-12 col-xs-12">
                                             <?php if($item->img): ?>
                                                 <img src="data:<?= $item->img->tipo_imagem ?>;base64,<?= $item->img->img ?>" class="img-fluid mb-2" alt="white sample" style="max-width: 170px; max-height: 120px">
                                             <?php else: ?>
                                                 <img src="https://levecrock.com.br/wp-content/uploads/2020/05/Produto-sem-Imagem-por-Enquanto.jpg" class="img-fluid mb-2" alt="white sample" style="max-width: 170px; max-height: 120px">
                                             <?php endif; ?>
                                         </div>
-                                        <div class="col-md-7 col-sm-7 col-xs-12 p-3">
+                                        <div class="col-xl-7 col-lg-6 col-md-8 col-sm-12 col-xs-12 p-3">
                                             <h4 class="text-center"><?= $item->usuario->nome." - ".$item->nome." - ".$item->categoria->nome ?></h4>
                                             <p class="text-justify pt-2"><?= $item->descricao_curta ?></p>
                                         </div>
-                                        <div class="col-md-2 col-sm-2 col-xs-12 align-self-center text-center">
+                                        <div class="col-md-3 col-sm-12 col-xs-12 align-self-center text-center">
                                             <a href="<?= base_url("Servico/gerenciar_servico/".$item->id) ?>" class="btn btn-block" style="background-color: <?= $colores->color2 ?>; color: <?= $colores->color5 ?>">Gerenciar</a>
                                         </div>
                                     </div>

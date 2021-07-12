@@ -247,6 +247,11 @@ $(document).ready(function(){
         $("#resposta").val("");
     });
 
+    $('#tabs').tabs({
+        activate: recalculateDataTableResponsiveSize,
+        create: recalculateDataTableResponsiveSize
+    });
+
 });
 
 function abrirResposta(id)
@@ -353,4 +358,8 @@ function cancelaServico(id){
             });
         }
     });
+}
+
+function recalculateDataTableResponsiveSize() {
+    $($.fn.dataTable.tables(true)).DataTable().responsive.recalc();
 }

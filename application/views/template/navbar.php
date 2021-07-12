@@ -43,7 +43,6 @@
       <li class="nav-item dropdown user-menu">
         <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
           <span class="d-none d-md-inline"><?= $dados->nome." ".$dados->sobrenome ?></span>
-          <span class="d-none d-xs-inline"><?= $dados->nome ?></span>
         </a>
         <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
           <li style="background-color: <?= $colores->color1 ?>">

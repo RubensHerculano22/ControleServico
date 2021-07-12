@@ -23,25 +23,25 @@
                                     <input type="text" class="form-control" name="sobrenome" value="<?= set_value('sobrenome', @$usuario->sobrenome); ?>" id="Sobrenome" placeholder="Sobrenome" required>
                                 </div>
                             </div>
-                            <div class="col-md-3 col-sm-3 col-xs-12">
+                            <div class="col-md-3 col-sm-6 col-xs-12">
                                 <div class="form-group">
                                     <label for="cpf">CPF</label><small class="text-danger"> *</small>
                                     <input type="text" class="form-control" name="cpf" id="cpf" value="<?= set_value('cpf', @$usuario->cpf); ?>" placeholder="CPF: xxx-xxx-xxx-xx" required>
                                 </div>
                             </div>
-                            <div class="col-md-3 col-sm-3 col-xs-12">
+                            <div class="col-md-3 col-sm-6 col-xs-12">
                                 <div class="form-group">
                                     <label for="data_nascimento">Data de Nascimento</label><small class="text-danger"> *</small>
                                     <input type="text" class="form-control" name="data_nascimento" id="data_nascimento" value="<?= set_value('data_nascimento', @$usuario->data_nascimento); ?>" placeholder="Exemplo: 01/01/2004" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask required>
                                 </div>
                             </div>
-                            <div class="col-md-3 col-sm-3 col-xs-12">
+                            <div class="col-md-3 col-sm-6 col-xs-12">
                                 <div class="form-group">
                                     <label for="telefone">Telefone</label>
                                     <input type="text" class="form-control" name="telefone" id="telefone" value="<?= set_value('telefone', @$usuario->telefone); ?>" placeholder="Exemplo: (11) 1111-1111">
                                 </div>
                             </div>
-                            <div class="col-md-3 col-sm-3 col-xs-12">
+                            <div class="col-md-3 col-sm-6 col-xs-12">
                                 <div class="form-group">
                                     <label for="celular">Celular</label>
                                     <input type="text" class="form-control" name="celular" id="celular" value="<?= set_value('celular', @$usuario->celular); ?>" placeholder="Exemplo: (11) 11111-1111">

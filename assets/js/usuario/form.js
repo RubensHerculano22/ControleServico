@@ -6,8 +6,6 @@ $(document).ready(function(){
 
     const regex = /[0-9]/
 
-    $('.select2').select2()
-
     $('#cpf').inputmask({
         mask: ['999.999.999-99'],
         keepStatic: true

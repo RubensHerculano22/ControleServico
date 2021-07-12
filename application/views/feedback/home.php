@@ -1,6 +1,6 @@
 <div class="container-fluid p-5">
     <div class="row">
-        <div class="col-md-8 col-sm-8 col-xs-12">
+        <div class="col-md-7 col-sm-12 col-xs-12">
             <div class="card">
                 <div class="card-header" style="background-color: <?= $colores->color2 ?>">
                     <h3 class="card-title" style="color: <?= $colores->color5 ?>">Feedback do Serviço</h3>
@@ -44,7 +44,7 @@
                 </form>
             </div>
         </div>
-        <div class="col-md-4 col-sm-4 col-xs-12">
+        <div class="col-md-5 col-sm-12 col-xs-12">
             <div class="card">
                 <div class="card-header" style="background-color: <?= $colores->color2 ?>">
                     <h3 class="card-title" style="color: <?= $colores->color5 ?>">Serviço</h3>
