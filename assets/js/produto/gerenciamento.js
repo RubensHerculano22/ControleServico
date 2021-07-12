@@ -65,6 +65,7 @@ $(document).ready(function(){
     $(".tabs_link").on("click", function(){
         $(".tabs_link").removeClass("text-dark").addClass("text-white");
         $(this).removeClass("text-white").addClass("text-dark");
+        $($.fn.dataTable.tables(true)).DataTable().responsive.recalc();
     });
 
     tableTodasPergunta = $("#lista_pergunta_completa").DataTable({
@@ -247,11 +248,6 @@ $(document).ready(function(){
         $("#resposta").val("");
     });
 
-    $('#tabs').tabs({
-        activate: recalculateDataTableResponsiveSize,
-        create: recalculateDataTableResponsiveSize
-    });
-
 });
 
 function abrirResposta(id)
@@ -358,8 +354,4 @@ function cancelaServico(id){
             });
         }
     });
-}
-
-function recalculateDataTableResponsiveSize() {
-    $($.fn.dataTable.tables(true)).DataTable().responsive.recalc();
 }

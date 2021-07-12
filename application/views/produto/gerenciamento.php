@@ -100,20 +100,24 @@
                                 <h3 class="card-title ">Lista Completa de Perguntas</h3><br/>
                                 <div class="row">
                                     <div class="col-md-12 co-sm-12 col-xs-12">
-                                        <table class="table" id="lista_pergunta_completa" style="width: 100%">
-                                            <thead></thead>
-                                            <tbody></tbody>
-                                        </table>
+                                        <div class="table-responsive">
+                                            <table class="table" id="lista_pergunta_completa" style="width: 100%">
+                                                <thead></thead>
+                                                <tbody></tbody>
+                                            </table>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="tab-pane fade" id="custom-tabs-one-orcamento" role="tabpanel" aria-labelledby="custom-tabs-one-orcamento-tab">
                                 <div class="row">
                                     <div class="col-md-12 co-sm-12 col-xs-12">
-                                        <table class="table" id="lista_orcamentos">
-                                            <thead></thead>
-                                            <tbody></tbody>
-                                        </table>
+                                        <div class="table-responsive">
+                                            <table class="table" id="lista_orcamentos" style="width: 100%">
+                                                <thead></thead>
+                                                <tbody></tbody>
+                                            </table>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
