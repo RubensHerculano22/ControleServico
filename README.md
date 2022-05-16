@@ -4,6 +4,9 @@ Sistema desenvolvido como trabalho de conclusão do curso de Analise e Desenvolv
 ## Objetivo do Sistema
 Sistema desenvolvido para auxilio no gerenciamento dos serviços dos prestadores e facilitar a divulgação de seus negócios, e centralizar um local onde os clientes possam solicitar serviços.
 
+## Status do Projeto
+:trophy: Finalizado
+
 ## Ferramentas
 <ul>
   <li>Desenvolvido em PHP utilizando o framework CodeIgniter</li>
