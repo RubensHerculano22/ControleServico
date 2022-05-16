@@ -24,7 +24,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |
 */
 //Sempre que o nome do projeto ou o caminho sofrer alteração, deve se alterar aqui.
-$config['base_url'] = 'http://localhost/TCC/';
+$config['base_url'] = 'http://localhost/ControleServico/';
 
 /*
 |--------------------------------------------------------------------------
